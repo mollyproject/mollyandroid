@@ -15,8 +15,7 @@ public class Router implements RequestsListener {
 	
 	public Router (Renderer ren)
 	{
-		//requestedURL is null at this point, but it is protected by waiting
-		
+		//requestedURL is null at this point, but it is protected by waiting		
 		waiting = true;	
 		this.ren = ren;
 		ren.addRequestsListener(this);
@@ -36,7 +35,6 @@ public class Router implements RequestsListener {
 	public JSONObject processRequest() throws Exception
 	{		
 		String s = new String();
-		//JSONObject o = new JSONObject();
 		
 		if (!waiting)
 		{
