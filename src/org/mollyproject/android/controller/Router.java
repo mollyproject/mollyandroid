@@ -54,8 +54,8 @@ public class Router implements RequestsListener {
         		s = s.concat(inputLine);
             }
 	        in.close();
-	        //now s is the JSON text representation of the web page received
-	        
+	        waiting = true;
+	        //now s is the JSON text representation of the web page received	        
 	        return new JSONObject(s);
 		}
 		else System.out.println("No request received.");
