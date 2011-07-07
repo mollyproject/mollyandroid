@@ -1,20 +1,17 @@
 package org.mollyproject.android.view.pages;
 
 public abstract class Page {
-	protected String urlStr;
 	protected String locator;
 	//each Page is a state of the display
 	public Page()
-	{	
-		urlStr = "http://m.ox.ac.uk/";
+	{			
 		//each subclass should have a different locator, indicating the
-		//location of the page itself
-		locator = "";
+		//location of the page itself, this locator is actually the view name		
 	}
 		
-	public String getURLStr()
+	public String getLocator()
 	{
-		return (urlStr+locator);
+		return locator;
 	}
 	
 	public abstract void refresh();

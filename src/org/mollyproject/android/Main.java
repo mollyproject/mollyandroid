@@ -3,6 +3,7 @@ package org.mollyproject.android;
 import org.json.JSONObject;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.Renderer;
+import org.mollyproject.android.view.pages.PlacesPage;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,24 +20,17 @@ public class Main extends Activity {
         
         ren = new Renderer();
 		router = new Router(ren);
+				
 		JSONObject o = new JSONObject();
 		
-		/*Code for testing the http request
+		//Trying out locator request:
 		try {
-			router.onRequestSent(new Request(HomePage.INSTANCE.getURLStr()));
-		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        
-        
-        try {
-			o = router.processRequest();
+			ren.setNewPage(PlacesPage.INSTANCE);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
-        
+		}
+				
         TextView tv = new TextView(this);
         tv.setText(o.toString());
         setContentView(tv);

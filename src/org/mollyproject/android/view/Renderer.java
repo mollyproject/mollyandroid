@@ -1,13 +1,13 @@
 package org.mollyproject.android.view;
 
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import org.json.JSONObject;
 import org.mollyproject.android.controller.RequestsListener;
-import org.mollyproject.android.view.pages.HomePage;
 import org.mollyproject.android.view.pages.Page;
+import org.mollyproject.android.view.pages.PlacesPage;
 
 public class Renderer {
 
@@ -18,7 +18,8 @@ public class Renderer {
 	public Renderer()
 	{
 		reqListeners = new ArrayList<RequestsListener>();
-		currentPage = HomePage.INSTANCE;
+		currentPage = PlacesPage.INSTANCE;
+		responses = new LinkedList<JSONObject>();
 	}
 	
 	public void addRequestsListener(RequestsListener listener)
@@ -26,7 +27,7 @@ public class Renderer {
 		reqListeners.add(listener);
 	}
 	
-	public void send(String urlStr) throws Exception
+	/*public void send(String urlStr) throws Exception
 	{
 		//Request req = new Request(urlStr);
 		for (RequestsListener reqListener : reqListeners)
@@ -37,12 +38,23 @@ public class Renderer {
 			JSONObject o = reqListener.processRequest();
 			if (o != null) responses.add(o);
 		}
+	}*/
+	
+	public void sendAndGetResponse(String locator) throws Exception
+	{
+		for (RequestsListener reqListener : reqListeners)
+		{
+			JSONObject o = reqListener.onRequestSent(locator);
+			//add the responses to a queue, a response can be empty, so do a test
+			//currently, there is only one single requests listener in the list			
+			if (o != null) responses.add(o);
+		}
 	}
 	
 	public void setNewPage(Page newPage) throws Exception
 	{
-		send(currentPage.getURLStr());
-		currentPage = newPage;
-		currentPage.refresh();
+		sendAndGetResponse(currentPage.getLocator());
+		//currentPage = newPage;
+		//currentPage.refresh();
 	}
 }

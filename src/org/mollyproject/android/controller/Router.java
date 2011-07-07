@@ -20,44 +20,48 @@ public class Router implements RequestsListener {
 		this.ren = ren;
 		ren.addRequestsListener(this);
 	}
-	public void onRequestSent(URL requestedURL)
-	{
-		if (waiting) {
-			this.requestedURL = requestedURL;
-			waiting = false;
-		}
-		else System.out.println("Router occupied, try again later");
-	}
 	
-	//Open connection to web server, get back the JSON text (if request
-	//goes through), and return the JSONObject if request is processed
-	//return null otherwise
-	public JSONObject processRequest() throws Exception
-	{		
-		String s = new String();
-		
-		if (!waiting)
-		{
-			//send the request to web server, process the response and 
-			//forward the response and forward the results to Renderer
-	        
-	        System.out.println("Processing: " + requestedURL);
-	        URLConnection conn = requestedURL.openConnection();
+	public JSONObject onRequestSent(String locator) throws Exception {
+		//Geting the actual URL from the server using the locator (view name)
+		//and the reverse API in Molly
+		if (waiting) {
+			waiting = false;
+			
+			String urlStr = new String();
+			String reverseReq = "http://dev.m.ox.ac.uk/reverse/?name="+locator;
+			System.out.println("Processing: " + locator);
+			URLConnection revConn = new URL(reverseReq).openConnection();
+			BufferedReader inRev = new BufferedReader(new InputStreamReader(
+									revConn.getInputStream()));
+			String inputRevLine;
+			
+			while ((inputRevLine = inRev.readLine()) != null) 
+			{
+				urlStr = urlStr.concat(inputRevLine);
+			}
+			urlStr += "?format=json";
+			inRev.close();
+			
+			//Have the urlStr, now get the JSON text
+			String jsonText = new String();			
+			System.out.println("Processing: " + urlStr);
+	        URLConnection conn = new URL(urlStr).openConnection();
 	        BufferedReader in = new BufferedReader(new InputStreamReader(
 	                                conn.getInputStream()));
 	        String inputLine;
-
+	
 	        while ((inputLine = in.readLine()) != null) 
-            {
-        		s = s.concat(inputLine);
-            }
+	        {
+	    		jsonText = jsonText.concat(inputLine);
+	        }
 	        in.close();
+	        System.out.println(jsonText); //print out json text for testing
 	        waiting = true;
-	        //now s is the JSON text representation of the web page received	        
-	        return new JSONObject(s);
+	        return new JSONObject(jsonText);
 		}
-		else System.out.println("No request received.");
-		
-		return null;
+		else 
+		{
+			return null;
+		}        		
 	}
 }
