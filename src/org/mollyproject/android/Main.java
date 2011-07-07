@@ -3,8 +3,6 @@ package org.mollyproject.android;
 import org.json.JSONObject;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.Renderer;
-import org.mollyproject.android.view.pages.PlacesPage;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -24,12 +22,12 @@ public class Main extends Activity {
 		JSONObject o = new JSONObject();
 		
 		//Trying out locator request:
-		try {
+		/*try {
 			ren.setNewPage(PlacesPage.INSTANCE);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 				
         TextView tv = new TextView(this);
         tv.setText(o.toString());

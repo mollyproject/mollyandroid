@@ -1,9 +1,7 @@
 package org.mollyproject.android.controller;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import org.json.JSONObject;
@@ -17,8 +15,7 @@ public class Router implements RequestsListener {
 	public Router (Renderer ren)
 	{
 		waiting = true;	
-		this.ren = ren;
-		ren.addRequestsListener(this);
+		this.ren = ren;		
 	}
 	
 	//Take an URL String, convert to URL, open connection then process 
@@ -42,7 +39,7 @@ public class Router implements RequestsListener {
 		return outputStr;
 	}
 	
-	public JSONObject onRequestSent(String locator) throws Exception {
+	public void onRequestSent(String locator) throws Exception {
 		//Geting the actual URL from the server using the locator (view name)
 		//and the reverse API in Molly
 		if (waiting) {
@@ -56,11 +53,13 @@ public class Router implements RequestsListener {
 			String jsonText = new String();			
 			jsonText = getFrom(urlStr+"?format=json");
 	        waiting = true;
-	        return new JSONObject(jsonText);
-		}
-		else 
-		{
-			return null;
-		}        		
+	        ren.render(new JSONObject(jsonText));
+	        //return new JSONObject(jsonText);
+		}	
+	}
+	
+	public Renderer getRenderer()
+	{
+		return ren;
 	}
 }
