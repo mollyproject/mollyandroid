@@ -5,17 +5,24 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import org.json.JSONObject;
+import org.mollyproject.android.CookieManager;
+import org.mollyproject.android.LocationThread;
 import org.mollyproject.android.view.Renderer;
 
 public class Router implements RequestsListener {
-
+	protected CookieManager cookieMgr;
 	protected static boolean waiting;	
 	protected Renderer ren;
+	protected LocationThread locThread;
+	protected boolean firstReq;
 	
 	public Router (Renderer ren)
 	{
 		waiting = true;	
-		this.ren = ren;		
+		this.ren = ren;
+		cookieMgr = new CookieManager();
+		firstReq = true;
+		locThread= new LocationThread();
 	}
 	
 	//Take an URL String, convert to URL, open connection then process 
@@ -50,16 +57,25 @@ public class Router implements RequestsListener {
 			urlStr = getFrom(reverseReq);
 			
 			//Have the urlStr, now get the JSON text
-			String jsonText = new String();			
+			String jsonText = new String();
 			jsonText = getFrom(urlStr+"?format=json");
+			
+			cookieMgr.storeCookies(new URL(urlStr).openConnection());
+			locThread.setCSRFToken(cookieMgr.getCSRFToken(new URL(urlStr)));
+			if (firstReq)
+			{ 
+				locThread.start();
+				firstReq = false;		
+			}
+
 	        waiting = true;
 	        ren.render(new JSONObject(jsonText));
 	        //return new JSONObject(jsonText);
-		}	
+		}
 	}
 	
-	public Renderer getRenderer()
+	public CookieManager getCookieManager ()
 	{
-		return ren;
+		return cookieMgr;
 	}
 }

@@ -11,7 +11,7 @@ public class SelectionManager {
 	//to query from, and Java won't take : as part of the name if that variable
 	//is not a String, thus the complication introduced by the getStringLocator()
 	
-	public static enum ViewNames { places_index,home_index };
+	public static enum ViewNames { places_index, home_index };
 	
 	//The following hash table allows for easier future change in implementation
 	//of new pages

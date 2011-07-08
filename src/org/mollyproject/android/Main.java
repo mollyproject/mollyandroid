@@ -8,22 +8,22 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 public class Main extends Activity {
-	private Router router;
-	private Renderer ren;	
-	
+	protected Router router;
+	protected Renderer ren;		
+	//protected LocationThread locThread;
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
         
         ren = new Renderer();
-		router = new Router(ren);
-				
-		JSONObject o = new JSONObject();
+		router = new Router(ren);		
+		//locThread = new LocationThread();
 		
+		JSONObject o = new JSONObject();
+		setContentView(R.layout.main);
 		//Trying out locator request:
 		/*try {
 			ren.setNewPage(PlacesPage.INSTANCE);
@@ -31,18 +31,21 @@ public class Main extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		//Code to try out the button, failed miserably
+
+    	try {
+			router.onRequestSent(ren.getSelectionManager().getStringLocator(SelectionManager.ViewNames.home_index));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		final Button button = (Button) findViewById(R.id.button);
 		
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	try {
-					router.onRequestSent(router.getRenderer().getSelectionManager().getStringLocator(SelectionManager.ViewNames.places_index));
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+
             }
-        });
+        });                
     }
 }
