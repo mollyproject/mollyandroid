@@ -2,7 +2,6 @@ package org.mollyproject.android;
 
 import java.net.MalformedURLException;
 
-import org.json.JSONObject;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.Renderer;
@@ -29,7 +28,7 @@ public class Main extends Activity {
 		}		
 		//locThread = new LocationThread();
 		
-		JSONObject o = new JSONObject();
+		//JSONObject o = new JSONObject();
 		setContentView(R.layout.main);
 		//Trying out locator request:
 		/*try {
@@ -53,6 +52,6 @@ public class Main extends Activity {
             public void onClick(View v) {
 
             }
-        });                
+        });        
     }
 }
