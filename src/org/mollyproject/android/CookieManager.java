@@ -76,8 +76,7 @@ public class CookieManager {
 	} else {
 	    // we don't, so let's create it and put it in the store
 	    domainStore = new HashMap();
-	    store.put(domain, domainStore);    
-	    //System.out.println(domain);
+	    store.put(domain, domainStore);    	    
 	}
 	
 	// OK, now we are ready to get the cookies out of the URLConnection	
@@ -97,7 +96,7 @@ public class CookieManager {
 		    String value = token.substring(token.indexOf(NAME_VALUE_SEPARATOR) + 1, token.length());
 		    domainStore.put(name, cookie);
 		    cookie.put(name, value);
-		    System.out.println(name+" "+value);
+		    System.out.println("CookieManager, "+name+" "+value);
 		}
     
 		while (st.hasMoreTokens()) {

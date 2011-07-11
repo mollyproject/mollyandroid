@@ -2,6 +2,7 @@ package org.mollyproject.android.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import org.json.JSONObject;
@@ -9,20 +10,25 @@ import org.mollyproject.android.CookieManager;
 import org.mollyproject.android.LocationThread;
 import org.mollyproject.android.view.Renderer;
 
+import android.content.Context;
+
 public class Router implements RequestsListener {
 	protected CookieManager cookieMgr;
 	protected static boolean waiting;	
 	protected Renderer ren;
 	protected LocationThread locThread;
 	protected boolean firstReq;
+	protected Context context;
+	public final static String mOX =  "http://dev.m.ox.ac.uk/";
 	
-	public Router (Renderer ren)
+	public Router (Renderer ren, Context context) throws MalformedURLException
 	{
 		waiting = true;	
 		this.ren = ren;
 		cookieMgr = new CookieManager();
 		firstReq = true;
-		locThread= new LocationThread();
+		this.context = context;
+		locThread= new LocationThread(new URL(mOX),context);
 	}
 	
 	//Take an URL String, convert to URL, open connection then process 
@@ -31,7 +37,7 @@ public class Router implements RequestsListener {
 	{
 		String outputStr = new String();		
 		
-		System.out.println("Processing: " + urlStr);
+		System.out.println("Router, Processing: " + urlStr);
 		URLConnection revConn = new URL(urlStr).openConnection();
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 								revConn.getInputStream()));
@@ -42,7 +48,7 @@ public class Router implements RequestsListener {
 			outputStr = outputStr.concat(inputLine);
 		}
 		in.close();
-		System.out.println("Output: " + outputStr);
+		System.out.println("Router, Output: " + outputStr);
 		return outputStr;
 	}
 	
@@ -53,7 +59,7 @@ public class Router implements RequestsListener {
 			waiting = false;
 			
 			String urlStr = new String();
-			String reverseReq = "http://dev.m.ox.ac.uk/reverse/?name="+locator;
+			String reverseReq = mOX + "reverse/?name="+locator;
 			urlStr = getFrom(reverseReq);
 			
 			//Have the urlStr, now get the JSON text
@@ -65,7 +71,7 @@ public class Router implements RequestsListener {
 			if (firstReq)
 			{ 
 				locThread.start();
-				firstReq = false;		
+				firstReq = false;				
 			}
 
 	        waiting = true;

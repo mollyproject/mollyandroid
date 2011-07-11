@@ -1,5 +1,7 @@
 package org.mollyproject.android;
 
+import java.net.MalformedURLException;
+
 import org.json.JSONObject;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
@@ -19,7 +21,12 @@ public class Main extends Activity {
     	super.onCreate(savedInstanceState);
         
         ren = new Renderer();
-		router = new Router(ren);		
+		try {
+			router = new Router(ren,getApplicationContext());
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		
 		//locThread = new LocationThread();
 		
 		JSONObject o = new JSONObject();
