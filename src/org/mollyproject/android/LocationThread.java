@@ -69,9 +69,11 @@ public class LocationThread extends Thread {
 			Looper.prepare();
 			System.out.println("Location Thread, Provider: " + provider);
 			locMgr.requestLocationUpdates(provider, 0, 0,locationListener);
-			while (locMgr.getLastKnownLocation(provider) == null)
+			if (locMgr.getLastKnownLocation(provider) == null)
 			{
-				System.out.println("waiting");
+				//if the LocationManager doesn't get a fix then just jump back
+				//to the start and request updates again
+				Looper.loop();
 			}
 			loc = locMgr.getLastKnownLocation(provider);
 	        // Construct data			
