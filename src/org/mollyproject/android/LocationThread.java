@@ -9,6 +9,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import org.mollyproject.android.controller.CookieManager;
+
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
@@ -68,61 +70,62 @@ public class LocationThread extends Thread {
 	public void run() {
 			Looper.prepare();
 			System.out.println("Location Thread, Provider: " + provider);
-			locMgr.requestLocationUpdates(provider, 0, 0,locationListener);
-			if (locMgr.getLastKnownLocation(provider) == null)
-			{
-				//if the LocationManager doesn't get a fix then just jump back
-				//to the start and request updates again
-				Looper.loop();
-			}
-			loc = locMgr.getLastKnownLocation(provider);
-	        // Construct data			
-	        String data;
-			try {
-				data = URLEncoder.encode("csrfmiddlewaretoken", "UTF-8") 
-									+ "=" + URLEncoder.encode(csrftoken, "UTF-8")
-								+ "&" + URLEncoder.encode("longtitude", "UTF-8") 
-									+ "=" + URLEncoder.encode(Double.toString(loc.getLongitude())
-																						, "UTF-8")
-								+ "&" + URLEncoder.encode("latitude", "UTF-8") 
-									+ "=" + URLEncoder.encode(Double.toString(loc.getLatitude())
-																						, "UTF-8")
-								+ "&" + URLEncoder.encode("accuracy", "UTF-8") 
-									+ "=" + URLEncoder.encode(Float.toString(loc.getAccuracy())
-																					, "UTF-8")
-								+ "&" + URLEncoder.encode("method", "UTF-8") 
-									+ "=" + URLEncoder.encode("html5", "UTF-8") 
-								+ "&" + URLEncoder.encode("format", "UTF-8") 
-									+ "=" + URLEncoder.encode("json", "UTF-8")
-								+ "&" + URLEncoder.encode("force", "UTF-8") 
-									+ "=" + URLEncoder.encode("True", "UTF-8");			
-	        System.out.println("Location Thread, Here");
-	        System.out.println("Long:" + loc.getLongitude() +" Lat:"+loc.getLatitude());
-	        // Send data	        
-	        URLConnection conn = url.openConnection();
-	        conn.setDoOutput(true);
-	        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-	        wr.write(data);
-	        wr.flush();
-	 
-	        // Get the response
-	        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-	        String line;
-	        while ((line = rd.readLine()) != null) {
-	            System.out.println(line);
-	        }
-	        wr.close();
-	        rd.close();
-	        Thread.sleep(60000);
-	        Looper.loop();
-	        Looper.myLooper().quit();
-			} catch (UnsupportedEncodingException e) {
-				System.out.println("Unsupported Encoding Exception");
-			} catch (IOException e) {
-				System.out.println("I/O Exception");
-			} catch (InterruptedException e) {
-				System.out.println("Interrupted");
-			}
-		
+						
+			//while (true)
+			//{
+				locMgr.requestLocationUpdates(provider, 0, 0,locationListener);
+				try {
+					if (locMgr.getLastKnownLocation(provider) != null)
+					{
+						loc = locMgr.getLastKnownLocation(provider);
+				        // Construct data			
+				        String data;
+						
+							data = URLEncoder.encode("csrfmiddlewaretoken", "UTF-8") 
+												+ "=" + URLEncoder.encode(csrftoken, "UTF-8")
+											+ "&" + URLEncoder.encode("longtitude", "UTF-8") 
+												+ "=" + URLEncoder.encode(Double.toString(loc.getLongitude())
+																									, "UTF-8")
+											+ "&" + URLEncoder.encode("latitude", "UTF-8") 
+												+ "=" + URLEncoder.encode(Double.toString(loc.getLatitude())
+																									, "UTF-8")
+											+ "&" + URLEncoder.encode("accuracy", "UTF-8") 
+												+ "=" + URLEncoder.encode(Float.toString(loc.getAccuracy())
+																								, "UTF-8")
+											+ "&" + URLEncoder.encode("method", "UTF-8") 
+												+ "=" + URLEncoder.encode("html5", "UTF-8") 
+											+ "&" + URLEncoder.encode("format", "UTF-8") 
+												+ "=" + URLEncoder.encode("json", "UTF-8")
+											+ "&" + URLEncoder.encode("force", "UTF-8") 
+												+ "=" + URLEncoder.encode("True", "UTF-8");			
+				        System.out.println("Location Thread, Here");
+				        System.out.println("Long:" + loc.getLongitude() +" Lat:"+loc.getLatitude());
+				        // Send data	        
+				        URLConnection conn = url.openConnection();
+				        conn.setDoOutput(true);
+				        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+				        wr.write(data);
+				        wr.flush();
+				 
+				        // Get the response
+				        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				        String line;
+				        while ((line = rd.readLine()) != null) {
+				            System.out.println(line);
+				        }
+				        wr.close();
+				        rd.close();				        
+				        Looper.loop();
+				        //Looper.myLooper().quit();				
+					}
+					Thread.sleep(200);
+				} catch (UnsupportedEncodingException e) {
+					System.out.println("Unsupported Encoding Exception");
+				} catch (IOException e) {
+					System.out.println("I/O Exception");
+				} catch (InterruptedException e) {
+					System.out.println("Interrupted");
+				}
+			//}
 	}
 }

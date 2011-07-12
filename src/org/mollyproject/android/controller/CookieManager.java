@@ -1,4 +1,4 @@
-package org.mollyproject.android;
+package org.mollyproject.android.controller;
 
 import java.net.*;
 import java.io.*;
@@ -34,10 +34,11 @@ import android.content.Context;
      **/
 
 public class CookieManager {
-        
+    
     private Map store;
     protected JSONObject jsonStore;
-     
+	private final static String COOKIESFILE = "cookiesFile.txt";
+	protected Context context;
     
     private static final String SET_COOKIE = "Set-Cookie";
     private static final String COOKIE_VALUE_DELIMITER = ";";
@@ -46,16 +47,17 @@ public class CookieManager {
     private static final String DATE_FORMAT = "EEE, dd-MMM-yyyy hh:mm:ss z";
     private static final String SET_COOKIE_SEPARATOR="; ";
     private static final String COOKIE = "Cookie";
-
+    
     private static final char NAME_VALUE_SEPARATOR = '=';
     private static final char DOT = '.';
     
     private DateFormat dateFormat;
 
-    public CookieManager() {
+    public CookieManager(Context context) {
     	store = new HashMap();
     	dateFormat = new SimpleDateFormat(DATE_FORMAT);
     	jsonStore = new JSONObject();
+    	this.context = context;
     }
     
 
@@ -113,13 +115,19 @@ public class CookieManager {
 				     token.substring(token.indexOf(NAME_VALUE_SEPARATOR) + 1, token.length()));
 				}				
 		    }
-		}		
-		jsonStore.put(domain,domainStore);
+		}
 		
+		jsonStore.put(domain,domainStore); //add the entry to the JSON Store
+		FileOutputStream fos = context.openFileOutput(COOKIESFILE, 
+												Context.MODE_PRIVATE);
+		OutputStreamWriter osw = new OutputStreamWriter(fos);
+		osw.write(jsonStore.toString());
+		osw.flush();
+        osw.close();
     }
     /**
      * Prior to opening a URLConnection, calling this method will set all
-     * unexpired cookies that match the path or subpaths for thi underlying URL
+     * unexpired cookies that match the path or subpaths for the underlying URL
      *
      * The connection MUST NOT have been opened 
      * method or an IOException will be thrown.
