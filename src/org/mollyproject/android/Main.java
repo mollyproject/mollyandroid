@@ -1,7 +1,9 @@
 package org.mollyproject.android;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.json.JSONException;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.Renderer;
@@ -25,18 +27,12 @@ public class Main extends Activity {
 		} catch (MalformedURLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}		
-		//locThread = new LocationThread();
-		
-		//JSONObject o = new JSONObject();
-		setContentView(R.layout.main);
-		//Trying out locator request:
-		/*try {
-			ren.setNewPage(PlacesPage.INSTANCE);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}		
+		
+		setContentView(R.layout.main);
 
     	try {
 			router.onRequestSent(ren.getSelectionManager().getStringLocator(SelectionManager.ViewNames.home_index));
@@ -59,7 +55,6 @@ public class Main extends Activity {
     public void onDestroy()
     {
     	super.onDestroy();
-    	//getThread();
     	router.getLocThread().interrupt();
     	//router.getLocThread().stopThread();
     	

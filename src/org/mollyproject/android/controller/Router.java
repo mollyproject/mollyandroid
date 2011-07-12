@@ -2,11 +2,14 @@ package org.mollyproject.android.controller;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.LocationThread;
 import org.mollyproject.android.view.Renderer;
@@ -22,7 +25,7 @@ public class Router implements RequestsListener {
 	protected Context context;
 	public final static String mOX =  "http://dev.m.ox.ac.uk/";
 	
-	public Router (Renderer ren, Context context) throws MalformedURLException
+	public Router (Renderer ren, Context context) throws Exception
 	{
 		waiting = true;	
 		this.ren = ren;
@@ -70,19 +73,18 @@ public class Router implements RequestsListener {
 			
 			//store cookies, write to file
 			//URLConnection cookieConn = new URL(urlStr).openConnection();			
-			cookieMgr.storeCookies(new URL(urlStr).openConnection());
-			cookieMgr.setCookies(new URL(urlStr).openConnection());
-            
-			locThread.setCSRFToken(cookieMgr.getCSRFToken(new URL(urlStr)));
+			
 			
 			if (firstReq)
 			{ 
+				cookieMgr.storeCookies(new URL(urlStr).openConnection());
+				locThread.setCSRFToken(cookieMgr.getCSRFToken(new URL(urlStr)));
 				locThread.setDaemon(true);
 				locThread.start();
 				System.out.println("Router, LocThread start");
 				firstReq = false;
 			}
-			
+			cookieMgr.setCookies(new URL(urlStr).openConnection());
 	        waiting = true;
 	        ren.render(new JSONObject(jsonText));
 	        
