@@ -16,21 +16,10 @@ import android.content.Context;
      * objects.
      * 
      * 
-     *     Cookiemanager cm = new CookieManager();
-     *     URL url = new URL("http://www.hccp.org/test/cookieTest.jsp");
-     *     
-     *      . . . 
-     *
-     *     // getting cookies:
-     *     URLConnection conn = url.openConnection();
-     *     conn.connect();
-     *
-     *     // setting cookies
-     *     cm.storeCookies(conn);
-     *     cm.setCookies(url.openConnection());
-     * 
      *     @author Ian Brown
-     *      
+     *     
+     *     Original code by Ian Brown - I customised it so that everything
+     *     is in JSON format and stored nicely in a text file
      **/
 
 public class CookieManager {

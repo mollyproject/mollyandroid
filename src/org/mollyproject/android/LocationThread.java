@@ -149,7 +149,7 @@ public class LocationThread extends Thread {
 	}
 	
 	public synchronized void stopThread()
-	{
+	{	
 		stop = true;
 	}
 }

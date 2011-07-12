@@ -33,7 +33,6 @@ public class Router implements RequestsListener {
 		firstReq = true;
 		this.context = context;
 		locThread= new LocationThread(new URL(mOX),context);
-		locThread.setDaemon(true);
 	}
 	
 	//Take an URL String, convert to URL, open connection then process 
@@ -79,9 +78,8 @@ public class Router implements RequestsListener {
 			{ 
 				cookieMgr.storeCookies(new URL(urlStr).openConnection());
 				locThread.setCSRFToken(cookieMgr.getCSRFToken(new URL(urlStr)));
-				locThread.setDaemon(true);
 				locThread.start();
-				System.out.println("Router, LocThread start");
+				System.out.println("Router, LocThread starts");
 				firstReq = false;
 			}
 			cookieMgr.setCookies(new URL(urlStr).openConnection());

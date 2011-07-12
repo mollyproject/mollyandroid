@@ -15,7 +15,6 @@ import android.widget.Button;
 public class Main extends Activity {
 	protected Router router;
 	protected Renderer ren;		
-	//protected LocationThread locThread;
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,12 +50,11 @@ public class Main extends Activity {
         });        
     }
     
+    //make the location thread terminate a bit cleaner
     @Override
     public void onDestroy()
     {
     	super.onDestroy();
     	router.getLocThread().interrupt();
-    	//router.getLocThread().stopThread();
-    	
     }
 }
