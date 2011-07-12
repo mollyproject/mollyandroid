@@ -87,8 +87,6 @@ public class Router implements RequestsListener {
 			cookieMgr.setCookies(new URL(urlStr).openConnection());
 	        waiting = true;
 	        ren.render(new JSONObject(jsonText));
-	        
-	        System.out.println("JSON Cookie: "+ cookieMgr.getJSONCookieStore().toString());
 		}
 	}
 	
