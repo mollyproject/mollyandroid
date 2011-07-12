@@ -54,4 +54,14 @@ public class Main extends Activity {
             }
         });        
     }
+    
+    @Override
+    public void onDestroy()
+    {
+    	super.onDestroy();
+    	//getThread();
+    	router.getLocThread().interrupt();
+    	//router.getLocThread().stopThread();
+    	
+    }
 }

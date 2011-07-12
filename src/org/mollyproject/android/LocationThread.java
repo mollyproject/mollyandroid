@@ -17,6 +17,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 
 public class LocationThread extends Thread {	
@@ -26,8 +27,12 @@ public class LocationThread extends Thread {
 	protected LocationManager locMgr;
 	protected String provider;
 	protected Location loc;
+	protected Runnable r;
+	protected Handler handler;
+	protected volatile boolean stop;
 	
-	public LocationThread(URL url, Context context)
+	
+	public LocationThread(final URL url, Context context)
 	{
 		super();
 		this.url = url;
@@ -41,42 +46,18 @@ public class LocationThread extends Thread {
 	    criteria.setPowerRequirement(Criteria.POWER_LOW);
 		
 		provider = locMgr.getBestProvider(criteria, true);
-		//this.cookieMgr = cookieMgr;
 		System.out.println("LocationThread, Provider: "+ provider);
-	}
-	
-	private final LocationListener locationListener = new LocationListener() {
-	    public void onLocationChanged(Location location) {
-	       
-	    }
-	    public void onProviderDisabled(String provider){
-	        
-	    }
-	    public void onProviderEnabled(String provider){ 
-	    	
-	    }
-	    public void onStatusChanged(String provider, int status,
-	        Bundle extras){ 
-	    	
-	    }
-	    };
-	
-	public void setCSRFToken(String csrftoken)
-	{
-		this.csrftoken = csrftoken;
-	}
-	
-	//Send an HTTP POST request to server to update the device's location	
-	public void run() {
-			Looper.prepare();
-			System.out.println("Location Thread, Provider: " + provider);
-						
-			//while (true)
-			//{
-				locMgr.requestLocationUpdates(provider, 0, 0,locationListener);
+		//this.cookieMgr = cookieMgr;
+		stop = false;
+		handler = new Handler();
+		r = new Runnable() {
+			public void run()
+			{
 				try {
+					locMgr.requestLocationUpdates(provider, 0, 0,locationListener);
 					if (locMgr.getLastKnownLocation(provider) != null)
 					{
+						
 						loc = locMgr.getLastKnownLocation(provider);
 				        // Construct data			
 				        String data;
@@ -113,19 +94,62 @@ public class LocationThread extends Thread {
 				        while ((line = rd.readLine()) != null) {
 				            System.out.println(line);
 				        }
+				        //Thread.sleep(2000);
 				        wr.close();
-				        rd.close();				        
-				        Looper.loop();
-				        //Looper.myLooper().quit();				
+				        rd.close();	
 					}
-					Thread.sleep(200);
-				} catch (UnsupportedEncodingException e) {
-					System.out.println("Unsupported Encoding Exception");
-				} catch (IOException e) {
-					System.out.println("I/O Exception");
-				} catch (InterruptedException e) {
-					System.out.println("Interrupted");
+					} catch (UnsupportedEncodingException e) {
+						System.out.println("Unsupported Encoding Exception");
+					} catch (IOException e) {
+						System.out.println("I/O Exception");
+					}
+			}
+		};				
+	}
+	
+	private final LocationListener locationListener = new LocationListener() {
+	    public void onLocationChanged(Location location) {
+	       
+	    }
+	    public void onProviderDisabled(String provider){
+	        
+	    }
+	    public void onProviderEnabled(String provider){ 
+	    	
+	    }
+	    public void onStatusChanged(String provider, int status,
+	        Bundle extras){ 
+	    	
+	    }
+	    };
+	
+	public void setCSRFToken(String csrftoken)
+	{
+		this.csrftoken = csrftoken;
+	}
+	
+	//Send an HTTP POST request to server to update the device's location
+	@Override
+	public void run() {
+			Looper.prepare();
+			System.out.println("Location Thread, Provider: " + provider);
+			try {
+				while (!stop)
+				{	
+					sleep(5000);
+					handler.post(r);
 				}
-			//}
+			} catch (InterruptedException e) {
+	            System.out.println("Thread interrupted");
+	            Thread.currentThread().interrupt();
+	        } 
+			
+			Looper.loop();
+			Looper.myLooper().quit();
+	}
+	
+	public synchronized void stopThread()
+	{
+		stop = true;
 	}
 }
