@@ -63,33 +63,37 @@ public class LocationThread extends Thread {
 				        String data;
 						
 							data = URLEncoder.encode("csrfmiddlewaretoken", "UTF-8") 
-												+ "=" + URLEncoder.encode(csrftoken, "UTF-8")
-											+ "&" + URLEncoder.encode("longtitude", "UTF-8") 
-												+ "=" + URLEncoder.encode(Double.toString(loc.getLongitude())
-																									, "UTF-8")
-											+ "&" + URLEncoder.encode("latitude", "UTF-8") 
-												+ "=" + URLEncoder.encode(Double.toString(loc.getLatitude())
-																									, "UTF-8")
-											+ "&" + URLEncoder.encode("accuracy", "UTF-8") 
-												+ "=" + URLEncoder.encode(Float.toString(loc.getAccuracy())
-																								, "UTF-8")
-											+ "&" + URLEncoder.encode("method", "UTF-8") 
-												+ "=" + URLEncoder.encode("html5", "UTF-8") 
-											+ "&" + URLEncoder.encode("format", "UTF-8") 
-												+ "=" + URLEncoder.encode("json", "UTF-8")
-											+ "&" + URLEncoder.encode("force", "UTF-8") 
-												+ "=" + URLEncoder.encode("True", "UTF-8");			
-				        System.out.println("Location Thread, Here");
-				        System.out.println("Long:" + loc.getLongitude() +" Lat:"+loc.getLatitude());
-				        // Send data	        
+									+ "=" + URLEncoder.encode(csrftoken, "UTF-8")
+								+ "&" + URLEncoder.encode("longtitude", "UTF-8") 
+									+ "=" + URLEncoder.encode(Double.toString(loc.getLongitude())
+																						, "UTF-8")
+								+ "&" + URLEncoder.encode("latitude", "UTF-8") 
+									+ "=" + URLEncoder.encode(Double.toString(loc.getLatitude())
+																						, "UTF-8")
+								+ "&" + URLEncoder.encode("accuracy", "UTF-8") 
+									+ "=" + URLEncoder.encode(Float.toString(loc.getAccuracy())
+																					, "UTF-8")
+								+ "&" + URLEncoder.encode("method", "UTF-8") 
+									+ "=" + URLEncoder.encode("html5", "UTF-8") 
+								+ "&" + URLEncoder.encode("format", "UTF-8") 
+									+ "=" + URLEncoder.encode("json", "UTF-8")
+								+ "&" + URLEncoder.encode("force", "UTF-8") 
+									+ "=" + URLEncoder.encode("True", "UTF-8");							        
+				        
+						System.out.println("Long:" + loc.getLongitude() +
+													" Lat:"+loc.getLatitude());
+				        
+						// Send data
 				        URLConnection conn = url.openConnection();
 				        conn.setDoOutput(true);
-				        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+				        OutputStreamWriter wr = new OutputStreamWriter
+				        								(conn.getOutputStream());
 				        wr.write(data);
 				        wr.flush();
 				 
 				        // Get the response
-				        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				        BufferedReader rd = new BufferedReader
+				        			(new InputStreamReader(conn.getInputStream()));
 				        String line;
 				        while ((line = rd.readLine()) != null) {
 				            System.out.println(line);
@@ -136,8 +140,8 @@ public class LocationThread extends Thread {
 			try {
 				while (!stop)
 				{	
-					sleep(5000);
 					handler.post(r);
+					sleep(60000);					
 				}
 			} catch (InterruptedException e) {
 	            System.out.println("Thread interrupted");

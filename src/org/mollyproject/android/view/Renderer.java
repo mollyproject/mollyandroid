@@ -16,11 +16,6 @@ public class Renderer {
 	{		
 		responses = new LinkedList<JSONObject>();
 		mgr = new SelectionManager();
-	}	
-	
-	public SelectionManager getSelectionManager()
-	{
-		return mgr;
 	}
 	
 	public void render(JSONObject o) throws JSONException

@@ -1,9 +1,7 @@
 package org.mollyproject.android;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 
-import org.json.JSONException;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.Renderer;
@@ -29,25 +27,23 @@ public class Main extends Activity {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}						
 		
-		setContentView(R.layout.main);
-
-    	try {
-			router.onRequestSent(ren.getSelectionManager().getStringLocator(SelectionManager.ViewNames.home_index));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		final Button resultButton = (Button) findViewById(R.id.resultButton);
 		
-		
-		final Button button = (Button) findViewById(R.id.button);
-		
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-            }
-        });        
+        resultButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {  			
+				try {
+					router.onRequestSent(SelectionManager.
+							getStringLocator(SelectionManager.ViewNames.result_index));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    		}
+        });
+        
+        setContentView(R.layout.main);
     }
     
     //make the location thread terminate a bit cleaner
@@ -55,6 +51,7 @@ public class Main extends Activity {
     public void onDestroy()
     {
     	super.onDestroy();
+    	router.getLocThread().stopThread();
     	router.getLocThread().interrupt();
     }
 }
