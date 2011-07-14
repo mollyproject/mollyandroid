@@ -19,7 +19,7 @@ public class SelectionManager {
 	static {
 		//pages.put(getStringLocator(ViewNames.home_index), HomePage.INSTANCE);
 		pages.put(getStringLocator(ViewNames.places_index), PlacesPage.INSTANCE);
-		pages.put(getStringLocator(ViewNames.result_index), ResultPage.INSTANCE);		
+		pages.put(getStringLocator(ViewNames.result_index), ResultsPage.INSTANCE);		
 	}
 	protected ViewNames currentPage;
 	
