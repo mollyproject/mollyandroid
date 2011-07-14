@@ -70,10 +70,6 @@ public class Router implements RequestsListener {
 			String jsonText = new String();
 			jsonText = getFrom(urlStr+"?format=json");
 			
-			//store cookies, write to file
-			//URLConnection cookieConn = new URL(urlStr).openConnection();			
-			
-			
 			if (firstReq)
 			{ 
 				cookieMgr.storeCookies(new URL(urlStr).openConnection());

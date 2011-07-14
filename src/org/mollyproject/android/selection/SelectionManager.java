@@ -17,7 +17,7 @@ public class SelectionManager {
 	protected static Map<String,Page> pages 
 					= new HashMap<String,Page>();
 	static {
-		pages.put(getStringLocator(ViewNames.home_index), HomePage.INSTANCE);
+		//pages.put(getStringLocator(ViewNames.home_index), HomePage.INSTANCE);
 		pages.put(getStringLocator(ViewNames.places_index), PlacesPage.INSTANCE);
 		pages.put(getStringLocator(ViewNames.result_index), ResultPage.INSTANCE);		
 	}
