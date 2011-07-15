@@ -3,17 +3,51 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:weightSum="1" android:orientation="vertical">
-    
-    <Button android:text="Results" 
-	    android:id="@+id/resultButton" 
+    <LinearLayout android:layout_height="wrap_content" 
+    android:id="@+id/linearLayout1" 
+    android:layout_width="fill_parent">
+        
+    <Button
+	      android:id="@+id/button1"
+	      android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:padding="10dp"
+	      android:background="@drawable/android_button" />
+	    
+    <Button
+	      android:id="@+id/button2"
+	      android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:padding="10dp"
+	      android:visibility = "invisible"
+	      android:background="@drawable/android_button" />
+      
+    <Button
+	      android:id="@+id/button3"
+	      android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:padding="10dp"
+	      android:visibility = "invisible"
+	      android:background="@drawable/android_button" />
+	    
+    <Button
+	      android:id="@+id/button4"
+	      android:layout_width="wrap_content"
+	      android:layout_height="wrap_content"
+	      android:padding="10dp"
+	      android:visibility = "invisible"
+	      android:background="@drawable/android_button" />
+	</LinearLayout>
+  	
+    <Button 
+	    android:text="AddButton" 
+	    android:id="@+id/button5" 
 	    android:layout_width="wrap_content" 
-	    android:layout_height="wrap_content">
-	</Button>
-	
-    <TextView android:id="@+id/textResults" 
-	    android:text="TextView" 
-	    android:textAppearance="?android:attr/textAppearanceMedium" 
-	    android:layout_gravity="top" android:layout_width="fill_parent" 
-	    android:layout_height="414dp" android:layout_weight="0.46">
-    </TextView>
+	    android:layout_height="wrap_content" />
+    <Button 
+	    android:text="RemoveButton" 
+	    android:id="@+id/button6" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content" />
+		    
 </LinearLayout>

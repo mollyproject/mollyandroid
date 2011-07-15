@@ -3,6 +3,7 @@ package org.mollyproject.android.selection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.mollyproject.android.view.breadcrumbs.BreadCrumbFragment;
 import org.mollyproject.android.view.pages.*;
 
 public class SelectionManager {
@@ -12,13 +13,20 @@ public class SelectionManager {
 	
 	public static enum ViewNames { places_index, home_index, result_index };
 	
+	
+
+	protected static Map<BreadCrumbFragment, String> breadCrumbs 
+					= new HashMap<BreadCrumbFragment,String>();
+
 	//The following hash table allows for easier future change in implementation
 	//of new pages
 	protected static Map<String,Page> pages 
 					= new HashMap<String,Page>();
 	static {
-		//pages.put(getStringLocator(ViewNames.home_index), HomePage.INSTANCE);
+		pages.put(getStringLocator(ViewNames.home_index), HomePage.INSTANCE);
+		
 		pages.put(getStringLocator(ViewNames.places_index), PlacesPage.INSTANCE);
+		
 		pages.put(getStringLocator(ViewNames.result_index), ResultsPage.INSTANCE);		
 	}
 	protected ViewNames currentPage;

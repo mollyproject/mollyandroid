@@ -22,6 +22,6 @@ public class Renderer {
 	{
 		String name = o.getString("view_name");
 		Page page = mgr.getPage(name); //Page to render
-		
+		//FragmentBreadCrumbs breadCrumbs;	
 	}
 }
