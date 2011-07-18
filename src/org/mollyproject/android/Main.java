@@ -3,7 +3,6 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.Renderer;
 import org.mollyproject.android.view.breadcrumbs.BreadCrumbBar;
 import org.mollyproject.android.view.breadcrumbs.BreadCrumbFragment;
@@ -43,20 +42,20 @@ public class Main extends Activity {
 		}
 		setContentView(R.layout.main);
 		
-		linearLayout1 = (LinearLayout) findViewById(R.id.linearLayout1);
+		linearLayout1 = (LinearLayout) findViewById(R.id.breadcrumbBar);
 		bcBar = new BreadCrumbBar(getApplicationContext());
 		bcRen = new BreadCrumbRenderer(bcBar, linearLayout1);
 		
-		Button button5 = (Button) findViewById(R.id.button5);
-		button5.setOnClickListener(new OnClickListener() {
+		Button addButton = (Button) findViewById(R.id.addButton);
+		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Main.this.bcBar.addBreadCrumb(new BreadCrumbFragment(new HomePage()));
 			}
 		});
 		
-		Button button6 = (Button) findViewById(R.id.button6);
-		button6.setOnClickListener(new OnClickListener() {
+		Button removeButton = (Button) findViewById(R.id.removeButton);
+		removeButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Main.this.bcBar.removeBreadCrumb();

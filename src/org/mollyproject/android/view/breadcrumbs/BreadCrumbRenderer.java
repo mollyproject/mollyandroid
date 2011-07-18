@@ -21,26 +21,32 @@ public class BreadCrumbRenderer implements BreadCrumbsListener {
 		System.out.println(bcCount);
 		if (bcCount < 4)
 		{			
+			layout.getChildAt(bcCount-1).setEnabled(true);
 			layout.getChildAt(bcCount).setVisibility(View.VISIBLE);
+			layout.getChildAt(bcCount).setEnabled(false);
 		}
 		else
 		{
-			layout.getChildAt(2).setVisibility(View.INVISIBLE);
+			//Do something with the button2, most likely to render
+			//a new background
+			//layout.getChildAt(2).setVisibility(View.INVISIBLE);
 		}
 	}
 
 	@Override
-	public void onBreadCrumbRemoved() {
+	public void onBreadCrumbRemoved() {		
 		if (bcCount == 3)
 		{
+			layout.getChildAt(bcCount).setEnabled(true);
 			layout.getChildAt(2).setVisibility(View.VISIBLE);
 			layout.getChildAt(bcCount).setVisibility(View.INVISIBLE);
 		}
 		else if ((bcCount < 3)&(bcCount > 0))
 		{
+			layout.getChildAt(bcCount).setEnabled(true);
 			layout.getChildAt(bcCount).setVisibility(View.INVISIBLE);
 		}
-		if (bcCount > 0) { bcCount--; }
+		if (bcCount > 0) { bcCount--; }		
 		System.out.println(bcCount);
 	}
 	

@@ -3,50 +3,50 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:weightSum="1" android:orientation="vertical">
+    
     <LinearLayout android:layout_height="wrap_content" 
-    android:id="@+id/linearLayout1" 
+    android:id="@+id/breadcrumbBar" 
     android:layout_width="fill_parent">
-        
-    <Button
-	      android:id="@+id/button1"
-	      android:layout_width="wrap_content"
-	      android:layout_height="wrap_content"
-	      android:padding="10dp"
-	      android:background="@drawable/android_button" />
-	    
-    <Button
-	      android:id="@+id/button2"
-	      android:layout_width="wrap_content"
-	      android:layout_height="wrap_content"
-	      android:padding="10dp"
-	      android:visibility = "invisible"
-	      android:background="@drawable/android_button" />
-      
-    <Button
-	      android:id="@+id/button3"
-	      android:layout_width="wrap_content"
-	      android:layout_height="wrap_content"
-	      android:padding="10dp"
-	      android:visibility = "invisible"
-	      android:background="@drawable/android_button" />
-	    
-    <Button
-	      android:id="@+id/button4"
-	      android:layout_width="wrap_content"
-	      android:layout_height="wrap_content"
-	      android:padding="10dp"
-	      android:visibility = "invisible"
-	      android:background="@drawable/android_button" />
+	    <Button
+		      android:id="@+id/bcFragHome"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:padding="10dp"
+		      android:background="@drawable/android_button" />
+		    
+	    <Button
+		      android:id="@+id/bcFrag1"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:padding="10dp"
+		      android:visibility = "invisible"
+		      android:background="@drawable/android_button" />
+	      
+	    <Button
+		      android:id="@+id/bcFrag2"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:padding="10dp"
+		      android:visibility = "invisible"
+		      android:background="@drawable/android_button" />
+		    
+	    <Button
+		      android:id="@+id/bcFrag3"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:padding="10dp"
+		      android:visibility = "invisible"
+		      android:background="@drawable/android_button" />
 	</LinearLayout>
   	
     <Button 
 	    android:text="AddButton" 
-	    android:id="@+id/button5" 
+	    android:id="@+id/addButton" 
 	    android:layout_width="wrap_content" 
 	    android:layout_height="wrap_content" />
     <Button 
 	    android:text="RemoveButton" 
-	    android:id="@+id/button6" 
+	    android:id="@+id/removeButton" 
 	    android:layout_width="wrap_content" 
 	    android:layout_height="wrap_content" />
 		    
