@@ -11,9 +11,14 @@ public class SelectionManager {
 	//to query from, and Java won't take : as part of the name if that variable
 	//is not a String, thus the complication introduced by the getStringLocator()
 	
-	public static enum ViewNames { places_index, home_index, result_index };
+	//public static enum ViewNames { places_index, home_index, result_index };
 	
+	protected String currentPageName;
 	
+	public static String TRAIL = "trail";
+	
+	public static String HOME_PAGE = "home:index";
+	public static String RESULTS_PAGE = "results:index";
 
 	protected static Map<BreadCrumbFragment, String> breadCrumbs 
 					= new HashMap<BreadCrumbFragment,String>();
@@ -23,31 +28,22 @@ public class SelectionManager {
 	protected static Map<String,Page> pages 
 					= new HashMap<String,Page>();
 	static {
-		pages.put(getStringLocator(ViewNames.home_index), HomePage.INSTANCE);
-		
-		pages.put(getStringLocator(ViewNames.places_index), PlacesPage.INSTANCE);
-		
-		pages.put(getStringLocator(ViewNames.result_index), ResultsPage.INSTANCE);		
+		pages.put(HOME_PAGE, HomePage.INSTANCE);
+		pages.put(RESULTS_PAGE, ResultsPage.INSTANCE);		
 	}
-	protected ViewNames currentPage;
 	
 	public SelectionManager()
 	{
-		currentPage = ViewNames.home_index;
-	}
-	public void setPage(ViewNames newPage)
-	{
-		currentPage = newPage;
+		currentPageName = HOME_PAGE;
 	}
 	
-	public Page getPage(String s)
+	public void setPage(String newPageName)
+	{
+		currentPageName = newPageName;
+	}
+	
+	public static Page getPage(String s)
 	{
 		return pages.get(s);
-	}
-		
-	public static String getStringLocator(ViewNames name)
-	{
-		return name.toString().replace("_", ":");
-	}
-
+	}		
 }

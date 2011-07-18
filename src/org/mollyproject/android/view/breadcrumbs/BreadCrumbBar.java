@@ -4,42 +4,77 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.mollyproject.android.R;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 public class BreadCrumbBar extends View {
-	protected LinkedList<BreadCrumbFragment> trail;
-	protected List<BreadCrumbsListener> bcListeners;
+	//protected LinkedList<BreadCrumbFragment> trail;
+	protected ArrayList<String> trail; //trail of breadcrumbs represented as viewnames
+	protected Button[] breadCrumbButtons;
+	protected int bcCount;
+	protected LinearLayout bar;
 	
 	public BreadCrumbBar(Context context) {
 		super(context);
-		trail = new LinkedList<BreadCrumbFragment>();
-		bcListeners = new ArrayList<BreadCrumbsListener>();
+		breadCrumbButtons = new Button[4];
+		bcCount = 0;
+		bar = new LinearLayout(context);
+		for (int i = 0; i < 4; i++)
+		{
+			Button button = new Button(context);
+			button.setBackgroundResource(R.drawable.android_button);
+			breadCrumbButtons[i] = button;
+			bar.addView(button);
+			button.setVisibility(View.INVISIBLE);
+		}
 	}
 	
-	public void addBreadCrumbsListener(BreadCrumbsListener l)
+	public LinearLayout getBar()
 	{
-		bcListeners.add(l);
+		return bar;
 	}
 	
 	//add breadcrumb fragment to end of list
-	public void addBreadCrumb(BreadCrumbFragment frag) 
+	public void addBreadCrumb(String frag) 
 	{
-		trail.addLast(frag);
-		for (BreadCrumbsListener l : bcListeners)
+		trail.add(frag);
+		bcCount++;
+		System.out.println(bcCount);
+		if (bcCount < 4)
+		{			
+			bar.getChildAt(bcCount-1).setEnabled(true);
+			bar.getChildAt(bcCount).setVisibility(View.VISIBLE);
+			bar.getChildAt(bcCount).setEnabled(false);
+		}
+		else
 		{
-			l.onBreadCrumbAdded(frag);
+			//Do something with the button2, most likely to render
+			//a new background
+			//layout.getChildAt(2).setVisibility(View.INVISIBLE);
 		}
 	}
 	
 	//remove the last breadcrumb fragment
 	public void removeBreadCrumb()
 	{
-		if (trail.size() > 0) { trail.removeLast(); }
-		for (BreadCrumbsListener l : bcListeners)
+		if (trail.size() > 0) trail.remove(trail.size());
+		if (bcCount == 3)
 		{
-			l.onBreadCrumbRemoved();
+			bar.getChildAt(bcCount).setEnabled(true);
+			bar.getChildAt(2).setVisibility(View.VISIBLE);
+			bar.getChildAt(bcCount).setVisibility(View.INVISIBLE);
 		}
+		else if ((bcCount < 3)&(bcCount > 0))
+		{
+			bar.getChildAt(bcCount).setEnabled(true);
+			bar.getChildAt(bcCount).setVisibility(View.INVISIBLE);
+		}
+		if (bcCount > 0) { bcCount--; }		
+		System.out.println(bcCount);
+
 	}
 }

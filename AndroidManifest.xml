@@ -3,17 +3,18 @@
       package="org.mollyproject.android"
       android:versionCode="1"
       android:versionName="1.0">
-	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".Main"
+        <activity android:name=".Splash"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name="org.mollyproject.android.view.pages.HomePage"></activity>
+		<activity android:name="org.mollyproject.android.view.pages.ResultsPage"></activity>               
     </application>
 </manifest>
