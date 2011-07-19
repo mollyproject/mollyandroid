@@ -12,8 +12,9 @@ public abstract class ContentPage extends Page {
 	public void onStop()
 	{
 		super.onStop();
+		System.out.println("OnStop reached");
 		myApp.removeBreadCrumb();
-		bcBar.removeBreadCrumb();
+		myApp.removeListener(bcBar);
 	}
 
 }

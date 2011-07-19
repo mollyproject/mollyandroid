@@ -23,12 +23,11 @@ public abstract class Page extends Activity {
 	{
 		super.onCreate(savedInstanceState);
 		myApp = (MyApplication) getApplication();
-		bcBar = new BreadCrumbBar(myApp);
+		bcBar = new BreadCrumbBar(this);
 	}
 	
 	public void updateContent()
 	{
 		String locator = SelectionManager.getName(this);
-		
 	}
 }

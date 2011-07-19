@@ -1,15 +1,16 @@
 package org.mollyproject.android.view.pages;
 
-import java.util.Random;
-
+import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
-import org.mollyproject.android.view.breadcrumbs.BreadCrumbBar;
 
 import android.os.Bundle;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class ResultsPage extends ContentPage {
 	public static final Page INSTANCE = new ResultsPage();
+	protected Router router;
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState)
@@ -18,10 +19,26 @@ public class ResultsPage extends ContentPage {
 		
 		myApp.addBreadCrumb(SelectionManager.getName(INSTANCE));
 				
-		addContentView(bcBar.getBar(), new ViewGroup.LayoutParams
+		LinearLayout contentLayout = new LinearLayout(this);
+		contentLayout.setOrientation(LinearLayout.VERTICAL);
+				
+		contentLayout.addView(bcBar.getBar(), new ViewGroup.LayoutParams
 				(getWindowManager().getDefaultDisplay().getWidth(),
 				getWindowManager().getDefaultDisplay().getHeight()/10));
-		Random random = new Random();
-		int i = random.nextInt();
+		
+		TextView testText = new TextView(getApplicationContext());
+		router = myApp.getRouter();
+		String jsonText = null;
+		try {
+			jsonText = router.onRequestSent("results:index");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (jsonText != null) testText.setText(jsonText);
+		contentLayout.addView(testText,ViewGroup.LayoutParams.FILL_PARENT);
+		
+		setContentView(contentLayout);
 	}
 }

@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 public class HomePage extends Page {
 	public static final Page INSTANCE = new HomePage();
 	
-	protected Router router;
 	protected Renderer ren;
 	protected ArrayList<Button> breadCrumbs;
 	protected LinearLayout bcLayout;
@@ -30,7 +29,8 @@ public class HomePage extends Page {
         ren = new Renderer();
         
     	myApp.addBreadCrumb(SelectionManager.getName(INSTANCE));
-        
+        System.out.println("Home added breadcrumb");
+    	
 		LinearLayout contentLayout = new LinearLayout(this);
 		contentLayout.setOrientation(LinearLayout.VERTICAL);
 		contentLayout.addView(bcBar.getBar(), new ViewGroup.LayoutParams
@@ -55,32 +55,7 @@ public class HomePage extends Page {
 				(getWindowManager().getDefaultDisplay().getWidth(), 
 				getWindowManager().getDefaultDisplay().getHeight()/10));
 		setContentView(contentLayout);
-		/*
-		Button addButton = (Button) findViewById(R.id.addButton);
-		addButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Main.this.bcBar.addBreadCrumb(new BreadCrumbFragment(new HomePage()));
-			}
-		});
-		
-		Button removeButton = (Button) findViewById(R.id.removeButton);
-		removeButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Main.this.bcBar.removeBreadCrumb();
-			}
-		});
-		
-		//Button resultsButton = ;
-		//resultsButton
-		((Button) findViewById(R.id.resultsButton)).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(), ResultsPage.class);
-                startActivityForResult(myIntent, 0);
-			}
-		});*/
+
     }
     
     //make the location thread terminate a bit cleaner
@@ -88,14 +63,15 @@ public class HomePage extends Page {
     public void onDestroy()
     {
     	super.onDestroy();
-    	router.getLocThread().stopThread();
-    	router.getLocThread().interrupt();
+    	myApp.getRouter().getLocThread().stopThread();
+    	myApp.getRouter().getLocThread().interrupt();
     }    
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             moveTaskToBack(true);
+            onDestroy();
             return true;
         }
         return super.onKeyDown(keyCode, event);

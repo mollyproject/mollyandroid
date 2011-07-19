@@ -136,7 +136,6 @@ public class LocationThread extends Thread {
 	@Override
 	public void run() {
 			Looper.prepare();
-			System.out.println("Location Thread, Provider: " + provider);
 			try {
 				while (!stop)
 				{	

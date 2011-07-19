@@ -55,7 +55,7 @@ public class Router implements RequestsListener {
 		return outputStr;
 	}
 	
-	public void onRequestSent(String locator) throws Exception {
+	public String onRequestSent(String locator) throws Exception {
 		//Geting the actual URL from the server using the locator (view name)
 		//and the reverse API in Molly
 		if (waiting) {
@@ -79,8 +79,10 @@ public class Router implements RequestsListener {
 			}
 			cookieMgr.setCookies(new URL(urlStr).openConnection());
 	        waiting = true;
-	        ren.render(new JSONObject(jsonText));
+	        //ren.render(new JSONObject(jsonText));
+	        return jsonText;
 		}
+		return null;
 	}
 	
 	public CookieManager getCookieManager ()

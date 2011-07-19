@@ -33,14 +33,18 @@ public class MyApplication extends Application {
 	
 	public void addBreadCrumb(String breadcrumb)
 	{
-		bcTrail.add(breadcrumb);
-		bcCount++;
-		System.out.println("Breadcrumb added: "+breadcrumb);
+		if (!bcTrail.contains(breadcrumb))
+		{
+			bcTrail.add(breadcrumb);
+			bcCount++;
+			
+		}
 		
 		for (MyAppListener l: myAppListeners)
 		{
 			l.onBreadCrumbAdded(breadcrumb);			
 		}
+
 	}
 	
 	public void removeBreadCrumb()
@@ -55,13 +59,19 @@ public class MyApplication extends Application {
 		
 		for (MyAppListener l: myAppListeners)
 		{
-			l.onBreadCrumbRemoved(temp);			
+			l.onBreadCrumbRemoved(temp);
 		}
+
 	}
 	
 	public ArrayList<String> getTrail()
 	{
 		return (ArrayList<String>) bcTrail;
+	}
+	
+	public Router getRouter()
+	{
+		return router;
 	}
 	
 	public void setRouter(Router router)
