@@ -25,10 +25,9 @@ public class Router implements RequestsListener {
 	protected Context context;
 	public final static String mOX =  "http://dev.m.ox.ac.uk/";
 	
-	public Router (Renderer ren, Context context) throws Exception
+	public Router (Context context) throws Exception
 	{
 		waiting = true;	
-		this.ren = ren;
 		cookieMgr = new CookieManager(context);
 		firstReq = true;
 		this.context = context;

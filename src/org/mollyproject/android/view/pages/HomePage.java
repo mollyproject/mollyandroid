@@ -22,17 +22,15 @@ public class HomePage extends Page {
 	protected Renderer ren;
 	protected ArrayList<Button> breadCrumbs;
 	protected LinearLayout bcLayout;
-	protected BreadCrumbBar bcBar;
 	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-        
         ren = new Renderer();
         
-		bcBar = new BreadCrumbBar(getApplicationContext());
-		
+    	myApp.addBreadCrumb(SelectionManager.getName(INSTANCE));
+        
 		LinearLayout contentLayout = new LinearLayout(this);
 		contentLayout.setOrientation(LinearLayout.VERTICAL);
 		contentLayout.addView(bcBar.getBar(), new ViewGroup.LayoutParams
@@ -83,11 +81,6 @@ public class HomePage extends Page {
                 startActivityForResult(myIntent, 0);
 			}
 		});*/
-    }
-    
-    public BreadCrumbBar getBCBar()
-    {
-    	return bcBar;
     }
     
     //make the location thread terminate a bit cleaner

@@ -1,11 +1,8 @@
 package org.mollyproject.android.selection;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.mollyproject.android.view.breadcrumbs.BreadCrumbFragment;
 import org.mollyproject.android.view.pages.*;
 
+import com.google.common.collect.HashBiMap;
 public class SelectionManager {
 	//I don't want a simple list of Strings because that makes it more difficult
 	//to query from, and Java won't take : as part of the name if that variable
@@ -20,13 +17,11 @@ public class SelectionManager {
 	public static String HOME_PAGE = "home:index";
 	public static String RESULTS_PAGE = "results:index";
 
-	protected static Map<BreadCrumbFragment, String> breadCrumbs 
-					= new HashMap<BreadCrumbFragment,String>();
 
 	//The following hash table allows for easier future change in implementation
 	//of new pages
-	protected static Map<String,Page> pages 
-					= new HashMap<String,Page>();
+	protected static HashBiMap<String,Page> pages 
+					= HashBiMap.create();
 	static {
 		pages.put(HOME_PAGE, HomePage.INSTANCE);
 		pages.put(RESULTS_PAGE, ResultsPage.INSTANCE);		
@@ -40,6 +35,11 @@ public class SelectionManager {
 	public void setPage(String newPageName)
 	{
 		currentPageName = newPageName;
+	}
+	
+	public static String getName(Page page)
+	{
+		return (pages.inverse().get(page));
 	}
 	
 	public static Page getPage(String s)
