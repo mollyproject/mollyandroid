@@ -2,20 +2,17 @@ package org.mollyproject.android.view.pages;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 
 import com.google.common.collect.ArrayListMultimap;
 
-import android.R;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -98,8 +95,11 @@ public class ResultsPage extends ContentPage {
 				}
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String tryAgain = "There is a problem with loading the page." +'\n' +
+					"Please try again later.";
+			TextView tryAgainView = new TextView(getApplicationContext());
+			tryAgainView.setText(tryAgain);
+			allText.addView(tryAgainView);
 		}
 		scr.addView(allText);
 		contentLayout.addView(scr,ViewGroup.LayoutParams.FILL_PARENT);
