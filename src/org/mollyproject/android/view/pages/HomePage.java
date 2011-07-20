@@ -1,11 +1,8 @@
 package org.mollyproject.android.view.pages;
 import java.util.ArrayList;
 
-import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.Renderer;
-import org.mollyproject.android.view.breadcrumbs.BreadCrumbBar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -51,11 +48,8 @@ public class HomePage extends Page {
 			}
 		});
 		
-		contentLayout.addView(resultsButton, new ViewGroup.LayoutParams
-				(getWindowManager().getDefaultDisplay().getWidth(), 
-				getWindowManager().getDefaultDisplay().getHeight()/10));
+		contentLayout.addView(resultsButton);
 		setContentView(contentLayout);
-
     }
     
     //make the location thread terminate a bit cleaner

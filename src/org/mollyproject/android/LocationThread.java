@@ -62,24 +62,24 @@ public class LocationThread extends Thread {
 				        // Construct data			
 				        String data;
 						
-							data = URLEncoder.encode("csrfmiddlewaretoken", "UTF-8") 
-									+ "=" + URLEncoder.encode(csrftoken, "UTF-8")
-								+ "&" + URLEncoder.encode("longtitude", "UTF-8") 
-									+ "=" + URLEncoder.encode(Double.toString(loc.getLongitude())
-																						, "UTF-8")
-								+ "&" + URLEncoder.encode("latitude", "UTF-8") 
-									+ "=" + URLEncoder.encode(Double.toString(loc.getLatitude())
-																						, "UTF-8")
-								+ "&" + URLEncoder.encode("accuracy", "UTF-8") 
-									+ "=" + URLEncoder.encode(Float.toString(loc.getAccuracy())
-																					, "UTF-8")
-								+ "&" + URLEncoder.encode("method", "UTF-8") 
-									+ "=" + URLEncoder.encode("html5", "UTF-8") 
-								+ "&" + URLEncoder.encode("format", "UTF-8") 
-									+ "=" + URLEncoder.encode("json", "UTF-8")
-								+ "&" + URLEncoder.encode("force", "UTF-8") 
-									+ "=" + URLEncoder.encode("True", "UTF-8");							        
-				        
+						data = URLEncoder.encode("csrfmiddlewaretoken", "UTF-8") 
+								+ "=" + URLEncoder.encode(csrftoken, "UTF-8")
+							+ "&" + URLEncoder.encode("longtitude", "UTF-8") 
+								+ "=" + URLEncoder.encode(
+										Double.toString(loc.getLongitude()), "UTF-8")
+							+ "&" + URLEncoder.encode("latitude", "UTF-8") 
+								+ "=" + URLEncoder.encode(
+										Double.toString(loc.getLatitude()), "UTF-8")
+							+ "&" + URLEncoder.encode("accuracy", "UTF-8") 
+								+ "=" + URLEncoder.encode(
+										Float.toString(loc.getAccuracy()), "UTF-8")
+							+ "&" + URLEncoder.encode("method", "UTF-8") 
+								+ "=" + URLEncoder.encode("html5", "UTF-8") 
+							+ "&" + URLEncoder.encode("format", "UTF-8") 
+								+ "=" + URLEncoder.encode("json", "UTF-8")
+							+ "&" + URLEncoder.encode("force", "UTF-8") 
+								+ "=" + URLEncoder.encode("True", "UTF-8");							        
+			        
 						System.out.println("Long:" + loc.getLongitude() +
 													" Lat:"+loc.getLatitude());
 				        

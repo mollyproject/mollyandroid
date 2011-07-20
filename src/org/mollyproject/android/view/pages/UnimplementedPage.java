@@ -5,7 +5,7 @@ import org.mollyproject.android.controller.Router;
 import android.os.Bundle;
 import android.webkit.WebView;
 
-public class UnimplementedPage extends ContentPage {
+public abstract class UnimplementedPage extends ContentPage {
 	protected WebView webView;
 	public void onCreate(Bundle savedInstanceState)
 	{

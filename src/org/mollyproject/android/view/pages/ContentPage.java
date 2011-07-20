@@ -2,7 +2,6 @@ package org.mollyproject.android.view.pages;
 
 import org.mollyproject.android.selection.SelectionManager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -19,11 +18,12 @@ public abstract class ContentPage extends Page {
 				getWindowManager().getDefaultDisplay().getHeight()/10));
 	}
 	
+	public abstract Page getInstance();
+	
 	@Override
 	public void onStop()
 	{
 		super.onStop();
-		System.out.println("OnStop reached");
 		myApp.removeBreadCrumb();
 		myApp.removeListener(bcBar);
 	}
@@ -32,8 +32,7 @@ public abstract class ContentPage extends Page {
 	public void onResume()
 	{
 		super.onRestart();
-		System.out.println("New Restart");
 		myApp.addListener(bcBar);
-		myApp.addBreadCrumb(SelectionManager.getName(this));
+		myApp.addBreadCrumb(SelectionManager.getName(getInstance()));
 	}
 }

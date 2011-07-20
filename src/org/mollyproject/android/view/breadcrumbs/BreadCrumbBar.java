@@ -1,7 +1,6 @@
 package org.mollyproject.android.view.breadcrumbs;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.mollyproject.android.MyAppListener;
@@ -9,12 +8,8 @@ import org.mollyproject.android.MyApplication;
 import org.mollyproject.android.R;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.pages.Page;
-import org.mollyproject.android.view.pages.ResultsPage;
-
-import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -59,7 +54,7 @@ public class BreadCrumbBar extends View implements MyAppListener {
 			button.setVisibility(View.INVISIBLE);
 			button.setEnabled(false);
 		}
-		
+		System.out.println("reconstructed");
 		ArrayList<String> newTrail = ((MyApplication) page.getApplication()).getTrail();
 		int i = 0;
 		for (final String breadcrumb : newTrail)
@@ -72,7 +67,6 @@ public class BreadCrumbBar extends View implements MyAppListener {
 					page.startActivity(myIntent);
 				}
 			});
-			System.out.println("BreadCrumb Button added is: "+breadcrumb);
 			addBreadCrumb(breadcrumb);
 			i++;
 		}
@@ -112,8 +106,13 @@ public class BreadCrumbBar extends View implements MyAppListener {
 		if (s > 1)
 		{
 			bar.getChildAt(s - 2).setEnabled(false);
+			if (s == 2)
+			{
+				bar.getChildAt(s-2).setVisibility(View.INVISIBLE);
+			}
 		}
-		else if (s == 3)
+		
+		if (s == 3)
 		{
 			bar.getChildAt(s).setVisibility(View.INVISIBLE);
 		}

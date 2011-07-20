@@ -28,7 +28,7 @@ public class MyApplication extends Application {
 	
 	public void removeListener(MyAppListener l)
 	{
-		myAppListeners.remove(l);
+		System.out.println("Removed: "+myAppListeners.remove(l));
 	}
 	
 	public void addBreadCrumb(String breadcrumb)
