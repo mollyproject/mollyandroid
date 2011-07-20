@@ -36,7 +36,7 @@ public class Router implements RequestsListener {
 	
 	//Take an URL String, convert to URL, open connection then process 
 	//and return the response
-	private String getFrom (String urlStr) throws Exception
+	public static String getFrom (String urlStr) throws Exception
 	{
 		String outputStr = new String();		
 		

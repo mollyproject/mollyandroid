@@ -10,12 +10,15 @@ import org.mollyproject.android.view.breadcrumbs.BreadCrumbBar;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
 public abstract class Page extends Activity {
 	protected BreadCrumbBar bcBar;
 	protected MyApplication myApp;
 	protected ArrayList<String> trail;
 	protected JSONObject jsonContent;
+	protected LinearLayout contentLayout;
+	
 	//public abstract void refresh();
 	
 	@Override

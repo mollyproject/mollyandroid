@@ -68,10 +68,11 @@ public class BreadCrumbBar extends View implements MyAppListener {
 				@Override
 				public void onClick(View view) {
 					Intent myIntent = new Intent(page.getApplicationContext(), 
-							SelectionManager.getPage(SelectionManager.HOME_PAGE).getClass());
+							SelectionManager.getPage(breadcrumb).getClass());
 					page.startActivity(myIntent);
 				}
 			});
+			System.out.println("BreadCrumb Button added is: "+breadcrumb);
 			addBreadCrumb(breadcrumb);
 			i++;
 		}
@@ -82,11 +83,16 @@ public class BreadCrumbBar extends View implements MyAppListener {
 	{
 		trail.add(frag);
 		int s = trail.size();
-		if (s < 4)
+		if (s == 1)
+		{
+			
+		}
+		else if (s > 1)
 		{			
-			bar.getChildAt(s-1).setEnabled(true);
+			bar.getChildAt(s-2).setEnabled(true);
+			bar.getChildAt(s-2).setVisibility(View.VISIBLE);
+			bar.getChildAt(s-1).setEnabled(false);
 			bar.getChildAt(s-1).setVisibility(View.VISIBLE);
-			bar.getChildAt(s).setEnabled(false);
 		}
 		else
 		{
@@ -99,18 +105,21 @@ public class BreadCrumbBar extends View implements MyAppListener {
 	//remove the last breadcrumb fragment
 	public void removeBreadCrumb()
 	{
-		if (trail.size() > 0) { trail.remove(trail.size()-1); }
 		int s = trail.size();
-		if (s == 3)
+		if (trail.size() > 0) { trail.remove(trail.size()-1); }
+		bar.getChildAt(s-1).setEnabled(false);
+		bar.getChildAt(s-1).setVisibility(View.INVISIBLE);
+		if (s > 1)
 		{
-			bar.getChildAt(s-1).setEnabled(false);
-			bar.getChildAt(s-1).setVisibility(View.VISIBLE);
+			bar.getChildAt(s - 2).setEnabled(false);
+		}
+		else if (s == 3)
+		{
 			bar.getChildAt(s).setVisibility(View.INVISIBLE);
 		}
 		else if ((s < 3)&(s > 0))
 		{
-			bar.getChildAt(s).setEnabled(false);
-			bar.getChildAt(s).setVisibility(View.INVISIBLE);
+
 		}
 	}
 	
@@ -140,7 +149,6 @@ public class BreadCrumbBar extends View implements MyAppListener {
 		{
 			if (breadcrumb == trail.get(trail.size()-1))
 			{
-				
 				removeBreadCrumb();
 			}
 		}

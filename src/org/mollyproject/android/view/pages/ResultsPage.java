@@ -5,10 +5,11 @@ import org.mollyproject.android.selection.SelectionManager;
 
 import android.os.Bundle;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ResultsPage extends ContentPage {
+public class ResultsPage extends UnimplementedPage {
 	public static final Page INSTANCE = new ResultsPage();
 	protected Router router;
 	
@@ -17,15 +18,12 @@ public class ResultsPage extends ContentPage {
 	{
 		super.onCreate(savedInstanceState);
 		
-		myApp.addBreadCrumb(SelectionManager.getName(INSTANCE));
-				
-		LinearLayout contentLayout = new LinearLayout(this);
-		contentLayout.setOrientation(LinearLayout.VERTICAL);
-				
-		contentLayout.addView(bcBar.getBar(), new ViewGroup.LayoutParams
-				(getWindowManager().getDefaultDisplay().getWidth(),
-				getWindowManager().getDefaultDisplay().getHeight()/10));
-		
+		//myApp.addBreadCrumb(SelectionManager.getName(INSTANCE));
+		try {
+			webView.loadUrl(Router.getFrom(setLocator(SelectionManager.RESULTS_PAGE)));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		TextView testText = new TextView(getApplicationContext());
 		router = myApp.getRouter();
 		String jsonText = null;
@@ -41,4 +39,6 @@ public class ResultsPage extends ContentPage {
 		
 		setContentView(contentLayout);
 	}
+	
+
 }
