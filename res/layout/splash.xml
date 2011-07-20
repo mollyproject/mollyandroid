@@ -2,7 +2,9 @@
 <RelativeLayout android:id="@+id/LinearLayout1"
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
-  android:layout_height="fill_parent" android:orientation="vertical">
-    <TextView android:layout_width="wrap_content" android:text="Molly Android" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" android:layout_marginTop="182dp"></TextView>
+  android:layout_height="fill_parent" 
+  android:orientation="vertical">
+  <TextView android:layout_width="wrap_content" android:text="Molly Android" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/textView1" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" android:layout_marginTop="182dp"></TextView>
+  <ImageView android:id="@+id/imageView1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/apple_touch_startup_image" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:layout_alignParentBottom="true"></ImageView>
     
 </RelativeLayout>

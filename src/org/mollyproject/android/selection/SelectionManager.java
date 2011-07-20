@@ -1,5 +1,6 @@
 package org.mollyproject.android.selection;
 
+import org.mollyproject.android.R;
 import org.mollyproject.android.view.pages.*;
 
 import com.google.common.collect.HashBiMap;
@@ -16,7 +17,7 @@ public class SelectionManager {
 	
 	public static String HOME_PAGE = "home:index";
 	public static String RESULTS_PAGE = "results:index";
-
+	public static String PLACES_PAGE = "places:index";
 
 	//The following hash table allows for easier future change in implementation
 	//of new pages
@@ -24,7 +25,17 @@ public class SelectionManager {
 					= HashBiMap.create();
 	static {
 		pages.put(HOME_PAGE, HomePage.INSTANCE);
-		pages.put(RESULTS_PAGE, ResultsPage.INSTANCE);		
+		pages.put(RESULTS_PAGE, ResultsPage.INSTANCE);
+		pages.put(PLACES_PAGE, PlacesPage.INSTANCE);
+	}
+	
+	protected static HashBiMap<String,Integer> bcImg 
+					= HashBiMap.create();
+	
+	static {
+		bcImg.put(HOME_PAGE, R.drawable.apple_touch_icon);
+		bcImg.put(RESULTS_PAGE, R.drawable.results_bc);
+		bcImg.put(PLACES_PAGE, R.drawable.places_bc);
 	}
 	
 	public SelectionManager()
@@ -40,6 +51,11 @@ public class SelectionManager {
 	public static String getName(Page page)
 	{
 		return (pages.inverse().get(page));
+	}
+	
+	public static int getBCImg(String viewName)
+	{
+		return bcImg.get(viewName);
 	}
 	
 	public static Page getPage(String s)

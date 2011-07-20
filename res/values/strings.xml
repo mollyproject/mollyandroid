@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Molly Project</string>
+    <color name="blue">#305582</color>
 </resources>

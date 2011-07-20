@@ -33,7 +33,7 @@ public class BreadCrumbBar extends View implements MyAppListener {
 		for (int i = 0; i < 4; i++)
 		{
 			Button button = new Button(page.getApplicationContext());
-			button.setBackgroundResource(R.drawable.android_button);
+			//button.setBackgroundResource(R.drawable.android_button);
 			breadCrumbButtons[i] = button;
 			bar.addView(button);
 			button.setVisibility(View.INVISIBLE);
@@ -67,6 +67,8 @@ public class BreadCrumbBar extends View implements MyAppListener {
 					page.startActivity(myIntent);
 				}
 			});
+			breadCrumbButtons[i].setBackgroundResource(
+					SelectionManager.getBCImg(breadcrumb));
 			addBreadCrumb(breadcrumb);
 			i++;
 		}
