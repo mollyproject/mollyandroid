@@ -18,7 +18,11 @@ public class SelectionManager {
 	public static String HOME_PAGE = "home:index";
 	public static String RESULTS_PAGE = "results:index";
 	public static String PLACES_PAGE = "places:index";
-
+	public static String CONTACT_PAGE = "contact:index";
+	public static String FEATURE_VOTE = "feature_vote:index";
+	public static String FEEDBACK_PAGE = "feedback:index";
+	public static String LIBRARY_PAGE = "library:index";
+	
 	//The following hash table allows for easier future change in implementation
 	//of new pages
 	protected static HashBiMap<String,Class<? extends Page>> pages 
@@ -27,6 +31,10 @@ public class SelectionManager {
 		pages.put(HOME_PAGE, HomePage.class);
 		pages.put(RESULTS_PAGE, ResultsPage.class);
 		pages.put(PLACES_PAGE, PlacesPage.class);
+		pages.put(CONTACT_PAGE, ContactPage.class);
+		pages.put(FEATURE_VOTE, FeatureVotePage.class);
+		pages.put(FEEDBACK_PAGE, FeedbackPage.class);
+		pages.put(LIBRARY_PAGE, LibraryPage.class);
 	}
 	
 	protected static HashBiMap<String,Integer> bcImg 
@@ -36,6 +44,9 @@ public class SelectionManager {
 		bcImg.put(HOME_PAGE, R.drawable.apple_touch_icon);
 		bcImg.put(RESULTS_PAGE, R.drawable.results_bc);
 		bcImg.put(PLACES_PAGE, R.drawable.places_bc);
+		bcImg.put(CONTACT_PAGE, R.drawable.contact_bc);
+		bcImg.put(FEATURE_VOTE, R.drawable.feature_vote_bc);
+		bcImg.put(LIBRARY_PAGE, R.drawable.library_bc);
 	}
 	
 	public SelectionManager()

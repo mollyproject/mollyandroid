@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.mollyproject.android.MyAppListener;
-import org.mollyproject.android.MyApplication;
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.MyAppListener;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.pages.Page;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class BreadCrumbBar extends View implements MyAppListener {
 	//protected LinkedList<BreadCrumbFragment> trail;
@@ -21,6 +22,7 @@ public class BreadCrumbBar extends View implements MyAppListener {
 	protected int bcCount;
 	protected LinearLayout bar;
 	protected boolean toBeRemoved;
+	protected TextView label;
 	//protected MyApplication myApp;
 	protected Page page;
 	
@@ -38,9 +40,14 @@ public class BreadCrumbBar extends View implements MyAppListener {
 			Button button = new Button(page.getApplicationContext());
 			//button.setBackgroundResource(R.drawable.android_button);
 			breadCrumbButtons[i] = button;
+			button.setBackgroundColor(R.color.blue);
 			bar.addView(button);
+//			bar.setBackgroundColor(R.color.blue);
 			button.setVisibility(View.INVISIBLE);
 		}
+		
+		label = new TextView(page.getApplicationContext());
+		bar.addView(label);
 	}
 	
 	public LinearLayout getBar()
@@ -75,6 +82,8 @@ public class BreadCrumbBar extends View implements MyAppListener {
 			addBreadCrumb(breadcrumb);
 			i++;
 		}
+		
+		label.setText(trail.get(trail.size()-1));
 	}
 	
 	//add breadcrumb fragment to end of list
@@ -170,6 +179,11 @@ public class BreadCrumbBar extends View implements MyAppListener {
 	public Class<? extends Page> getOwnerClass()
 	{
 		return page.getClass();
+	}
+	
+	public void setText(String labelText)
+	{
+		label.setText(labelText);
 	}
 
 }

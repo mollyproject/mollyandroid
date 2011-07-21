@@ -1,5 +1,7 @@
 package org.mollyproject.android.view.pages;
 
+import org.mollyproject.android.controller.MyApplication;
+import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 public abstract class ContentPage extends Page {
+	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -16,6 +19,16 @@ public abstract class ContentPage extends Page {
 		contentLayout.addView(bcBar.getBar(), new ViewGroup.LayoutParams
 				(getWindowManager().getDefaultDisplay().getWidth(),
 				getWindowManager().getDefaultDisplay().getHeight()/10));
+		
+		router = ((MyApplication) getApplication()).getRouter();
+		jsonText = null;
+		try {
+			jsonText = router.onRequestSent(SelectionManager
+								.getName(getInstance().getClass()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

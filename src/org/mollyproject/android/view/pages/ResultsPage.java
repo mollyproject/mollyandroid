@@ -10,6 +10,7 @@ import java.util.TreeSet;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.mollyproject.android.R;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 
@@ -22,7 +23,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ResultsPage extends ContentPage {
-	protected Router router;
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState)
@@ -35,20 +35,18 @@ public class ResultsPage extends ContentPage {
 				("d MMM yyy");
 		
 		ScrollView scr = new ScrollView(getApplicationContext());
-		router = myApp.getRouter();
-		String jsonText = null;
 		
 		LinearLayout allText = new LinearLayout(getApplicationContext());
 		allText.setOrientation(LinearLayout.VERTICAL);
 		
 		ArrayListMultimap<Date,String> examsByDate = ArrayListMultimap.create();
 		try {
-			jsonText = router.onRequestSent(SelectionManager.getName(ResultsPage.class));
+			//jsonText = router.onRequestSent(SelectionManager.getName(ResultsPage.class));
 			//Process the json text received
 			if (jsonText != null)
 			{
-				JSONObject jsonObj = new JSONObject(jsonText);
-				JSONArray entries = (JSONArray) jsonObj.get("entries");
+				jsonContent = new JSONObject(jsonText);
+				JSONArray entries = (JSONArray) jsonContent.get("entries");
 				if (entries.length() > 0)
 				{
 
@@ -101,6 +99,7 @@ public class ResultsPage extends ContentPage {
 		}
 		scr.addView(allText);
 		contentLayout.addView(scr,ViewGroup.LayoutParams.FILL_PARENT);
+		contentLayout.setBackgroundColor(R.color.blue);
 		setContentView(contentLayout);
 	}
 	

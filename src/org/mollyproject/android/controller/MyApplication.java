@@ -1,11 +1,10 @@
-package org.mollyproject.android;
+package org.mollyproject.android.controller;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.mollyproject.android.controller.Router;
 
 import android.app.Application;
 

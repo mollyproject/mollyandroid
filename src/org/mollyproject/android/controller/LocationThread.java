@@ -1,4 +1,4 @@
-package org.mollyproject.android;
+package org.mollyproject.android.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
-import org.mollyproject.android.controller.CookieManager;
 
 import android.content.Context;
 import android.location.Criteria;
@@ -140,7 +139,8 @@ public class LocationThread extends Thread {
 				while (!stop)
 				{	
 					handler.post(r);
-					sleep(60000);					
+					System.out.println("LocThread running");
+					sleep(3000);					
 				}
 			} catch (InterruptedException e) {
 	            System.out.println("Thread interrupted");

@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.pages;
 
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.selection.SelectionManager;
 
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -11,11 +12,17 @@ public abstract class UnimplementedPage extends ContentPage {
 	{
 		super.onCreate(savedInstanceState);
 		webView = new WebView(this);
+		try {
+			webView.loadUrl(getActualURL(SelectionManager
+							.getName(getInstance().getClass())));
+		} catch (Exception e) {
+		}
 		contentLayout.addView(webView);
+		setContentView(contentLayout);
 	}
 	
-	public String setLocator(String string)
+	public String getActualURL(String string) throws Exception
 	{
-		return (Router.mOX +"reverse/?name="+ string);
+		return Router.getFrom((Router.mOX +"reverse/?name="+ string));
 	}
 }

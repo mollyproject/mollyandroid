@@ -1,4 +1,4 @@
-package org.mollyproject.android;
+package org.mollyproject.android.controller;
 
 import org.mollyproject.android.view.pages.Page;
 

@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.mollyproject.android.LocationThread;
 import org.mollyproject.android.view.Renderer;
 
 import android.content.Context;
