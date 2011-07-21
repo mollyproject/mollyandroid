@@ -22,7 +22,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ResultsPage extends ContentPage {
-	public static final Page INSTANCE = new ResultsPage();
 	protected Router router;
 	
 	@Override
@@ -44,7 +43,7 @@ public class ResultsPage extends ContentPage {
 		
 		ArrayListMultimap<Date,String> examsByDate = ArrayListMultimap.create();
 		try {
-			jsonText = router.onRequestSent(SelectionManager.getName(INSTANCE));
+			jsonText = router.onRequestSent(SelectionManager.getName(ResultsPage.class));
 			//Process the json text received
 			if (jsonText != null)
 			{
@@ -107,7 +106,8 @@ public class ResultsPage extends ContentPage {
 	
 	public Page getInstance()
 	{
-		return INSTANCE;
+		System.out.println("Called "+this);
+		return this;
 	}
 	
 

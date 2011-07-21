@@ -61,11 +61,6 @@ public class CookieManager {
 	    	}
     	}
     	
-    	CharSequence text = cookies.toString();
-    	int duration = Toast.LENGTH_LONG;
-    	Toast toast = Toast.makeText(context, text, duration);
-    	toast.show();
-    	
     	dateFormat = new SimpleDateFormat(DATE_FORMAT);
     }    
 

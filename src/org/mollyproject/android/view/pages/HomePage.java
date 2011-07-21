@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 public class HomePage extends Page {
-	public static final Page INSTANCE = new HomePage();
 	
 	protected Renderer ren;
 	protected ArrayList<Button> breadCrumbs;
@@ -25,7 +24,7 @@ public class HomePage extends Page {
     	super.onCreate(savedInstanceState);
         ren = new Renderer();
         
-    	myApp.addBreadCrumb(SelectionManager.getName(INSTANCE));
+    	myApp.addBreadCrumb(SelectionManager.getName(HomePage.class));
         System.out.println("Home added breadcrumb");
     	
 		LinearLayout contentLayout = new LinearLayout(this);
@@ -52,6 +51,11 @@ public class HomePage extends Page {
 		setContentView(contentLayout);
     }
     
+    public Page getInstance()
+    {
+    	return this;
+    }
+    
     //make the location thread terminate a bit cleaner
     @Override
     public void onDestroy()
@@ -59,8 +63,8 @@ public class HomePage extends Page {
     	super.onDestroy();
     	myApp.getRouter().getLocThread().stopThread();
     	myApp.getRouter().getLocThread().interrupt();
-    }    
-        
+    }
+    
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

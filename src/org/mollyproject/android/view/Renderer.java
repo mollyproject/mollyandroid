@@ -21,7 +21,7 @@ public class Renderer {
 	public void render(JSONObject o) throws JSONException
 	{
 		String name = o.getString("view_name");
-		Page page = mgr.getPage(name); //Page to render
+		//Page page = mgr.getPage(name); //Page to render
 		//FragmentBreadCrumbs breadCrumbs;	
 	}
 }

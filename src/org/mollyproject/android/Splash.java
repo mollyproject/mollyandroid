@@ -47,11 +47,16 @@ public class Splash extends Page {
 				finally
 				{
 					Intent myIntent = new Intent(getApplicationContext(), 
-							SelectionManager.getPage(SelectionManager.HOME_PAGE).getClass());
+							SelectionManager.getPageClass(SelectionManager.HOME_PAGE));
 					startActivityForResult(myIntent, 0);
 				}
 			};
 		};
 		splashThread.start();
+	}
+	@Override
+	public Page getInstance() {
+		// TODO Auto-generated method stub
+		return this;
 	}
 }

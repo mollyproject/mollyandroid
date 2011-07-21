@@ -24,6 +24,8 @@ public abstract class Page extends Activity {
 	{
 		super.onCreate(savedInstanceState);
 		myApp = (MyApplication) getApplication();
-		bcBar = new BreadCrumbBar(this);
+		bcBar = new BreadCrumbBar(getInstance());
 	}
+	
+	public abstract Page getInstance();
 }

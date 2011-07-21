@@ -18,8 +18,6 @@ public abstract class ContentPage extends Page {
 				getWindowManager().getDefaultDisplay().getHeight()/10));
 	}
 	
-	public abstract Page getInstance();
-	
 	@Override
 	public void onStop()
 	{
@@ -33,6 +31,6 @@ public abstract class ContentPage extends Page {
 	{
 		super.onResume();
 		myApp.addListener(bcBar);
-		myApp.addBreadCrumb(SelectionManager.getName(getInstance()));
+		myApp.addBreadCrumb(SelectionManager.getName(getInstance().getClass()));
 	}
 }

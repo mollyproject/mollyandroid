@@ -21,12 +21,12 @@ public class SelectionManager {
 
 	//The following hash table allows for easier future change in implementation
 	//of new pages
-	protected static HashBiMap<String,Page> pages 
+	protected static HashBiMap<String,Class<? extends Page>> pages 
 					= HashBiMap.create();
 	static {
-		pages.put(HOME_PAGE, HomePage.INSTANCE);
-		pages.put(RESULTS_PAGE, ResultsPage.INSTANCE);
-		pages.put(PLACES_PAGE, PlacesPage.INSTANCE);
+		pages.put(HOME_PAGE, HomePage.class);
+		pages.put(RESULTS_PAGE, ResultsPage.class);
+		pages.put(PLACES_PAGE, PlacesPage.class);
 	}
 	
 	protected static HashBiMap<String,Integer> bcImg 
@@ -48,9 +48,9 @@ public class SelectionManager {
 		currentPageName = newPageName;
 	}
 	
-	public static String getName(Page page)
+	public static String getName(Class <? extends Page> pageClass)
 	{
-		return (pages.inverse().get(page));
+		return (pages.inverse().get(pageClass));
 	}
 	
 	public static int getBCImg(String viewName)
@@ -58,7 +58,7 @@ public class SelectionManager {
 		return bcImg.get(viewName);
 	}
 	
-	public static Page getPage(String s)
+	public static Class<? extends Page> getPageClass(String s)
 	{
 		return pages.get(s);
 	}		

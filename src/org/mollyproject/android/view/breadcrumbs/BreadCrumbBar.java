@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.breadcrumbs;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.mollyproject.android.MyAppListener;
@@ -65,7 +66,7 @@ public class BreadCrumbBar extends View implements MyAppListener {
 				@Override
 				public void onClick(View view) {
 					Intent myIntent = new Intent(page.getApplicationContext(), 
-							SelectionManager.getPage(breadcrumb).getClass());
+							SelectionManager.getPageClass(breadcrumb));
 					page.startActivity(myIntent);
 				}
 			});
@@ -146,8 +147,10 @@ public class BreadCrumbBar extends View implements MyAppListener {
 
 	@Override
 	public void onBreadCrumbRemoved(String breadcrumb) {
-
+		System.out.println("This breadcrumb bar belongs to "
+								+ SelectionManager.getName(page.getClass()));
 		System.out.println("Removed breadcrumb is "+breadcrumb);
+		
 		if (trail.size() > 0)
 		{
 			if (breadcrumb == trail.get(trail.size()-1))
@@ -155,6 +158,18 @@ public class BreadCrumbBar extends View implements MyAppListener {
 				removeBreadCrumb();
 			}
 		}
+	}
+
+	@Override
+	public boolean canBeRemoved(String breadcrumb) {
+		return ((page == null) || 
+				(page.getClass() == SelectionManager.getPageClass(breadcrumb)));
+	}
+	
+	@Override
+	public Class<? extends Page> getOwnerClass()
+	{
+		return page.getClass();
 	}
 
 }

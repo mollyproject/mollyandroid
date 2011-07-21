@@ -6,6 +6,8 @@ public class PlacesPage extends Page {
 	{
 		super();
 	}
-	public void refresh() {
-	}
+    public Page getInstance()
+    {
+    	return INSTANCE;
+    }
 }
