@@ -19,6 +19,7 @@ public class BreadCrumbBar extends View implements MyAppListener {
 	protected Button[] breadCrumbButtons;
 	protected int bcCount;
 	protected LinearLayout bar;
+	protected boolean toBeRemoved;
 	//protected MyApplication myApp;
 	protected Page page;
 	
@@ -30,6 +31,7 @@ public class BreadCrumbBar extends View implements MyAppListener {
 		bcCount = 0;
 		bar = new LinearLayout(page.getApplicationContext());
 		trail = new ArrayList<String>();
+		toBeRemoved = false;
 		for (int i = 0; i < 4; i++)
 		{
 			Button button = new Button(page.getApplicationContext());
@@ -123,7 +125,6 @@ public class BreadCrumbBar extends View implements MyAppListener {
 
 		}
 	}
-	
 	public Button[] getButtons()
 	{
 		return breadCrumbButtons;
@@ -145,6 +146,7 @@ public class BreadCrumbBar extends View implements MyAppListener {
 
 	@Override
 	public void onBreadCrumbRemoved(String breadcrumb) {
+
 		System.out.println("Removed breadcrumb is "+breadcrumb);
 		if (trail.size() > 0)
 		{

@@ -31,7 +31,7 @@ public abstract class ContentPage extends Page {
 	@Override
 	public void onResume()
 	{
-		super.onRestart();
+		super.onResume();
 		myApp.addListener(bcBar);
 		myApp.addBreadCrumb(SelectionManager.getName(getInstance()));
 	}

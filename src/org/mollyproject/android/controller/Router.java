@@ -62,7 +62,7 @@ public class Router implements RequestsListener {
 			//Have the urlStr, now get the JSON text
 			String jsonText = new String();
 			jsonText = getFrom(urlStr+"?format=json");
-			
+			System.out.println("First Request "+firstReq);
 			if (firstReq)
 			{ 
 				cookieMgr.storeCookies(new URL(urlStr).openConnection());

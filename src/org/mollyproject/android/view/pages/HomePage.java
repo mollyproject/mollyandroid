@@ -60,7 +60,7 @@ public class HomePage extends Page {
     	myApp.getRouter().getLocThread().stopThread();
     	myApp.getRouter().getLocThread().interrupt();
     }    
-    
+        
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

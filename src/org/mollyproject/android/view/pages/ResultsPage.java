@@ -2,9 +2,11 @@ package org.mollyproject.android.view.pages;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,12 +30,11 @@ public class ResultsPage extends ContentPage {
 	{
 		super.onCreate(savedInstanceState);
 		
-		//myApp.addBreadCrumb(SelectionManager.getName(INSTANCE));
-		/*try {
-			webView.loadUrl(Router.getFrom(setLocator(SelectionManager.RESULTS_PAGE)));
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}*/
+		DateFormat defaultDateFormat = new SimpleDateFormat
+				("EEE, d MMM yyyy HH:mm:ss Z");
+		DateFormat myDateFormat = new SimpleDateFormat
+				("d MMM yyy");
+		
 		ScrollView scr = new ScrollView(getApplicationContext());
 		router = myApp.getRouter();
 		String jsonText = null;
@@ -41,7 +42,7 @@ public class ResultsPage extends ContentPage {
 		LinearLayout allText = new LinearLayout(getApplicationContext());
 		allText.setOrientation(LinearLayout.VERTICAL);
 		
-		ArrayListMultimap<String,String> examsByDate = ArrayListMultimap.create();
+		ArrayListMultimap<Date,String> examsByDate = ArrayListMultimap.create();
 		try {
 			jsonText = router.onRequestSent(SelectionManager.getName(INSTANCE));
 			//Process the json text received
@@ -51,10 +52,7 @@ public class ResultsPage extends ContentPage {
 				JSONArray entries = (JSONArray) jsonObj.get("entries");
 				if (entries.length() > 0)
 				{
-					DateFormat defaultDateFormat = new SimpleDateFormat
-							("EEE, d MMM yyyy HH:mm:ss Z");
-					DateFormat myDateFormat = new SimpleDateFormat
-							("d MMM yyy");
+
 					for (int i = 0; i < entries.length(); i++)
 					{
 						JSONObject entry = entries.getJSONObject(i);
@@ -67,24 +65,25 @@ public class ResultsPage extends ContentPage {
 						
 						Date updatedDate = defaultDateFormat.parse
 											(entry.getString("updated"));
-						String myDate = myDateFormat.format(updatedDate);
+						Date myDate = new Date(myDateFormat.format(updatedDate));
 						examsByDate.put(myDate, title);
-						System.out.println(myDate+" "+title);
+						//System.out.println(myDate+" "+title);
 					}
 				}
 			}
 			
-			
-			Iterator<String> dates = examsByDate.keySet().iterator();
+			TreeSet<Date> sortedDates  = new TreeSet<Date>(Collections.reverseOrder());
+			sortedDates.addAll(examsByDate.keySet());
+			Iterator<Date> dates = sortedDates.iterator();
 			while(dates.hasNext())
 			{
-				String thisDate = dates.next();
+				Date thisDate = (dates.next());
 				TextView dateView = new TextView(getApplicationContext());
 				dateView.setTextSize(24);
-				dateView.setText('\n'+thisDate);
+				dateView.setText('\n'+myDateFormat.format(thisDate));
 				allText.addView(dateView);
 				
-				List<String> results = examsByDate.get(thisDate);
+				List<String> results = (List<String>) examsByDate.get(thisDate);
 				for (String result : results)
 				{
 					String thisResult = result;

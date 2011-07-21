@@ -28,7 +28,7 @@ public class MyApplication extends Application {
 	
 	public void removeListener(MyAppListener l)
 	{
-		System.out.println("Removed: "+myAppListeners.remove(l));
+		System.out.println("Removed: "+myAppListeners.remove(l) + " "+ myAppListeners.size());
 	}
 	
 	public void addBreadCrumb(String breadcrumb)
@@ -37,7 +37,6 @@ public class MyApplication extends Application {
 		{
 			bcTrail.add(breadcrumb);
 			bcCount++;
-			
 		}
 		
 		for (MyAppListener l: myAppListeners)

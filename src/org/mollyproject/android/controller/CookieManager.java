@@ -9,6 +9,7 @@ import org.json.*;
 import org.mollyproject.android.jsoncookie.Cookie;
 
 import android.content.Context;
+import android.widget.Toast;
 
     /**
      * CookieManager is a simple utilty for handling cookies when working
@@ -25,6 +26,7 @@ import android.content.Context;
 public class CookieManager {
     
 	private final static String COOKIESFILE = "cookiesFile.txt";
+	protected File cookiesFile;
 	protected Context context;
 	protected JSONObject cookies; //store the cookies in JSON format	
     
@@ -42,16 +44,27 @@ public class CookieManager {
     	this.context = context;
     	cookies = new JSONObject();
     	
-    	//check first whether the cookies already exist in the private storage
-    	String recoveredJSONStr = readCookiesFromFile();
-    	System.out.println("Read from file "+recoveredJSONStr);
+    	cookiesFile = context.getFileStreamPath(COOKIESFILE);
     	
-    	if (recoveredJSONStr != null)
+    	//check if file exists
+    	if (cookiesFile.exists())
     	{
-    		//there is something in the file, if the JSON text is not in the 
-    		//right format an exception will be thrown
-    		cookies = new JSONObject(recoveredJSONStr);
+	    	//check whether the cookies already exist in the private storage
+	    	String recoveredJSONStr = readCookiesFromFile();
+	    	System.out.println("Read from file "+recoveredJSONStr);
+	    	
+	    	if (recoveredJSONStr != null)
+	    	{
+	    		//there is something in the file, if the JSON text is not in the 
+	    		//right format an exception will be thrown
+	    		cookies = new JSONObject(recoveredJSONStr);
+	    	}
     	}
+    	
+    	CharSequence text = cookies.toString();
+    	int duration = Toast.LENGTH_LONG;
+    	Toast toast = Toast.makeText(context, text, duration);
+    	toast.show();
     	
     	dateFormat = new SimpleDateFormat(DATE_FORMAT);
     }    
@@ -69,7 +82,7 @@ public class CookieManager {
      */
     public void storeCookies(URLConnection conn) throws JSONException, IOException
     {    	    		
-    	if (cookies.names().length() == 0)
+    	if (cookies.length() == 0)
     	{
 			String headerName;
 			String cookieField;
@@ -162,6 +175,9 @@ public class CookieManager {
     
     public String readCookiesFromFile() throws IOException, JSONException
     {
+    	//Assuming the file exists
+    	
+    	
     	FileInputStream fIn = context.openFileInput(COOKIESFILE);
         InputStreamReader isr = new InputStreamReader(fIn);
         char[] inputBuffer = new char[1024];
@@ -169,7 +185,7 @@ public class CookieManager {
         String readString = new String(inputBuffer);
         System.out.println("CookieManager, read from file: "+readString);
         if (readString.length() > 0)
-        {        	
+        {   
         	return readString;
         }
     	return null;
