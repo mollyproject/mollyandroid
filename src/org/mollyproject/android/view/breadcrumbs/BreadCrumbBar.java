@@ -1,7 +1,6 @@
 package org.mollyproject.android.view.breadcrumbs;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.mollyproject.android.R;
@@ -16,14 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class BreadCrumbBar extends View implements MyAppListener {
-	//protected LinkedList<BreadCrumbFragment> trail;
 	protected List<String> trail; //trail of breadcrumbs represented as viewnames
 	protected Button[] breadCrumbButtons;
 	protected int bcCount;
 	protected LinearLayout bar;
 	protected boolean toBeRemoved;
 	protected TextView label;
-	//protected MyApplication myApp;
 	protected Page page;
 	
 	public BreadCrumbBar(Page page) {
@@ -77,6 +74,7 @@ public class BreadCrumbBar extends View implements MyAppListener {
 					page.startActivity(myIntent);
 				}
 			});
+			breadCrumbButtons[i].setBackgroundColor(R.color.blue);
 			breadCrumbButtons[i].setBackgroundResource(
 					SelectionManager.getBCImg(breadcrumb));
 			addBreadCrumb(breadcrumb);

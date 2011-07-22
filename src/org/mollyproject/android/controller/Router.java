@@ -2,6 +2,7 @@ package org.mollyproject.android.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -13,7 +14,8 @@ public class Router implements RequestsListener {
 	protected CookieManager cookieMgr;
 	protected static boolean waiting;	
 	protected Renderer ren;
-	protected LocationThread locThread;
+	protected LocationThread currentLocThread;
+	protected String csrfToken;
 	protected boolean firstReq;
 	protected Context context;
 	public final static String mOX =  "http://dev.m.ox.ac.uk/";
@@ -24,7 +26,6 @@ public class Router implements RequestsListener {
 		cookieMgr = new CookieManager(context);
 		firstReq = true;
 		this.context = context;
-		locThread= new LocationThread(new URL(mOX),context);
 	}
 	
 	//Take an URL String, convert to URL, open connection then process 
@@ -64,9 +65,9 @@ public class Router implements RequestsListener {
 			System.out.println("First Request "+firstReq);
 			if (firstReq)
 			{ 
-				cookieMgr.storeCookies(new URL(urlStr).openConnection());
-				locThread.setCSRFToken(cookieMgr.getCSRFToken(new URL(urlStr)));
-				locThread.start();
+				URL url = new URL(urlStr);
+				cookieMgr.storeCookies(url.openConnection());
+				spawnNewLocThread(cookieMgr.getCSRFToken(url));
 				System.out.println("Router, LocThread starts");
 				firstReq = false;
 			}
@@ -83,8 +84,21 @@ public class Router implements RequestsListener {
 		return cookieMgr;
 	}
 	
+	public void spawnNewLocThread(String token) throws MalformedURLException
+	{
+		System.out.println("New LocThread spawned");
+		currentLocThread = new LocationThread(new URL(mOX),context);
+		currentLocThread.setCSRFToken(token);
+		currentLocThread.start();
+	}
+	
+	public void stopCurrentLocThread()
+	{
+		currentLocThread.stopThread();
+	}
+	
 	public LocationThread getLocThread()
 	{
-		return locThread;
+		return currentLocThread;
 	}
 }
