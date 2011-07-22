@@ -49,11 +49,13 @@ public abstract class Page extends Activity {
 	    switch (item.getItemId()) {
 	        case R.id.icon:     
 	        	Toast.makeText(this, "You pressed the icon!", Toast.LENGTH_LONG).show();
-	                            break;
-	        case R.id.text:     Toast.makeText(this, "You pressed the text!", Toast.LENGTH_LONG).show();
-	                            break;
-	        case R.id.icontext: Toast.makeText(this, "You pressed the icon and text!", Toast.LENGTH_LONG).show();
-	                            break;
+	        	break;
+	        case R.id.text:     
+	        	Toast.makeText(this, "You pressed the text!", Toast.LENGTH_LONG).show();
+	            break;
+	        case R.id.icontext:
+	        	
+	            break;
 	    }
 	    return true;
 	}
