@@ -1,6 +1,10 @@
 package org.mollyproject.android.view.pages;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.Renderer;
 import android.content.Intent;
@@ -15,7 +19,6 @@ import android.widget.ScrollView;
 
 public class HomePage extends Page {
 	
-	protected Renderer ren;
 	protected ArrayList<Button> breadCrumbs;
 	protected LinearLayout bcLayout;
 	
@@ -23,8 +26,6 @@ public class HomePage extends Page {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-        ren = new Renderer();
-        router = myApp.getRouter();
         try {
         	//First request sent to activate locThread and ask for cookies
 			router.onRequestSent(SelectionManager.HOME_PAGE);
@@ -101,8 +102,28 @@ public class HomePage extends Page {
     {
     	return this;
     }
+	
+    @Override
+    public void onResume()
+    {
+    	super.onResume();
+    	System.out.println("onResume");
+    	if (router.getLocThread().isInterrupted())
+    	{
+    		System.out.println("LocThread needs to restart");
+    		try {
+				router.spawnNewLocThread
+				(router.getCookieManager().getCSRFToken(new URL (Router.mOX)));
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    }
     
-    //make the location thread terminate a bit cleaner
     @Override
     public void onDestroy()
     {
@@ -110,17 +131,7 @@ public class HomePage extends Page {
     	myApp.getRouter().getLocThread().stopThread();
     	myApp.getRouter().getLocThread().interrupt();
     }
-    
-    @Override
-    public void onResume()
-    {
-    	super.onResume();
-    	if (myApp.getRouter().getLocThread().isInterrupted() == true)
-    	{
-    		myApp.getRouter().getLocThread().start();
-    	}
-    }
-    
+	
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
