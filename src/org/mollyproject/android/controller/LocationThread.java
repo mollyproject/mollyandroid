@@ -29,7 +29,7 @@ public class LocationThread extends Thread {
 	protected Runnable r;
 	protected Handler handler;
 	protected volatile boolean stop;
-	protected boolean autoLoc;
+	protected volatile boolean autoLoc;
 	private static double DEFAULT_LON = -1.255939;
 	private static double DEFAULT_LAT = 51.752527;
 	

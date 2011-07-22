@@ -106,17 +106,26 @@ public class BreadCrumbBar extends View implements MyAppListener {
 			//a new background
 			//layout.getChildAt(2).setVisibility(View.INVISIBLE);
 		}
+		System.out.println("Label should now be "+trail.get(trail.size()-1));
+		label.setText(trail.get(trail.size()-1)); //set label to the corresponding breadcrumb
 	}
 	
-	//remove the last breadcrumb fragment
+	//remove the last breadcrumb fragment, assuming the trail is never
+	//removed if only one element is left
 	public void removeBreadCrumb()
 	{
 		int s = trail.size();
-		if (trail.size() > 0) { trail.remove(trail.size()-1); }
+		if (trail.size() > 0) 
+		{ 
+			trail.remove(s-1);  
+		}
+		
 		bar.getChildAt(s-1).setEnabled(false);
 		bar.getChildAt(s-1).setVisibility(View.INVISIBLE);
 		if (s > 1)
 		{
+			System.out.println("Label should now be "+trail.get(trail.size()-1));
+			label.setText(trail.get(trail.size()-1)); //set label to the corresponding breadcrumb
 			bar.getChildAt(s - 2).setEnabled(false);
 			if (s == 2)
 			{
