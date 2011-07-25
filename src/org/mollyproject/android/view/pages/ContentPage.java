@@ -21,14 +21,8 @@ public abstract class ContentPage extends Page {
 				getWindowManager().getDefaultDisplay().getHeight()/10));
 		
 		router = ((MyApplication) getApplication()).getRouter();
-		jsonText = null;
-		try {
-			jsonText = router.onRequestSent(SelectionManager
-								.getName(getInstance().getClass()));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		setContentView(contentLayout);
 	}
 	
 	@Override

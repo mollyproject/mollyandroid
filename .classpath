@@ -3,6 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="C:/Users/SEAN/workspace/guava-r09/guava-r09.jar"/>
+	<classpathentry kind="lib" path="C:/Users/SEAN/mollyproject/mollyandroid/osmdroid-android-3.0.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/SEAN/mollyproject/mollyandroid/slf4j-android-1.5.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/SEAN/mollyproject/mollyandroid/guava-r09.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

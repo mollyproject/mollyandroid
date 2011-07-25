@@ -40,8 +40,9 @@ public class ResultsPage extends ContentPage {
 		allText.setOrientation(LinearLayout.VERTICAL);
 		
 		ArrayListMultimap<Date,String> examsByDate = ArrayListMultimap.create();
+		
 		try {
-			//jsonText = router.onRequestSent(SelectionManager.getName(ResultsPage.class));
+			jsonText = router.onRequestSent(SelectionManager.getName(ResultsPage.class), Router.JSON, null);
 			//Process the json text received
 			if (jsonText != null)
 			{
@@ -99,8 +100,6 @@ public class ResultsPage extends ContentPage {
 		}
 		scr.addView(allText);
 		contentLayout.addView(scr,ViewGroup.LayoutParams.FILL_PARENT);
-		contentLayout.setBackgroundColor(R.color.blue);
-		setContentView(contentLayout);
 	}
 	
 	public Page getInstance()

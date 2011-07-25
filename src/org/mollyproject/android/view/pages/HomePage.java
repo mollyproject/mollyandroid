@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.Renderer;
@@ -26,13 +27,6 @@ public class HomePage extends Page {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-        try {
-        	//First request sent to activate locThread and ask for cookies
-			router.onRequestSent(SelectionManager.HOME_PAGE);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
         
     	myApp.addBreadCrumb(SelectionManager.getName(HomePage.class));
         System.out.println("Home added breadcrumb");
@@ -89,9 +83,21 @@ public class HomePage extends Page {
 			}
 		});
 		
+		Button placesButton = new Button(this);
+		placesButton.setText("Go to Places");
+		placesButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent myIntent = new Intent(view.getContext(), SelectionManager
+						.getPageClass(SelectionManager.PLACES_PAGE));
+                startActivityForResult(myIntent, 0);
+			}
+		});
+		
 		contentLayout.addView(contactsButton);
 		contentLayout.addView(resultsButton);
 		contentLayout.addView(libraryButton);
+		contentLayout.addView(placesButton);
 		contentLayout.addView(featureButton);
 		
 		scr.addView(contentLayout);
@@ -107,17 +113,28 @@ public class HomePage extends Page {
     public void onResume()
     {
     	super.onResume();
-    	System.out.println("onResume");
-    	if (router.getLocThread().isInterrupted())
+    	if (router.getLocThread() != null)
     	{
-    		System.out.println("LocThread needs to restart");
+	    	if (router.getLocThread().isInterrupted())
+	    	{
+	    		System.out.println("LocThread needs to restart");
+	    		try {
+					router.spawnNewLocThread
+					(router.getCookieManager().getCSRFToken(new URL (Router.mOX)));
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+    	}
+    	else
+    	{
     		try {
-				router.spawnNewLocThread
-				(router.getCookieManager().getCSRFToken(new URL (Router.mOX)));
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
+				jsonContent = new JSONObject(router.onRequestSent(SelectionManager.getName(getClass()),Router.JSON,null));
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

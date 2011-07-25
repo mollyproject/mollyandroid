@@ -38,7 +38,7 @@ public class Splash extends Page {
 				Looper.prepare();
 				try 
 				{
-					Thread.sleep(2000);
+					Thread.sleep(100);
 				}
 				catch (InterruptedException e)
 				{

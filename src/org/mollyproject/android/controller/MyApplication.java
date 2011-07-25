@@ -11,9 +11,11 @@ import android.app.Application;
 public class MyApplication extends Application {
 	protected List<String> bcTrail;
 	protected List<MyAppListener> myAppListeners;
+	protected List<MyAppListener> toBeRemoved;
 	protected int bcCount;
 	protected Router router;
-	protected Set<MyAppListener> toBeRemoved;
+	protected String mapQuery;
+	protected String contactOutput;
 	
 	public MyApplication() throws Exception
 	{
@@ -21,16 +23,17 @@ public class MyApplication extends Application {
 		bcCount = 0;
 		bcTrail = new ArrayList<String>();
 		myAppListeners = new ArrayList<MyAppListener>();
-		toBeRemoved = new HashSet<MyAppListener>();
+		toBeRemoved = new ArrayList<MyAppListener>();
 	}
 	
 	public void addListener(MyAppListener l)
 	{
-		for (MyAppListener oldListener : myAppListeners)
+		//Changed from enhanced for loop to counted for loop (faster)
+		for (int i = 0; i < myAppListeners.size(); i++)
 		{
-			if (oldListener.getOwnerClass() == l.getOwnerClass())
+			if (myAppListeners.get(i).getOwnerClass() == l.getOwnerClass())
 			{
-				toBeRemoved.add(oldListener);
+				toBeRemoved.add(myAppListeners.get(i));
 			}
 		}
 		myAppListeners.add(l);
@@ -38,10 +41,7 @@ public class MyApplication extends Application {
 	
 	public void removeListener(MyAppListener l)
 	{
-		System.out.println(myAppListeners.contains(l));
-		System.out.println(myAppListeners.size());
 		myAppListeners.remove(l);
-		System.out.println(myAppListeners.size());
 	}
 	
 	public void addBreadCrumb(String breadcrumb)
@@ -51,9 +51,10 @@ public class MyApplication extends Application {
 			bcTrail.add(breadcrumb);
 			bcCount++;
 			
-			for (MyAppListener l: myAppListeners)
+			//Changed from enhanced for loop to counted for loop (faster)
+			for (int i = 0; i < myAppListeners.size(); i++)
 			{
-				l.onBreadCrumbAdded(breadcrumb);			
+				myAppListeners.get(i).onBreadCrumbAdded(breadcrumb);			
 			}
 		}
 	}
@@ -61,10 +62,12 @@ public class MyApplication extends Application {
 	public void removeBreadCrumb()
 	{	
 		String temp = new String();
-		for (MyAppListener l : toBeRemoved)
+		//Changed from enhanced for loop to counted for loop (faster)
+		for (int i = 0; i < toBeRemoved.size(); i++)
 		{
-			removeListener(l);
+			removeListener(toBeRemoved.get(i));
 		}
+		
 		if (bcCount > 0)
 		{
 			bcCount--;
@@ -72,31 +75,29 @@ public class MyApplication extends Application {
 			bcTrail.remove(bcCount);
 		}
 		
-		for (MyAppListener l: myAppListeners)
+		for (int i = 0; i < myAppListeners.size(); i++)
 		{
-			if (l.canBeRemoved(temp))
+			if (myAppListeners.get(i).canBeRemoved(temp))
 			{
-				toBeRemoved.add(l);
+				toBeRemoved.add(myAppListeners.get(i));
 			}
 			else
 			{
-				l.onBreadCrumbRemoved(temp);
+				myAppListeners.get(i).onBreadCrumbRemoved(temp);
 			}
 		}
 	}
+	public void setContactOutput(String jsonOutput) { contactOutput = jsonOutput; }
 	
-	public ArrayList<String> getTrail()
-	{
-		return (ArrayList<String>) bcTrail;
-	}
+	public String getContactOutput() { return contactOutput; }
 	
-	public Router getRouter()
-	{
-		return router;
-	}
+	public ArrayList<String> getTrail()	{ return (ArrayList<String>) bcTrail; }
 	
-	public void setRouter(Router router)
-	{
-		this.router = router;
-	}
+	public void setMapQuery(String mapQuery) { this.mapQuery = mapQuery; }
+	
+	public String getMapQuery() { return mapQuery; }
+	
+	public Router getRouter() {	return router; }
+	
+	public void setRouter(Router router) { this.router = router; }
 }
