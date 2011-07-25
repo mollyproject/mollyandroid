@@ -32,6 +32,7 @@ public class LocationThread extends Thread {
 	protected volatile boolean autoLoc;
 	private static double DEFAULT_LON = -1.255939;
 	private static double DEFAULT_LAT = 51.752527;
+	private static int UPDATE_DELAY_IN_MS = 60000; 
 	
 	public LocationThread(final URL url, Context context)
 	{
@@ -151,7 +152,7 @@ public class LocationThread extends Thread {
 				{	
 					handler.post(r);
 					System.out.println("LocThread running");
-					sleep(3000);					
+					sleep(UPDATE_DELAY_IN_MS);					
 				}
 			} catch (InterruptedException e) {
 	            System.out.println("Thread interrupted");

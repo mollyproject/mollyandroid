@@ -55,17 +55,19 @@ public class BreadCrumbBar extends View implements MyAppListener {
 	public void reconstructBar()
 	{
 		trail.clear();
-		
+
 		for (Button button : breadCrumbButtons)
 		{
 			button.setVisibility(View.INVISIBLE);
 			button.setEnabled(false);
 		}
 		System.out.println("reconstructed");
+		
 		ArrayList<String> newTrail = ((MyApplication) page.getApplication()).getTrail();
-		int i = 0;
-		for (final String breadcrumb : newTrail)
+		
+		for (int i = 0; i < newTrail.size(); i++)
 		{
+			final String breadcrumb = newTrail.get(i);
 			breadCrumbButtons[i].setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
@@ -76,9 +78,8 @@ public class BreadCrumbBar extends View implements MyAppListener {
 			});
 			breadCrumbButtons[i].setBackgroundColor(R.color.blue);
 			breadCrumbButtons[i].setBackgroundResource(
-					SelectionManager.getBCImg(breadcrumb));
-			addBreadCrumb(breadcrumb);
-			i++;
+					SelectionManager.getBCImg(newTrail.get(i)));
+			addBreadCrumb(newTrail.get(i));
 		}
 		
 		label.setText(trail.get(trail.size()-1));

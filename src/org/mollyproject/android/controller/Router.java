@@ -10,7 +10,7 @@ import org.mollyproject.android.view.Renderer;
 
 import android.content.Context;
 
-public class Router implements RequestsListener {
+public class Router {
 	protected CookieManager cookieMgr;
 	protected static boolean waiting;	
 	protected Renderer ren;
@@ -19,7 +19,8 @@ public class Router implements RequestsListener {
 	protected boolean firstReq;
 	protected Context context;
 	public final static String mOX =  "http://dev.m.ox.ac.uk/";
-	
+	public final static int JSON = 1;
+	public final static int QUERY = 2;
 	public Router (Context context) throws Exception
 	{
 		waiting = true;	
@@ -49,7 +50,7 @@ public class Router implements RequestsListener {
 		return outputStr;
 	}
 	
-	public String onRequestSent(String locator) throws Exception {
+	public String onRequestSent(String locator,int formatOrQuery,String query) throws Exception {
 		//Geting the actual URL from the server using the locator (view name)
 		//and the reverse API in Molly
 		if (waiting) {
@@ -58,10 +59,18 @@ public class Router implements RequestsListener {
 			String urlStr = new String();
 			String reverseReq = mOX + "reverse/?name="+locator;
 			urlStr = getFrom(reverseReq);
+			String output = new String();
 			
-			//Have the urlStr, now get the JSON text
-			String jsonText = new String();
-			jsonText = getFrom(urlStr+"?format=json");
+			//Have the urlStr, now get the JSON text or query
+			switch(formatOrQuery){
+			case JSON:
+				output = getFrom(urlStr+"?format=json");
+				break;
+			case QUERY:
+				output = getFrom(urlStr+"?query="+query);
+				break;
+			}
+			
 			System.out.println("First Request "+firstReq);
 			if (firstReq)
 			{ 
@@ -74,7 +83,7 @@ public class Router implements RequestsListener {
 			cookieMgr.setCookies(new URL(urlStr).openConnection());
 	        waiting = true;
 	        //ren.render(new JSONObject(jsonText));
-	        return jsonText;
+	        return output;
 		}
 		return null;
 	}
