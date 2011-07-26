@@ -1,6 +1,6 @@
 package org.mollyproject.android.controller;
 
-import org.mollyproject.android.view.pages.Page;
+import org.mollyproject.android.view.apps.Page;
 
 public interface MyAppListener {
 	public void onBreadCrumbAdded(String breadcrumb);

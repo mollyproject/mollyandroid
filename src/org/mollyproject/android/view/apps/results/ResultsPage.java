@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.pages;
+package org.mollyproject.android.view.apps.results;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,6 +13,8 @@ import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
+import org.mollyproject.android.view.apps.ContentPage;
+import org.mollyproject.android.view.apps.Page;
 
 import com.google.common.collect.ArrayListMultimap;
 

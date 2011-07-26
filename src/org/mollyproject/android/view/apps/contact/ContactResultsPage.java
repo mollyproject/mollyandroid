@@ -1,13 +1,13 @@
-package org.mollyproject.android.view.pages;
+package org.mollyproject.android.view.apps.contact;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
+import org.mollyproject.android.view.apps.ContentPage;
+import org.mollyproject.android.view.apps.Page;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -52,12 +52,11 @@ public class ContactResultsPage extends ContentPage {
 					LinearLayout thisResult = new LinearLayout(this);
 					thisResult.setOrientation(LinearLayout.VERTICAL);
 					
-					//name field, unique name
+					//name field
 					TextView name = new TextView(this);
 					name.setTextSize(18);
-					final String finalName = result.getString("cn");
+					final String finalName = result.getString("cn"); //declared as final for use in an onClickListener later
 					name.setText((i+1)+". "+finalName);
-					
 					
 					//ou field, i.e. department,college, etc - can have many, stored as
 					//a JSONArray in result
@@ -79,13 +78,14 @@ public class ContactResultsPage extends ContentPage {
 					fieldLayout.setOrientation(LinearLayout.VERTICAL);
 					
 					//check if the results are e-mails or phone numbers
-					if(output.getString("medium").equals("email"))
+					if(output.getString(ContactPage.MEDIUM).equals(ContactPage.EMAIL))
 					{
 						//case email
 						JSONArray mailFields = result.getJSONArray("mail");
 						String addresses = new String();
 						for (int j = 0; j < mailFields.length(); j++)
 						{
+							//display each address field
 							TextView field = new TextView(this);
 							field.setTextSize(18);
 							addresses = addresses + mailFields.get(j)+",";
@@ -98,16 +98,18 @@ public class ContactResultsPage extends ContentPage {
 						thisResult.setOnClickListener(new OnClickListener(){
 							@Override
 							public void onClick(View v) {
-	                            final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+	                            final Intent emailIntent = new Intent(
+	                            			android.content.Intent.ACTION_SEND);
 	                            emailIntent.setType("plain/text");
-	                            emailIntent.putExtra(Intent.EXTRA_PHONE_NUMBER, new String[] { finalAdd });
+	                            emailIntent.putExtra(Intent.EXTRA_PHONE_NUMBER, 
+	                            		new String[] { finalAdd });
 	                            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 							}
 						});
 					}
-					else if (output.getString("medium").equals("phone"))
+					else if (output.getString(ContactPage.MEDIUM).equals(ContactPage.PHONE))
 					{
-						//case phone
+						//case phone (a bit more complicated
 						List<String> numbers = new ArrayList<String>();
 						JSONArray phoneFields = result.getJSONArray("telephoneNumber");
 						for (int j = 0; j < phoneFields.length(); j++)
@@ -123,12 +125,7 @@ public class ContactResultsPage extends ContentPage {
 						thisResult.setOnClickListener(new OnClickListener(){
 							@Override
 							public void onClick(View v) {
-	                            //final Intent phoneIntent = new Intent(Intent.ACTION_CALL);
-	                            //phoneIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { finalNumbers });
-	                            //startActivity(Intent.createChooser(phoneIntent, "Call number..."));
-								
 								Dialog dialog = new Dialog(v.getContext());
-				                //dialog.setTitle("Dialing "+finalName+'\n'+finalOU+"Please choose a number:");
 				                dialog.setCancelable(true);
 				                //go to phone app when clicked on - pops up a dialog to choose
 				                //the number to dial
@@ -137,22 +134,22 @@ public class ContactResultsPage extends ContentPage {
 				                ScrollView scr = new ScrollView(v.getContext());
 				                for (final String num : finalNumbers)
 				                {
+				                	//display each number
 				                	TextView thisNum = new TextView(v.getContext());
 				                	thisNum.setText(num);
 				                	thisNum.setTextSize(18);
 				                	thisNum.setPadding(15, 10, 0, 10);
 				                	thisNum.setBackgroundResource(R.drawable.bg_white);
-				                	thisNum.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, 
-				        					LayoutParams.FILL_PARENT, 1f));
 				                	thisNum.setOnClickListener(new OnClickListener(){
 										@Override
 										public void onClick(View v) {
+											//call the number clicked
 					                		final Intent phoneIntent = new Intent(Intent.ACTION_CALL);
-				                            phoneIntent.setData(Uri.parse("tel:"+num+11234));
+				                            phoneIntent.setData(Uri.parse("tel:"+num));
 				                            startActivity(Intent.createChooser(phoneIntent, "Calling number..."));
 										}
 				                	});
-				                	
+				                	//draw a small line underneath by leaving a gap
 				                	thisNum.setLayoutParams(paramsWithLine);				                	
 				                	numLayout.addView(thisNum);
 				                }
@@ -167,6 +164,7 @@ public class ContactResultsPage extends ContentPage {
 					thisResult.addView(name);
 					thisResult.addView(ouLayout);
 					thisResult.addView(fieldLayout);
+					
 					thisResult.setBackgroundResource(R.drawable.bg_blue);
 					thisResult.setLayoutParams(paramsWithLine);
 					thisResult.setPadding(10, 10, 0, 10);
@@ -181,7 +179,6 @@ public class ContactResultsPage extends ContentPage {
 			//problem here, json not received from server
 			e.printStackTrace();
 		}
-			
 	}
 	
 	@Override

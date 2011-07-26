@@ -1,7 +1,9 @@
-package org.mollyproject.android.view.pages;
+package org.mollyproject.android.view.apps.contact;
 
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
+import org.mollyproject.android.view.apps.ContentPage;
+import org.mollyproject.android.view.apps.Page;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.widget.LinearLayout;
 public class ContactPage extends ContentPage {
 	public static String PHONE = "phone";
 	public static String EMAIL = "email";
+	public static String MEDIUM = "medium";
 	
 	public void onCreate(Bundle savedInstanceState)
 	{

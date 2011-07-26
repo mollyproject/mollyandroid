@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.pages;
+package org.mollyproject.android.view.apps;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ package org.mollyproject.android;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
-import org.mollyproject.android.view.pages.Page;
+import org.mollyproject.android.view.apps.Page;
 
 import android.content.Intent;
 import android.os.Bundle;

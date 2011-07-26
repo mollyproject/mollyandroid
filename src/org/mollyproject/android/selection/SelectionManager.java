@@ -4,7 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.mollyproject.android.R;
-import org.mollyproject.android.view.pages.*;
+import org.mollyproject.android.view.apps.*;
+import org.mollyproject.android.view.apps.contact.ContactPage;
+import org.mollyproject.android.view.apps.contact.ContactResultsPage;
+import org.mollyproject.android.view.apps.features.FeatureVotePage;
+import org.mollyproject.android.view.apps.feedback.FeedbackPage;
+import org.mollyproject.android.view.apps.library.LibraryPage;
+import org.mollyproject.android.view.apps.results.ResultsPage;
 
 import com.google.common.collect.HashBiMap;
 public class SelectionManager {

@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.pages;
+package org.mollyproject.android.view.apps;
 
 public class PlacesPage extends Page {
 	public static final Page INSTANCE = new PlacesPage();

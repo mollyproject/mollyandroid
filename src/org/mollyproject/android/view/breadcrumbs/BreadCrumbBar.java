@@ -7,7 +7,8 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyAppListener;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.selection.SelectionManager;
-import org.mollyproject.android.view.pages.Page;
+import org.mollyproject.android.view.apps.Page;
+
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +16,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class BreadCrumbBar extends View implements MyAppListener {
-	protected List<String> trail; //trail of breadcrumbs represented as viewnames
+	/** trail of breadcrumbs represented as viewnames, the idea is that
+	the breadcrumb bar is generated dynamically and holds its own version
+	of the breadcrumb trail - so whenever there is a change in the main
+	trail in MyApplication, this trail acts accordingly, it may sound
+	inefficient and messy, but is worth doing because it helps tell
+	MyApplication which breadcrumb bar on which unfocused page to get rid of
+	
+	I'd be more than happy if someone comes up with a cleaner solution
+	
+	Android spawns a new instance of a page activity every time a new page
+	is reached, that is bad because then the breadcrumb bar gets flushed away 
+	*/
+	protected List<String> trail; 
 	protected Button[] breadCrumbButtons;
 	protected int bcCount;
 	protected LinearLayout bar;

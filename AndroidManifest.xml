@@ -29,6 +29,6 @@
 		<activity android:name=".view.pages.LibraryPage"></activity>
 		<activity android:name=".view.pages.PlacesPage"></activity>
 		<activity android:name=".view.pages.MapPage"></activity>
-		<activity android:name=".view.pages.ContactResultsPage"></activity>
+		<activity android:name=".view.apps.contact.ContactResultsPage"></activity>
     </application>
 </manifest>

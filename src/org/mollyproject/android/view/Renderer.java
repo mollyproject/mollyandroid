@@ -6,7 +6,7 @@ import java.util.Queue;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.selection.SelectionManager;
-import org.mollyproject.android.view.pages.Page;
+import org.mollyproject.android.view.apps.Page;
 
 public class Renderer {
 	protected SelectionManager mgr;	

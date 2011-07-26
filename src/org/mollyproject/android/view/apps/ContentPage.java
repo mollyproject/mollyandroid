@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.pages;
+package org.mollyproject.android.view.apps;
 
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;

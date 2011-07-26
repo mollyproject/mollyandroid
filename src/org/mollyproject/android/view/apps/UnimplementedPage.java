@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.pages;
+package org.mollyproject.android.view.apps;
 
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
