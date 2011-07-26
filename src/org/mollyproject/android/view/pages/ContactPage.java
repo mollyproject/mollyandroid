@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.pages;
 
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.selection.SelectionManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +16,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class ContactPage extends ContentPage {
-
+	public static String PHONE = "phone";
+	public static String EMAIL = "email";
+	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -33,7 +36,7 @@ public class ContactPage extends ContentPage {
 		            {
 		                case KeyEvent.KEYCODE_DPAD_CENTER:
 		                case KeyEvent.KEYCODE_ENTER:
-		                	emailSearch(searchField.getText().toString());
+		                	searchContact(searchField.getText().toString(),EMAIL);
 		                    return true;
 		                default:
 		                    break;
@@ -53,8 +56,7 @@ public class ContactPage extends ContentPage {
 		emailButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				emailSearch(searchField.getText().toString());
+				searchContact(searchField.getText().toString(),EMAIL);
 			}
 		});
 		
@@ -62,6 +64,14 @@ public class ContactPage extends ContentPage {
 		phoneButton.setText("Phone");
 		phoneButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
 				LayoutParams.WRAP_CONTENT, 1f));
+		phoneButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				searchContact(searchField.getText().toString(),PHONE);
+			}
+			
+		});
 		
 		searchButtons.addView(emailButton,ViewGroup.LayoutParams.FILL_PARENT);
 		searchButtons.addView(phoneButton,ViewGroup.LayoutParams.FILL_PARENT);
@@ -73,11 +83,12 @@ public class ContactPage extends ContentPage {
 		//setContentView(R.layout.contacts);
 	}
 	
-	private void emailSearch(String query)
+	private void searchContact(String query, String medium)
 	{
 		String jsonOutput = new String();
 		try {
-			jsonOutput = router.onRequestSent("contact:result_list",Router.QUERY,query.replace(' ', '+')+"&format=json");
+			jsonOutput = router.onRequestSent(SelectionManager.CONTACT_RESULTS_PAGE,
+									Router.QUERY,query.replace(' ', '+')+"&medium="+medium+"&format=json");
 			myApp.setContactOutput(jsonOutput);
 			Intent myIntent = new Intent (this, ContactResultsPage.class);
 			startActivityForResult(myIntent,0);

@@ -26,6 +26,13 @@ public abstract class Page extends Activity {
 	protected Router router;
 	//public abstract void refresh();
 	
+	//use someLayout.setLayoutParams() with this paramsWithLine as a parameter makes
+	//a gap of 5px below the LinearLayout, this is used hee to make gaps between views
+	public static LinearLayout.LayoutParams paramsWithLine = new LinearLayout.LayoutParams
+			(LinearLayout.LayoutParams.FILL_PARENT, 
+			LinearLayout.LayoutParams.FILL_PARENT);
+	static { paramsWithLine.setMargins(0, 0, 0, 5); }
+	
 	@Override
 	public void onCreate (Bundle savedInstanceState)
 	{

@@ -1,5 +1,6 @@
 package org.mollyproject.android.view.pages;
 
+import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
@@ -19,7 +20,7 @@ public abstract class ContentPage extends Page {
 		contentLayout.addView(bcBar.getBar());
 		
 		router = ((MyApplication) getApplication()).getRouter();
-		
+		contentLayout.setBackgroundResource(R.drawable.bg_blue);
 		setContentView(contentLayout);
 	}
 	
