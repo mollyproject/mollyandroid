@@ -22,13 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.pages.HomePage"></activity>
-		<activity android:name=".view.pages.ResultsPage"></activity>
-		<activity android:name=".view.pages.ContactPage"></activity>
-		<activity android:name=".view.pages.FeatureVotePage"></activity>
-		<activity android:name=".view.pages.LibraryPage"></activity>
-		<activity android:name=".view.pages.PlacesPage"></activity>
-		<activity android:name=".view.pages.MapPage"></activity>
+        <activity android:name=".view.apps.HomePage"></activity>
+		<activity android:name=".view.apps.results.ResultsPage"></activity>
+		<activity android:name=".view.apps.features.FeatureVotePage"></activity>
+		<activity android:name=".view.apps.library.LibraryPage"></activity>
+		<activity android:name=".view.apps.PlacesPage"></activity>
+		<activity android:name=".view.apps.contact.ContactPage"></activity>
 		<activity android:name=".view.apps.contact.ContactResultsPage"></activity>
     </application>
 </manifest>

@@ -7,6 +7,7 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.breadcrumbs.BreadCrumbBar;
+import org.mollyproject.android.view.breadcrumbs.ImprovedBreadCrumbBar;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public abstract class Page extends Activity {
-	protected BreadCrumbBar bcBar;
+	protected ImprovedBreadCrumbBar bcBar;
 	protected MyApplication myApp;
 	protected ArrayList<String> trail;
 	protected JSONObject jsonContent;
@@ -38,7 +39,7 @@ public abstract class Page extends Activity {
 	{
 		super.onCreate(savedInstanceState);
 		myApp = (MyApplication) getApplication();
-		bcBar = new BreadCrumbBar(getInstance());
+		bcBar = new ImprovedBreadCrumbBar(getInstance());
 		router = myApp.getRouter();
 	}
 	

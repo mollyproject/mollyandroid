@@ -39,7 +39,6 @@ public class BreadCrumbBar extends View implements MyAppListener {
 	public BreadCrumbBar(Page page) {
 		super(page.getApplicationContext());
 		this.page = page;
-		((MyApplication) page.getApplication()).addListener(this);
 		breadCrumbButtons = new Button[4];
 		bcCount = 0;
 		bar = new LinearLayout(page.getApplicationContext());

@@ -10,8 +10,6 @@ import android.app.Application;
 
 public class MyApplication extends Application {
 	protected List<String> bcTrail;
-	protected List<MyAppListener> myAppListeners;
-	protected List<MyAppListener> toBeRemoved;
 	protected int bcCount;
 	protected Router router;
 	protected String mapQuery;
@@ -22,26 +20,6 @@ public class MyApplication extends Application {
 		super();
 		bcCount = 0;
 		bcTrail = new ArrayList<String>();
-		myAppListeners = new ArrayList<MyAppListener>();
-		toBeRemoved = new ArrayList<MyAppListener>();
-	}
-	
-	public void addListener(MyAppListener l)
-	{
-		//Changed from enhanced for loop to counted for loop (faster)
-		for (int i = 0; i < myAppListeners.size(); i++)
-		{
-			if (myAppListeners.get(i).getOwnerClass() == l.getOwnerClass())
-			{
-				toBeRemoved.add(myAppListeners.get(i));
-			}
-		}
-		myAppListeners.add(l);
-	}
-	
-	public void removeListener(MyAppListener l)
-	{
-		myAppListeners.remove(l);
 	}
 	
 	public void addBreadCrumb(String breadcrumb)
@@ -50,41 +28,26 @@ public class MyApplication extends Application {
 		{
 			bcTrail.add(breadcrumb);
 			bcCount++;
-			
-			//Changed from enhanced for loop to counted for loop (faster)
-			for (int i = 0; i < myAppListeners.size(); i++)
-			{
-				myAppListeners.get(i).onBreadCrumbAdded(breadcrumb);			
-			}
+		}
+		
+		System.out.println("Trail extended");
+		for (String b : bcTrail)
+		{
+			System.out.println(b);
 		}
 	}
 	
-	public void removeBreadCrumb()
+	public void removeBreadCrumb(String breadcrumb)
 	{	
-		String temp = new String();
-		//Changed from enhanced for loop to counted for loop (faster)
-		for (int i = 0; i < toBeRemoved.size(); i++)
-		{
-			removeListener(toBeRemoved.get(i));
-		}
-		
-		if (bcCount > 0)
+		if ((bcCount > 0)&bcTrail.get(bcTrail.size()-1).equals(breadcrumb))
 		{
 			bcCount--;
-			temp = bcTrail.get(bcCount);
 			bcTrail.remove(bcCount);
 		}
-		
-		for (int i = 0; i < myAppListeners.size(); i++)
+		System.out.println("Trail contracted");
+		for (String b : bcTrail)
 		{
-			if (myAppListeners.get(i).canBeRemoved(temp))
-			{
-				toBeRemoved.add(myAppListeners.get(i));
-			}
-			else
-			{
-				myAppListeners.get(i).onBreadCrumbRemoved(temp);
-			}
+			System.out.println(b);
 		}
 	}
 	public void setContactOutput(String jsonOutput) { contactOutput = jsonOutput; }

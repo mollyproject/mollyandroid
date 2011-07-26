@@ -18,25 +18,29 @@ public abstract class ContentPage extends Page {
 		contentLayout.setOrientation(LinearLayout.VERTICAL);
 				
 		contentLayout.addView(bcBar.getBar());
-		
 		router = ((MyApplication) getApplication()).getRouter();
 		contentLayout.setBackgroundResource(R.drawable.bg_blue);
 		setContentView(contentLayout);
 	}
 	
+	//it resumes the next page first, then stops the previous page,
+	//unnecessary complications
 	@Override
 	public void onStop()
 	{
 		super.onStop();
-		myApp.removeBreadCrumb();
-		myApp.removeListener(bcBar);
+		System.out.println(SelectionManager.getName(getInstance().getClass())+"onStop");
+		myApp.removeBreadCrumb(SelectionManager.getName(getInstance().getClass()));
+		//myApp.removeListener(bcBar);
 	}
 	
 	@Override
 	public void onResume()
 	{
 		super.onResume();
-		myApp.addListener(bcBar);
+		System.out.println(SelectionManager.getName(getInstance().getClass())+"onResume");
 		myApp.addBreadCrumb(SelectionManager.getName(getInstance().getClass()));
+		System.out.println("Reconstructing");
+		bcBar.reconstruct();
 	}
 }
