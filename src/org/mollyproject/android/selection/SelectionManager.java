@@ -1,5 +1,8 @@
 package org.mollyproject.android.selection;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mollyproject.android.R;
 import org.mollyproject.android.view.pages.*;
 
@@ -22,6 +25,7 @@ public class SelectionManager {
 	public static String FEATURE_VOTE = "feature_vote:index";
 	public static String FEEDBACK_PAGE = "feedback:index";
 	public static String LIBRARY_PAGE = "library:index";
+	public static String CONTACT_RESULTS_PAGE = "contact:result_list";
 	
 	//The following hash table allows for easier future change in implementation
 	//of new pages
@@ -35,10 +39,11 @@ public class SelectionManager {
 		pages.put(FEATURE_VOTE, FeatureVotePage.class);
 		pages.put(FEEDBACK_PAGE, FeedbackPage.class);
 		pages.put(LIBRARY_PAGE, LibraryPage.class);
+		pages.put(CONTACT_RESULTS_PAGE, ContactResultsPage.class);
 	}
 	
-	protected static HashBiMap<String,Integer> bcImg 
-					= HashBiMap.create();
+	protected static Map<String,Integer> bcImg 
+					= new HashMap<String,Integer>();
 	
 	static {
 		bcImg.put(HOME_PAGE, R.drawable.apple_touch_icon);
@@ -47,6 +52,7 @@ public class SelectionManager {
 		bcImg.put(CONTACT_PAGE, R.drawable.contact_bc);
 		bcImg.put(FEATURE_VOTE, R.drawable.feature_vote_bc);
 		bcImg.put(LIBRARY_PAGE, R.drawable.library_bc);
+		bcImg.put(CONTACT_RESULTS_PAGE, R.drawable.contact_bc);
 	}
 	
 	public SelectionManager()

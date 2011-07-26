@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Molly Project</string>
     <color name="blue">#305582</color>
+    <color name="white">#FFFFFF</color>
 </resources>

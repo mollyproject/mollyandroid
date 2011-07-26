@@ -16,9 +16,7 @@ public abstract class ContentPage extends Page {
 		contentLayout = new LinearLayout(this);
 		contentLayout.setOrientation(LinearLayout.VERTICAL);
 				
-		contentLayout.addView(bcBar.getBar(), new ViewGroup.LayoutParams
-				(getWindowManager().getDefaultDisplay().getWidth(),
-				getWindowManager().getDefaultDisplay().getHeight()/10));
+		contentLayout.addView(bcBar.getBar());
 		
 		router = ((MyApplication) getApplication()).getRouter();
 		
