@@ -10,6 +10,7 @@ import org.mollyproject.android.view.apps.contact.ContactResultsPage;
 import org.mollyproject.android.view.apps.features.FeatureVotePage;
 import org.mollyproject.android.view.apps.feedback.FeedbackPage;
 import org.mollyproject.android.view.apps.library.LibraryPage;
+import org.mollyproject.android.view.apps.library.LibraryResultsPage;
 import org.mollyproject.android.view.apps.results.ResultsPage;
 
 import com.google.common.collect.HashBiMap;
@@ -31,6 +32,7 @@ public class SelectionManager {
 	public static String FEATURE_VOTE = "feature_vote:index";
 	public static String FEEDBACK_PAGE = "feedback:index";
 	public static String LIBRARY_PAGE = "library:index";
+	public static String LIBRARY_RESULTS_PAGE = "library:search";
 	public static String CONTACT_RESULTS_PAGE = "contact:result_list";
 	
 	//The following hash table allows for easier future change in implementation
@@ -45,6 +47,7 @@ public class SelectionManager {
 		pages.put(FEATURE_VOTE, FeatureVotePage.class);
 		pages.put(FEEDBACK_PAGE, FeedbackPage.class);
 		pages.put(LIBRARY_PAGE, LibraryPage.class);
+		pages.put(LIBRARY_RESULTS_PAGE, LibraryResultsPage.class);
 		pages.put(CONTACT_RESULTS_PAGE, ContactResultsPage.class);
 	}
 	
@@ -58,6 +61,7 @@ public class SelectionManager {
 		bcImg.put(CONTACT_PAGE, R.drawable.contact_bc);
 		bcImg.put(FEATURE_VOTE, R.drawable.feature_vote_bc);
 		bcImg.put(LIBRARY_PAGE, R.drawable.library_bc);
+		bcImg.put(LIBRARY_RESULTS_PAGE, R.drawable.library_bc);
 		bcImg.put(CONTACT_RESULTS_PAGE, R.drawable.contact_bc);
 	}
 	

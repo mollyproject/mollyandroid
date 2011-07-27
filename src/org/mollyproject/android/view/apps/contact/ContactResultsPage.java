@@ -38,7 +38,12 @@ public class ContactResultsPage extends ContentPage {
 			resultsNo.setPadding(10, 25, 0, 25);
 			resultsNo.setBackgroundResource(R.drawable.bg_white);
 			//notification
-			resultsNo.setText("Your search returned "+results.length()+" result(s).");
+			String notification = "Your search returned "+results.length()+" result(s).";
+			if (results.length() > 50)
+			{
+				notification = notification + " Try adding an initial to get more specific results.";
+			}
+			resultsNo.setText(notification);
 			contentLayout.addView(resultsNo);
 			
 			if (results.length() > 0)
@@ -100,8 +105,7 @@ public class ContactResultsPage extends ContentPage {
 	                            final Intent emailIntent = new Intent(
 	                            			android.content.Intent.ACTION_SEND);
 	                            emailIntent.setType("plain/text");
-	                            emailIntent.putExtra(Intent.EXTRA_EMAIL, 
-	                            		new String[] { finalAdd });
+	                            emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { finalAdd });
 	                            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 							}
 						});
@@ -172,6 +176,7 @@ public class ContactResultsPage extends ContentPage {
 				resultsLayout.setBackgroundResource(R.drawable.bg_white);
 				scr.addView(resultsLayout);
 				contentLayout.addView(scr);
+				myApp.timeStop();
 			}
 			
 		} catch (JSONException e) {

@@ -17,7 +17,7 @@ public class Router {
 	protected Context context;
 	public final static String mOX =  "http://dev.m.ox.ac.uk/";
 	public final static int JSON = 1;
-	public final static int QUERY = 2;
+	
 	public Router (Context context) throws Exception
 	{
 		waiting = true;	
@@ -47,7 +47,7 @@ public class Router {
 		return outputStr;
 	}
 	
-	public String onRequestSent(String locator,int formatOrQuery,String query) throws Exception {
+	public String onRequestSent(String locator,int format, String query) throws Exception {
 		//Geting the actual URL from the server using the locator (view name)
 		//and the reverse API in Molly
 		if (waiting) {
@@ -59,14 +59,19 @@ public class Router {
 			String output = new String();
 			
 			//Have the urlStr, now get the JSON text or query
-			switch(formatOrQuery){
+			
+			switch(format){
 			case JSON:
-				output = getFrom(urlStr+"?format=json");
-				break;
-			case QUERY:
-				output = getFrom(urlStr+"?query="+query);
+				urlStr = urlStr+"?format=json";
 				break;
 			}
+			
+			if (query != null)
+			{
+				urlStr = urlStr+"&"+query;
+			}
+			
+			output = getFrom(urlStr);
 			
 			System.out.println("First Request "+firstReq);
 			if (firstReq)

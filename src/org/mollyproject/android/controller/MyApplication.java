@@ -9,6 +9,7 @@ public class MyApplication extends Application {
 	protected Router router;
 	protected String mapQuery;
 	protected String contactOutput;
+	protected String libraryOutput;
 	
 	public MyApplication() throws Exception
 	{
@@ -62,6 +63,17 @@ public class MyApplication extends Application {
 			System.out.println(b);
 		}
 	}
+	
+	private long curTime = 0;
+	public void timeStart() { curTime = System.nanoTime(); }
+	
+	public void timeStop()
+	{
+		long now = System.nanoTime();
+		curTime = now - curTime;
+		System.out.println("Time elapsed: "+curTime);
+	}
+	
 	public void setContactOutput(String jsonOutput) { contactOutput = jsonOutput; }
 	
 	public String getContactOutput() { return contactOutput; }
@@ -75,4 +87,8 @@ public class MyApplication extends Application {
 	public Router getRouter() {	return router; }
 	
 	public void setRouter(Router router) { this.router = router; }
+
+	public void setLibraryOutput(String jsonOutput) { libraryOutput = jsonOutput; }
+	
+	public String getLibraryOutput() { return libraryOutput; }
 }

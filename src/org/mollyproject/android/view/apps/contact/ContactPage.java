@@ -1,5 +1,7 @@
 package org.mollyproject.android.view.apps.contact;
 
+import java.net.URLEncoder;
+
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.ContentPage;
@@ -91,9 +93,10 @@ public class ContactPage extends ContentPage {
 		String jsonOutput = new String();
 		try {
 			jsonOutput = router.onRequestSent(SelectionManager.CONTACT_RESULTS_PAGE,
-									Router.QUERY,query.replace(' ', '+')+"&medium="+medium+"&format=json");
+									Router.JSON,"query="+URLEncoder.encode(query,"UTF-8")+"&medium="+medium);
 			myApp.setContactOutput(jsonOutput);
 			Intent myIntent = new Intent (this, ContactResultsPage.class);
+			myApp.timeStart();
 			startActivityForResult(myIntent,0);
 		} catch (Exception e) {
 			myApp.setContactOutput("Error");
