@@ -1,6 +1,6 @@
 package org.mollyproject.android.view.breadcrumbs;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;
@@ -54,7 +54,7 @@ public class ImprovedBreadCrumbBar extends View {
 			button.setEnabled(false);
 		}
 		
-		ArrayList<String> newTrail = ((MyApplication) page.getApplication()).getTrail();
+		LinkedList<String> newTrail = ((MyApplication) page.getApplication()).getTrail();
 		
 		if (newTrail.size() < 4)
 		{

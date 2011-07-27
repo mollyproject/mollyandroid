@@ -151,8 +151,7 @@ public class LocationThread extends Thread {
 				while (!stop)
 				{	
 					handler.post(r);
-					System.out.println("LocThread running");
-					sleep(UPDATE_DELAY_IN_MS);					
+					sleep(UPDATE_DELAY_IN_MS);
 				}
 			} catch (InterruptedException e) {
 	            System.out.println("Thread interrupted");

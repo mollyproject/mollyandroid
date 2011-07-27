@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
-import org.mollyproject.android.view.Renderer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -28,7 +27,7 @@ public class HomePage extends Page {
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
         
-    	myApp.addBreadCrumb(SelectionManager.getName(HomePage.class));
+    	myApp.updateBreadCrumb(SelectionManager.getName(HomePage.class));
         System.out.println("Home added breadcrumb");
     	
 		LinearLayout contentLayout = new LinearLayout(this);
@@ -139,6 +138,10 @@ public class HomePage extends Page {
 				e.printStackTrace();
 			}
     	}
+    	
+    	//home page still contributes to breadcrumb update, but doesn't need a bar on it
+    	//so no need to call bcBar.reconstruct
+		myApp.updateBreadCrumb(SelectionManager.getName(getInstance().getClass()));
     }
     
     @Override
@@ -158,4 +161,6 @@ public class HomePage extends Page {
         }
         return super.onKeyDown(keyCode, event);
     }
+    
+    
 }

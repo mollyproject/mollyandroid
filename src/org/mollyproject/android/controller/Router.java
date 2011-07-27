@@ -6,14 +6,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.mollyproject.android.view.Renderer;
-
 import android.content.Context;
 
 public class Router {
 	protected CookieManager cookieMgr;
 	protected static boolean waiting;	
-	protected Renderer ren;
 	protected LocationThread currentLocThread;
 	protected String csrfToken;
 	protected boolean firstReq;
