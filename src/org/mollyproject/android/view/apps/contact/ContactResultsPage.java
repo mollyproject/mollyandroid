@@ -100,7 +100,7 @@ public class ContactResultsPage extends ContentPage {
 	                            final Intent emailIntent = new Intent(
 	                            			android.content.Intent.ACTION_SEND);
 	                            emailIntent.setType("plain/text");
-	                            emailIntent.putExtra(Intent.EXTRA_PHONE_NUMBER, 
+	                            emailIntent.putExtra(Intent.EXTRA_EMAIL, 
 	                            		new String[] { finalAdd });
 	                            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 							}
@@ -137,7 +137,7 @@ public class ContactResultsPage extends ContentPage {
 				                	TextView thisNum = new TextView(v.getContext());
 				                	thisNum.setText(num);
 				                	thisNum.setTextSize(18);
-				                	thisNum.setPadding(15, 10, 0, 10);
+				                	thisNum.setPadding(10, 10, 0, 10);
 				                	thisNum.setBackgroundResource(R.drawable.bg_white);
 				                	thisNum.setOnClickListener(new OnClickListener(){
 										@Override
