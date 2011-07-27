@@ -8,8 +8,8 @@ public class MyApplication extends Application {
 	protected int bcCount;
 	protected Router router;
 	protected String mapQuery;
-	protected String contactOutput;
-	protected String libraryOutput;
+	protected String contactQuery;
+	protected String libraryQuery;
 	
 	public MyApplication() throws Exception
 	{
@@ -65,18 +65,18 @@ public class MyApplication extends Application {
 	}
 	
 	private long curTime = 0;
-	public void timeStart() { curTime = System.nanoTime(); }
+	public void timeStart() { curTime = System.currentTimeMillis(); }
 	
 	public void timeStop()
 	{
-		long now = System.nanoTime();
+		long now = System.currentTimeMillis();
 		curTime = now - curTime;
-		System.out.println("Time elapsed: "+curTime);
+		System.out.println(curTime+" milliseconds");
 	}
 	
-	public void setContactOutput(String jsonOutput) { contactOutput = jsonOutput; }
+	public void setContactQuery(String query) { contactQuery = query; }
 	
-	public String getContactOutput() { return contactOutput; }
+	public String getContactQuery() { return contactQuery; }
 	
 	public LinkedList<String> getTrail()	{ return (LinkedList<String>) bcTrail; }
 	
@@ -88,7 +88,7 @@ public class MyApplication extends Application {
 	
 	public void setRouter(Router router) { this.router = router; }
 
-	public void setLibraryOutput(String jsonOutput) { libraryOutput = jsonOutput; }
+	public void setLibraryQuery(String query) { libraryQuery = query; }
 	
-	public String getLibraryOutput() { return libraryOutput; }
+	public String getLibraryQuery() { return libraryQuery; }
 }

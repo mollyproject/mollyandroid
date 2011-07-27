@@ -1,5 +1,6 @@
 package org.mollyproject.android.view.apps.contact;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import org.mollyproject.android.controller.Router;
@@ -90,18 +91,18 @@ public class ContactPage extends ContentPage {
 	
 	private void searchContact(String query, String medium)
 	{
-		String jsonOutput = new String();
+		String searchQuery;
 		try {
-			jsonOutput = router.onRequestSent(SelectionManager.CONTACT_RESULTS_PAGE,
-									Router.JSON,"query="+URLEncoder.encode(query,"UTF-8")+"&medium="+medium);
-			myApp.setContactOutput(jsonOutput);
+			searchQuery = "query="+URLEncoder.encode(query,"UTF-8")+"&medium="+medium;
+			myApp.setContactQuery(searchQuery);
 			Intent myIntent = new Intent (this, ContactResultsPage.class);
 			myApp.timeStart();
 			startActivityForResult(myIntent,0);
-		} catch (Exception e) {
-			myApp.setContactOutput("Error");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	}
+		}
 	
 	@Override
 	public Page getInstance() {

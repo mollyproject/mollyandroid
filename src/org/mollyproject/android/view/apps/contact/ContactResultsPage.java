@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
@@ -23,9 +25,11 @@ public class ContactResultsPage extends ContentPage {
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		String jsonOutput = myApp.getContactOutput();
+		String query = myApp.getContactQuery();
 		
 		try {
+			String jsonOutput = router.onRequestSent(SelectionManager.getName(this.getClass()),
+					Router.JSON, query);
 			JSONObject output = new JSONObject(jsonOutput);
 			JSONArray results = output.getJSONArray("results");
 			
@@ -176,11 +180,16 @@ public class ContactResultsPage extends ContentPage {
 				resultsLayout.setBackgroundResource(R.drawable.bg_white);
 				scr.addView(resultsLayout);
 				contentLayout.addView(scr);
+				System.out.println("Search completed, returned "+results.length()
+									+" results"+" and page rendered in:");
 				myApp.timeStop();
 			}
 			
 		} catch (JSONException e) {
 			//problem here, json not received from server
+			e.printStackTrace();
+		} catch (Exception e) {
+			//problem with router
 			e.printStackTrace();
 		}
 	}

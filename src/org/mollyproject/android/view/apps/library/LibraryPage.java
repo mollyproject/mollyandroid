@@ -145,18 +145,9 @@ public class LibraryPage extends ContentPage {
 				query = query+key+"="+URLEncoder.encode(bookArgs.get(key), "UTF-8")+"&";
 			}
 		}
-		try {
-			jsonOutput = router.onRequestSent(SelectionManager.LIBRARY_RESULTS_PAGE
-					, Router.JSON, query);
-			System.out.println(jsonOutput);
-			myApp.setLibraryOutput(jsonOutput);
-			
-			Intent myIntent = new Intent (this, LibraryResultsPage.class);
-			startActivityForResult(myIntent,0);
-		} catch (Exception e) {
-			myApp.setLibraryOutput("Error");
-		}
-		
+		myApp.setLibraryQuery(query);
+		Intent myIntent = new Intent (this, LibraryResultsPage.class);
+		startActivityForResult(myIntent,0);
 	}
 	
 	@Override
