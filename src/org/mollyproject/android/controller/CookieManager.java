@@ -60,10 +60,9 @@ public class CookieManager {
 	    		cookies = new JSONObject(recoveredJSONStr);
 	    	}
     	}
-    	
+    	//the else case is dealt with by doing a storeCookies() call in Router 
     	dateFormat = new SimpleDateFormat(DATE_FORMAT);
     }    
-
     /**
      * Retrieves and stores cookies returned by the host on the other side
      * of the the open java.net.URLConnection.
@@ -77,11 +76,13 @@ public class CookieManager {
      */
     public void storeCookies(URLConnection conn) throws JSONException, IOException
     {    	    		
+    	System.out.println("cookies: "+cookies);
     	if (cookies.length() == 0)
     	{
 			String headerName;
 			String cookieField;
 			for (int i=1; (headerName = conn.getHeaderFieldKey(i)) != null; i++) {
+				System.out.println("header field "+conn.getHeaderFieldKey(i)+" "+conn.getHeaderField(i));
 			    if (headerName.equalsIgnoreCase(SET_COOKIE)) {
 			    	//Extract the cookie in the specified header field
 			    	cookieField = conn.getHeaderField(i);
@@ -171,8 +172,6 @@ public class CookieManager {
     public String readCookiesFromFile() throws IOException, JSONException
     {
     	//Assuming the file exists
-    	
-    	
     	FileInputStream fIn = context.openFileInput(COOKIESFILE);
         InputStreamReader isr = new InputStreamReader(fIn);
         char[] inputBuffer = new char[1024];

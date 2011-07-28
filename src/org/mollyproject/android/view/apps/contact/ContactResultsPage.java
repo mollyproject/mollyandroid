@@ -39,7 +39,7 @@ public class ContactResultsPage extends ContentPage {
 			TextView resultsNo = new TextView(this);
 			resultsNo.setTextSize(16);
 			resultsNo.setTextColor(R.color.black);
-			resultsNo.setPadding(10, 25, 0, 25);
+			resultsNo.setPadding(10, 20, 0, 20);
 			resultsNo.setBackgroundResource(R.drawable.bg_white);
 			//notification
 			String notification = "Your search returned "+results.length()+" result(s).";
@@ -103,20 +103,11 @@ public class ContactResultsPage extends ContentPage {
 						final String finalAdd = addresses;
 						//go to email app when clicked on - easy: just add all the addresses
 						//belonging to this person seen so far to the recipient's field
-						thisResult.setOnClickListener(new OnClickListener(){
-							@Override
-							public void onClick(View v) {
-	                            final Intent emailIntent = new Intent(
-	                            			android.content.Intent.ACTION_SEND);
-	                            emailIntent.setType("plain/text");
-	                            emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { finalAdd });
-	                            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-							}
-						});
+						setEmailClick(thisResult,finalAdd);
 					}
 					else if (output.getString(ContactPage.MEDIUM).equals(ContactPage.PHONE))
 					{
-						//case phone (a bit more complicated
+						//case phone (a bit more complicated)
 						List<String> numbers = new ArrayList<String>();
 						JSONArray phoneFields = result.getJSONArray("telephoneNumber");
 						for (int j = 0; j < phoneFields.length(); j++)
@@ -145,17 +136,8 @@ public class ContactResultsPage extends ContentPage {
 				                	TextView thisNum = new TextView(v.getContext());
 				                	thisNum.setText(num);
 				                	thisNum.setTextSize(18);
-				                	thisNum.setPadding(10, 10, 0, 10);
 				                	thisNum.setBackgroundResource(R.drawable.bg_white);
-				                	thisNum.setOnClickListener(new OnClickListener(){
-										@Override
-										public void onClick(View v) {
-											//call the number clicked
-					                		final Intent phoneIntent = new Intent(Intent.ACTION_CALL);
-				                            phoneIntent.setData(Uri.parse("tel:"+num));
-				                            startActivity(Intent.createChooser(phoneIntent, "Calling number..."));
-										}
-				                	});
+				                	setPhoneClick(thisNum, num);
 				                	//draw a small line underneath by leaving a gap
 				                	thisNum.setLayoutParams(paramsWithLine);				                	
 				                	numLayout.addView(thisNum);
@@ -167,7 +149,7 @@ public class ContactResultsPage extends ContentPage {
 							}
 						});
 					}
-					
+
 					thisResult.addView(name);
 					thisResult.addView(ouLayout);
 					thisResult.addView(fieldLayout);

@@ -12,10 +12,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -64,6 +68,45 @@ public abstract class Page extends Activity {
 		    	 alertDialog.dismiss();
 		    } });
 		alertDialog.show();
+	}
+	
+	public void setEmailClick(View view, final String finalAdd)
+	{
+		view.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+                Intent emailIntent = new Intent(
+                			android.content.Intent.ACTION_SEND);
+                emailIntent.setType("plain/text");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { finalAdd });
+                startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+			}
+		});
+	}
+	
+	public void setPhoneClick(View view, final String phoneNumber)
+	{
+		view.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				//call the number clicked
+        		Intent phoneIntent = new Intent(Intent.ACTION_CALL);
+                phoneIntent.setData(Uri.parse("tel:"+phoneNumber));
+                startActivity(Intent.createChooser(phoneIntent, "Calling number..."));
+			}
+    	});
+	}
+	
+	public void setURLClick(View view, final String urlStr)
+	{
+		view.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				//go to the url clicked
+				Intent browseIntent = new Intent( Intent.ACTION_VIEW , Uri.parse(urlStr) );
+                startActivity(Intent.createChooser(browseIntent, "Calling number..."));
+			}
+    	});
 	}
 	
 	@Override

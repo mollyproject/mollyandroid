@@ -132,7 +132,8 @@ public class HomePage extends Page {
     	else
     	{
     		try {
-				jsonContent = new JSONObject(router.onRequestSent(SelectionManager.getName(getClass()),Router.JSON,null));
+				jsonContent = new JSONObject(router.onRequestSent(SelectionManager.getName(getClass()),
+						Router.JSON,null));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

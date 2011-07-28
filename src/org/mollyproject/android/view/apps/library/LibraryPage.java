@@ -142,6 +142,9 @@ public class LibraryPage extends ContentPage {
 			@Override
 			public void onClick(View v) {
 				try {
+					bookArgs.put(TITLE, titleField.getText().toString());
+					bookArgs.put(AUTHOR, authorField.getText().toString());
+					bookArgs.put(ISBN, isbnField.getText().toString());
 					searchBook();
 				} catch (UnsupportedEncodingException e) {
 					//Something is wrong with the query
@@ -161,6 +164,7 @@ public class LibraryPage extends ContentPage {
 				titleField.setText("");
 				authorField.setText("");
 				isbnField.setText("");
+				bookArgs.clear();
 			}
 			
 		});
@@ -194,15 +198,12 @@ public class LibraryPage extends ContentPage {
 		if (!empty)
 		{
 			myApp.setLibraryQuery(query);
+			System.out.println("Library "+query);
 			Intent myIntent = new Intent (this, LibraryResultsPage.class);
 			startActivityForResult(myIntent,0);
 		}
 		else
 		{
-			/*Toast toast = Toast.makeText(this, "Please enter some search criteria",
-					Toast.LENGTH_LONG);
-			toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-			toast.show();*/
 			popupErrorDialog("Cannot perform search", "Please enter some search criteria"
 					, this);
 		}

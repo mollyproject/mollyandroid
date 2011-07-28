@@ -6,10 +6,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-
 import org.json.JSONException;
-import org.mollyproject.android.view.apps.Page;
-
 import android.content.Context;
 
 public class Router {
@@ -34,6 +31,7 @@ public class Router {
 	
 	//Take an URL String, convert to URL, open connection then process 
 	//and return the response
+
 	public static String getFrom (String urlStr) throws MalformedURLException, IOException
 	{
 		String outputStr = new String();		
@@ -97,8 +95,7 @@ public class Router {
 		}
 		
 		} 
-		//in fact, the app simply crashes when one of these exceptions are present
-		//so none of the code in the catch blocks are actually caught properly
+		//Android is not catching exceptions properly
 		catch (MalformedURLException e)
 		{
 			e.printStackTrace();
@@ -134,7 +131,11 @@ public class Router {
 	public void stopCurrentLocThread()
 	{
 		currentLocThread.stopThread();
-		currentLocThread = null;
+		/*currentLocThread is set to null as a measure to avoid the NullPointerException
+		that is thrown when the app resumes after the interrupted LocationThread is wiped
+		out by Android. 
+		*/
+		currentLocThread = null; 
 	}
 	
 	public LocationThread getLocThread()

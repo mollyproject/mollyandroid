@@ -18,7 +18,6 @@ public abstract class ContentPage extends Page {
 		contentLayout.setOrientation(LinearLayout.VERTICAL);
 				
 		contentLayout.addView(bcBar.getBar());
-		router = ((MyApplication) getApplication()).getRouter();
 		contentLayout.setBackgroundResource(R.drawable.bg_blue);
 		setContentView(contentLayout);
 	}

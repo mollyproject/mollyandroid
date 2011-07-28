@@ -3,8 +3,6 @@ package org.mollyproject.android.view.apps.contact;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
