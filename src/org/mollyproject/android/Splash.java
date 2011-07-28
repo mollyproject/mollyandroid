@@ -1,6 +1,9 @@
 package org.mollyproject.android;
 
 
+import java.io.IOException;
+
+import org.json.JSONException;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
@@ -22,11 +25,17 @@ public class Splash extends Page {
 		
 		setContentView(R.layout.splash);
 		
+		//try catch actually doesn't do anything useful, but throws
+		//cannot be used for onCreate - Android just pull the whole
+		//thing down if there is an exception
         try {
 			router = new Router(getApplicationContext());
-		} catch (Exception e) {
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
         
         myApp.setRouter(router);

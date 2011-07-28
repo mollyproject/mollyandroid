@@ -1,10 +1,14 @@
 package org.mollyproject.android.controller;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+
+import org.json.JSONException;
+import org.mollyproject.android.view.apps.Page;
 
 import android.content.Context;
 
@@ -18,7 +22,9 @@ public class Router {
 	public final static String mOX =  "http://dev.m.ox.ac.uk/";
 	public final static int JSON = 1;
 	
-	public Router (Context context) throws Exception
+	//The exception thrown by this class is solely because of problems with the
+	//network part
+	public Router (Context context) throws IOException, JSONException 
 	{
 		waiting = true;	
 		cookieMgr = new CookieManager(context);
@@ -28,7 +34,7 @@ public class Router {
 	
 	//Take an URL String, convert to URL, open connection then process 
 	//and return the response
-	public static String getFrom (String urlStr) throws Exception
+	public static String getFrom (String urlStr) throws MalformedURLException, IOException
 	{
 		String outputStr = new String();		
 		
@@ -47,9 +53,11 @@ public class Router {
 		return outputStr;
 	}
 	
-	public String onRequestSent(String locator,int format, String query) throws Exception {
+	public String onRequestSent(String locator,int format, String query) {
 		//Geting the actual URL from the server using the locator (view name)
 		//and the reverse API in Molly
+		try
+		{
 		if (waiting) {
 			waiting = false;
 			
@@ -87,7 +95,27 @@ public class Router {
 	        //ren.render(new JSONObject(jsonText));
 	        return output;
 		}
+		
+		} 
+		//in fact, the app simply crashes when one of these exceptions are present
+		//so none of the code in the catch blocks are actually caught properly
+		catch (MalformedURLException e)
+		{
+			e.printStackTrace();
+			//Page.popupErrorDialog("Malformed URL (Router)", "Please try restarting the app", context);
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+			//Page.popupErrorDialog("I/O Exception (Router)", "There might be a problem with cookie files. " +
+			//		"Please try restarting the app", context);
+		}catch (JSONException e)
+		{
+			e.printStackTrace();
+			//Page.popupErrorDialog("JSON Exception (Router)", "There might be a problem with JSON output " +
+			//		"from server. Please try restarting the app", context);
+		}
 		return null;
+		
 	}
 	
 	public CookieManager getCookieManager ()
@@ -106,6 +134,7 @@ public class Router {
 	public void stopCurrentLocThread()
 	{
 		currentLocThread.stopThread();
+		currentLocThread = null;
 	}
 	
 	public LocationThread getLocThread()

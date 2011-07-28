@@ -40,7 +40,7 @@ public class CookieManager {
     private static final char NAME_VALUE_SEPARATOR = '=';
     private DateFormat dateFormat;
 
-    public CookieManager(Context context) throws JSONException, IOException  {
+    public CookieManager(Context context) throws IOException, JSONException {
     	this.context = context;
     	cookies = new JSONObject();
     	

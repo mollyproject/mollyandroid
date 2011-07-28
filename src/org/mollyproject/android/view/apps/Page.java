@@ -9,6 +9,9 @@ import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.breadcrumbs.ImprovedBreadCrumbBar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,6 +52,18 @@ public abstract class Page extends Activity {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.menu, menu);
 	    return true;
+	}
+	
+	public static void popupErrorDialog(String title, String message, Context context)
+	{
+		final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+		alertDialog.setTitle(title);
+		alertDialog.setMessage(message);
+		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+		      public void onClick(DialogInterface dialog, int which) {
+		    	 alertDialog.dismiss();
+		    } });
+		alertDialog.show();
 	}
 	
 	@Override
