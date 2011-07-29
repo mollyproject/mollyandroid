@@ -1,5 +1,9 @@
 package org.mollyproject.android.view.apps.library;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +13,7 @@ import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
+import android.app.ProgressDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -24,25 +29,38 @@ public class LibraryResultsPage extends ContentPage {
 
 	protected int curPageNum;
 	protected String query;
-	
+	protected Map<Integer,String> cache;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		ProgressDialog spinner = ProgressDialog.show(this,
+               "", "Loading...", true);
+		spinner.show();
 		curPageNum = 1;
-		query = myApp.getLibraryQuery()+"&page="+curPageNum;
+		cache = new HashMap<Integer,String>();
+		query = myApp.getLibraryQuery();
 		try {
-			generatePage(1);
+			connectAndGenerate(query+"&page="+curPageNum);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		spinner.dismiss();
 	}
 	
-	private void generatePage(int pageNumber) throws JSONException
+	private void connectAndGenerate(String queryWithPage) throws JSONException
 	{
-		String queryWithPage = query+"&page="+pageNumber;
-		String jsonOutput = router.onRequestSent(SelectionManager.getName(this.getClass()), Router.JSON, queryWithPage);
+		String jsonOutput = router.onRequestSent(SelectionManager.getName(this.getClass()),
+				Router.JSON, queryWithPage);
+		generatePage(jsonOutput);
+	}
+	
+	private void generatePage(String jsonOutput) throws JSONException
+	{
+		if (!cache.containsKey(curPageNum))
+		{
+			cache.put(curPageNum, jsonOutput);
+		}
 		JSONObject results = new JSONObject(jsonOutput);
 		final JSONObject page = results.getJSONObject("page");
 		
@@ -60,7 +78,7 @@ public class LibraryResultsPage extends ContentPage {
 		resultsNo.setPadding(10, 20, 0, 20);
 		resultsNo.setBackgroundResource(R.drawable.bg_white);
 		String notification = "Search returned " + page.getString("num_objects") + " items." + '\n'
-						+ "Displaying page "+page.getString("number")+" of "+page.getString("num_pages")+" pages.";
+						+ "Displaying page "+curPageNum+" of "+page.getString("num_pages")+" pages.";
 		resultsNo.setText(notification);
 		
 		JSONArray objects = page.getJSONArray("objects");
@@ -87,20 +105,39 @@ public class LibraryResultsPage extends ContentPage {
 		
 		contentLayout.addView(resultsNo);
 		contentLayout.addView(scr);
-		if (page.getBoolean("has_next"))
+		
+		Button nextButton = new Button(this);
+		nextButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
+				LayoutParams.WRAP_CONTENT, 1f));
+		nextButton.setText("Next Page >>");
+		nextButton.setEnabled(false);
+		
+		Button prevButton = new Button(this);
+		prevButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
+				LayoutParams.WRAP_CONTENT, 1f));
+		prevButton.setText("<< Prev Page");
+		prevButton.setEnabled(false);
+		
+		LinearLayout bottomButtonsLayout = new LinearLayout(this);
+		bottomButtonsLayout.addView(prevButton);
+		bottomButtonsLayout.addView(nextButton);
+		
+		pageLayout.addView(bottomButtonsLayout);
+		
+		if (curPageNum > 1)
 		{
-			Button viewMore = new Button(this);
-			viewMore.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
-					LayoutParams.WRAP_CONTENT, 1f));
-			viewMore.setText("Next Page >>");
-			viewMore.setOnClickListener(new OnClickListener(){
+			//read the previous page from cache
+			prevButton.setEnabled(true);
+			prevButton.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View v) {
 					pageLayout.removeAllViews();
 					try {
+						//contentLayout.removeView(resultsNo);
+						curPageNum--;
 						contentLayout.removeView(resultsNo);
-						curPageNum++;
-						generatePage(curPageNum);
+						contentLayout.removeView(scr);
+						generatePage(cache.get(curPageNum));
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -108,8 +145,38 @@ public class LibraryResultsPage extends ContentPage {
 					
 				}
 			});
-			pageLayout.addView(viewMore);
-			System.out.println("Reached");
+		}
+		
+		if (page.getBoolean("has_next"))
+		{
+			//generate the next page dynamically
+			nextButton.setEnabled(true);
+			nextButton.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					pageLayout.removeAllViews();
+					try {
+						contentLayout.removeView(resultsNo);
+						contentLayout.removeView(scr);
+						curPageNum++;
+						if (cache.containsKey(curPageNum))
+						{
+							generatePage(cache.get(curPageNum));
+						}
+						else 
+						{
+							String newJSONOutput = router.onRequestSent
+								(SelectionManager.getName(LibraryResultsPage.this.getClass()), 
+										Router.JSON, query+"&page="+curPageNum);
+							generatePage(newJSONOutput);
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+			});
 		}
 	}
 	
