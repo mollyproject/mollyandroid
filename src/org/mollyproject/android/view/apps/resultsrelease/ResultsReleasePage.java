@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.apps.results;
+package org.mollyproject.android.view.apps.resultsrelease;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,7 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class ResultsPage extends ContentPage {
+public class ResultsReleasePage extends ContentPage {
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState)
@@ -48,7 +48,7 @@ public class ResultsPage extends ContentPage {
 		ArrayListMultimap<Date,String> examsByDate = ArrayListMultimap.create();
 		
 		try {
-			jsonText = router.onRequestSent(SelectionManager.getName(ResultsPage.class), Router.JSON, null);
+			jsonText = router.onRequestSent(SelectionManager.getName(ResultsReleasePage.class), Router.JSON, null);
 			//Process the json text received
 			if (jsonText != null)
 			{
@@ -101,24 +101,24 @@ public class ResultsPage extends ContentPage {
 			e.printStackTrace();
 			AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
 					"There might be a problem with JSON output " +
-					"from server. Please try again later", ResultsPage.this);
+					"from server. Please try again later", ResultsReleasePage.this);
 			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
-					ResultsPage.this.finish();
+					ResultsReleasePage.this.finish();
 				}
 			});
 		} catch (ParseException e) {
 			e.printStackTrace();
 			AlertDialog dialog = Page.popupErrorDialog("Parse Exception", 
 					"There might be a problem with parsing the dates. " +
-					"Please try again later", ResultsPage.this);
+					"Please try again later", ResultsReleasePage.this);
 			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
-					ResultsPage.this.finish();
+					ResultsReleasePage.this.finish();
 				}
 			});
 		}

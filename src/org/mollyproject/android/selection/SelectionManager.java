@@ -11,7 +11,7 @@ import org.mollyproject.android.view.apps.features.FeatureVotePage;
 import org.mollyproject.android.view.apps.feedback.FeedbackPage;
 import org.mollyproject.android.view.apps.library.LibraryPage;
 import org.mollyproject.android.view.apps.library.LibraryResultsPage;
-import org.mollyproject.android.view.apps.results.ResultsPage;
+import org.mollyproject.android.view.apps.resultsrelease.ResultsReleasePage;
 
 import com.google.common.collect.HashBiMap;
 public class SelectionManager {
@@ -41,7 +41,7 @@ public class SelectionManager {
 					= HashBiMap.create();
 	static {
 		pages.put(HOME_PAGE, HomePage.class);
-		pages.put(RESULTS_PAGE, ResultsPage.class);
+		pages.put(RESULTS_PAGE, ResultsReleasePage.class);
 		pages.put(PLACES_PAGE, PlacesPage.class);
 		pages.put(CONTACT_PAGE, ContactPage.class);
 		pages.put(FEATURE_VOTE, FeatureVotePage.class);

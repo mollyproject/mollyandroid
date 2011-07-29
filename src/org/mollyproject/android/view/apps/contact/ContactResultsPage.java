@@ -8,14 +8,12 @@ import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
-import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
+import org.mollyproject.android.view.apps.ResultsDisplayPage;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,7 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class ContactResultsPage extends ContentPage {
+public class ContactResultsPage extends ResultsDisplayPage {
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -174,6 +172,17 @@ public class ContactResultsPage extends ContentPage {
 			AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
 					"There might be a problem with JSON output " +
 					"from server. Please try again.", ContactResultsPage.this);
+			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					ContactResultsPage.this.finish();
+				}
+			});
+		} catch (Exception e) {
+			//Anything else is assumed to be caused by a network failure
+			AlertDialog dialog = Page.popupErrorDialog("Cannot connect to server. ", 
+					"Please try again later.", ContactResultsPage.this);
 			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
