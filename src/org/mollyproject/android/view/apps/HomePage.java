@@ -146,14 +146,6 @@ public class HomePage extends Page {
     }
     
     @Override
-    public void onDestroy()
-    {
-    	super.onDestroy();
-    	myApp.getRouter().getLocThread().stopThread();
-    	myApp.getRouter().getLocThread().interrupt();
-    }
-	
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             moveTaskToBack(true);

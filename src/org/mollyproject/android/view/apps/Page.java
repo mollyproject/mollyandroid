@@ -124,4 +124,12 @@ public abstract class Page extends Activity {
 	    }
 	    return true;
 	}
+	
+    @Override
+    public void onDestroy()
+    {
+    	super.onDestroy();
+    	myApp.getRouter().getLocThread().stopThread();
+    	myApp.getRouter().getLocThread().interrupt();
+    }
 }
