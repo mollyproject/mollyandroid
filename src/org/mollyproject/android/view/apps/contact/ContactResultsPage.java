@@ -17,6 +17,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -30,18 +31,21 @@ public class ContactResultsPage extends ResultsDisplayPage {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		// Show the ProgressDialog on this thread
-        this.pDialog = ProgressDialog.show(this, "Working..", "", true, false);
+        pDialog = ProgressDialog.show(this, "Working..", "", true, false);
 
         // Start a new thread that will download all the data
-        new ContactResultTask().execute("Executing");
+        query = myApp.getContactQuery();
+        new ContactResultsTask().execute(contentLayout);
 	}
 	
-	private class ContactResultTask extends  AsyncTask<String, Void, Object>
+	private class ContactResultsTask extends  AsyncTask<LinearLayout, Void, List<View>>
 	{
-
+		protected boolean jsonExceptionThrown = false;
+		protected boolean otherExceptionThrown = false;
 		@Override
-		protected Object doInBackground(String... args) {
+		protected List<View> doInBackground(LinearLayout... args) {
 			try {
+				List<View> outputs = new ArrayList<View>();
 				String jsonOutput = router.onRequestSent(SelectionManager.getName(ContactResultsPage.this.getClass()),
 						Router.JSON, query);
 				JSONObject output = new JSONObject(jsonOutput);
@@ -62,7 +66,7 @@ public class ContactResultsPage extends ResultsDisplayPage {
 					notification = notification + " Try adding an initial to get more specific results.";
 				}
 				resultsNo.setText(notification);
-				contentLayout.addView(resultsNo);
+				outputs.add(resultsNo);
 				
 				if (results.length() > 0)
 				{
@@ -175,23 +179,47 @@ public class ContactResultsPage extends ResultsDisplayPage {
 					}
 					resultsLayout.setBackgroundResource(R.drawable.bg_white);
 					scr.addView(resultsLayout);
-					contentLayout.addView(scr);
+					outputs.add(scr);
 					System.out.println("Search completed, returned "+results.length()
 										+" results"+" and page rendered in:");
 					myApp.timeStop();
+					return outputs;
 				}
 				
-			} catch (JSONException e) {
+			} 
+			catch (JSONException e) {
 				//problem here, json not received from server
-				Page.popupErrorDialog("JSON Exception", 
-						"There might be a problem with JSON output " +
-						"from server. Please try again.", ContactResultsPage.this, true);
+				jsonExceptionThrown = true;
+				
 			} catch (Exception e) {
 				//Anything else is assumed to be caused by a network failure
-				Page.popupErrorDialog("Cannot connect to server. ", 
-						"Please try again later.", ContactResultsPage.this, true);
+				otherExceptionThrown = true;
 			}
 			return null;
+		}
+		protected void onPostExecute(List<View> outputs)
+		{
+			if (jsonExceptionThrown)
+			{
+				popupErrorDialog("JSON Exception", 
+						"There might be a problem with JSON output " +
+						"from server. Please try again.", ContactResultsPage.this, true);
+				jsonExceptionThrown = false;
+			}
+			else if (otherExceptionThrown)
+			{
+				popupErrorDialog("Cannot connect to server. ", 
+						"Please try again later.", ContactResultsPage.this, true);
+				otherExceptionThrown = false;
+			}
+			else 
+			{
+				for (int i = 0; i < outputs.size(); i++)
+				{
+					contentLayout.addView(outputs.get(i));
+				}
+				pDialog.dismiss();
+			}
 		}
 	}
 	

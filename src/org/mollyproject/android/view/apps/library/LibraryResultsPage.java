@@ -35,6 +35,7 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		super.onCreate(savedInstanceState);
 		curPageNum = 1;
 		cache = new HashMap<Integer,String>();
+		query = myApp.getLibraryQuery();
 		try {
 			connectAndGenerate(query+"&page="+curPageNum);
 		} catch (JSONException e) {
