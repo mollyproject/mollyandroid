@@ -11,7 +11,9 @@ import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -169,10 +171,16 @@ public class ContactResultsPage extends ContentPage {
 			
 		} catch (JSONException e) {
 			//problem here, json not received from server
-			e.printStackTrace();
-		} catch (Exception e) {
-			//problem with router
-			e.printStackTrace();
+			AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
+					"There might be a problem with JSON output " +
+					"from server. Please try again.", ContactResultsPage.this);
+			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					ContactResultsPage.this.finish();
+				}
+			});
 		}
 	}
 	

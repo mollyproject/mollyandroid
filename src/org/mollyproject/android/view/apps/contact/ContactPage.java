@@ -6,6 +6,8 @@ import java.net.URLEncoder;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -97,8 +99,16 @@ public class ContactPage extends ContentPage {
 			myApp.timeStart();
 			startActivityForResult(myIntent,0);
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			AlertDialog dialog = Page.popupErrorDialog("Unsupported Encoding", 
+					"There might be a problem with the search terms. " +
+					"Please try again later.", ContactPage.this);
+			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
 		}
 		}
 	

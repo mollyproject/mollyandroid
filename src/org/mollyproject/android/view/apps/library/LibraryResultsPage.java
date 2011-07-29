@@ -2,7 +2,6 @@ package org.mollyproject.android.view.apps.library;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +12,9 @@ import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -33,19 +34,24 @@ public class LibraryResultsPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		ProgressDialog spinner = ProgressDialog.show(this,
-               "", "Loading...", true);
-		spinner.show();
 		curPageNum = 1;
 		cache = new HashMap<Integer,String>();
 		query = myApp.getLibraryQuery();
 		try {
 			connectAndGenerate(query+"&page="+curPageNum);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
+					"There might be a problem with JSON output " +
+					"from server. Please try again later.", LibraryResultsPage.this);
+			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					LibraryResultsPage.this.finish();
+				}
+			});
 		}
-		spinner.dismiss();
 	}
 	
 	private void connectAndGenerate(String queryWithPage) throws JSONException
@@ -137,10 +143,20 @@ public class LibraryResultsPage extends ContentPage {
 						curPageNum--;
 						contentLayout.removeView(resultsNo);
 						contentLayout.removeView(scr);
-						generatePage(cache.get(curPageNum));
+						generatePage("abc");//cache.get(curPageNum));
 					} catch (JSONException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
+						AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
+								"There might be a problem with JSON output " +
+								"from server. Please try again later.", LibraryResultsPage.this);
+						dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+								LibraryResultsPage.this.finish();
+							}
+						});
+						
 					}
 					
 				}
@@ -171,8 +187,17 @@ public class LibraryResultsPage extends ContentPage {
 							generatePage(newJSONOutput);
 						}
 					} catch (JSONException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
+						AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
+								"There might be a problem with JSON output " +
+								"from server. Please try again later.", LibraryResultsPage.this);
+						dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+								LibraryResultsPage.this.finish();
+							}
+						});
 					}
 					
 				}

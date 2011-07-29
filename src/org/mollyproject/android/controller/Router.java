@@ -7,7 +7,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import org.json.JSONException;
+import org.mollyproject.android.view.apps.Page;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 
 public class Router {
 	protected CookieManager cookieMgr;
@@ -95,21 +99,42 @@ public class Router {
 		}
 		
 		} 
-		//Android is not catching exceptions properly
 		catch (MalformedURLException e)
 		{
 			e.printStackTrace();
-			//Page.popupErrorDialog("Malformed URL (Router)", "Please try restarting the app", context);
+			AlertDialog dialog = Page.popupErrorDialog("Malformed URL (Router)",
+					"Please try restarting the app", context);
+			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+			
 		} catch (IOException e)
 		{
 			e.printStackTrace();
-			//Page.popupErrorDialog("I/O Exception (Router)", "There might be a problem with cookie files. " +
-			//		"Please try restarting the app", context);
+			AlertDialog dialog = Page.popupErrorDialog("I/O Exception (Router)", 
+					"There might be a problem with cookie files. " +
+					"Please try restarting the app", context);
+			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
 		}catch (JSONException e)
 		{
 			e.printStackTrace();
-			//Page.popupErrorDialog("JSON Exception (Router)", "There might be a problem with JSON output " +
-			//		"from server. Please try restarting the app", context);
+			AlertDialog dialog = Page.popupErrorDialog("JSON Exception (Router)", 
+					"There might be a problem with JSON output " +
+					"from server. Please try restarting the app", context);
+			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
 		}
 		return null;
 		

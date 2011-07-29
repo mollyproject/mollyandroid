@@ -11,6 +11,7 @@ import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.UnimplementedPage;
+import org.mollyproject.android.view.apps.contact.ContactPage;
 import org.mollyproject.android.view.apps.contact.ContactResultsPage;
 
 import android.app.AlertDialog;
@@ -46,90 +47,17 @@ public class LibraryPage extends ContentPage {
 		TextView title = new TextView(this);
 		title.setText("Title");
 		final EditText titleField = new EditText(this);
-		bookArgs.put(TITLE, titleField.getText().toString());
-		titleField.setOnKeyListener(new OnKeyListener(){
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (event.getAction() == KeyEvent.ACTION_DOWN)
-		        {
-		            switch (keyCode)
-		            {
-		                case KeyEvent.KEYCODE_DPAD_CENTER:
-		                	
-		                case KeyEvent.KEYCODE_ENTER:
-		                	bookArgs.put(TITLE, titleField.getText().toString());
-						try {
-							searchBook();
-						} catch (UnsupportedEncodingException e) {
-							//Something is wrong with the query
-							e.printStackTrace();
-						}
-		                    return true;
-		                default:
-		                    break;
-		            }
-		        }
-				return false;
-			}
-		});
+		searchOnEnterKey(titleField,TITLE);
 		
 		TextView author = new TextView(this);
 		author.setText("Author");
 		final EditText authorField = new EditText(this);
-		authorField.setOnKeyListener(new OnKeyListener(){
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (event.getAction() == KeyEvent.ACTION_DOWN)
-		        {
-		            switch (keyCode)
-		            {
-		                case KeyEvent.KEYCODE_DPAD_CENTER:
-		                	
-		                case KeyEvent.KEYCODE_ENTER:
-		                	bookArgs.put(AUTHOR, authorField.getText().toString());
-						try {
-							searchBook();
-						} catch (UnsupportedEncodingException e) {
-							//Something is wrong with the query
-							e.printStackTrace();
-						}
-		                    return true;
-		                default:
-		                    break;
-		            }
-		        }
-				return false;
-			}
-		});
+		searchOnEnterKey(authorField,AUTHOR);
 		
 		TextView isbn = new TextView(this);
 		isbn.setText("ISBN");
 		final EditText isbnField = new EditText(this);
-		isbnField.setOnKeyListener(new OnKeyListener(){
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (event.getAction() == KeyEvent.ACTION_DOWN)
-		        {
-		            switch (keyCode)
-		            {
-		                case KeyEvent.KEYCODE_DPAD_CENTER:
-		                	
-		                case KeyEvent.KEYCODE_ENTER:
-		                	bookArgs.put(ISBN, isbnField.getText().toString());
-							try {
-								searchBook();
-							} catch (UnsupportedEncodingException e) {
-								//Something is wrong with the query
-								e.printStackTrace();
-							}
-		                    return true;
-		                default:
-		                    break;
-		            }
-		        }
-				return false;
-			}
-		});
+		searchOnEnterKey(isbnField, ISBN);
 		
 		LinearLayout buttonsLayout = new LinearLayout(this);
 		buttonsLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -149,6 +77,15 @@ public class LibraryPage extends ContentPage {
 				} catch (UnsupportedEncodingException e) {
 					//Something is wrong with the query
 					e.printStackTrace();
+					AlertDialog dialog = Page.popupErrorDialog("Unsupported Encoding", 
+							"There might be a problem with the search terms. " +
+							"Please try again later.", LibraryPage.this);
+					dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
 				}
 			}
 			
@@ -180,6 +117,44 @@ public class LibraryPage extends ContentPage {
 		
 		contentLayout.addView(searchForm);
 		contentLayout.addView(buttonsLayout);
+	}
+	
+	private void searchOnEnterKey(final EditText inputField, final String argID)
+	{
+		inputField.setOnKeyListener(new OnKeyListener(){
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (event.getAction() == KeyEvent.ACTION_DOWN)
+		        {
+		            switch (keyCode)
+		            {
+		                case KeyEvent.KEYCODE_DPAD_CENTER:
+		                	
+		                case KeyEvent.KEYCODE_ENTER:
+		                	bookArgs.put(argID, inputField.getText().toString());
+						try {
+							searchBook();
+						} catch (UnsupportedEncodingException e) {
+							//Something is wrong with the query
+							e.printStackTrace();
+							AlertDialog dialog = Page.popupErrorDialog("Unsupported Encoding", 
+									"There might be a problem with the search terms. " +
+									"Please try again later.", LibraryPage.this);
+							dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+								}
+							});
+						}
+		                    return true;
+		                default:
+		                    break;
+		            }
+		        }
+				return false;
+			}
+		});
 	}
 
 	private void searchBook() throws UnsupportedEncodingException

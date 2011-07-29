@@ -1,14 +1,13 @@
 package org.mollyproject.android;
 
 
-import java.io.IOException;
-
-import org.json.JSONException;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.Page;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
@@ -25,17 +24,20 @@ public class Splash extends Page {
 		
 		setContentView(R.layout.splash);
 		
-		//try catch actually doesn't do anything useful, but throws
-		//cannot be used for onCreate - Android just pull the whole
-		//thing down if there is an exception
         try {
 			router = new Router(getApplicationContext());
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			AlertDialog dialog = Page.popupErrorDialog("Network Connection cannot be set up", 
+					"There might be a problem with the connection " +
+					"or processing data from server. Please try again later", Splash.this);
+			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					Splash.this.finish();
+				}
+			});
 		}
         
         myApp.setRouter(router);

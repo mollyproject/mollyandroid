@@ -9,8 +9,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import org.mollyproject.android.view.apps.HomePage;
+import org.mollyproject.android.view.apps.Page;
 
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -34,7 +39,7 @@ public class LocationThread extends Thread {
 	private static double DEFAULT_LAT = 51.752527;
 	private static int UPDATE_DELAY_IN_MS = 60000; 
 	
-	public LocationThread(final URL url, Context context)
+	public LocationThread(final URL url, final Context context)
 	{
 		super();
 		autoLoc = true;
@@ -114,9 +119,27 @@ public class LocationThread extends Thread {
 			        wr.close();
 			        rd.close();	
 				} catch (UnsupportedEncodingException e) {
-					System.out.println("Unsupported Encoding Exception");
+					AlertDialog dialog = Page.popupErrorDialog("Unsupported Encoding", 
+							"There might be a problem with Location Update" +
+							"Latest location is not uploaded to server. Application will retry " +
+							"in 10 minutes.", context);
+					dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
 				} catch (IOException e) {
-					System.out.println("I/O Exception");
+					AlertDialog dialog = Page.popupErrorDialog("I/O Exception (Location)", 
+							"There might be a problem with POST Requests from Location Update" +
+							"Latest location is not uploaded to server. Application will retry " +
+							"in 10 minutes", context);
+					dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
 				}
 			}
 		};				

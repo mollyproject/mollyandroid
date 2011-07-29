@@ -7,6 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -134,9 +137,18 @@ public class HomePage extends Page {
     		try {
 				jsonContent = new JSONObject(router.onRequestSent(SelectionManager.getName(getClass()),
 						Router.JSON,null));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
+			} catch (JSONException e) {
 				e.printStackTrace();
+				AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
+						"There might be a problem with JSON output " +
+						"from server. Please try again later.", this);
+				dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						HomePage.this.finish();
+					}
+				});
 			}
     	}
     	

@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.apps.results;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.Router;
@@ -18,6 +20,8 @@ import org.mollyproject.android.view.apps.Page;
 
 import com.google.common.collect.ArrayListMultimap;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -93,12 +97,30 @@ public class ResultsPage extends ContentPage {
 					allText.addView(resultView);
 				}
 			}
-		} catch (Exception e) {
-			String tryAgain = "There is a problem with loading the page." +'\n' +
-					"Please try again later.";
-			TextView tryAgainView = new TextView(getApplicationContext());
-			tryAgainView.setText(tryAgain);
-			allText.addView(tryAgainView);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
+					"There might be a problem with JSON output " +
+					"from server. Please try again later", ResultsPage.this);
+			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					ResultsPage.this.finish();
+				}
+			});
+		} catch (ParseException e) {
+			e.printStackTrace();
+			AlertDialog dialog = Page.popupErrorDialog("Parse Exception", 
+					"There might be a problem with parsing the dates. " +
+					"Please try again later", ResultsPage.this);
+			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					ResultsPage.this.finish();
+				}
+			});
 		}
 		scr.addView(allText);
 		contentLayout.addView(scr,ViewGroup.LayoutParams.FILL_PARENT);
