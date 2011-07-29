@@ -11,7 +11,7 @@ import org.mollyproject.android.view.apps.features.FeatureVotePage;
 import org.mollyproject.android.view.apps.feedback.FeedbackPage;
 import org.mollyproject.android.view.apps.library.LibraryPage;
 import org.mollyproject.android.view.apps.library.LibraryResultsPage;
-import org.mollyproject.android.view.apps.resultsrelease.ResultsReleasePage;
+import org.mollyproject.android.view.apps.results_release.ResultsReleasePage;
 
 import com.google.common.collect.HashBiMap;
 public class SelectionManager {

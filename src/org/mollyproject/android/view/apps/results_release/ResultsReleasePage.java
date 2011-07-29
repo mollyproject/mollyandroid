@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.apps.resultsrelease;
+package org.mollyproject.android.view.apps.results_release;
 
 import java.text.DateFormat;
 import java.text.ParseException;
