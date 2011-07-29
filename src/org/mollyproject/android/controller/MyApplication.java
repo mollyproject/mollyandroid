@@ -2,6 +2,7 @@ package org.mollyproject.android.controller;
 
 import java.util.LinkedList;
 import android.app.Application;
+import android.net.ConnectivityManager;
 
 public class MyApplication extends Application {
 	protected LinkedList<String> bcTrail;
@@ -62,6 +63,11 @@ public class MyApplication extends Application {
 		{
 			System.out.println(b);
 		}
+	}
+	
+	public boolean isOnline() {
+		 ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+		 return cm.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
 	
 	private long curTime = 0;
