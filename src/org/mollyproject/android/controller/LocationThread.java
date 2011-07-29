@@ -119,27 +119,15 @@ public class LocationThread extends Thread {
 			        wr.close();
 			        rd.close();	
 				} catch (UnsupportedEncodingException e) {
-					AlertDialog dialog = Page.popupErrorDialog("Unsupported Encoding", 
+					Page.popupErrorDialog("Unsupported Encoding", 
 							"There might be a problem with Location Update" +
 							"Latest location is not uploaded to server. Application will retry " +
 							"in 10 minutes.", context);
-					dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-						}
-					});
 				} catch (IOException e) {
-					AlertDialog dialog = Page.popupErrorDialog("I/O Exception (Location)", 
+					Page.popupErrorDialog("I/O Exception (Location)", 
 							"There might be a problem with POST Requests from Location Update" +
 							"Latest location is not uploaded to server. Application will retry " +
 							"in 10 minutes", context);
-					dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-						}
-					});
 				}
 			}
 		};				

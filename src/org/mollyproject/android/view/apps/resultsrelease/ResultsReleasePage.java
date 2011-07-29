@@ -99,28 +99,15 @@ public class ResultsReleasePage extends ContentPage {
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
-			AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
+			Page.popupErrorDialog("JSON Exception", 
 					"There might be a problem with JSON output " +
-					"from server. Please try again later", ResultsReleasePage.this);
-			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-					ResultsReleasePage.this.finish();
-				}
-			});
+					"from server. Please try again later", this, true);
+			
 		} catch (ParseException e) {
 			e.printStackTrace();
-			AlertDialog dialog = Page.popupErrorDialog("Parse Exception", 
+			Page.popupErrorDialog("Parse Exception", 
 					"There might be a problem with parsing the dates. " +
-					"Please try again later", ResultsReleasePage.this);
-			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-					ResultsReleasePage.this.finish();
-				}
-			});
+					"Please try again later", this, true);
 		}
 		scr.addView(allText);
 		contentLayout.addView(scr,ViewGroup.LayoutParams.FILL_PARENT);

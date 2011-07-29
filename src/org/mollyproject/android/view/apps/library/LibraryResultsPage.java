@@ -28,28 +28,20 @@ import android.widget.TextView;
 public class LibraryResultsPage extends ResultsDisplayPage {
 
 	protected int curPageNum;
-	protected String query;
+	
 	protected Map<Integer,String> cache;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		curPageNum = 1;
 		cache = new HashMap<Integer,String>();
-		query = myApp.getLibraryQuery();
 		try {
 			connectAndGenerate(query+"&page="+curPageNum);
 		} catch (JSONException e) {
 			e.printStackTrace();
-			AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
+			Page.popupErrorDialog("JSON Exception", 
 					"There might be a problem with JSON output " +
-					"from server. Please try again later.", LibraryResultsPage.this);
-			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-					LibraryResultsPage.this.finish();
-				}
-			});
+					"from server. Please try again later.", this, true);
 		}
 	}
 	
@@ -145,16 +137,9 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 						generatePage("abc");//cache.get(curPageNum));
 					} catch (JSONException e) {
 						e.printStackTrace();
-						AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
+						Page.popupErrorDialog("JSON Exception", 
 								"There might be a problem with JSON output " +
-								"from server. Please try again later.", LibraryResultsPage.this);
-						dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								dialog.dismiss();
-								LibraryResultsPage.this.finish();
-							}
-						});
+								"from server. Please try again later.", LibraryResultsPage.this, true);
 						
 					}
 					
@@ -187,16 +172,9 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
-						AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
+						Page.popupErrorDialog("JSON Exception", 
 								"There might be a problem with JSON output " +
-								"from server. Please try again later.", LibraryResultsPage.this);
-						dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								dialog.dismiss();
-								LibraryResultsPage.this.finish();
-							}
-						});
+								"from server. Please try again later.", LibraryResultsPage.this, true);
 					}
 					
 				}

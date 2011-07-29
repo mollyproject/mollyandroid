@@ -139,16 +139,9 @@ public class HomePage extends Page {
 						Router.JSON,null));
 			} catch (JSONException e) {
 				e.printStackTrace();
-				AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
+				Page.popupErrorDialog("JSON Exception", 
 						"There might be a problem with JSON output " +
-						"from server. Please try again later.", this);
-				dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-						HomePage.this.finish();
-					}
-				});
+						"from server. Please try again later.", this, true);
 			}
     	}
     	

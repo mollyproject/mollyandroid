@@ -6,11 +6,13 @@ import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.contact.ContactResultsPage;
 import org.mollyproject.android.view.breadcrumbs.ImprovedBreadCrumbBar;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,12 +59,36 @@ public abstract class Page extends Activity {
 	    return true;
 	}
 	
-	public static AlertDialog popupErrorDialog(String title, String message, Context context)
+	public static void popupErrorDialog(String title, String message, final Context context)
 	{
 		final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 		alertDialog.setTitle(title);
 		alertDialog.setMessage(message);
-		return alertDialog;
+		alertDialog.setButton("Ok", new DialogInterface.OnClickListener(){
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		alertDialog.show();
+	}
+	
+	public static void popupErrorDialog(String title, String message, final Page page, final boolean toFinish)
+	{
+		final AlertDialog alertDialog = new AlertDialog.Builder(page).create();
+		alertDialog.setTitle(title);
+		alertDialog.setMessage(message);
+		alertDialog.setButton("Ok", new DialogInterface.OnClickListener(){
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				if (toFinish)
+				{
+					page.finish();
+				}
+			}
+		});
+		alertDialog.show();
 	}
 	
 	public void setEmailClick(View view, final String finalAdd)

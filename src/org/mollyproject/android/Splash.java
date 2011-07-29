@@ -28,16 +28,9 @@ public class Splash extends Page {
 			router = new Router(getApplicationContext());
 		} catch (Exception e) {
 			e.printStackTrace();
-			AlertDialog dialog = Page.popupErrorDialog("Network Connection cannot be set up", 
+			Page.popupErrorDialog("Network Connection cannot be set up", 
 					"There might be a problem with the connection " +
-					"or processing data from server. Please try again later", Splash.this);
-			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-					Splash.this.finish();
-				}
-			});
+					"or processing data from server. Please try again later", this, true);
 		}
         
         myApp.setRouter(router);

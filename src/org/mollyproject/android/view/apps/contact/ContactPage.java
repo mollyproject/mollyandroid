@@ -100,15 +100,9 @@ public class ContactPage extends ContentPage {
 			startActivityForResult(myIntent,0);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			AlertDialog dialog = Page.popupErrorDialog("Unsupported Encoding", 
+			Page.popupErrorDialog("Unsupported Encoding", 
 					"There might be a problem with the search terms. " +
-					"Please try again later.", ContactPage.this);
-			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
+					"Please try again.", this);
 		}
 		}
 	

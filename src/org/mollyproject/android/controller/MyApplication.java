@@ -66,8 +66,8 @@ public class MyApplication extends Application {
 	}
 	
 	public boolean isOnline() {
-		 ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-		 return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+		 return ((ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE))
+				 				.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
 	
 	private long curTime = 0;

@@ -104,39 +104,21 @@ public class Router {
 		catch (MalformedURLException e)
 		{
 			e.printStackTrace();
-			AlertDialog dialog = Page.popupErrorDialog("Malformed URL (Router)",
+			Page.popupErrorDialog("Malformed URL (Router)",
 					"Please try restarting the app", context);
-			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
 			
 		} catch (IOException e)
 		{
 			e.printStackTrace();
-			AlertDialog dialog = Page.popupErrorDialog("I/O Exception (Router)", 
+			Page.popupErrorDialog("I/O Exception (Router)", 
 					"There might be a problem with cookie files. " +
 					"Please try restarting the app", context);
-			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
 		}catch (JSONException e)
 		{
 			e.printStackTrace();
-			AlertDialog dialog = Page.popupErrorDialog("JSON Exception (Router)", 
+			Page.popupErrorDialog("JSON Exception (Router)", 
 					"There might be a problem with JSON output " +
 					"from server. Please try restarting the app", context);
-			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
 		}
 		return null;
 		

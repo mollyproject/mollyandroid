@@ -25,8 +25,6 @@ public class ContactResultsPage extends ResultsDisplayPage {
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		String query = myApp.getContactQuery();
-		
 		try {
 			String jsonOutput = router.onRequestSent(SelectionManager.getName(this.getClass()),
 					Router.JSON, query);
@@ -169,27 +167,13 @@ public class ContactResultsPage extends ResultsDisplayPage {
 			
 		} catch (JSONException e) {
 			//problem here, json not received from server
-			AlertDialog dialog = Page.popupErrorDialog("JSON Exception", 
+			Page.popupErrorDialog("JSON Exception", 
 					"There might be a problem with JSON output " +
-					"from server. Please try again.", ContactResultsPage.this);
-			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-					ContactResultsPage.this.finish();
-				}
-			});
+					"from server. Please try again.", this, true);
 		} catch (Exception e) {
 			//Anything else is assumed to be caused by a network failure
-			AlertDialog dialog = Page.popupErrorDialog("Cannot connect to server. ", 
-					"Please try again later.", ContactResultsPage.this);
-			dialog.setButton("Ok", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-					ContactResultsPage.this.finish();
-				}
-			});
+			Page.popupErrorDialog("Cannot connect to server. ", 
+					"Please try again later.", this, true);
 		}
 	}
 	
