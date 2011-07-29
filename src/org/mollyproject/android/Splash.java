@@ -14,7 +14,7 @@ import android.os.Looper;
 import android.widget.TextView;
 
 public class Splash extends Page {
-	protected Router router;
+	protected boolean splashed = false;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -23,18 +23,16 @@ public class Splash extends Page {
 		welcomeText.setText("Molly Android");
 		
 		setContentView(R.layout.splash);
-		
-        try {
+		splashed = true;
+		try {
 			router = new Router(getApplicationContext());
 		} catch (Exception e) {
 			e.printStackTrace();
-			Page.popupErrorDialog("Network Connection cannot be set up", 
-					"There might be a problem with the connection " +
-					"or processing data from server. Please try again later", this, true);
+			Page.popupErrorDialog("Network Connection cannot be set up. ", 
+					"Please try again later", this, true);
 		}
         
         myApp.setRouter(router);
-		
 		Thread splashThread = new Thread() {
 			@Override
 			public void run()
@@ -57,6 +55,16 @@ public class Splash extends Page {
 			};
 		};
 		splashThread.start();
+	}
+	
+	@Override 
+	public void onResume()
+	{
+		super.onResume();
+		if (splashed)
+		{
+			finish();
+		}
 	}
 	@Override
 	public Page getInstance() {

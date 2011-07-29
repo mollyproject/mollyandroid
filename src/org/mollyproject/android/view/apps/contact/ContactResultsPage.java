@@ -46,8 +46,9 @@ public class ContactResultsPage extends ResultsDisplayPage {
 		protected List<View> doInBackground(LinearLayout... args) {
 			try {
 				List<View> outputs = new ArrayList<View>();
-				String jsonOutput = router.onRequestSent(SelectionManager.getName(ContactResultsPage.this.getClass()),
-						Router.JSON, query);
+				String jsonOutput = router.onRequestSent(SelectionManager
+						.getName(ContactResultsPage.this.getClass()),
+						ContactResultsPage.this, Router.JSON, query);
 				JSONObject output = new JSONObject(jsonOutput);
 				JSONArray results = output.getJSONArray("results");
 				

@@ -1,6 +1,8 @@
 package org.mollyproject.android.view.apps;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import org.json.JSONException;
@@ -9,8 +11,10 @@ import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -115,36 +119,8 @@ public class HomePage extends Page {
     public void onResume()
     {
     	super.onResume();
-    	if (router.getLocThread() != null)
-    	{
-	    	if (router.getLocThread().isInterrupted())
-	    	{
-	    		System.out.println("LocThread needs to restart");
-	    		try {
-					router.spawnNewLocThread
-					(router.getCookieManager().getCSRFToken(new URL (Router.mOX)));
-				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	    	}
-    	}
-    	else
-    	{
-    		try {
-				jsonContent = new JSONObject(router.onRequestSent(SelectionManager.getName(getClass()),
-						Router.JSON,null));
-			} catch (JSONException e) {
-				e.printStackTrace();
-				Page.popupErrorDialog("JSON Exception", 
-						"There might be a problem with JSON output " +
-						"from server. Please try again later.", this, true);
-			}
-    	}
-    	
+    	pDialog = ProgressDialog.show(this, "Connecting to server..", "", true, false);
+    	new NetworkPollingTask().execute();
     	//home page still contributes to breadcrumb update, but doesn't need a bar on it
     	//so no need to call bcBar.reconstruct
 		myApp.updateBreadCrumb(SelectionManager.getName(getInstance().getClass()));
@@ -160,5 +136,103 @@ public class HomePage extends Page {
         return super.onKeyDown(keyCode, event);
     }
     
+    private class NetworkPollingTask extends AsyncTask<Void,Void,Void>
+    {
+    	protected boolean jsonException = false;
+    	protected boolean networkException = false;
+    	
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			try {
+			if (router.getLocThread() != null)
+	    	{
+		    	if (router.getLocThread().isInterrupted())
+		    	{
+		    		System.out.println("LocThread needs to restart");
+					router.spawnNewLocThread
+					(router.getCookieManager().getCSRFToken(new URL (Router.mOX)));
+		    	}
+    		}
+			else
+			{
+				//LocThread is actually null, it is not there
+				//this happens when either no connection has been made before
+				//or the LocThread has been made null to prevent being wiped 
+	    		String jsonText = router.onRequestSent(
+						SelectionManager.getName(HomePage.this.getClass()),HomePage.this,
+						Router.JSON,null);
+	    		System.out.println("JSON Text " + jsonText);
+				jsonContent = new JSONObject(jsonText);
+				
+			}
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+				networkException = true;
+			} catch (JSONException e) {
+				e.printStackTrace();
+				jsonException = true;
+			} catch (NullPointerException e)
+			{
+				e.printStackTrace();
+				networkException = true;
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+				networkException = true;
+			} catch (IOException e) {
+				e.printStackTrace();
+				networkException = true;
+			}  
+			return null;
+		}
+    	
+		protected void onPostExecute(Void result)
+		{
+			System.out.println(networkException +" "+ jsonException);
+			pDialog.dismiss();
+			
+			if (networkException) 
+			{
+				popupErrorDialog("Cannot connect to m.ox.ac.uk", 
+						"There might be a problem with internet connection. " +
+						"Please try restarting the app", HomePage.this, true);
+			}
+			if (jsonException)
+			{
+				popupErrorDialog("JSON Exception", 
+						"There might be a problem with JSON output " +
+						"from server. Please try again later.", HomePage.this, true);
+			}
+			
+		}
+    }
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

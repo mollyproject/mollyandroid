@@ -48,7 +48,8 @@ public class ResultsReleasePage extends ContentPage {
 		ArrayListMultimap<Date,String> examsByDate = ArrayListMultimap.create();
 		
 		try {
-			jsonText = router.onRequestSent(SelectionManager.getName(ResultsReleasePage.class), Router.JSON, null);
+			jsonText = router.exceptionHandledOnRequestSent(SelectionManager.getName(ResultsReleasePage.class),
+					this,Router.JSON, null);
 			//Process the json text received
 			if (jsonText != null)
 			{

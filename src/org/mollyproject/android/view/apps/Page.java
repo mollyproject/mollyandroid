@@ -11,6 +11,7 @@ import org.mollyproject.android.view.breadcrumbs.ImprovedBreadCrumbBar;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +33,7 @@ public abstract class Page extends Activity {
 	protected String jsonText;
 	protected LinearLayout contentLayout;
 	protected Router router;
+	protected ProgressDialog pDialog;
 	//public abstract void refresh();
 	
 	//use someLayout.setLayoutParams() with this paramsWithLine as a parameter makes
@@ -150,7 +152,6 @@ public abstract class Page extends Activity {
     public void onDestroy()
     {
     	super.onDestroy();
-    	myApp.getRouter().getLocThread().stopThread();
-    	myApp.getRouter().getLocThread().interrupt();
+    	router.stopCurrentLocThread();
     }
 }
