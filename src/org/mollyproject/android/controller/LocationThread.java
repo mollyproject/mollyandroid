@@ -39,11 +39,12 @@ public class LocationThread extends Thread {
 	private static double DEFAULT_LAT = 51.752527;
 	private static int UPDATE_DELAY_IN_MS = 600000; 
 	
-	public LocationThread(final URL url, final MyApplication myApp)
+	public LocationThread(final URL url, final MyApplication myApp, String csrftoken)
 	{
 		super();
 		autoLoc = true;
 		this.url = url;
+		this.csrftoken = csrftoken;
 		locMgr = (LocationManager) myApp.getSystemService(Context.LOCATION_SERVICE);
 		
 	    Criteria criteria = new Criteria();

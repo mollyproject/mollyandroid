@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 
 import org.json.JSONException;
+import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.AlertDialog;
@@ -33,7 +34,6 @@ public class Router {
 		cookieMgr = new CookieManager(myApp);
 		firstReq = true;
 		currentLocThread = null;
-		//this.context = context;
 	}
     
 	public void setApp(MyApplication myApp)
@@ -68,7 +68,7 @@ public class Router {
 	public String exceptionHandledOnRequestSent(String locator,Page page, int format, String query)
 	{
 		try{
-			return onRequestSent(locator,page, format, query);
+			return onRequestSent(locator, format, query);
 		}
 		catch (MalformedURLException e)
 		{
@@ -81,18 +81,18 @@ public class Router {
 			e.printStackTrace();
 			Page.popupErrorDialog("JSON Exception (Router)", 
 					"There might be a problem with JSON output " +
-					"from server. Please try restarting the app", page);
+					"from server. Please try again later", page);
 		} catch (IOException e)
 		{
 			e.printStackTrace();
 			Page.popupErrorDialog("I/O Exception (Router)", 
 					"There might be a problem with cookie files. " +
-					"Please try restarting the app", page);
+					"Please try later.", page);
 		}
 		return null;
 	}
 	
-	public String onRequestSent(String locator,Page page, int format, String query) 
+	public String onRequestSent(String locator,int format, String query) 
 							throws JSONException, UnknownHostException, IOException {
 		//to be included in AsyncTask subclasses where no UI is allowed
 		//in the doInBackground method
@@ -127,7 +127,8 @@ public class Router {
 			{ 
 				URL url = new URL(urlStr);
 				cookieMgr.storeCookies(url.openConnection());
-				spawnNewLocThread(cookieMgr.getCSRFToken(url));
+				System.out.println("CSRF: "+cookieMgr.getCSRFToken());
+				spawnNewLocThread();
 				System.out.println("Router, LocThread starts");
 				firstReq = false;
 			}
@@ -146,12 +147,15 @@ public class Router {
 		return cookieMgr;
 	}
 	
-	public void spawnNewLocThread(String token) throws MalformedURLException
+	public void spawnNewLocThread() throws JSONException, UnknownHostException, IOException
 	{
-		System.out.println("New LocThread spawned");
-		currentLocThread = new LocationThread(new URL(mOX),myApp);
-		currentLocThread.setCSRFToken(token);
+		//Router connects to server, then cookieMgr gets the cookies
+		//cookieMgr extracts csrftoken, then pass to LocThread
+		onRequestSent(SelectionManager.HOME_PAGE, JSON, null); //csrftoken can only be received after at least 1 request
+		String token = cookieMgr.getCSRFToken();//if connection goes through, csrftoken should be available
+		currentLocThread = new LocationThread(new URL(mOX),myApp,token);
 		currentLocThread.start();
+		System.out.println("New LocThread spawned");
 	}
 	
 	public void stopCurrentLocThread()

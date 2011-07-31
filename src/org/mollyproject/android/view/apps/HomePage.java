@@ -149,8 +149,7 @@ public class HomePage extends Page {
 			    	if (router.getLocThread().isInterrupted())
 			    	{
 			    		System.out.println("LocThread needs to restart");
-						router.spawnNewLocThread
-						(router.getCookieManager().getCSRFToken(new URL (Router.mOX)));
+						router.spawnNewLocThread();
 			    	}
 	    		}
 				else
@@ -158,13 +157,12 @@ public class HomePage extends Page {
 					//LocThread is actually null, it is not there
 					//this happens when either no connection has been made before
 					//or the LocThread has been made null to prevent being wiped 
-		    		/*String jsonText = router.onRequestSent(
-							SelectionManager.getName(HomePage.this.getClass()),HomePage.this,
+		    		String jsonText = router.onRequestSent(
+							SelectionManager.getName(HomePage.this.getClass()),
 							Router.JSON,null);
 		    		System.out.println("JSON Text " + jsonText);
-					jsonContent = new JSONObject(jsonText);*/
-					router.spawnNewLocThread
-						(router.getCookieManager().getCSRFToken(new URL (Router.mOX)));
+					jsonContent = new JSONObject(jsonText);
+					router.spawnNewLocThread();
 				}
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
@@ -174,6 +172,12 @@ public class HomePage extends Page {
 				jsonException = true;
 			} catch (NullPointerException e)
 			{
+				e.printStackTrace();
+				networkException = true;
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+				networkException = true;
+			} catch (IOException e) {
 				e.printStackTrace();
 				networkException = true;
 			} 

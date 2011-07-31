@@ -59,7 +59,7 @@ public class ContactResultsPage extends ResultsDisplayPage {
 				List<View> outputs = new ArrayList<View>();
 				String jsonOutput = router.onRequestSent(SelectionManager
 						.getName(ContactResultsPage.this.getClass()),
-						ContactResultsPage.this, Router.JSON, query);
+						Router.JSON, query);
 				System.out.println(jsonOutput);
 				JSONObject output = new JSONObject(jsonOutput);
 				JSONArray results = output.getJSONArray("results");

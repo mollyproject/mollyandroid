@@ -9,7 +9,6 @@ import org.json.*;
 import org.mollyproject.android.jsoncookie.Cookie;
 
 import android.content.Context;
-import android.widget.Toast;
 
     /**
      * CookieManager is a simple utilty for handling cookies when working
@@ -172,7 +171,7 @@ public class CookieManager {
 		}
     }
     
-    public String getCSRFToken(URL url) throws JSONException
+    public String getCSRFToken() throws JSONException
     {
     	return (String) ((JSONObject) cookies.get("csrftoken")).getString("value");
     }

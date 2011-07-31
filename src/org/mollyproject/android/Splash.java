@@ -23,7 +23,6 @@ public class Splash extends Page {
 		welcomeText.setText("Molly Android");
 		
 		setContentView(R.layout.splash);
-		splashed = true;
 		Thread splashThread = new Thread() {
 			@Override
 			public void run()
@@ -31,7 +30,7 @@ public class Splash extends Page {
 				Looper.prepare();
 				try 
 				{
-					Thread.sleep(100);
+					Thread.sleep(3000);
 				}
 				catch (InterruptedException e)
 				{
@@ -56,6 +55,7 @@ public class Splash extends Page {
 		{
 			finish();
 		}
+		splashed = true;
 	}
 	@Override
 	public Page getInstance() {
