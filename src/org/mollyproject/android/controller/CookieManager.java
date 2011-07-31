@@ -27,7 +27,8 @@ public class CookieManager {
     
 	private final static String COOKIESFILE = "cookiesFile.txt";
 	protected File cookiesFile;
-	protected Context context;
+	//protected Context context;
+	protected MyApplication myApp;
 	protected JSONObject cookies; //store the cookies in JSON format	
     
     private static final String SET_COOKIE = "Set-Cookie";
@@ -40,11 +41,12 @@ public class CookieManager {
     private static final char NAME_VALUE_SEPARATOR = '=';
     private DateFormat dateFormat;
 
-    public CookieManager(Context context) throws IOException, JSONException {
-    	this.context = context;
+    public CookieManager(MyApplication myApp) throws IOException, JSONException {
+    	//this.context = context;
+    	setApp(myApp);
     	cookies = new JSONObject();
     	
-    	cookiesFile = context.getFileStreamPath(COOKIESFILE);
+    	cookiesFile = myApp.getFileStreamPath(COOKIESFILE);
     	
     	//check if file exists
     	if (cookiesFile.exists())
@@ -63,6 +65,12 @@ public class CookieManager {
     	//the else case is dealt with by doing a storeCookies() call in Router 
     	dateFormat = new SimpleDateFormat(DATE_FORMAT);
     }    
+    
+    public void setApp(MyApplication myApp)
+    {
+    	this.myApp = myApp;
+    }
+    
     /**
      * Retrieves and stores cookies returned by the host on the other side
      * of the the open java.net.URLConnection.
@@ -172,7 +180,7 @@ public class CookieManager {
     public String readCookiesFromFile() throws IOException, JSONException
     {
     	//Assuming the file exists
-    	FileInputStream fIn = context.openFileInput(COOKIESFILE);
+    	FileInputStream fIn = myApp.openFileInput(COOKIESFILE);
         InputStreamReader isr = new InputStreamReader(fIn);
         char[] inputBuffer = new char[1024];
         isr.read(inputBuffer);
@@ -187,7 +195,7 @@ public class CookieManager {
     
     public void writeCookiesToFile() throws IOException
     {
-    	FileOutputStream fos = context.openFileOutput(COOKIESFILE, 
+    	FileOutputStream fos = myApp.openFileOutput(COOKIESFILE, 
 				Context.MODE_PRIVATE);
 		OutputStreamWriter osw = new OutputStreamWriter(fos);
 		osw.write(cookies.toString());		

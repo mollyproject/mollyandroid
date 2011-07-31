@@ -11,11 +11,12 @@ public class MyApplication extends Application {
 	protected String mapQuery;
 	protected String contactQuery;
 	protected String libraryQuery;
-	
+	protected boolean destroyed = false;
 	public MyApplication() throws Exception
 	{
 		super();
 		bcCount = 0;
+		router = null;
 		bcTrail = new LinkedList<String>();
 	}
 	

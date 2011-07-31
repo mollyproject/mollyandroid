@@ -21,22 +21,28 @@ public class Router {
 	protected LocationThread currentLocThread;
 	protected String csrfToken;
 	protected boolean firstReq;
-	protected Context context;
+	//protected Context context;
+	protected MyApplication myApp;
 	public final static String mOX =  "http://dev.m.ox.ac.uk/";
 	public final static int JSON = 1;
 	
-	public Router (Context context) throws IOException, JSONException 
+	public Router (MyApplication myApp) throws IOException, JSONException 
 	{
 		waiting = true;	
-		cookieMgr = new CookieManager(context);
+		this.myApp = myApp;
+		cookieMgr = new CookieManager(myApp);
 		firstReq = true;
 		currentLocThread = null;
-		this.context = context;
+		//this.context = context;
 	}
-	
+    
+	public void setApp(MyApplication myApp)
+    {
+    	this.myApp = myApp;
+    }
+    
 	//Take an URL String, convert to URL, open connection then process 
 	//and return the response
-
 	public static String getFrom (String urlStr) throws MalformedURLException,
 											IOException, UnknownHostException
 	{
@@ -95,7 +101,7 @@ public class Router {
 		//and the reverse API in Molly
 		if (waiting) {
 			waiting = false;
-			
+			//if an exception is thrown, waiting might be false forever
 			String urlStr = new String();
 			String reverseReq = mOX + "reverse/?name="+locator;
 			urlStr = getFrom(reverseReq);
@@ -143,7 +149,7 @@ public class Router {
 	public void spawnNewLocThread(String token) throws MalformedURLException
 	{
 		System.out.println("New LocThread spawned");
-		currentLocThread = new LocationThread(new URL(mOX),context);
+		currentLocThread = new LocationThread(new URL(mOX),myApp);
 		currentLocThread.setCSRFToken(token);
 		currentLocThread.start();
 	}

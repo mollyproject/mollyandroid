@@ -37,14 +37,14 @@ public class LocationThread extends Thread {
 	protected volatile boolean autoLoc;
 	private static double DEFAULT_LON = -1.255939;
 	private static double DEFAULT_LAT = 51.752527;
-	private static int UPDATE_DELAY_IN_MS = 2000; 
+	private static int UPDATE_DELAY_IN_MS = 600000; 
 	
-	public LocationThread(final URL url, final Context context)
+	public LocationThread(final URL url, final MyApplication myApp)
 	{
 		super();
 		autoLoc = true;
 		this.url = url;
-		locMgr = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		locMgr = (LocationManager) myApp.getSystemService(Context.LOCATION_SERVICE);
 		
 	    Criteria criteria = new Criteria();
 	    criteria.setAccuracy(Criteria.ACCURACY_FINE);

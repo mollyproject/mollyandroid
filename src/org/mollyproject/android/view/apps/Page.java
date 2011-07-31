@@ -50,6 +50,21 @@ public abstract class Page extends Activity {
 		myApp = (MyApplication) getApplication();
 		bcBar = new ImprovedBreadCrumbBar(getInstance());
 		router = myApp.getRouter();
+		if (router == null)
+		{
+			try {
+				router = new Router(myApp);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Page.popupErrorDialog("Network Connection cannot be set up. ", 
+						"Please try again later", this, true);
+			}
+			myApp.setRouter(router);
+		}
+		else
+		{
+			router.setApp(myApp);
+		}
 	}
 	
 	public abstract Page getInstance();
@@ -148,10 +163,19 @@ public abstract class Page extends Activity {
 	    return true;
 	}
 	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		//System.out.println(router);
+		router.setApp(myApp);
+	}
+	
     @Override
-    public void onDestroy()
+    public void onPause()
     {
-    	super.onDestroy();
+    	super.onPause();
+    	//System.out.println(router);
     	router.stopCurrentLocThread();
     }
 }

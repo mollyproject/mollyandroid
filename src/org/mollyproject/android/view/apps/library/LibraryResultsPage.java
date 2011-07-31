@@ -135,7 +135,7 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 						curPageNum--;
 						contentLayout.removeView(resultsNo);
 						contentLayout.removeView(scr);
-						generatePage("abc");//cache.get(curPageNum));
+						generatePage(cache.get(curPageNum));
 					} catch (JSONException e) {
 						e.printStackTrace();
 						Page.popupErrorDialog("JSON Exception", 

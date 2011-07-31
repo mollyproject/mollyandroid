@@ -24,15 +24,6 @@ public class Splash extends Page {
 		
 		setContentView(R.layout.splash);
 		splashed = true;
-		try {
-			router = new Router(getApplicationContext());
-		} catch (Exception e) {
-			e.printStackTrace();
-			Page.popupErrorDialog("Network Connection cannot be set up. ", 
-					"Please try again later", this, true);
-		}
-        
-        myApp.setRouter(router);
 		Thread splashThread = new Thread() {
 			@Override
 			public void run()

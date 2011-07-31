@@ -119,7 +119,7 @@ public class HomePage extends Page {
     public void onResume()
     {
     	super.onResume();
-    	pDialog = ProgressDialog.show(this, "Connecting to server..", "", true, false);
+    	pDialog = ProgressDialog.show(this, "", "Loading...", true, false);
     	new NetworkPollingTask().execute();
     	//home page still contributes to breadcrumb update, but doesn't need a bar on it
     	//so no need to call bcBar.reconstruct
@@ -130,7 +130,6 @@ public class HomePage extends Page {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             moveTaskToBack(true);
-            onDestroy();
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -144,27 +143,29 @@ public class HomePage extends Page {
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			try {
-			if (router.getLocThread() != null)
-	    	{
-		    	if (router.getLocThread().isInterrupted())
+				System.out.println("Router "+router);
+				if (router.getLocThread() != null)
 		    	{
-		    		System.out.println("LocThread needs to restart");
+			    	if (router.getLocThread().isInterrupted())
+			    	{
+			    		System.out.println("LocThread needs to restart");
+						router.spawnNewLocThread
+						(router.getCookieManager().getCSRFToken(new URL (Router.mOX)));
+			    	}
+	    		}
+				else
+				{
+					//LocThread is actually null, it is not there
+					//this happens when either no connection has been made before
+					//or the LocThread has been made null to prevent being wiped 
+		    		/*String jsonText = router.onRequestSent(
+							SelectionManager.getName(HomePage.this.getClass()),HomePage.this,
+							Router.JSON,null);
+		    		System.out.println("JSON Text " + jsonText);
+					jsonContent = new JSONObject(jsonText);*/
 					router.spawnNewLocThread
-					(router.getCookieManager().getCSRFToken(new URL (Router.mOX)));
-		    	}
-    		}
-			else
-			{
-				//LocThread is actually null, it is not there
-				//this happens when either no connection has been made before
-				//or the LocThread has been made null to prevent being wiped 
-	    		String jsonText = router.onRequestSent(
-						SelectionManager.getName(HomePage.this.getClass()),HomePage.this,
-						Router.JSON,null);
-	    		System.out.println("JSON Text " + jsonText);
-				jsonContent = new JSONObject(jsonText);
-				
-			}
+						(router.getCookieManager().getCSRFToken(new URL (Router.mOX)));
+				}
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 				networkException = true;
@@ -175,13 +176,7 @@ public class HomePage extends Page {
 			{
 				e.printStackTrace();
 				networkException = true;
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-				networkException = true;
-			} catch (IOException e) {
-				e.printStackTrace();
-				networkException = true;
-			}  
+			} 
 			return null;
 		}
     	

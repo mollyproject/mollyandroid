@@ -1,5 +1,7 @@
 package org.mollyproject.android.view.apps.contact;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
@@ -31,8 +33,16 @@ public class ContactResultsPage extends ResultsDisplayPage {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		// Show the ProgressDialog on this thread
-        pDialog = ProgressDialog.show(this, "Working..", "", true, false);
-
+        pDialog = ProgressDialog.show(this, "", "Loading...", true, false);
+        /*pDialog.setButton(ProgressDialog.BUTTON_POSITIVE, "Cancel", 
+        		new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});*/
+        
         // Start a new thread that will download all the data
         query = myApp.getContactQuery();
         new ContactResultsTask().execute(contentLayout);
@@ -45,10 +55,12 @@ public class ContactResultsPage extends ResultsDisplayPage {
 		@Override
 		protected List<View> doInBackground(LinearLayout... args) {
 			try {
+				System.out.println("ASYNC");
 				List<View> outputs = new ArrayList<View>();
 				String jsonOutput = router.onRequestSent(SelectionManager
 						.getName(ContactResultsPage.this.getClass()),
 						ContactResultsPage.this, Router.JSON, query);
+				System.out.println(jsonOutput);
 				JSONObject output = new JSONObject(jsonOutput);
 				JSONArray results = output.getJSONArray("results");
 				
@@ -183,7 +195,9 @@ public class ContactResultsPage extends ResultsDisplayPage {
 					outputs.add(scr);
 					System.out.println("Search completed, returned "+results.length()
 										+" results"+" and page rendered in:");
+
 					myApp.timeStop();
+					
 					return outputs;
 				}
 				
@@ -192,7 +206,16 @@ public class ContactResultsPage extends ResultsDisplayPage {
 				//problem here, json not received from server
 				jsonExceptionThrown = true;
 				
-			} catch (Exception e) {
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				otherExceptionThrown = true;
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				otherExceptionThrown = true;
+				e.printStackTrace();
+			} 
+			catch (Exception e) {
 				//Anything else is assumed to be caused by a network failure
 				otherExceptionThrown = true;
 			}
@@ -202,16 +225,16 @@ public class ContactResultsPage extends ResultsDisplayPage {
 		{
 			if (jsonExceptionThrown)
 			{
+				jsonExceptionThrown = false;
 				popupErrorDialog("JSON Exception", 
 						"There might be a problem with JSON output " +
 						"from server. Please try again.", ContactResultsPage.this, true);
-				jsonExceptionThrown = false;
 			}
 			else if (otherExceptionThrown)
 			{
+				otherExceptionThrown = false;
 				popupErrorDialog("Cannot connect to server. ", 
 						"Please try again later.", ContactResultsPage.this, true);
-				otherExceptionThrown = false;
 			}
 			else 
 			{
