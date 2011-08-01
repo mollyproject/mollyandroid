@@ -51,8 +51,8 @@ public class Router {
 		
 		System.out.println("Router, Processing: " + urlStr);
 		URLConnection revConn = new URL(urlStr).openConnection();
-		revConn.setConnectTimeout(5000);
-		revConn.setReadTimeout(5000);
+		revConn.setConnectTimeout(20000);
+		revConn.setReadTimeout(20000);
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 								revConn.getInputStream()));
 		String inputLine;

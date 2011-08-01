@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.mollyproject.android.R;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 
@@ -21,7 +22,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 public class HomePage extends Page {
@@ -34,7 +37,7 @@ public class HomePage extends Page {
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
         
-    	myApp.updateBreadCrumb(SelectionManager.getName(HomePage.class));
+    	/*myApp.updateBreadCrumb(SelectionManager.getName(HomePage.class));
         System.out.println("Home added breadcrumb");
     	
 		LinearLayout contentLayout = new LinearLayout(this);
@@ -107,7 +110,22 @@ public class HomePage extends Page {
 		contentLayout.addView(featureButton);
 		
 		scr.addView(contentLayout);
-		setContentView(scr);
+		setContentView(scr);*/
+    	
+    	setContentView(R.layout.main);
+    	
+    	EditText searchField = (EditText) findViewById(R.id.search);
+    	searchField.setBackgroundResource(R.drawable.rounded_edittext);
+    	
+    	RelativeLayout contactSearch = (RelativeLayout) findViewById(R.id.contactButtonLayout);
+    	contactSearch.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent myIntent = new Intent(view.getContext(), SelectionManager
+						.getPageClass(SelectionManager.CONTACT_PAGE));
+                startActivityForResult(myIntent, 0);				
+			}
+    	});
     }
     
     public Page getInstance()
