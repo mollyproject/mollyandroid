@@ -5,13 +5,13 @@
     android:weightSum="1" android:orientation="vertical"
     android:background="@color/blue">
     <RelativeLayout android:orientation="vertical" 
-	    android:id="@+id/buttonsLayout" 
+	    android:id="@+id/searchLayout" 
 	    android:layout_width="wrap_content" 
-	    android:layout_height="40sp">
+	    android:layout_height="40dp">
          
         <EditText android:singleLine="True" 
 	        android:id="@+id/search" 
-	        android:layout_width="200sp" 
+	        android:layout_width="200dp" 
 	        android:layout_height="wrap_content" 
 	        android:layout_toLeftOf="@+id/searchButton" 
 	        android:layout_alignBottom="@+id/searchButton"
@@ -19,97 +19,124 @@
         </EditText>
         <Button android:background="@drawable/search_button" android:id="@+id/searchButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true"></Button>
     </RelativeLayout>
-    <LinearLayout android:layout_width="fill_parent" 
-	    android:id="@+id/bottomLayout" android:weightSum="1" 
-	    android:background="@drawable/bg_white" 
-	    android:orientation="vertical" 
-	    android:layout_height="wrap_content" 
-	    android:layout_alignParentBottom="true" 
-	    android:layout_alignParentLeft="true">
     
-        <TextView android:id="@+id/suggestionTextView" 
-	        android:layout_width="fill_parent" 
-	        android:text="Suggestion a feature" 
-	        android:background="@drawable/bg_blue" 
-	        android:layout_height="36sp">
-	    </TextView>
-    
-        <TextView android:id="@+id/aboutTextView" 
-	        android:layout_width="fill_parent" 
-	        android:text="About this app" 
-	        android:background="@drawable/bg_blue" 
-      		android:layout_height="36sp">
-        </TextView>
-        
-        <TextView android:id="@+id/feedbackTextView" 
-	        android:layout_width="fill_parent" 
-	        android:text="Provide feedback" 
-	        android:background="@drawable/bg_blue" 
-	        android:layout_height="36sp">
-        </TextView>
-        
-    </LinearLayout>
-    <RelativeLayout android:background="@drawable/bg_white" 
-    	android:layout_width="fill_parent" 
+    <LinearLayout android:layout_width="wrap_content" 
 	    android:layout_height="wrap_content" 
-	    android:id="@+id/relativeLayout1" 
-	    android:layout_below="@+id/buttonsLayout" 
+	    android:orientation="vertical"
+	    android:id="@+id/mainContentLayout" 
 	    android:layout_alignParentLeft="true" 
-	    android:layout_above="@+id/bottomLayout">
-        <RelativeLayout android:layout_width="wrap_content" 
-	        android:layout_height="wrap_content" 
-	        android:id="@+id/libraryButtonLayout" 
-	        android:layout_alignTop="@+id/contactButtonLayout" 
-	        android:layout_toRightOf="@+id/contactButtonLayout" 
-	        android:layout_marginLeft="20sp" 
-	        android:layout_alignBottom="@+id/contactButtonLayout">
+	    android:layout_alignParentRight="true" 
+	    android:layout_below="@+id/searchLayout" android:layout_alignParentBottom="true">
+	    
+	    <RelativeLayout android:background="@drawable/bg_white" 
+	    	android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content"
+		    android:fillViewport="true"
+		    android:layout_weight="0.5"
+		    android:id="@+id/mainButtons" android:layout_alignParentTop="true">
+		    
+	        <RelativeLayout android:layout_width="wrap_content" 
+		        android:layout_height="wrap_content" 
+		        
+		        android:id="@+id/libraryButtonLayout" 
+		        android:layout_alignTop="@+id/contactButtonLayout" 
+		        android:layout_toRightOf="@+id/contactButtonLayout" 
+		        android:layout_alignBottom="@+id/contactButtonLayout">
+		        
+	            <Button android:background="@drawable/library" 
+		            android:id="@+id/libraryButton" 
+		            android:layout_alignParentTop="true" 
+		            android:layout_width="wrap_content" 
+		            android:layout_height="wrap_content">
+	            </Button>
+	            <TextView android:layout_alignRight="@+id/libraryButton" 
+		            android:textColor="@color/blue" 
+		            android:layout_below="@+id/libraryButton" 
+		            android:layout_alignParentBottom="true" 
+		            android:id="@+id/libraryText" 
+		            android:layout_width="wrap_content" 
+		            android:gravity="center" 
+		            android:layout_height="wrap_content" 
+		            android:text="Library Search"></TextView>
+	        </RelativeLayout>
 	        
-            <Button android:background="@drawable/library" 
-	            android:id="@+id/libraryButton" 
-	            android:layout_alignParentTop="true" 
-	            android:layout_width="wrap_content" 
-	            android:layout_height="wrap_content">
-            </Button>
-            <TextView android:layout_alignRight="@+id/libraryButton" 
-	            android:textColor="@color/blue" 
-	            android:layout_below="@+id/libraryButton" 
-	            android:layout_alignParentBottom="true" 
-	            android:id="@+id/libraryText" 
-	            android:layout_width="wrap_content" 
-	            android:gravity="center" 
-	            android:layout_height="wrap_content" 
-	            android:text="Library Search"></TextView>
-        </RelativeLayout>
-        
-        <RelativeLayout android:layout_width="wrap_content" 
-	        android:layout_height="wrap_content" 
-	        android:id="@+id/resultsButtonLayout"
-	        android:layout_alignBottom="@+id/libraryButtonLayout" 
-	        android:layout_toRightOf="@+id/libraryButtonLayout" 
-	        android:layout_marginLeft="20sp" 
-	        android:layout_alignTop="@+id/libraryButtonLayout">
-        
-            <Button android:id="@+id/resultsButton" 
-	            android:layout_width="wrap_content" 
-	            android:layout_height="wrap_content"
-	            android:background="@drawable/results">
-            </Button>
-            <TextView android:textColor="@color/blue" android:id="@+id/resultsText" android:layout_width="wrap_content" android:gravity="center" android:layout_height="wrap_content" android:text="Results Release" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true" android:layout_below="@+id/resultsButton" android:layout_alignRight="@+id/resultsButton"></TextView>
-        </RelativeLayout>
-        
-        <RelativeLayout android:layout_width="wrap_content" 
-        android:layout_height="100sp"
-        android:id="@+id/contactButtonLayout" 
-        android:layout_alignParentTop="true" 
-        android:layout_alignParentLeft="true" 
-        android:layout_marginLeft="50sp" 
-        android:layout_marginTop="20sp">
-            <Button android:background="@drawable/contact" android:id="@+id/contactButton" android:layout_alignParentTop="true" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-            <TextView android:layout_alignRight="@+id/contactButton" android:textColor="@color/blue" android:layout_below="@+id/contactButton" android:id="@+id/contactText" android:layout_width="fill_parent" android:layout_alignParentLeft="true" android:gravity="center" android:layout_height="30sp" android:text="Contact Search" android:layout_alignParentBottom="true"></TextView>
-        </RelativeLayout>
-        
-               
-    </RelativeLayout>
+	        <RelativeLayout android:layout_width="wrap_content" 
+		        android:layout_height="wrap_content" 
+		        android:id="@+id/resultsButtonLayout"
+		        android:layout_alignBottom="@+id/libraryButtonLayout" 
+		        android:layout_toRightOf="@+id/libraryButtonLayout" 
+		        android:layout_alignTop="@+id/libraryButtonLayout">
+	        
+	            <Button android:id="@+id/resultsButton" 
+		            android:layout_width="wrap_content" 
+		            android:layout_height="wrap_content"
+		            android:background="@drawable/results">
+	            </Button>
+	            <TextView android:textColor="@color/blue" android:id="@+id/resultsText" android:layout_width="wrap_content" android:gravity="center" android:layout_height="wrap_content" android:text="Results Release" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true" android:layout_below="@+id/resultsButton" android:layout_alignRight="@+id/resultsButton"></TextView>
+	        </RelativeLayout>
+	        
+	        <RelativeLayout android:layout_width="wrap_content" 
+		        android:layout_height="100dp"
+		        android:id="@+id/contactButtonLayout" 
+		        android:layout_alignParentTop="true" 
+		        android:layout_alignParentLeft="true" 
+		        >
+	            <Button android:background="@drawable/contact" 
+		            android:id="@+id/contactButton" 
+		            android:layout_alignParentTop="true" 
+		            android:layout_width="wrap_content" 
+		            android:layout_height="wrap_content"></Button>
+	            <TextView android:layout_alignRight="@+id/contactButton" 
+		            android:textColor="@color/blue" 
+		            android:layout_below="@+id/contactButton" 
+		            android:id="@+id/contactText" 
+		            android:layout_width="fill_parent" 
+		            android:layout_alignParentLeft="true" 
+		            android:gravity="center" 
+		            android:layout_height="30dp" 
+		            android:text="Contact Search" 
+		            android:layout_alignParentBottom="true"></TextView>
+	        </RelativeLayout>
+	    </RelativeLayout>
+	    
+	    <LinearLayout android:layout_width="fill_parent" 
+			    android:id="@+id/bottomLayout"
+			    android:layout_weight="0.5"
+			    android:background="@drawable/bg_white" 
+			    android:orientation="vertical" 
+			    android:layout_height="wrap_content" >
+		    
+		        <TextView android:id="@+id/suggestionTextView" 
+			        android:layout_width="fill_parent" 
+			        android:text="Suggest a feature"
+			        android:gravity="center"
+			        android:layout_marginBottom="3dp"
+			        android:background="@drawable/bg_blue"
+			        android:layout_weight="0.3"
+			        android:layout_height="fill_parent">
+			    </TextView>
+		    
+		        <TextView android:id="@+id/aboutTextView" 
+			        android:layout_width="fill_parent" 
+			        android:text="About this app" 
+			        android:gravity="center"
+			        android:layout_marginBottom="3dp"
+			        android:layout_weight="0.3"
+			        android:background="@drawable/bg_blue" 
+		      		android:layout_height="fill_parent">
+		        </TextView>
+		        
+		        <TextView android:id="@+id/feedbackTextView" 
+			        android:layout_width="fill_parent"
+			        android:gravity="center"
+			        android:layout_marginBottom="3dp"
+			        android:layout_weight="0.3"
+			        android:text="Provide feedback" 
+			        android:background="@drawable/bg_blue" 
+			        android:layout_height="fill_parent">
+		        </TextView>
+	    	</LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
 
 
