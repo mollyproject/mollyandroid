@@ -17,21 +17,28 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.ViewFlipper;
 
 public class HomePage extends Page {
 	
 	protected ArrayList<Button> breadCrumbs;
 	protected LinearLayout bcLayout;
-	
+	private GestureDetector gestureDetector;
+	View.OnTouchListener gestureListener;
+	private ViewFlipper viewFlipper;
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,9 +119,19 @@ public class HomePage extends Page {
 		scr.addView(contentLayout);
 		setContentView(scr);*/
     	
-    	setContentView(R.layout.main);
+    	setContentView(R.layout.view_flipper);
     	
-    	EditText searchField = (EditText) findViewById(R.id.search);
+    	viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper1);
+    	gestureDetector = new GestureDetector(new MyGestureDetector());
+        gestureListener = new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (gestureDetector.onTouchEvent(event)) {
+                    return true;
+                }
+                return false;
+            }
+        };
+    	/*EditText searchField = (EditText) findViewById(R.id.search);
     	searchField.setBackgroundResource(R.drawable.rounded_edittext);
     	
     	RelativeLayout contactSearch = (RelativeLayout) findViewById(R.id.contactButtonLayout);
@@ -125,7 +142,7 @@ public class HomePage extends Page {
 						.getPageClass(SelectionManager.CONTACT_PAGE));
                 startActivityForResult(myIntent, 0);				
 			}
-    	});
+    	});*/
     }
     
     public Page getInstance()
@@ -151,6 +168,14 @@ public class HomePage extends Page {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+    
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (gestureDetector.onTouchEvent(event))
+	        return true;
+	    else
+	    	return false;
     }
     
     private class NetworkPollingTask extends AsyncTask<Void,Void,Void>
@@ -234,6 +259,39 @@ public class HomePage extends Page {
 		}
     }
     
+    class MyGestureDetector extends SimpleOnGestureListener {
+
+    	private static final int SWIPE_MIN_DISTANCE = 120;
+    	private static final int SWIPE_MAX_OFF_PATH = 250;
+    	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+    	
+    	@Override
+    	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+    		System.out.println("FLING");
+    		
+    		try {
+                if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+                    return false;
+                // right to left swipe
+                if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                	viewFlipper.setInAnimation
+                		(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_left_in));
+                    viewFlipper.setOutAnimation
+                    	(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_left_out));
+                	viewFlipper.showNext();
+                }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                	viewFlipper.setInAnimation
+                		(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_right_in));
+                    viewFlipper.setOutAnimation
+                    	(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_right_out));
+                	viewFlipper.showPrevious();
+                }
+            } catch (Exception e) {
+                // nothing
+            }
+            return false;
+    	}
+    }
 }
 
 
