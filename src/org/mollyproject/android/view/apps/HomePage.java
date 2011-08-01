@@ -137,6 +137,8 @@ public class HomePage extends Page {
     
     private class NetworkPollingTask extends AsyncTask<Void,Void,Void>
     {
+    	//check for connection everytime the app is started and also spawn the location thread
+    	//if necessary
     	protected boolean jsonException = false;
     	protected boolean networkException = false;
     	
@@ -156,12 +158,17 @@ public class HomePage extends Page {
 				{
 					//LocThread is actually null, it is not there
 					//this happens when either no connection has been made before
-					//or the LocThread has been made null to prevent being wiped 
+					//or the LocThread has been made null and checked explicitly 
+					//to prevent the NullPointerException
+					
+					//Establish a connection (mainly to get the csrftoken inside the cookieMgr
 		    		String jsonText = router.onRequestSent(
 							SelectionManager.getName(HomePage.this.getClass()),
-							Router.JSON,null);
+							Router.OutputFormat.JSON,null);
 		    		System.out.println("JSON Text " + jsonText);
 					jsonContent = new JSONObject(jsonText);
+					
+					//connection succeeded, had csrftoken, spawn the location thread
 					router.spawnNewLocThread();
 				}
 			} catch (MalformedURLException e) {
@@ -180,7 +187,11 @@ public class HomePage extends Page {
 			} catch (IOException e) {
 				e.printStackTrace();
 				networkException = true;
-			} 
+			}
+			finally
+			{
+				router.waitForRequests(); //return the router to the waiting state
+			}
 			return null;
 		}
     	

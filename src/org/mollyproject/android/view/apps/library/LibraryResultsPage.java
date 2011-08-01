@@ -49,7 +49,7 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 	private void connectAndGenerate(String queryWithPage) throws JSONException
 	{
 		String jsonOutput = router.exceptionHandledOnRequestSent(SelectionManager.getName(this.getClass()),
-				this, Router.JSON, queryWithPage);
+				this, Router.OutputFormat.JSON, queryWithPage);
 		generatePage(jsonOutput);
 	}
 	
@@ -168,7 +168,7 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 						{
 							String newJSONOutput = router.exceptionHandledOnRequestSent
 								(SelectionManager.getName(LibraryResultsPage.this.getClass()), 
-									LibraryResultsPage.this,Router.JSON, query+"&page="+curPageNum);
+									LibraryResultsPage.this,Router.OutputFormat.JSON, query+"&page="+curPageNum);
 							generatePage(newJSONOutput);
 						}
 					} catch (JSONException e) {

@@ -49,7 +49,7 @@ public class ResultsReleasePage extends ContentPage {
 		
 		try {
 			jsonText = router.exceptionHandledOnRequestSent(SelectionManager.getName(ResultsReleasePage.class),
-					this,Router.JSON, null);
+					this,Router.OutputFormat.JSON, null);
 			//Process the json text received
 			if (jsonText != null)
 			{

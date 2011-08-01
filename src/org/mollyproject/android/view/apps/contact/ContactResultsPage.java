@@ -59,7 +59,7 @@ public class ContactResultsPage extends ResultsDisplayPage {
 				List<View> outputs = new ArrayList<View>();
 				String jsonOutput = router.onRequestSent(SelectionManager
 						.getName(ContactResultsPage.this.getClass()),
-						Router.JSON, query);
+						Router.OutputFormat.JSON, query);
 				System.out.println(jsonOutput);
 				JSONObject output = new JSONObject(jsonOutput);
 				JSONArray results = output.getJSONArray("results");
@@ -218,6 +218,10 @@ public class ContactResultsPage extends ResultsDisplayPage {
 			catch (Exception e) {
 				//Anything else is assumed to be caused by a network failure
 				otherExceptionThrown = true;
+			}
+			finally
+			{
+				router.waitForRequests(); //return the router to the waiting state
 			}
 			return null;
 		}

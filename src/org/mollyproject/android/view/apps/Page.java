@@ -142,7 +142,7 @@ public abstract class Page extends Activity {
 			public void onClick(View v) {
 				//go to the url clicked
 				Intent browseIntent = new Intent( Intent.ACTION_VIEW , Uri.parse(urlStr) );
-                startActivity(Intent.createChooser(browseIntent, "Calling number..."));
+                startActivity(Intent.createChooser(browseIntent, "Connecting..."));
 			}
     	});
 	}
@@ -167,15 +167,13 @@ public abstract class Page extends Activity {
 	public void onResume()
 	{
 		super.onResume();
-		//System.out.println(router);
 		router.setApp(myApp);
 	}
 	
     @Override
-    public void onPause()
+    public void onDestroy()
     {
-    	super.onPause();
-    	//System.out.println(router);
-    	router.stopCurrentLocThread();
+    	super.onDestroy();
+		router.stopCurrentLocThread();	
     }
 }

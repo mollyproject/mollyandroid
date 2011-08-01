@@ -18,15 +18,16 @@ import android.content.DialogInterface;
 
 public class Router {
 	protected CookieManager cookieMgr;
-	protected static boolean waiting;	
+	protected boolean waiting;	
 	protected LocationThread currentLocThread;
 	protected String csrfToken;
 	protected boolean firstReq;
 	//protected Context context;
 	protected MyApplication myApp;
 	public final static String mOX =  "http://dev.m.ox.ac.uk/";
-	public final static int JSON = 1;
-	
+
+	public static enum OutputFormat { JSON, FRAGMENT, JS, YAML, XML, HTML };
+
 	public Router (MyApplication myApp) throws IOException, JSONException 
 	{
 		waiting = true;	
@@ -65,7 +66,7 @@ public class Router {
 		return outputStr;
 	}
 	
-	public String exceptionHandledOnRequestSent(String locator,Page page, int format, String query)
+	public String exceptionHandledOnRequestSent(String locator,Page page, OutputFormat format, String query)
 	{
 		try{
 			return onRequestSent(locator, format, query);
@@ -88,11 +89,14 @@ public class Router {
 			Page.popupErrorDialog("I/O Exception (Router)", 
 					"There might be a problem with cookie files. " +
 					"Please try later.", page);
+		} finally
+		{
+			waitForRequests();
 		}
 		return null;
 	}
 	
-	public String onRequestSent(String locator,int format, String query) 
+	public String onRequestSent(String locator,OutputFormat format, String query) 
 							throws JSONException, UnknownHostException, IOException {
 		//to be included in AsyncTask subclasses where no UI is allowed
 		//in the doInBackground method
@@ -107,9 +111,8 @@ public class Router {
 			urlStr = getFrom(reverseReq);
 			String output = new String();
 			
-			//Have the urlStr, now get the JSON text or query
-			
 			switch(format){
+			//Depending on the format wanted, get the output
 			case JSON:
 				urlStr = urlStr+"?format=json";
 				break;
@@ -151,7 +154,7 @@ public class Router {
 	{
 		//Router connects to server, then cookieMgr gets the cookies
 		//cookieMgr extracts csrftoken, then pass to LocThread
-		onRequestSent(SelectionManager.HOME_PAGE, JSON, null); //csrftoken can only be received after at least 1 request
+		onRequestSent(SelectionManager.HOME_PAGE, OutputFormat.JSON, null); //csrftoken can only be received after at least 1 request
 		String token = cookieMgr.getCSRFToken();//if connection goes through, csrftoken should be available
 		currentLocThread = new LocationThread(new URL(mOX),myApp,token);
 		currentLocThread.start();
@@ -169,6 +172,11 @@ public class Router {
 			*/
 			currentLocThread = null;
 		}
+	}
+	
+	public void waitForRequests()
+	{
+		waiting = true;
 	}
 	
 	public LocationThread getLocThread()
