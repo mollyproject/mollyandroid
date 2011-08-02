@@ -37,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 public class HomePage extends Page {
@@ -282,12 +283,16 @@ public class HomePage extends Page {
     public class ImageAdapter extends BaseAdapter {
         private Context mContext;
 
+        private String[] pages = {
+        		"contact:index", "library:index"
+        };
+        
         public ImageAdapter(Context c) {
             mContext = c;
         }
 
         public int getCount() {
-            return mThumbIds.length;
+            return pages.length;
         }
 
         public Object getItem(int position) {
@@ -299,22 +304,28 @@ public class HomePage extends Page {
         }
 
         // create a new ImageView for each item referenced by the Adapter
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ImageView imageView;
+            
             if (convertView == null) {  // if it's not recycled, initialize some attributes
                 imageView = new ImageView(mContext);
             } else {
                 imageView = (ImageView) convertView;
             }
 
-            imageView.setImageResource(mThumbIds[position]);
+            imageView.setImageResource(SelectionManager.getImg(pages[position]));
+            imageView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent myIntent = new Intent(v.getContext(), SelectionManager
+							.getPageClass(pages[position]));
+	                startActivityForResult(myIntent, 0);
+				}
+			});
             return imageView;
         }
 
-        // references to our images
-        private Integer[] mThumbIds = {
-        		R.drawable.contact, R.drawable.library
-        };
     }
 }
 

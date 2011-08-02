@@ -67,6 +67,13 @@ public class SelectionManager {
 		bcImg.put(LIBRARY_RESULTS_PAGE, R.drawable.library_bc);
 		bcImg.put(CONTACT_RESULTS_PAGE, R.drawable.contact_bc);
 	}
+	
+	protected static Map<String,Integer> img 
+		= new HashMap<String,Integer>();
+	static {
+		img.put(CONTACT_PAGE, R.drawable.contact);
+		img.put(LIBRARY_PAGE, R.drawable.library);
+	}
 
 	public SelectionManager()
 	{
@@ -86,6 +93,11 @@ public class SelectionManager {
 	public static int getBCImg(String viewName)
 	{
 		return bcImg.get(viewName);
+	}
+	
+	public static int getImg(String viewName)
+	{
+		return img.get(viewName);
 	}
 	
 	public static Class<? extends Page> getPageClass(String s)
