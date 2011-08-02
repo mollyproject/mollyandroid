@@ -1,6 +1,8 @@
 package org.mollyproject.android.view.apps.library;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -11,10 +13,13 @@ import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.ResultsDisplayPage;
+import org.mollyproject.android.view.apps.contact.ContactResultsPage;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +33,7 @@ import android.widget.TextView;
 public class LibraryResultsPage extends ResultsDisplayPage {
 
 	protected int curPageNum;
+	protected ProgressDialog pDialog;
 	
 	protected Map<Integer,String> cache;
 	public void onCreate(Bundle savedInstanceState)
@@ -36,25 +42,31 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		curPageNum = 1;
 		cache = new HashMap<Integer,String>();
 		query = myApp.getLibraryQuery();
-		try {
+		
+		pDialog = ProgressDialog.show(this, "", "Loading...", true, false);
+		
+		new LibraryResultsTask().execute();
+		
+		/*try {
 			connectAndGenerate(query+"&page="+curPageNum);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			Page.popupErrorDialog("JSON Exception", 
 					"There might be a problem with JSON output " +
 					"from server. Please try again later.", this, true);
-		}
+		}*/
 	}
 	
-	private void connectAndGenerate(String queryWithPage) throws JSONException
+	private List<View> connectAndGenerate(String queryWithPage) throws JSONException
 	{
 		String jsonOutput = router.exceptionHandledOnRequestSent(SelectionManager.getName(this.getClass()),
 				this, Router.OutputFormat.JSON, queryWithPage);
-		generatePage(jsonOutput);
+		return generatePage(jsonOutput);
 	}
 	
-	private void generatePage(String jsonOutput) throws JSONException
+	private List<View> generatePage(String jsonOutput) throws JSONException
 	{
+		List<View> outputs = new ArrayList<View>();
 		if (!cache.containsKey(curPageNum))
 		{
 			cache.put(curPageNum, jsonOutput);
@@ -101,8 +113,8 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		pageLayout.addView(resultsLayout);
 		scr.addView(pageLayout);
 		
-		contentLayout.addView(resultsNo);
-		contentLayout.addView(scr);
+		outputs.add(resultsNo);
+		outputs.add(scr);
 		
 		Button nextButton = new Button(this);
 		nextButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
@@ -181,6 +193,7 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 				}
 			});
 		}
+		return outputs;
 	}
 	
 	private void addTextField(JSONObject jsonSource, String jsonKey, 
@@ -212,4 +225,30 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		return this;
 	}
 
+	private class LibraryResultsTask extends  AsyncTask<LinearLayout, Void, List<View>>
+	{
+		protected boolean jsonException = false;
+		@Override
+		protected List<View> doInBackground(LinearLayout... arg0) {
+			try {
+				connectAndGenerate(query+"&page="+curPageNum);
+			} catch (JSONException e) {
+				jsonException = true;
+			}
+			return null;
+		}
+		
+		protected void onPostExecute(List<View> outputs)
+		{
+			if (jsonException)
+			{
+				jsonException = false;
+				popupErrorDialog("JSON Exception", 
+						"There might be a problem with JSON output " +
+						"from server. Please try again.", LibraryResultsPage.this, true);
+			}
+			pDialog.dismiss();
+		}
+	}
+	
 }

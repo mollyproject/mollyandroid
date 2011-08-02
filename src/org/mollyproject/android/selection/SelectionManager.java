@@ -13,6 +13,8 @@ import org.mollyproject.android.view.apps.library.LibraryPage;
 import org.mollyproject.android.view.apps.library.LibraryResultsPage;
 import org.mollyproject.android.view.apps.results_release.ResultsReleasePage;
 
+import android.widget.RelativeLayout;
+
 import com.google.common.collect.HashBiMap;
 public class SelectionManager {
 	//I don't want a simple list of Strings because that makes it more difficult
@@ -65,6 +67,14 @@ public class SelectionManager {
 		bcImg.put(CONTACT_RESULTS_PAGE, R.drawable.contact_bc);
 	}
 	
+
+	protected static Map<Integer,Class<? extends Page>> layouts 
+					= new HashMap<Integer,Class<? extends Page>>();
+	static {
+		layouts.put(R.id.contactOuterLayout, ContactPage.class);
+		layouts.put(R.id.libraryOuterLayout, LibraryPage.class);
+	}
+	
 	public SelectionManager()
 	{
 		currentPageName = HOME_PAGE;
@@ -88,5 +98,10 @@ public class SelectionManager {
 	public static Class<? extends Page> getPageClass(String s)
 	{
 		return pages.get(s);
-	}		
+	}
+	
+	public static Class<? extends Page> getPageClass(Integer layoutID)
+	{
+		return layouts.get(layoutID);
+	}
 }

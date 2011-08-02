@@ -28,7 +28,7 @@
     android:layout_height="wrap_content">
     
         <RelativeLayout android:layout_width="fill_parent" 
-        android:id="@+id/relativeLayout1"
+        android:id="@+id/contactOuterLayout"
         android:layout_height="fill_parent">
         
 	        <RelativeLayout android:layout_width="wrap_content" 
@@ -54,7 +54,7 @@
         </RelativeLayout>
     
     	<RelativeLayout android:layout_width="fill_parent" 
-	        android:id="@+id/relativeLayout2"
+	        android:id="@+id/libraryOuterLayout"
 	        android:layout_height="fill_parent">
     		<RelativeLayout android:layout_width="wrap_content"
 		        android:id="@+id/libraryButtonLayout" 
@@ -87,7 +87,32 @@
 			    android:background="@drawable/bg_white" 
 			    android:orientation="vertical" 
 			    android:layout_height="wrap_content" >
-		    
+        <LinearLayout android:layout_width="fill_parent" 
+        	android:layout_height="wrap_content" 
+        	android:id="@+id/navigateLayout">
+            <Button android:text="Previous" 
+	            android:id="@+id/prevButton" 
+	            android:layout_weight="0.3"
+	            android:layout_width="wrap_content" 
+	            android:layout_height="wrap_content">
+            </Button>
+            <TextView android:text="TextView" 
+	            android:id="@+id/textView1"
+	            android:gravity="center"
+	            android:layout_weight="0.4"
+	            android:textColor="@color/blue"
+	            android:layout_width="wrap_content" android:layout_height="fill_parent">
+            </TextView>
+            <Button android:text="Next" 
+	            android:id="@+id/nextButton"
+	            android:layout_weight="0.3"
+	            android:layout_width="wrap_content" 
+	            android:layout_height="wrap_content">
+            </Button>
+        </LinearLayout>
+		    	
+		    	
+		    	
 		        <TextView android:id="@+id/suggestionTextView" 
 			        android:layout_width="fill_parent" 
 			        android:text="Suggest a feature"

@@ -50,8 +50,8 @@ public class ContactResultsPage extends ResultsDisplayPage {
 	
 	private class ContactResultsTask extends  AsyncTask<LinearLayout, Void, List<View>>
 	{
-		protected boolean jsonExceptionThrown = false;
-		protected boolean otherExceptionThrown = false;
+		protected boolean jsonException = false;
+		protected boolean otherException = false;
 		@Override
 		protected List<View> doInBackground(LinearLayout... args) {
 			try {
@@ -204,20 +204,20 @@ public class ContactResultsPage extends ResultsDisplayPage {
 			} 
 			catch (JSONException e) {
 				//problem here, json not received from server
-				jsonExceptionThrown = true;
+				jsonException = true;
 				
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
-				otherExceptionThrown = true;
+				otherException = true;
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				otherExceptionThrown = true;
+				otherException = true;
 				e.printStackTrace();
 			} 
 			catch (Exception e) {
 				//Anything else is assumed to be caused by a network failure
-				otherExceptionThrown = true;
+				otherException = true;
 			}
 			finally
 			{
@@ -227,16 +227,16 @@ public class ContactResultsPage extends ResultsDisplayPage {
 		}
 		protected void onPostExecute(List<View> outputs)
 		{
-			if (jsonExceptionThrown)
+			if (jsonException)
 			{
-				jsonExceptionThrown = false;
+				jsonException = false;
 				popupErrorDialog("JSON Exception", 
 						"There might be a problem with JSON output " +
 						"from server. Please try again.", ContactResultsPage.this, true);
 			}
-			else if (otherExceptionThrown)
+			else if (otherException)
 			{
-				otherExceptionThrown = false;
+				otherException = false;
 				popupErrorDialog("Cannot connect to server. ", 
 						"Please try again later.", ContactResultsPage.this, true);
 			}

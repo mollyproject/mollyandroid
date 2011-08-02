@@ -131,6 +131,36 @@ public class HomePage extends Page {
                 return false;
             }
         };
+        
+        RelativeLayout contactOuterLayout = (RelativeLayout) findViewById(R.id.contactOuterLayout);
+    	
+    	RelativeLayout libraryOuterLayout = (RelativeLayout) findViewById(R.id.libraryOuterLayout);
+        
+        Button prevButton = (Button) findViewById(R.id.prevButton);
+        prevButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				viewFlipper.setInAnimation
+        			(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_right_in));
+				viewFlipper.setOutAnimation
+            		(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_right_out));
+				viewFlipper.showPrevious();
+			}
+		});
+        
+        Button nextButton = (Button) findViewById(R.id.nextButton);
+        nextButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				viewFlipper.setInAnimation
+        			(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_left_in));
+				viewFlipper.setOutAnimation
+            		(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_left_out));
+				viewFlipper.showNext();
+			}
+		});
     	/*EditText searchField = (EditText) findViewById(R.id.search);
     	searchField.setBackgroundResource(R.drawable.rounded_edittext);
     	
@@ -290,6 +320,15 @@ public class HomePage extends Page {
                 // nothing
             }
             return false;
+    	}
+    	
+    	@Override
+    	public boolean onSingleTapConfirmed (MotionEvent e)
+    	{
+    		Intent myIntent = new Intent(HomePage.this, SelectionManager
+					.getPageClass(viewFlipper.getCurrentView().getId()));
+            startActivityForResult(myIntent, 0);
+    		return false;
     	}
     }
 }
