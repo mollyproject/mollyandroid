@@ -36,9 +36,6 @@ public class HomePage extends Page {
 	
 	protected ArrayList<Button> breadCrumbs;
 	protected LinearLayout bcLayout;
-	private GestureDetector gestureDetector;
-	View.OnTouchListener gestureListener;
-	private ViewFlipper viewFlipper;
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,46 +116,28 @@ public class HomePage extends Page {
 		scr.addView(contentLayout);
 		setContentView(scr);*/
     	
-    	setContentView(R.layout.view_flipper);
+    	setContentView(R.layout.list_viewer);
     	
-    	viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper1);
-    	gestureDetector = new GestureDetector(new MyGestureDetector());
-        gestureListener = new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                if (gestureDetector.onTouchEvent(event)) {
-                    return true;
-                }
-                return false;
-            }
-        };
-        
-        RelativeLayout contactOuterLayout = (RelativeLayout) findViewById(R.id.contactOuterLayout);
-    	
-    	RelativeLayout libraryOuterLayout = (RelativeLayout) findViewById(R.id.libraryOuterLayout);
-        
-        Button prevButton = (Button) findViewById(R.id.prevButton);
-        prevButton.setOnClickListener(new OnClickListener() {
+    	RelativeLayout contactButtonLayout = (RelativeLayout) findViewById(R.id.contactButtonLayout);
+    	contactButtonLayout.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				viewFlipper.setInAnimation
-        			(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_right_in));
-				viewFlipper.setOutAnimation
-            		(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_right_out));
-				viewFlipper.showPrevious();
+				Intent myIntent = new Intent(v.getContext(), SelectionManager
+						.getPageClass(SelectionManager.CONTACT_PAGE));
+                startActivityForResult(myIntent, 0);
 			}
 		});
-        
-        Button nextButton = (Button) findViewById(R.id.nextButton);
-        nextButton.setOnClickListener(new OnClickListener() {
+    	
+    	RelativeLayout libraryButtonLayout = (RelativeLayout) findViewById(R.id.libraryButtonLayout);
+    	libraryButtonLayout.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				viewFlipper.setInAnimation
-        			(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_left_in));
-				viewFlipper.setOutAnimation
-            		(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_left_out));
-				viewFlipper.showNext();
+				System.out.println("LIBRARY");
+				Intent myIntent = new Intent(v.getContext(), SelectionManager
+						.getPageClass(SelectionManager.LIBRARY_PAGE));
+                startActivityForResult(myIntent, 0);
 			}
 		});
     	/*EditText searchField = (EditText) findViewById(R.id.search);
@@ -198,14 +177,6 @@ public class HomePage extends Page {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-    
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (gestureDetector.onTouchEvent(event))
-	        return true;
-	    else
-	    	return false;
     }
     
     private class NetworkPollingTask extends AsyncTask<Void,Void,Void>
@@ -277,59 +248,16 @@ public class HomePage extends Page {
 			{
 				popupErrorDialog("Cannot connect to m.ox.ac.uk", 
 						"There might be a problem with internet connection. " +
-						"Please try restarting the app", HomePage.this, true);
+						"Please try restarting the app", HomePage.this);
 			}
 			if (jsonException)
 			{
 				popupErrorDialog("JSON Exception", 
 						"There might be a problem with JSON output " +
-						"from server. Please try again later.", HomePage.this, true);
+						"from server. Please try again later.", HomePage.this);
 			}
 			
 		}
-    }
-    
-    class MyGestureDetector extends SimpleOnGestureListener {
-
-    	private static final int SWIPE_MIN_DISTANCE = 120;
-    	private static final int SWIPE_MAX_OFF_PATH = 250;
-    	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-    	
-    	@Override
-    	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-    		System.out.println("FLING");
-    		
-    		try {
-                if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-                    return false;
-                // right to left swipe
-                if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                	viewFlipper.setInAnimation
-                		(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_left_in));
-                    viewFlipper.setOutAnimation
-                    	(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_left_out));
-                	viewFlipper.showNext();
-                }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                	viewFlipper.setInAnimation
-                		(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_right_in));
-                    viewFlipper.setOutAnimation
-                    	(AnimationUtils.loadAnimation(HomePage.this, R.anim.slide_right_out));
-                	viewFlipper.showPrevious();
-                }
-            } catch (Exception e) {
-                // nothing
-            }
-            return false;
-    	}
-    	
-    	@Override
-    	public boolean onSingleTapConfirmed (MotionEvent e)
-    	{
-    		Intent myIntent = new Intent(HomePage.this, SelectionManager
-					.getPageClass(viewFlipper.getCurrentView().getId()));
-            startActivityForResult(myIntent, 0);
-    		return false;
-    	}
     }
 }
 

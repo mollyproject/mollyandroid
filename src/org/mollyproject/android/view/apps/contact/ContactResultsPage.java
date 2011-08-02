@@ -69,7 +69,7 @@ public class ContactResultsPage extends ResultsDisplayPage {
 				
 				TextView resultsNo = new TextView(ContactResultsPage.this);
 				resultsNo.setTextSize(16);
-				resultsNo.setTextColor(R.color.black);
+				resultsNo.setTextColor(R.color.blue);
 				resultsNo.setPadding(10, 20, 0, 20);
 				resultsNo.setBackgroundResource(R.drawable.bg_white);
 				//notification

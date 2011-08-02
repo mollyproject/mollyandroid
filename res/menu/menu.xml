@@ -5,7 +5,7 @@
         android:icon="@drawable/icon" />
     <item android:id="@+id/text"
         android:title="Text" />
-    <item android:id="@+id/icontext"
-        android:title="Icon and text"
+    <item android:id="@+id/reload"
+        android:title="Retry connection"
         android:icon="@drawable/icon" />
 </menu>

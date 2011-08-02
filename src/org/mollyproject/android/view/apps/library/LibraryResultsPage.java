@@ -13,11 +13,7 @@ import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.ResultsDisplayPage;
-import org.mollyproject.android.view.apps.contact.ContactResultsPage;
-
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -128,8 +124,15 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		prevButton.setText("<< Prev Page");
 		prevButton.setEnabled(false);
 		
+		Button specifyPageButton = new Button(this);
+		specifyPageButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
+				LayoutParams.WRAP_CONTENT, 1f));
+		specifyPageButton.setText("Go to a specific page");
+		specifyPageButton.setEnabled(false);
+		
 		LinearLayout bottomButtonsLayout = new LinearLayout(this);
 		bottomButtonsLayout.addView(prevButton);
+		bottomButtonsLayout.addView(specifyPageButton);
 		bottomButtonsLayout.addView(nextButton);
 		
 		pageLayout.addView(bottomButtonsLayout);
@@ -147,15 +150,27 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 						curPageNum--;
 						contentLayout.removeView(resultsNo);
 						contentLayout.removeView(scr);
-						generatePage(cache.get(curPageNum));
+						populateViews(generatePage(cache.get(curPageNum)));
 					} catch (JSONException e) {
 						e.printStackTrace();
 						Page.popupErrorDialog("JSON Exception", 
 								"There might be a problem with JSON output " +
 								"from server. Please try again later.", LibraryResultsPage.this, true);
-						
 					}
 					
+				}
+			});
+		}
+		
+		if (page.getInt("num_pages") > 0)
+		{
+			specifyPageButton.setEnabled(true);
+			specifyPageButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					//NumberPickerDialog pickerDialog = new NumberPickerDialog(LibraryResultsPage.this,curPageNum);
+					//pickerDialog.show();
 				}
 			});
 		}
@@ -174,14 +189,14 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 						curPageNum++;
 						if (cache.containsKey(curPageNum))
 						{
-							generatePage(cache.get(curPageNum));
+							populateViews(generatePage(cache.get(curPageNum)));
 						}
 						else 
 						{
 							String newJSONOutput = router.exceptionHandledOnRequestSent
 								(SelectionManager.getName(LibraryResultsPage.this.getClass()), 
 									LibraryResultsPage.this,Router.OutputFormat.JSON, query+"&page="+curPageNum);
-							generatePage(newJSONOutput);
+							populateViews(generatePage(newJSONOutput));
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -231,7 +246,7 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		@Override
 		protected List<View> doInBackground(LinearLayout... arg0) {
 			try {
-				connectAndGenerate(query+"&page="+curPageNum);
+				return connectAndGenerate(query+"&page="+curPageNum);
 			} catch (JSONException e) {
 				jsonException = true;
 			}
@@ -246,6 +261,10 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 				popupErrorDialog("JSON Exception", 
 						"There might be a problem with JSON output " +
 						"from server. Please try again.", LibraryResultsPage.this, true);
+			}
+			else
+			{
+				populateViews(outputs);
 			}
 			pDialog.dismiss();
 		}

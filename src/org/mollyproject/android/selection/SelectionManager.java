@@ -22,7 +22,8 @@ public class SelectionManager {
 	//is not a String, thus the complication introduced by the getStringLocator()
 	
 	//public static enum ViewNames { places_index, home_index, result_index };
-	
+	ClassPathResource res = new ClassPathResource("spring-beans.xml");
+	BeanFactory factory = new XmlBeanFactory(res);
 	protected String currentPageName;
 	
 	public static String TRAIL = "trail";
@@ -66,15 +67,7 @@ public class SelectionManager {
 		bcImg.put(LIBRARY_RESULTS_PAGE, R.drawable.library_bc);
 		bcImg.put(CONTACT_RESULTS_PAGE, R.drawable.contact_bc);
 	}
-	
 
-	protected static Map<Integer,Class<? extends Page>> layouts 
-					= new HashMap<Integer,Class<? extends Page>>();
-	static {
-		layouts.put(R.id.contactOuterLayout, ContactPage.class);
-		layouts.put(R.id.libraryOuterLayout, LibraryPage.class);
-	}
-	
 	public SelectionManager()
 	{
 		currentPageName = HOME_PAGE;
@@ -98,10 +91,5 @@ public class SelectionManager {
 	public static Class<? extends Page> getPageClass(String s)
 	{
 		return pages.get(s);
-	}
-	
-	public static Class<? extends Page> getPageClass(Integer layoutID)
-	{
-		return layouts.get(layoutID);
 	}
 }

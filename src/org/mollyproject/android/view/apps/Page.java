@@ -1,12 +1,12 @@
 package org.mollyproject.android.view.apps;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.view.apps.contact.ContactResultsPage;
 import org.mollyproject.android.view.breadcrumbs.ImprovedBreadCrumbBar;
 
 import android.app.Activity;
@@ -41,7 +41,7 @@ public abstract class Page extends Activity {
 	public static LinearLayout.LayoutParams paramsWithLine = new LinearLayout.LayoutParams
 			(LinearLayout.LayoutParams.FILL_PARENT, 
 			LinearLayout.LayoutParams.FILL_PARENT);
-	static { paramsWithLine.setMargins(0, 0, 0, 5); }
+	static { paramsWithLine.setMargins(0, 0, 0, 2); }
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState)
@@ -147,6 +147,14 @@ public abstract class Page extends Activity {
     	});
 	}
 	
+	public void populateViews(List<View> outputs)
+	{
+		for (int i = 0; i < outputs.size(); i++)
+		{
+			contentLayout.addView(outputs.get(i));
+		}
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
@@ -156,7 +164,7 @@ public abstract class Page extends Activity {
 	        case R.id.text:     
 	        	Toast.makeText(this, "You pressed the text!", Toast.LENGTH_LONG).show();
 	            break;
-	        case R.id.icontext:
+	        case R.id.reload:
 	        	
 	            break;
 	    }
