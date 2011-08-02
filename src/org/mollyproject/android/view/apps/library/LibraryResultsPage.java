@@ -13,10 +13,15 @@ import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.ResultsDisplayPage;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
+
 import android.app.ProgressDialog;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -31,26 +36,19 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 	protected int curPageNum;
 	protected ProgressDialog pDialog;
 	
-	protected Map<Integer,String> cache;
+	protected ArrayListMultimap<String,JSONObject> cache;
+	protected List<JSONObject> cachedJSONPages;
+
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		curPageNum = 1;
-		cache = new HashMap<Integer,String>();
+		curPageNum = 0;
+		cache = myApp.getLibCache();
 		query = myApp.getLibraryQuery();
 		
 		pDialog = ProgressDialog.show(this, "", "Loading...", true, false);
 		
 		new LibraryResultsTask().execute();
-		
-		/*try {
-			connectAndGenerate(query+"&page="+curPageNum);
-		} catch (JSONException e) {
-			e.printStackTrace();
-			Page.popupErrorDialog("JSON Exception", 
-					"There might be a problem with JSON output " +
-					"from server. Please try again later.", this, true);
-		}*/
 	}
 	
 	private List<View> connectAndGenerate(String queryWithPage) throws JSONException
@@ -63,10 +61,6 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 	private List<View> generatePage(String jsonOutput) throws JSONException
 	{
 		List<View> outputs = new ArrayList<View>();
-		if (!cache.containsKey(curPageNum))
-		{
-			cache.put(curPageNum, jsonOutput);
-		}
 		JSONObject results = new JSONObject(jsonOutput);
 		final JSONObject page = results.getJSONObject("page");
 		
@@ -75,7 +69,7 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		final LinearLayout pageLayout = new LinearLayout(this);
 		pageLayout.setOrientation(LinearLayout.VERTICAL);
 		pageLayout.setBackgroundResource(R.drawable.bg_white);
-		LinearLayout resultsLayout = new LinearLayout(this);
+		final LinearLayout resultsLayout = new LinearLayout(this);
 		resultsLayout.setOrientation(LinearLayout.VERTICAL);
 
 		final TextView resultsNo = new TextView(this);
@@ -83,28 +77,8 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		resultsNo.setTextColor(R.color.black);
 		resultsNo.setPadding(10, 20, 0, 20);
 		resultsNo.setBackgroundResource(R.drawable.bg_white);
-		String notification = "Search returned " + page.getString("num_objects") + " items." + '\n'
-						+ "Displaying page "+curPageNum+" of "+page.getString("num_pages")+" pages.";
-		resultsNo.setText(notification);
 		
-		JSONArray objects = page.getJSONArray("objects");
-		for (int i = 0; i < objects.length(); i++)
-		{
-			LinearLayout thisResultLayout = new LinearLayout(this);
-			thisResultLayout.setOrientation(LinearLayout.VERTICAL);
-			JSONObject thisResult = objects.getJSONObject(i);
-			//next step: display the title, author, publishers, no. of available libraries
-			
-			addTextField(thisResult,"title","",thisResultLayout,18);
-			
-			addTextField(thisResult,"author","Author: ",thisResultLayout,16);
-			addTextField(thisResult,"publisher","Publisher: ",thisResultLayout,16);
-			addTextField(thisResult,"holding_libraries","Libraries: ",thisResultLayout,16);
-			thisResultLayout.setBackgroundResource(R.drawable.bg_blue);
-			thisResultLayout.setPadding(10, 10, 0, 10);
-			thisResultLayout.setLayoutParams(paramsWithLine);	
-			resultsLayout.addView(thisResultLayout);
-		}
+		populateResults(resultsLayout, resultsNo);
 		
 		pageLayout.addView(resultsLayout);
 		scr.addView(pageLayout);
@@ -115,65 +89,13 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		Button nextButton = new Button(this);
 		nextButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
 				LayoutParams.WRAP_CONTENT, 1f));
-		nextButton.setText("Next Page >>");
+		nextButton.setText("View more results");
 		nextButton.setEnabled(false);
 		
-		Button prevButton = new Button(this);
-		prevButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
-				LayoutParams.WRAP_CONTENT, 1f));
-		prevButton.setText("<< Prev Page");
-		prevButton.setEnabled(false);
-		
-		Button specifyPageButton = new Button(this);
-		specifyPageButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
-				LayoutParams.WRAP_CONTENT, 1f));
-		specifyPageButton.setText("Go to a specific page");
-		specifyPageButton.setEnabled(false);
-		
 		LinearLayout bottomButtonsLayout = new LinearLayout(this);
-		bottomButtonsLayout.addView(prevButton);
-		bottomButtonsLayout.addView(specifyPageButton);
 		bottomButtonsLayout.addView(nextButton);
 		
 		pageLayout.addView(bottomButtonsLayout);
-		
-		if (curPageNum > 1)
-		{
-			//read the previous page from cache
-			prevButton.setEnabled(true);
-			prevButton.setOnClickListener(new OnClickListener(){
-				@Override
-				public void onClick(View v) {
-					pageLayout.removeAllViews();
-					try {
-						//contentLayout.removeView(resultsNo);
-						curPageNum--;
-						contentLayout.removeView(resultsNo);
-						contentLayout.removeView(scr);
-						populateViews(generatePage(cache.get(curPageNum)));
-					} catch (JSONException e) {
-						e.printStackTrace();
-						Page.popupErrorDialog("JSON Exception", 
-								"There might be a problem with JSON output " +
-								"from server. Please try again later.", LibraryResultsPage.this, true);
-					}
-					
-				}
-			});
-		}
-		
-		if (page.getInt("num_pages") > 0)
-		{
-			specifyPageButton.setEnabled(true);
-			specifyPageButton.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					//NumberPickerDialog pickerDialog = new NumberPickerDialog(LibraryResultsPage.this,curPageNum);
-					//pickerDialog.show();
-				}
-			});
-		}
 		
 		if (page.getBoolean("has_next"))
 		{
@@ -182,33 +104,66 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 			nextButton.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View v) {
-					pageLayout.removeAllViews();
 					try {
-						contentLayout.removeView(resultsNo);
-						contentLayout.removeView(scr);
-						curPageNum++;
-						if (cache.containsKey(curPageNum))
-						{
-							populateViews(generatePage(cache.get(curPageNum)));
-						}
-						else 
-						{
-							String newJSONOutput = router.exceptionHandledOnRequestSent
-								(SelectionManager.getName(LibraryResultsPage.this.getClass()), 
-									LibraryResultsPage.this,Router.OutputFormat.JSON, query+"&page="+curPageNum);
-							populateViews(generatePage(newJSONOutput));
-						}
+						populateResults(resultsLayout, resultsNo);
 					} catch (JSONException e) {
 						e.printStackTrace();
 						Page.popupErrorDialog("JSON Exception", 
 								"There might be a problem with JSON output " +
 								"from server. Please try again later.", LibraryResultsPage.this, true);
 					}
-					
+
 				}
 			});
 		}
 		return outputs;
+	}
+	
+	private void populateResults(LinearLayout resultsLayout, TextView resultsNo) throws JSONException
+	{
+		JSONObject nextPage = new JSONObject();
+		System.out.println(cache.toString());
+		if (!cache.containsKey(query) || 
+				(cache.containsKey(query) & cache.get(query).size()<=curPageNum))
+		{
+			JSONObject nextResults = new JSONObject(router.exceptionHandledOnRequestSent(SelectionManager.getName(LibraryResultsPage.class),
+					LibraryResultsPage.this, Router.OutputFormat.JSON, query+"?page="+curPageNum));
+			nextPage = nextResults.getJSONObject("page");
+			myApp.updateLibCache(query, nextPage);
+		}
+		else 
+		{
+			cachedJSONPages = (List<JSONObject>) cache.get(query);
+			nextPage = cachedJSONPages.get(curPageNum);
+		}
+		curPageNum++;
+		JSONArray newObjects = nextPage.getJSONArray("objects");
+		TextView pageNumView = new TextView(LibraryResultsPage.this);
+		pageNumView.setText("Page "+curPageNum);
+		pageNumView.setGravity(Gravity.CENTER);
+		if (curPageNum > 1)
+		{
+			resultsLayout.addView(pageNumView);
+		}
+		for (int i = 0; i < newObjects.length(); i++)
+		{
+			LinearLayout thisResultLayout = new LinearLayout(LibraryResultsPage.this);
+			thisResultLayout.setOrientation(LinearLayout.VERTICAL);
+			JSONObject thisResult = newObjects.getJSONObject(i);
+			
+			//next step: display the title, author, publishers, no. of available libraries
+			addTextField(thisResult,"title","",thisResultLayout,18);
+			addTextField(thisResult,"author","Author: ",thisResultLayout,16);
+			addTextField(thisResult,"publisher","Publisher: ",thisResultLayout,16);
+			addTextField(thisResult,"holding_libraries","Libraries: ",thisResultLayout,16);
+			thisResultLayout.setBackgroundResource(R.drawable.bg_blue);
+			thisResultLayout.setPadding(10, 10, 0, 10);
+			thisResultLayout.setLayoutParams(paramsWithLine);	
+			resultsLayout.addView(thisResultLayout);
+		}
+		
+		resultsNo.setText("Search returned " + nextPage.getString("num_objects") + " items." + '\n'
+		+ "Displaying "+curPageNum+" page(s) of "+nextPage.getString("num_pages")+" pages.");
 	}
 	
 	private void addTextField(JSONObject jsonSource, String jsonKey, 

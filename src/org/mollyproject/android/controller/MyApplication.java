@@ -1,6 +1,12 @@
 package org.mollyproject.android.controller;
 
 import java.util.LinkedList;
+
+import org.json.JSONObject;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
+
 import android.app.Application;
 import android.net.ConnectivityManager;
 
@@ -11,12 +17,14 @@ public class MyApplication extends Application {
 	protected String mapQuery;
 	protected String contactQuery;
 	protected String libraryQuery;
+	protected ArrayListMultimap<String,JSONObject> libraryCache;
 	protected boolean destroyed = false;
 	public MyApplication() throws Exception
 	{
 		super();
 		bcCount = 0;
 		router = null;
+		libraryCache = ArrayListMultimap.create();
 		bcTrail = new LinkedList<String>();
 	}
 	
@@ -80,6 +88,10 @@ public class MyApplication extends Application {
 		curTime = now - curTime;
 		System.out.println(curTime+" milliseconds");
 	}
+	
+	public void updateLibCache(String key, JSONObject object) { libraryCache.put(key, object);	}
+	
+	public ArrayListMultimap<String, JSONObject> getLibCache() { return libraryCache; }
 	
 	public void setContactQuery(String query) { contactQuery = query; }
 	
