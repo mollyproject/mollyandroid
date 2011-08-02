@@ -22,8 +22,8 @@ public class SelectionManager {
 	//is not a String, thus the complication introduced by the getStringLocator()
 	
 	//public static enum ViewNames { places_index, home_index, result_index };
-	ClassPathResource res = new ClassPathResource("spring-beans.xml");
-	BeanFactory factory = new XmlBeanFactory(res);
+	//ClassPathResource res = new ClassPathResource("spring-beans.xml");
+	//BeanFactory factory = new XmlBeanFactory(res);
 	protected String currentPageName;
 	
 	public static String TRAIL = "trail";

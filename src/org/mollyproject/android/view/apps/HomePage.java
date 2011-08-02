@@ -13,6 +13,7 @@ import org.mollyproject.android.selection.SelectionManager;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -24,9 +25,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -40,7 +47,7 @@ public class HomePage extends Page {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-        
+    	this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     	/*myApp.updateBreadCrumb(SelectionManager.getName(HomePage.class));
         System.out.println("Home added breadcrumb");
     	
@@ -116,8 +123,20 @@ public class HomePage extends Page {
 		scr.addView(contentLayout);
 		setContentView(scr);*/
     	
-    	setContentView(R.layout.list_viewer);
+    	setContentView(R.layout.grid_viewer);
     	
+    	GridView gridview = (GridView) findViewById(R.id.gridView);
+        gridview.setAdapter(new ImageAdapter(this));
+
+        gridview.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+            	Intent myIntent = new Intent(v.getContext(), SelectionManager
+						.getPageClass(SelectionManager.CONTACT_PAGE));
+                startActivityForResult(myIntent, 0);
+            }
+        });
+    	
+    	/*
     	RelativeLayout contactButtonLayout = (RelativeLayout) findViewById(R.id.contactButtonLayout);
     	contactButtonLayout.setOnClickListener(new OnClickListener() {
 			
@@ -258,6 +277,44 @@ public class HomePage extends Page {
 			}
 			
 		}
+    }
+    
+    public class ImageAdapter extends BaseAdapter {
+        private Context mContext;
+
+        public ImageAdapter(Context c) {
+            mContext = c;
+        }
+
+        public int getCount() {
+            return mThumbIds.length;
+        }
+
+        public Object getItem(int position) {
+            return null;
+        }
+
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        // create a new ImageView for each item referenced by the Adapter
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ImageView imageView;
+            if (convertView == null) {  // if it's not recycled, initialize some attributes
+                imageView = new ImageView(mContext);
+            } else {
+                imageView = (ImageView) convertView;
+            }
+
+            imageView.setImageResource(mThumbIds[position]);
+            return imageView;
+        }
+
+        // references to our images
+        private Integer[] mThumbIds = {
+        		R.drawable.contact, R.drawable.library
+        };
     }
 }
 
