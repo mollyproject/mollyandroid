@@ -44,7 +44,7 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		super.onCreate(savedInstanceState);
 		curPageNum = 0;
 		cache = myApp.getLibCache();
-		query = myApp.getLibraryQuery();
+		query = myApp.getLibraryQuery().toLowerCase();
 		
 		pDialog = ProgressDialog.show(this, "", "Loading...", true, false);
 		

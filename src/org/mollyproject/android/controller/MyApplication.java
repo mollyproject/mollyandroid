@@ -1,16 +1,25 @@
 package org.mollyproject.android.controller;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import org.json.JSONObject;
+import org.mollyproject.android.view.apps.Page;
+
+import roboguice.application.RoboApplication;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultimap;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.Module;
+import com.google.inject.name.Names;
 
 import android.app.Application;
 import android.net.ConnectivityManager;
 
-public class MyApplication extends Application {
+public class MyApplication extends RoboApplication {
 	protected LinkedList<String> bcTrail;
 	protected int bcCount;
 	protected Router router;
@@ -19,6 +28,8 @@ public class MyApplication extends Application {
 	protected String libraryQuery;
 	protected ArrayListMultimap<String,JSONObject> libraryCache;
 	protected boolean destroyed = false;
+	Injector injector;
+	
 	public MyApplication() throws Exception
 	{
 		super();
@@ -110,4 +121,35 @@ public class MyApplication extends Application {
 	public void setLibraryQuery(String query) { libraryQuery = query; }
 	
 	public String getLibraryQuery() { return libraryQuery; }
+	
+	public Page test(String s)
+	{
+		Page page = injector.getInstance(Key.get(Page.class, Names.named(s)));
+		return page;
+	}
+	
+	@Override
+    protected void addApplicationModules(List<Module> modules) {
+        MollyModule module = new MollyModule();
+		modules.add(module);
+        injector = Guice.createInjector(module);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

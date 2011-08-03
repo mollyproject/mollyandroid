@@ -9,6 +9,8 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.breadcrumbs.ImprovedBreadCrumbBar;
 
+import roboguice.activity.RoboActivity;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -25,7 +27,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public abstract class Page extends Activity {
+public abstract class Page extends RoboActivity {
 	protected ImprovedBreadCrumbBar bcBar;
 	protected MyApplication myApp;
 	protected ArrayList<String> trail;

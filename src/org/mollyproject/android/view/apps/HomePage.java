@@ -1,7 +1,6 @@
 package org.mollyproject.android.view.apps;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
@@ -11,22 +10,22 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 
-import android.app.AlertDialog;
+import roboguice.inject.InjectView;
+
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.name.Named;
+
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -35,98 +34,29 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 public class HomePage extends Page {
+	
+	@Inject @Named("contact:index") Page contactPage;
+	@InjectView (R.id.gridView) GridView gridview;
+	@InjectView (R.id.search) EditText searchField;
 	
 	protected ArrayList<Button> breadCrumbs;
 	protected LinearLayout bcLayout;
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	System.out.println("Contact " + contactPage);
+    	System.out.println("Grid " + gridview);
     	super.onCreate(savedInstanceState);
-    	this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    	/*myApp.updateBreadCrumb(SelectionManager.getName(HomePage.class));
-        System.out.println("Home added breadcrumb");
     	
-		LinearLayout contentLayout = new LinearLayout(this);
-		contentLayout.setOrientation(LinearLayout.VERTICAL);
-		contentLayout.addView(bcBar.getBar(), new ViewGroup.LayoutParams
-				(getWindowManager().getDefaultDisplay().getWidth(), 
-				getWindowManager().getDefaultDisplay().getHeight()/10));
-		
-		ScrollView scr = new ScrollView(this); 
-		
-		Button resultsButton = new Button(this);
-		resultsButton.setText("Go to Results");
-		resultsButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(), SelectionManager
-						.getPageClass(SelectionManager.RESULTS_PAGE));
-                startActivityForResult(myIntent, 0);
-			}
-		});
-		
-		Button contactsButton = new Button(this);
-		contactsButton.setText("Go to Contacts");
-		contactsButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(), SelectionManager
-						.getPageClass(SelectionManager.CONTACT_PAGE));
-                startActivityForResult(myIntent, 0);
-			}
-		});
-		
-		Button featureButton = new Button(this);
-		featureButton.setText("Suggest new features");
-		featureButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(), SelectionManager
-						.getPageClass(SelectionManager.FEATURE_VOTE));
-                startActivityForResult(myIntent, 0);
-			}
-		});
-		
-		Button libraryButton = new Button(this);
-		libraryButton.setText("Go to Library Search");
-		libraryButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(), SelectionManager
-						.getPageClass(SelectionManager.LIBRARY_PAGE));
-                startActivityForResult(myIntent, 0);
-			}
-		});
-		
-		Button placesButton = new Button(this);
-		placesButton.setText("Go to Places");
-		placesButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(), SelectionManager
-						.getPageClass(SelectionManager.PLACES_PAGE));
-                startActivityForResult(myIntent, 0);
-			}
-		});
-		
-		contentLayout.addView(contactsButton);
-		contentLayout.addView(resultsButton);
-		contentLayout.addView(libraryButton);
-		contentLayout.addView(placesButton);
-		contentLayout.addView(featureButton);
-		
-		scr.addView(contentLayout);
-		setContentView(scr);*/
+    	Injector injector;
+    	
+    	this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     	
     	setContentView(R.layout.grid_viewer);
     	
-    	GridView gridview = (GridView) findViewById(R.id.gridView);
+    	//GridView gridview = (GridView) findViewById(R.id.gridView);
         gridview.setAdapter(new ImageAdapter(this));
 
         gridview.setOnItemClickListener(new OnItemClickListener() {
@@ -137,41 +67,8 @@ public class HomePage extends Page {
             }
         });
     	
-    	/*
-    	RelativeLayout contactButtonLayout = (RelativeLayout) findViewById(R.id.contactButtonLayout);
-    	contactButtonLayout.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent myIntent = new Intent(v.getContext(), SelectionManager
-						.getPageClass(SelectionManager.CONTACT_PAGE));
-                startActivityForResult(myIntent, 0);
-			}
-		});
-    	
-    	RelativeLayout libraryButtonLayout = (RelativeLayout) findViewById(R.id.libraryButtonLayout);
-    	libraryButtonLayout.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				System.out.println("LIBRARY");
-				Intent myIntent = new Intent(v.getContext(), SelectionManager
-						.getPageClass(SelectionManager.LIBRARY_PAGE));
-                startActivityForResult(myIntent, 0);
-			}
-		});
-    	/*EditText searchField = (EditText) findViewById(R.id.search);
     	searchField.setBackgroundResource(R.drawable.rounded_edittext);
     	
-    	RelativeLayout contactSearch = (RelativeLayout) findViewById(R.id.contactButtonLayout);
-    	contactSearch.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent myIntent = new Intent(view.getContext(), SelectionManager
-						.getPageClass(SelectionManager.CONTACT_PAGE));
-                startActivityForResult(myIntent, 0);				
-			}
-    	});*/
     }
     
     public Page getInstance()
@@ -318,8 +215,7 @@ public class HomePage extends Page {
 				
 				@Override
 				public void onClick(View v) {
-					Intent myIntent = new Intent(v.getContext(), SelectionManager
-							.getPageClass(pages[position]));
+					Intent myIntent = new Intent(v.getContext(), myApp.test("contact:index").getClass());
 	                startActivityForResult(myIntent, 0);
 				}
 			});
