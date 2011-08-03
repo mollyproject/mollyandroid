@@ -4,7 +4,7 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="lib" path="guava-r09.jar"/>
-	<classpathentry kind="lib" path="C:/Users/SEAN/git/mollyandroid/roboguice-1.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/SEAN/git/mollyandroid/guice-2.0-no_aop.jar"/>
+	<classpathentry kind="lib" path="guice-2.0-no_aop.jar"/>
+	<classpathentry kind="lib" path="roboguice-1.1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
