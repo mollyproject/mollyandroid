@@ -1,5 +1,7 @@
 package org.mollyproject.android.view.apps;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
@@ -20,6 +22,16 @@ public abstract class ContentPage extends Page {
 		contentLayout.addView(bcBar.getBar());
 		contentLayout.setBackgroundResource(R.drawable.bg_blue);
 		setContentView(contentLayout);
+		
+		try {
+			jsonContent = new JSONObject(router.exceptionHandledOnRequestSent(myApp.getUnimplementedLocator(),
+					getInstance(), Router.OutputFormat.JSON, null));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	@Override
 	public void onResume()

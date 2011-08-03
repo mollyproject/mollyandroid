@@ -10,26 +10,35 @@
     <RelativeLayout
 	    android:id="@+id/searchLayout" 
 	    android:layout_width="wrap_content" 
-	    android:layout_height="40dp">
+	    android:background="@drawable/bg_blue" android:layout_height="wrap_content">
         <Button android:background="@drawable/search_button" android:id="@+id/searchButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true"></Button>
-        <EditText android:layout_width="200dp" android:singleLine="True" android:id="@+id/search" android:layout_height="fill_parent" android:layout_toLeftOf="@+id/searchButton" android:layout_centerVertical="true">
+        <EditText android:layout_width="200dp" android:singleLine="True" android:id="@+id/search" android:layout_height="wrap_content" android:layout_toLeftOf="@+id/searchButton" android:layout_alignTop="@+id/searchButton">
         </EditText>
     </RelativeLayout>
     
-    <GridView android:layout_height="wrap_content" 
-    android:id="@+id/gridView" 
-    android:layout_weight="0.6" 
-    android:layout_gravity="center_horizontal" 
-    android:layout_width="fill_parent"
-    android:numColumns="auto_fit">
-    </GridView>
+    <LinearLayout android:layout_width="fill_parent" 
+			    android:id="@+id/gridViewLayout"
+			    android:layout_weight="0.8"
+			    android:background="@drawable/bg_white" 
+			    android:orientation="vertical" 
+			    android:layout_height="fill_parent" >
+			    
+		<GridView android:layout_height="fill_parent" 
+		    android:id="@+id/gridView" 
+		    android:layout_gravity="center_horizontal"
+		    android:layout_width="fill_parent"
+		    android:numColumns="auto_fit"
+		    android:stretchMode="columnWidth" >
+		    </GridView>
+	</LinearLayout>
+    
     
     <LinearLayout android:layout_width="fill_parent" 
 			    android:id="@+id/bottomLayout"
-			    android:layout_weight="0.2"
+			    android:layout_weight="1.2"
 			    android:background="@drawable/bg_white" 
 			    android:orientation="vertical" 
-			    android:layout_height="wrap_content" >
+			    android:layout_height="fill_parent" >
 		    	
 		        <TextView android:id="@+id/suggestionTextView" 
 			        android:layout_width="fill_parent" 

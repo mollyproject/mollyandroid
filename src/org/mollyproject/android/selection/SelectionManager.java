@@ -13,8 +13,6 @@ import org.mollyproject.android.view.apps.library.LibraryPage;
 import org.mollyproject.android.view.apps.library.LibraryResultsPage;
 import org.mollyproject.android.view.apps.results_release.ResultsReleasePage;
 
-import android.widget.RelativeLayout;
-
 import com.google.common.collect.HashBiMap;
 public class SelectionManager {
 	//I don't want a simple list of Strings because that makes it more difficult
@@ -97,7 +95,14 @@ public class SelectionManager {
 	
 	public static int getImg(String viewName)
 	{
-		return img.get(viewName);
+		if (img.containsKey(viewName))
+		{
+			return img.get(viewName);
+		}
+		else 
+		{
+			return R.drawable.contact;
+		}
 	}
 	
 	public static Class<? extends Page> getPageClass(String s)

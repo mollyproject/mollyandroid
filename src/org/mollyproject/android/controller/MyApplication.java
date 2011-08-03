@@ -9,14 +9,12 @@ import org.mollyproject.android.view.apps.Page;
 import roboguice.application.RoboApplication;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.HashMultimap;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 
-import android.app.Application;
 import android.net.ConnectivityManager;
 
 public class MyApplication extends RoboApplication {
@@ -26,9 +24,10 @@ public class MyApplication extends RoboApplication {
 	protected String mapQuery;
 	protected String contactQuery;
 	protected String libraryQuery;
+	protected String unimplementedLocator;
 	protected ArrayListMultimap<String,JSONObject> libraryCache;
 	protected boolean destroyed = false;
-	Injector injector;
+	protected Injector injector;
 	
 	public MyApplication() throws Exception
 	{
@@ -122,9 +121,14 @@ public class MyApplication extends RoboApplication {
 	
 	public String getLibraryQuery() { return libraryQuery; }
 	
+	public String getUnimplementedLocator() { return unimplementedLocator; }
+	
+	public void setUnimplementedLocator(String unimplementedLocator) { this.unimplementedLocator = unimplementedLocator; } 
+	
 	public Page test(String s)
 	{
 		Page page = injector.getInstance(Key.get(Page.class, Names.named(s)));
+		System.out.println(s);
 		return page;
 	}
 	
