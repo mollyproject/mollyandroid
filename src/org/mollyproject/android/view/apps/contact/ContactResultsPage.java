@@ -29,6 +29,7 @@ public class ContactResultsPage extends ResultsDisplayPage {
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		
 		// Show the ProgressDialog on this thread
         pDialog = ProgressDialog.show(this, "", "Loading Content...", true, false);
         
@@ -46,6 +47,7 @@ public class ContactResultsPage extends ResultsDisplayPage {
 		@Override
 		protected List<View> doInBackground(LinearLayout... args) {
 			try {
+				router.waitForRequests();
 				List<View> outputs = new ArrayList<View>();
 				String jsonOutput = router.onRequestSent(SelectionManager
 						.getName(ContactResultsPage.this.getClass()),
