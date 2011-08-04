@@ -108,7 +108,10 @@ public class HomePage extends Page {
 				for (int i = 0; i < availableApps.length(); i++)
 				{
 					JSONObject app = availableApps.getJSONObject(i);
-					appsList.add(app.getString("local_name"));
+					if (app.getBoolean("display_to_user"))
+					{
+						appsList.add(app.getString("local_name"));
+					}
 				}
 				gridIconsAdapter = new ImageAdapter(HomePage.this, appsList);
 				

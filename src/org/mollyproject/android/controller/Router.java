@@ -103,6 +103,7 @@ public class Router {
 		
 		//Geting the actual URL from the server using the locator (view name)
 		//and the reverse API in Molly
+		System.out.println("Is waiting "+waiting);
 		if (waiting) {
 			waiting = false;
 			//if an exception is thrown, waiting might be false forever
@@ -125,12 +126,10 @@ public class Router {
 			
 			output = getFrom(urlStr);
 			
-			System.out.println("First Request "+firstReq);
 			if (firstReq)
 			{ 
 				URL url = new URL(urlStr);
 				cookieMgr.storeCookies(url.openConnection());
-				System.out.println("CSRF: "+cookieMgr.getCSRFToken());
 				spawnNewLocThread();
 				System.out.println("Router, LocThread starts");
 				firstReq = false;

@@ -8,18 +8,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.BackGroundTask;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.ResultsDisplayPage;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -33,33 +30,26 @@ public class ContactResultsPage extends ResultsDisplayPage {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		// Show the ProgressDialog on this thread
-        pDialog = ProgressDialog.show(this, "", "Loading...", true, false);
-        /*pDialog.setButton(ProgressDialog.BUTTON_POSITIVE, "Cancel", 
-        		new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				
-			}
-		});*/
+        pDialog = ProgressDialog.show(this, "", "Loading Content...", true, false);
         
         // Start a new thread that will download all the data
         query = myApp.getContactQuery();
-        new ContactResultsTask().execute(contentLayout);
+        
+        new ContactResultsTask(this).execute(contentLayout);
 	}
 	
-	private class ContactResultsTask extends  AsyncTask<LinearLayout, Void, List<View>>
+	private class ContactResultsTask extends BackGroundTask<LinearLayout, Void, List<View>>
 	{
-		protected boolean jsonException = false;
-		protected boolean otherException = false;
+		public ContactResultsTask(ContactResultsPage contactResultsPage) {
+			super(contactResultsPage);
+		}
 		@Override
 		protected List<View> doInBackground(LinearLayout... args) {
 			try {
-				System.out.println("ASYNC");
 				List<View> outputs = new ArrayList<View>();
 				String jsonOutput = router.onRequestSent(SelectionManager
 						.getName(ContactResultsPage.this.getClass()),
-						Router.OutputFormat.JSON, query);
+						Router.OutputFormat.JSON, ((ResultsDisplayPage) page).getQuery());
 				System.out.println(jsonOutput);
 				JSONObject output = new JSONObject(jsonOutput);
 				JSONArray results = output.getJSONArray("results");
@@ -204,19 +194,19 @@ public class ContactResultsPage extends ResultsDisplayPage {
 			} 
 			catch (JSONException e) {
 				//problem here, json not received from server
+				e.printStackTrace();
 				jsonException = true;
 				
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				otherException = true;
+				unknownHostException = true;
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				otherException = true;
+				ioException = true;
 				e.printStackTrace();
 			} 
 			catch (Exception e) {
 				//Anything else is assumed to be caused by a network failure
+				e.printStackTrace();
 				otherException = true;
 			}
 			finally
@@ -225,29 +215,14 @@ public class ContactResultsPage extends ResultsDisplayPage {
 			}
 			return null;
 		}
-		protected void onPostExecute(List<View> outputs)
-		{
-			if (jsonException)
+		
+		@Override
+		public void updateView(List<View> outputs) {
+			for (int i = 0; i < outputs.size(); i++)
 			{
-				jsonException = false;
-				popupErrorDialog("JSON Exception", 
-						"There might be a problem with JSON output " +
-						"from server. Please try again.", ContactResultsPage.this, true);
+				contentLayout.addView(outputs.get(i));
 			}
-			else if (otherException)
-			{
-				otherException = false;
-				popupErrorDialog("Cannot connect to server. ", 
-						"Please try again later.", ContactResultsPage.this, true);
-			}
-			else 
-			{
-				for (int i = 0; i < outputs.size(); i++)
-				{
-					contentLayout.addView(outputs.get(i));
-				}
-				pDialog.dismiss();
-			}
+			pDialog.dismiss();
 		}
 	}
 	
