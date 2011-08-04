@@ -1,28 +1,19 @@
 package org.mollyproject.android.view.apps;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.UnknownHostException;
-import java.util.List;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
-import org.mollyproject.android.controller.BackGroundTask;
-import org.mollyproject.android.controller.MyApplication;
+import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 
-import roboguice.inject.InjectView;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -46,7 +37,7 @@ public abstract class ContentPage extends Page {
 		homeBreadcrumb = (Button) findViewById(R.id.homeBreadcrumb);
 		breadcrumbs = (LinearLayout) findViewById(R.id.breadcrumbs);
 		
-		//pDialog = ProgressDialog.show(this, "", "Loading Page...", true, false);
+		pDialog = ProgressDialog.show(this, "", "Loading Page...", true, false);
 
 		//Construct breadcrumbs here, will move to background thread later
 		//the first breadcrumb is always the home page
@@ -58,14 +49,14 @@ public abstract class ContentPage extends Page {
 			}
 		});
 		
-		new PageSetupTask(this,pDialog).execute();
+		new PageSetupTask(this).execute();
 		
 	}
 	
-	protected class PageSetupTask extends BackGroundTask<Void, Void, JSONObject>
+	protected class PageSetupTask extends BackgroundTask<Void, Void, JSONObject>
 	{
 		//new breadcrumb parser
-		public PageSetupTask(Page page, ProgressDialog pDialog) {
+		public PageSetupTask(Page page) {
 			super(page);
 		}
 		@Override
@@ -77,14 +68,14 @@ public abstract class ContentPage extends Page {
 				JSONObject breadcrumbs = jsonOutput.getJSONObject("breadcrumbs");
 				return breadcrumbs;
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				unknownHostException = true;
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				jsonException = true;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				ioException = true;
 			} 
 			return null;
 		}
@@ -106,8 +97,8 @@ public abstract class ContentPage extends Page {
 				});
 				//Page title
 				String title = breadcrumbs.getString("page_title"); 
-				//check for parent breadcrumb
 				
+				//check for parent breadcrumb
 				if (!breadcrumbs.isNull("parent"))
 				{
 					JSONObject parent = breadcrumbs.getJSONObject("parent");
@@ -126,20 +117,23 @@ public abstract class ContentPage extends Page {
 						});
 						extraTextView.setText(title);
 					}
-					else
-					{
-						parentBreadcrumb.setText(title);
+					else { 
+						parentBreadcrumb.setText(title); 
+						parentBreadcrumb.setEnabled(false); 
+						appBreadcrumb.setEnabled(false); }
+				}
+				else { parentBreadcrumb.setText(title); 
+					parentBreadcrumb.setEnabled(false); 
+					appBreadcrumb.setEnabled(false); 
 					}
-				}
-				else
-				{
-					parentBreadcrumb.setText(title);
-				}
-				
 				
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				Page.popupErrorDialog("JSON Exception", 
+						"There might be a problem with JSON output " +
+						"from server. Please try again.", page, true);
+			} finally {
+				pDialog .dismiss();
 			}
 			
 		}

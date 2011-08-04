@@ -15,8 +15,9 @@ public class UnimplementedPage extends ContentPage {
 		locator = myApp.getUnimplementedLocator();
 		webView = new WebView(this);
 		try {
-			webView.loadUrl(getActualURL(SelectionManager
-							.getName(getInstance().getClass())));
+			String temp = getActualURL(locator);
+			System.out.println(temp);
+			webView.loadUrl(temp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Page.popupErrorDialog("Loading Page failed", 

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -45,7 +46,7 @@ public class Router {
 	//Take an URL String, convert to URL, open connection then process 
 	//and return the response
 	public static String getFrom (String urlStr) throws MalformedURLException,
-											IOException, UnknownHostException
+											IOException, UnknownHostException, SocketTimeoutException
 	{
 		String outputStr = new String();		
 		

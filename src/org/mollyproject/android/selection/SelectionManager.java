@@ -90,7 +90,14 @@ public class SelectionManager {
 	
 	public static int getBCImg(String viewName)
 	{
-		return bcImg.get(viewName);
+		if (bcImg.containsKey(viewName))
+		{
+			return bcImg.get(viewName);
+		}
+		else 
+		{
+			return R.drawable.android_button;
+		}
 	}
 	
 	public static int getImg(String viewName)

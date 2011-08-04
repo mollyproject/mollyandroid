@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 
@@ -69,12 +70,6 @@ public class HomePage extends Page {
     	super.onResume();
     	pDialog = ProgressDialog.show(this, "", "Loading...", true, false);
     	new NetworkPollingTask().execute();
-    	
-    	//home page still contributes to breadcrumb update, but doesn't need a bar on it
-    	//so no need to call bcBar.reconstruct
-		myApp.updateBreadCrumb(SelectionManager.getName(getInstance().getClass()));
-		
-    	//searchField.setBackgroundResource(R.drawable.rounded_edittext);
     }
     
     @Override
@@ -86,12 +81,10 @@ public class HomePage extends Page {
         return super.onKeyDown(keyCode, event);
     }
     
-    private class NetworkPollingTask extends AsyncTask<Void,Void,Void>
+    private class NetworkPollingTask extends BackgroundTask<Void,Void,Void>
     {
     	//check for connection everytime the app is started and also spawn the location thread
     	//if necessary
-    	protected boolean jsonException = false;
-    	protected boolean networkException = false;
     	
 		@Override
 		protected Void doInBackground(Void... arg0) {
@@ -134,20 +127,20 @@ public class HomePage extends Page {
 				}
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
-				networkException = true;
+				malformedURLException = true;
 			} catch (JSONException e) {
 				e.printStackTrace();
 				jsonException = true;
 			} catch (NullPointerException e)
 			{
 				e.printStackTrace();
-				networkException = true;
+				nullPointerException = true;
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
-				networkException = true;
+				unknownHostException = true;
 			} catch (IOException e) {
 				e.printStackTrace();
-				networkException = true;
+				ioException = true;
 			}
 			finally
 			{
@@ -156,30 +149,10 @@ public class HomePage extends Page {
 			return null;
 		}
     	
-		protected void onPostExecute(Void result)
-		{
-			System.out.println(networkException +" "+ jsonException);
+		@Override
+		public void updateView(Void outputs) {
+			gridview.setAdapter(gridIconsAdapter);
 			pDialog.dismiss();
-			
-			if (networkException) 
-			{
-				networkException = false;
-				popupErrorDialog("Cannot connect to m.ox.ac.uk", 
-						"There might be a problem with internet connection. " +
-						"Please try restarting the app", HomePage.this);
-			}
-			if (jsonException)
-			{
-				jsonException = false;
-				popupErrorDialog("JSON Exception", 
-						"There might be a problem with JSON output " +
-						"from server. Please try again later.", HomePage.this);
-			}
-			else
-			{
-				System.out.println("Size "+gridIconsAdapter.apps.size());
-				gridview.setAdapter(gridIconsAdapter);
-			}
 		}
     }
     

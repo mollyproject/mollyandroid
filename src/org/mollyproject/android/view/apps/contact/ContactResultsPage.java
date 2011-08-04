@@ -8,7 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
-import org.mollyproject.android.controller.BackGroundTask;
+import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.Page;
@@ -39,7 +39,7 @@ public class ContactResultsPage extends ResultsDisplayPage {
         new ContactResultsTask(this).execute(contentLayout);
 	}
 	
-	private class ContactResultsTask extends BackGroundTask<LinearLayout, Void, List<View>>
+	private class ContactResultsTask extends BackgroundTask<LinearLayout, Void, List<View>>
 	{
 		public ContactResultsTask(ContactResultsPage contactResultsPage) {
 			super(contactResultsPage);
