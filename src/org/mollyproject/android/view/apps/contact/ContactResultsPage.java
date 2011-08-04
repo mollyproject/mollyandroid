@@ -9,8 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.ResultsDisplayPage;
 
@@ -49,7 +49,7 @@ public class ContactResultsPage extends ResultsDisplayPage {
 			try {
 				router.waitForRequests();
 				List<View> outputs = new ArrayList<View>();
-				String jsonOutput = router.onRequestSent(SelectionManager
+				String jsonOutput = router.onRequestSent(MollyModule
 						.getName(ContactResultsPage.this.getClass()),
 						Router.OutputFormat.JSON, ((ResultsDisplayPage) page).getQuery());
 				System.out.println(jsonOutput);

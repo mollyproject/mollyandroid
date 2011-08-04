@@ -9,8 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.ResultsDisplayPage;
 
@@ -53,7 +53,7 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 	
 	private List<View> connectAndGenerate(String queryWithPage) throws JSONException
 	{
-		String jsonOutput = router.exceptionHandledOnRequestSent(SelectionManager.getName(this.getClass()),
+		String jsonOutput = router.exceptionHandledOnRequestSent(MollyModule.getName(this.getClass()),
 				this, Router.OutputFormat.JSON, queryWithPage);
 		return generatePage(jsonOutput);
 	}
@@ -126,7 +126,7 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		if (!cache.containsKey(query) || 
 				(cache.containsKey(query) & cache.get(query).size()<=curPageNum))
 		{
-			JSONObject nextResults = new JSONObject(router.exceptionHandledOnRequestSent(SelectionManager.getName(LibraryResultsPage.class),
+			JSONObject nextResults = new JSONObject(router.exceptionHandledOnRequestSent(MollyModule.getName(LibraryResultsPage.class),
 					LibraryResultsPage.this, Router.OutputFormat.JSON, query+"?page="+curPageNum));
 			nextPage = nextResults.getJSONObject("page");
 			myApp.updateLibCache(query, nextPage);

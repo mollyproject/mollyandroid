@@ -6,8 +6,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.selection.SelectionManager;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -25,6 +25,7 @@ public abstract class ContentPage extends Page {
 	protected Button homeBreadcrumb;
 	protected LinearLayout breadcrumbs;
 	protected TextView extraTextView;
+	protected boolean loaded = false;
 	//aka ImplementedPage
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -37,19 +38,21 @@ public abstract class ContentPage extends Page {
 		homeBreadcrumb = (Button) findViewById(R.id.homeBreadcrumb);
 		breadcrumbs = (LinearLayout) findViewById(R.id.breadcrumbs);
 		
-		pDialog = ProgressDialog.show(this, "", "Loading Page...", true, false);
-
 		//Construct breadcrumbs here, will move to background thread later
 		//the first breadcrumb is always the home page
 		homeBreadcrumb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent myIntent = new Intent(v.getContext(), myApp.test("home").getClass());
+				Intent myIntent = new Intent(v.getContext(), myApp.getPageClass("home:index"));
 				startActivityForResult(myIntent,0);
 			}
 		});
 		
-		new PageSetupTask(this).execute();
+		if (!loaded)
+		{
+			pDialog = ProgressDialog.show(this, "", "Loading Page...", true, false);
+			new PageSetupTask(this).execute();
+		}
 		
 	}
 	
@@ -63,7 +66,7 @@ public abstract class ContentPage extends Page {
 		protected JSONObject doInBackground(Void... arg0) {
 			//Download the breadcrumbs
 			try {
-				JSONObject jsonOutput = new JSONObject(router.onRequestSent(myApp.getUnimplementedLocator(), 
+				JSONObject jsonOutput = new JSONObject(router.onRequestSent(myApp.getLocator(), 
 						Router.OutputFormat.JSON, null));
 				JSONObject breadcrumbs = jsonOutput.getJSONObject("breadcrumbs");
 				return breadcrumbs;
@@ -87,11 +90,11 @@ public abstract class ContentPage extends Page {
 				//app/index breadcrumb
 				final String app = breadcrumbs.getString("application");
 				JSONObject index = breadcrumbs.getJSONObject("index");
-				appBreadcrumb.setBackgroundResource(SelectionManager.getBCImg(index.getString("view_name")));
+				appBreadcrumb.setBackgroundResource(MollyModule.getBCImg(index.getString("view_name")));
 				appBreadcrumb.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Intent myIntent = new Intent(v.getContext(), myApp.test(app).getClass());
+						Intent myIntent = new Intent(v.getContext(), myApp.getPageClass(app+":index").getClass());
 						startActivityForResult(myIntent, 0);
 					}
 				});
@@ -107,11 +110,12 @@ public abstract class ContentPage extends Page {
 					if (!index.getBoolean("parent_is_index"))
 					{
 						final String parentName = parent.getString("view_name");
-						parentBreadcrumb.setBackgroundResource(SelectionManager.getBCImg(parentName));
+						parentBreadcrumb.setBackgroundResource(MollyModule.getBCImg(parentName));
 						parentBreadcrumb.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								Intent myIntent = new Intent(v.getContext(), myApp.test(parentName.replace(":index", "")).getClass());
+								Intent myIntent = new Intent(v.getContext(), 
+										myApp.getPageClass(parentName+":index"));
 								startActivityForResult(myIntent, 0);
 							}
 						});
@@ -134,6 +138,7 @@ public abstract class ContentPage extends Page {
 						"from server. Please try again.", page, true);
 			} finally {
 				pDialog .dismiss();
+				loaded = true;
 			}
 			
 		}

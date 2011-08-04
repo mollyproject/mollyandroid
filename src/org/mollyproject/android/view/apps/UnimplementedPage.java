@@ -1,7 +1,7 @@
 package org.mollyproject.android.view.apps;
 
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.selection.SelectionManager;
 
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -12,7 +12,7 @@ public class UnimplementedPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		locator = myApp.getUnimplementedLocator();
+		locator = myApp.getLocator();
 		webView = new WebView(this);
 		try {
 			String temp = getActualURL(locator);

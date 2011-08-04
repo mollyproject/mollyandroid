@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.UnimplementedPage;

@@ -10,8 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.selection.SelectionManager;
 
 import roboguice.inject.InjectView;
 
@@ -46,6 +46,7 @@ public class HomePage extends Page {
 	protected ImageAdapter gridIconsAdapter;
 	protected ArrayList<Button> breadCrumbs;
 	protected LinearLayout bcLayout;
+	protected boolean loaded = false;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -68,8 +69,12 @@ public class HomePage extends Page {
     public void onResume()
     {
     	super.onResume();
-    	pDialog = ProgressDialog.show(this, "", "Loading...", true, false);
-    	new NetworkPollingTask().execute();
+    	
+    	if (!loaded)
+    	{
+    		pDialog = ProgressDialog.show(this, "", "Loading...", true, false);
+    		new NetworkPollingTask().execute();
+    	}
     }
     
     @Override
@@ -91,7 +96,7 @@ public class HomePage extends Page {
 			try {
 				//Establish a connection
 	    		String jsonText = router.onRequestSent(
-						SelectionManager.getName(HomePage.this.getClass()),
+						MollyModule.getName(HomePage.this.getClass()),
 						Router.OutputFormat.JSON,null);
 	    		System.out.println("JSON Text " + jsonText);
 				jsonContent = new JSONObject(jsonText);
@@ -103,7 +108,7 @@ public class HomePage extends Page {
 					JSONObject app = availableApps.getJSONObject(i);
 					if (app.getBoolean("display_to_user"))
 					{
-						appsList.add(app.getString("local_name"));
+						appsList.add(app.getString("local_name")+":index");
 					}
 				}
 				gridIconsAdapter = new ImageAdapter(HomePage.this, appsList);
@@ -153,6 +158,7 @@ public class HomePage extends Page {
 		public void updateView(Void outputs) {
 			gridview.setAdapter(gridIconsAdapter);
 			pDialog.dismiss();
+			loaded = true;
 		}
     }
     
@@ -183,13 +189,13 @@ public class HomePage extends Page {
                 imageView = (ImageView) convertView;
             }
             
-            imageView.setImageResource(SelectionManager.getImg(apps.get(position)+":index"));
+            imageView.setImageResource(myApp.getImgResourceId(apps.get(position)+"_img"));
             imageView.setMaxWidth(HomePage.this.getWindowManager().getDefaultDisplay().getWidth()/3);
             imageView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					myApp.setUnimplementedLocator(apps.get(position)+":index");
-					Intent myIntent = new Intent(v.getContext(), myApp.test(apps.get(position)).getClass());
+					myApp.setNextLocator(apps.get(position));
+					Intent myIntent = new Intent(v.getContext(), myApp.getPageClass(apps.get(position)));
 	                startActivityForResult(myIntent, 0);
 				}
 			});

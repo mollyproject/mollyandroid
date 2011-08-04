@@ -13,8 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
@@ -48,7 +48,7 @@ public class ResultsReleasePage extends ContentPage {
 		ArrayListMultimap<Date,String> examsByDate = ArrayListMultimap.create();
 		
 		try {
-			jsonText = router.exceptionHandledOnRequestSent(SelectionManager.getName(ResultsReleasePage.class),
+			jsonText = router.exceptionHandledOnRequestSent(MollyModule.getName(ResultsReleasePage.class),
 					this,Router.OutputFormat.JSON, null);
 			//Process the json text received
 			if (jsonText != null)
