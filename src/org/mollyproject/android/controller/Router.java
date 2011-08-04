@@ -10,7 +10,6 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 
 import org.json.JSONException;
-import org.mollyproject.android.selection.SelectionManager;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.AlertDialog;
@@ -154,7 +153,7 @@ public class Router {
 	{
 		//Router connects to server, then cookieMgr gets the cookies
 		//cookieMgr extracts csrftoken, then pass to LocThread
-		onRequestSent(SelectionManager.HOME_PAGE, OutputFormat.JSON, null); //csrftoken can only be received after at least 1 request
+		onRequestSent(MollyModule.HOME_PAGE, OutputFormat.JSON, null); //csrftoken can only be received after at least 1 request
 		String token = cookieMgr.getCSRFToken();//if connection goes through, csrftoken should be available
 		currentLocThread = new LocationThread(new URL(mOX),myApp,token);
 		currentLocThread.start();

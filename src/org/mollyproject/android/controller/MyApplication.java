@@ -24,7 +24,7 @@ public class MyApplication extends RoboApplication {
 	protected String mapQuery;
 	protected String contactQuery;
 	protected String libraryQuery;
-	protected String unimplementedLocator;
+	protected String locator;
 	protected ArrayListMultimap<String,JSONObject> libraryCache;
 	protected boolean destroyed = false;
 	protected Injector injector;
@@ -121,15 +121,18 @@ public class MyApplication extends RoboApplication {
 	
 	public String getLibraryQuery() { return libraryQuery; }
 	
-	public String getUnimplementedLocator() { return unimplementedLocator; }
+	public String getLocator() { return locator; }
 	
-	public void setUnimplementedLocator(String unimplementedLocator) { this.unimplementedLocator = unimplementedLocator; } 
+	public void setNextLocator(String locator) { this.locator = locator; } 
 	
-	public Page test(String s)
+	public Class <? extends Page> getPageClass(String s)
 	{
-		Page page = injector.getInstance(Key.get(Page.class, Names.named(s)));
-		System.out.println(s);
-		return page;
+		return (injector.getInstance(Key.get(Page.class, Names.named(s))).getClass());
+	}
+	
+	public int getImgResourceId(String viewName)
+	{
+		return (injector.getInstance(Key.get(Integer.class, Names.named(viewName))));
 	}
 	
 	@Override
