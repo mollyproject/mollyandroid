@@ -24,7 +24,6 @@ public class UnimplementedPage extends ContentPage {
 					"Please try again later", this, true);
 		}
 		contentLayout.addView(webView);
-		setContentView(contentLayout);
 	}
 	
 	public String getActualURL(String string) throws Exception

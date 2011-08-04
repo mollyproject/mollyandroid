@@ -101,7 +101,7 @@ public class SelectionManager {
 		}
 		else 
 		{
-			return R.drawable.contact;
+			return R.drawable.android_button;
 		}
 	}
 	

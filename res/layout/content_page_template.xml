@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background = "@drawable/bg_blue">
+    <LinearLayout android:id="@+id/breadcrumbs"
+		    android:layout_width="fill_parent" 
+		    android:layout_gravity="center_vertical"
+		    android:layout_height="60dp" 
+		    android:layout_marginTop="5dp">
+		    
+        	<Button android:text="" 
+		        android:id="@+id/homeBreadcrumb" 
+		        android:layout_width="wrap_content" 
+		        android:layout_height="wrap_content"
+		        android:background="@drawable/apple_touch_icon" android:layout_marginLeft="5dp">
+       		</Button>
+        	<Button android:text="" 
+	        	android:id="@+id/rootBreadcrumb" 
+	        	android:layout_width="wrap_content" 
+	        	android:layout_height="wrap_content"
+	        	android:background="@drawable/bg_blue"
+	        	android:textColor="@color/white">
+        	</Button>
+        	
+        	<Button android:text=""
+        		android:textSize="20dp" 
+	        	android:id="@+id/extraBreadcrumb" 
+	        	android:layout_width="wrap_content"
+	        	android:background="@drawable/bg_blue"
+	        	android:textColor="@color/white"
+	        	android:layout_height="fill_parent">
+        	</Button>
+        	
+        	<TextView android:text="" 
+        	android:textSize="20dp" 
+        	android:id="@+id/extraTextView" 
+        	android:layout_width="wrap_content" 
+        	android:layout_height="wrap_content">
+        	</TextView>
+    </LinearLayout>
+    
+    <LinearLayout android:layout_height="fill_parent" 
+	    android:id="@+id/contentLayout" 
+	    android:layout_width="fill_parent"
+	    android:orientation="vertical" android:layout_weight="1">
+    </LinearLayout>
+    
+</LinearLayout>

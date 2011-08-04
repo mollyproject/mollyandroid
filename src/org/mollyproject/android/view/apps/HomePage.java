@@ -39,7 +39,7 @@ import android.widget.LinearLayout;
 public class HomePage extends Page {
 	
 	@InjectView (R.id.gridView) GridView gridview;
-	@InjectView (R.id.search) EditText searchField;
+	@InjectView (R.id.searchField) EditText searchField;
 	@InjectView (R.id.bottomLayout) LinearLayout bottomLayout;
 	
 	protected ImageAdapter gridIconsAdapter;
@@ -48,6 +48,7 @@ public class HomePage extends Page {
 	
 	/** Called when the activity is first created. */
     @Override
+    
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -107,8 +108,7 @@ public class HomePage extends Page {
 				for (int i = 0; i < availableApps.length(); i++)
 				{
 					JSONObject app = availableApps.getJSONObject(i);
-					String name = app.getString("local_name")+":index";
-					appsList.add(name);
+					appsList.add(app.getString("local_name"));
 				}
 				gridIconsAdapter = new ImageAdapter(HomePage.this, appsList);
 				
@@ -207,12 +207,12 @@ public class HomePage extends Page {
                 imageView = (ImageView) convertView;
             }
             
-            imageView.setImageResource(SelectionManager.getImg(apps.get(position)));
+            imageView.setImageResource(SelectionManager.getImg(apps.get(position)+":index"));
             imageView.setMaxWidth(HomePage.this.getWindowManager().getDefaultDisplay().getWidth()/3);
             imageView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					myApp.setUnimplementedLocator(apps.get(position));
+					myApp.setUnimplementedLocator(apps.get(position)+":index");
 					Intent myIntent = new Intent(v.getContext(), myApp.test(apps.get(position)).getClass());
 	                startActivityForResult(myIntent, 0);
 				}

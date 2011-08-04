@@ -28,7 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public abstract class Page extends RoboActivity {
-	protected ImprovedBreadCrumbBar bcBar;
+	//protected ImprovedBreadCrumbBar bcBar;
 	protected MyApplication myApp;
 	protected ArrayList<String> trail;
 	protected JSONObject jsonContent;
@@ -50,7 +50,7 @@ public abstract class Page extends RoboActivity {
 	{
 		super.onCreate(savedInstanceState);
 		myApp = (MyApplication) getApplication();
-		bcBar = new ImprovedBreadCrumbBar(getInstance());
+		//bcBar = new ImprovedBreadCrumbBar(getInstance());
 		router = myApp.getRouter();
 		if (router == null)
 		{
