@@ -9,6 +9,10 @@ import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
 
+import com.google.inject.Inject;
+
+import roboguice.inject.InjectView;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,24 +24,18 @@ import android.widget.TextView;
 
 public abstract class ContentPage extends Page {
 	//cannot use guice injections because these following views need to be used by the subclasses as well
-	protected Button appBreadcrumb;
-	protected Button parentBreadcrumb;
-	protected Button homeBreadcrumb;
-	protected LinearLayout breadcrumbs;
-	protected TextView extraTextView;
+	@InjectView(R.id.appBreadcrumb) protected Button appBreadcrumb;
+	@InjectView (R.id.parentBreadcrumb) protected Button parentBreadcrumb;
+	@InjectView (R.id.homeBreadcrumb) protected Button homeBreadcrumb;
+	@InjectView (R.id.breadcrumbs) protected LinearLayout breadcrumbs;
+	@InjectView (R.id.extraTextView) protected TextView extraTextView;
+	@InjectView (R.id.contentLayout) protected LinearLayout contentLayout;
 	protected boolean loaded = false;
 	//aka ImplementedPage
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
 		setContentView(R.layout.content_page_template);
-		contentLayout = (LinearLayout) findViewById(R.id.contentLayout);
-		appBreadcrumb = (Button) findViewById(R.id.appBreadcrumb);
-		parentBreadcrumb = (Button) findViewById(R.id.parentBreadcrumb);
-		homeBreadcrumb = (Button) findViewById(R.id.homeBreadcrumb);
-		breadcrumbs = (LinearLayout) findViewById(R.id.breadcrumbs);
-		
 		//Construct breadcrumbs here, will move to background thread later
 		//the first breadcrumb is always the home page
 		homeBreadcrumb.setOnClickListener(new OnClickListener() {
@@ -124,7 +122,7 @@ public abstract class ContentPage extends Page {
 					else { 
 						parentBreadcrumb.setText(title); 
 						parentBreadcrumb.setEnabled(false); 
-						appBreadcrumb.setEnabled(false); }
+						}
 				}
 				else { parentBreadcrumb.setText(title); 
 					parentBreadcrumb.setEnabled(false); 

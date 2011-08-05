@@ -219,7 +219,7 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 			}
 			else
 			{
-				populateViews(outputs);
+				populateViews(outputs,contentLayout);
 			}
 			pDialog.dismiss();
 		}

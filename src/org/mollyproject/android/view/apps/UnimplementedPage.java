@@ -1,6 +1,5 @@
 package org.mollyproject.android.view.apps;
 
-import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
 
 import android.os.Bundle;

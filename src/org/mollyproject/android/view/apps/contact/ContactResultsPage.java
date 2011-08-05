@@ -14,6 +14,8 @@ import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.ResultsDisplayPage;
 
+import com.google.inject.Inject;
+
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -25,7 +27,7 @@ import android.widget.TextView;
 
 public class ContactResultsPage extends ResultsDisplayPage {
 	
-	protected ProgressDialog pDialog = null;
+	@Inject protected ProgressDialog pDialog = null;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);

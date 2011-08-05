@@ -12,6 +12,7 @@ import org.mollyproject.android.view.apps.features.FeatureVotePage;
 import org.mollyproject.android.view.apps.feedback.FeedbackPage;
 import org.mollyproject.android.view.apps.library.LibraryPage;
 import org.mollyproject.android.view.apps.library.LibraryResultsPage;
+import org.mollyproject.android.view.apps.map.PlacesPage;
 import org.mollyproject.android.view.apps.results_release.ResultsReleasePage;
 
 import com.google.common.collect.HashBiMap;
@@ -77,6 +78,10 @@ public class MollyModule extends AbstractModule {
 		bind(Page.class).annotatedWith(Names.named("library:index")).to(LibraryPage.class);
 		bind(Integer.class).annotatedWith(Names.named("library:index_img")).toInstance(R.drawable.library);
 		bind(Integer.class).annotatedWith(Names.named("library:index_bc")).toInstance(R.drawable.library_bc);
+		
+		bind(Page.class).annotatedWith(Names.named("places:index")).to(PlacesPage.class);
+		bind(Integer.class).annotatedWith(Names.named("places:index_img")).toInstance(R.drawable.places);
+		bind(Integer.class).annotatedWith(Names.named("places:index_bc")).toInstance(R.drawable.places_bc);
 		
 		bind(Page.class).annotatedWith(Names.named("results:index")).to(ResultsReleasePage.class);
 		bind(Page.class).annotatedWith(Names.named("splash")).to(Splash.class);
