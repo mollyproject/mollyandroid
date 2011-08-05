@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -36,18 +37,19 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class HomePage extends Page {
 	
 	@InjectView (R.id.gridView) GridView gridview;
-	@InjectView (R.id.searchField) EditText searchField;
+	//@InjectView (R.id.searchField) EditText searchField;
+	//@InjectView (R.id.searchLayout) RelativeLayout searchBar;
 	@InjectView (R.id.bottomLayout) LinearLayout bottomLayout;
-	
+	@InjectView (R.id.homeLayout) LinearLayout homeLayout;
 	protected ImageAdapter gridIconsAdapter;
 	protected ArrayList<Button> breadCrumbs;
 	protected LinearLayout bcLayout;
 	protected boolean loaded = false;
-	
 	/** Called when the activity is first created. */
     @Override
     
@@ -55,7 +57,8 @@ public class HomePage extends Page {
     	super.onCreate(savedInstanceState);
     	this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     	setContentView(R.layout.grid_viewer);
-    	
+    	RelativeLayout searchBar = (RelativeLayout) layoutInflater.inflate(R.layout.search_bar,homeLayout, false);
+    	homeLayout.addView(searchBar,0);
     	//bottomLayout.setMinimumHeight(getWindowManager().getDefaultDisplay().getHeight()/3);
     	//gridIconsAdapter = new ImageAdapter(this);
     }

@@ -1,6 +1,5 @@
 package org.mollyproject.android.view.apps;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -8,9 +7,10 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 
+import com.google.inject.Inject;
+
 import roboguice.activity.RoboActivity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,27 +18,27 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public abstract class Page extends RoboActivity {
 	//protected ImprovedBreadCrumbBar bcBar;
 	protected MyApplication myApp;
-	protected ArrayList<String> trail;
+	protected Router router;
 	protected JSONObject jsonContent;
 	protected String jsonText;
-	protected LinearLayout contentLayout;
-	protected Router router;
 	protected ProgressDialog pDialog;
-	//public abstract void refresh();
+	protected LayoutInflater layoutInflater;
 	
 	//use someLayout.setLayoutParams() with this paramsWithLine as a parameter makes
-	//a gap of 5px below the LinearLayout, this is used hee to make gaps between views
+	//a gap of 5px below the LinearLayout, this is used here to make gaps between views
 	public static LinearLayout.LayoutParams paramsWithLine = new LinearLayout.LayoutParams
 			(LinearLayout.LayoutParams.FILL_PARENT, 
 			LinearLayout.LayoutParams.FILL_PARENT);
@@ -49,7 +49,6 @@ public abstract class Page extends RoboActivity {
 	{
 		super.onCreate(savedInstanceState);
 		myApp = (MyApplication) getApplication();
-		//bcBar = new ImprovedBreadCrumbBar(getInstance());
 		router = myApp.getRouter();
 		if (router == null)
 		{
@@ -66,6 +65,7 @@ public abstract class Page extends RoboActivity {
 		{
 			router.setApp(myApp);
 		}
+		layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
 	public abstract Page getInstance();
@@ -148,7 +148,7 @@ public abstract class Page extends RoboActivity {
     	});
 	}
 	
-	public void populateViews(List<View> outputs)
+	public void populateViews(List<View> outputs, LinearLayout contentLayout)
 	{
 		for (int i = 0; i < outputs.size(); i++)
 		{
