@@ -2,17 +2,13 @@ package org.mollyproject.android.view.apps;
 
 import java.util.List;
 
-import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 
-import com.google.inject.Inject;
-
 import roboguice.activity.RoboActivity;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public abstract class Page extends RoboActivity {
@@ -168,6 +163,11 @@ public abstract class Page extends RoboActivity {
 	            break;
 	    }
 	    return true;
+	}
+	
+	public Router getRouter()
+	{
+		return router;
 	}
 	
 	@Override

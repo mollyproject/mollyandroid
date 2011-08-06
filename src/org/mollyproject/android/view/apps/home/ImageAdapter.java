@@ -5,7 +5,6 @@ import java.util.List;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
