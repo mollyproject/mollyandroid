@@ -140,6 +140,11 @@ public abstract class ContentPage extends Page {
 		}
 	}
 	
+	public LinearLayout getContentLayout()
+	{
+		return contentLayout;
+	}
+	
 }
 	
 	
