@@ -1,18 +1,9 @@
 package org.mollyproject.android.view.apps.contact;
 
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
-
-import org.json.JSONException;
-import org.mollyproject.android.controller.BackgroundTask;
-import org.mollyproject.android.controller.MollyModule;
-import org.mollyproject.android.controller.Router;
+import org.json.JSONObject;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -98,43 +89,9 @@ public class ContactPage extends ContentPage {
 		new ContactSearchTask(this,false).execute(query,medium);
 	}
 	
-	private class ContactSearchTask extends BackgroundTask<String, Void, Void>
+	public void setContactOutput(JSONObject contactOutput)
 	{
-
-		public ContactSearchTask(Page page, boolean b) {
-			super(page, b);
-		}
-
-		@Override
-		public void updateView(Void outputs) {
-		}
-
-		@Override
-		protected Void doInBackground(String... args) {
-			//args = { query, medium }
-			try {
-				String searchQuery = "query="+URLEncoder.encode(args[0],"UTF-8")+"&medium="+args[1];
-				myApp.setContactOutput(router.onRequestSent(MollyModule
-						.getName(ContactResultsPage.class),
-						Router.OutputFormat.JSON, searchQuery));
-				Intent myIntent = new Intent (page, router.getDestination());
-				myApp.timeStart();
-				startActivityForResult(myIntent,0);
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-				unknownHostException = true;
-			} catch (JSONException e) {
-				e.printStackTrace();
-				jsonException = true;
-			} catch (IOException e) {
-				e.printStackTrace();
-				ioException = true;
-			} finally {
-				router.waitForRequests();
-			}
-			return null;
-		}
-		
+		myApp.setContactOutput(contactOutput);
 	}
 	
 	@Override
