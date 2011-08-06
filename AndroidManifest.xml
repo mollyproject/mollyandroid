@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.apps.HomePage"></activity>
+        <activity android:name=".view.apps.home.HomePage"></activity>
         <activity android:name=".view.apps.UnimplementedPage"></activity>
 		<activity android:name=".view.apps.results_release.ResultsReleasePage"></activity>
 		<activity android:name=".view.apps.features.FeatureVotePage"></activity>

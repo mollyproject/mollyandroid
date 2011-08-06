@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.apps;
+package org.mollyproject.android.view.apps.home;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -12,6 +12,7 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.Page;
 
 import roboguice.inject.InjectView;
 
@@ -57,8 +58,6 @@ public class HomePage extends Page {
     	setContentView(R.layout.grid_viewer);
     	RelativeLayout searchBar = (RelativeLayout) layoutInflater.inflate(R.layout.search_bar,homeLayout, false);
     	homeLayout.addView(searchBar,0);
-    	//bottomLayout.setMinimumHeight(getWindowManager().getDefaultDisplay().getHeight()/3);
-    	//gridIconsAdapter = new ImageAdapter(this);
     }
     
     public Page getInstance()
@@ -112,7 +111,7 @@ public class HomePage extends Page {
 							appsList.add(app.getString("local_name")+":index");
 						}
 					}
-					gridIconsAdapter = new ImageAdapter(HomePage.this, appsList);
+					gridIconsAdapter = new ImageAdapter(page, appsList);
 				}
 				if (router.getLocThread() != null)
 		    	{
@@ -148,10 +147,6 @@ public class HomePage extends Page {
 				e.printStackTrace();
 				ioException = true;
 			}
-			finally
-			{
-				//router.waitForRequests(); //return the router to the waiting state
-			}
 			return null;
 		}
     	
@@ -160,47 +155,6 @@ public class HomePage extends Page {
 			gridview.setAdapter(gridIconsAdapter);
 			loaded = true;
 		}
-    }
-    
-    public class ImageAdapter extends BaseAdapter {
-        private Context mContext;
-
-        protected List<String> apps = null;
-        
-        public ImageAdapter(Context c, List<String> apps) { mContext = c; this.apps = apps; }
-
-        public int getCount() { return apps.size(); }
-        
-        public List<String> getAppsList() { return apps; }
-
-        public Object getItem(int position) { return null; }
-
-        public long getItemId(int position) { return 0; }
-        
-        public void addApp(String app) { apps.add(app);  }
-        
-        // create a new ImageView for each item referenced by the Adapter
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            ImageView imageView;
-            
-            if (convertView == null) {  // if it's not recycled, initialize some attributes
-                imageView = new ImageView(mContext);
-            } else {
-                imageView = (ImageView) convertView;
-            }
-            
-            imageView.setImageResource(myApp.getImgResourceId(apps.get(position)+"_img"));
-            imageView.setMaxWidth(HomePage.this.getWindowManager().getDefaultDisplay().getWidth()/3);
-            imageView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					myApp.setNextLocator(apps.get(position));
-					Intent myIntent = new Intent(v.getContext(), myApp.getPageClass(apps.get(position)));
-	                startActivityForResult(myIntent, 0);
-				}
-			});
-            return imageView;
-        }
     }
 }
 

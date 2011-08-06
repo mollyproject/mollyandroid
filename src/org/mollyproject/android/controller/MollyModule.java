@@ -10,6 +10,7 @@ import org.mollyproject.android.view.apps.contact.ContactPage;
 import org.mollyproject.android.view.apps.contact.ContactResultsPage;
 import org.mollyproject.android.view.apps.features.FeatureVotePage;
 import org.mollyproject.android.view.apps.feedback.FeedbackPage;
+import org.mollyproject.android.view.apps.home.HomePage;
 import org.mollyproject.android.view.apps.library.LibraryPage;
 import org.mollyproject.android.view.apps.library.LibraryResultsPage;
 import org.mollyproject.android.view.apps.map.PlacesPage;
