@@ -3,11 +3,8 @@ package org.mollyproject.android;
 
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
-import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;

@@ -48,7 +48,6 @@ public abstract class ContentPage extends Page {
 		
 		if (!loaded)
 		{
-			pDialog = ProgressDialog.show(this, "", "Loading Page...", true, false);
 			new PageSetupTask(this).execute();
 		}
 		
@@ -58,14 +57,14 @@ public abstract class ContentPage extends Page {
 	{
 		//new breadcrumb parser
 		public PageSetupTask(Page page) {
-			super(page);
+			super(page, true);
 		}
 		@Override
 		protected JSONObject doInBackground(Void... arg0) {
 			//Download the breadcrumbs
 			try {
-				JSONObject jsonOutput = new JSONObject(router.onRequestSent(myApp.getLocator(), 
-						Router.OutputFormat.JSON, null));
+				JSONObject jsonOutput = router.onRequestSent(myApp.getLocator(), 
+						Router.OutputFormat.JSON, null);
 				JSONObject breadcrumbs = jsonOutput.getJSONObject("breadcrumbs");
 				return breadcrumbs;
 			} catch (UnknownHostException e) {
@@ -135,7 +134,6 @@ public abstract class ContentPage extends Page {
 						"There might be a problem with JSON output " +
 						"from server. Please try again.", page, true);
 			} finally {
-				pDialog .dismiss();
 				loaded = true;
 			}
 			

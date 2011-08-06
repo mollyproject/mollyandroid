@@ -11,8 +11,8 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.ResultsDisplayPage;
 
 import com.google.inject.Inject;
 
@@ -25,43 +25,34 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class ContactResultsPage extends ResultsDisplayPage {
-	
-	@Inject protected ProgressDialog pDialog = null;
+public class ContactResultsPage extends ContentPage {
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		
-		// Show the ProgressDialog on this thread
-        pDialog = ProgressDialog.show(this, "", "Loading Content...", true, false);
-        
         // Start a new thread that will download all the data
-        query = myApp.getContactQuery();
-        
-        new ContactResultsTask(this).execute(contentLayout);
+        new ContactResultsTask(this, true).execute(contentLayout);
 	}
 	
 	private class ContactResultsTask extends BackgroundTask<LinearLayout, Void, List<View>>
 	{
-		public ContactResultsTask(ContactResultsPage contactResultsPage) {
-			super(contactResultsPage);
+		public ContactResultsTask(Page page,
+				boolean b) {
+			super(page,b);
 		}
+
 		@Override
 		protected List<View> doInBackground(LinearLayout... args) {
 			try {
 				router.waitForRequests();
 				List<View> outputs = new ArrayList<View>();
-				String jsonOutput = router.onRequestSent(MollyModule
-						.getName(ContactResultsPage.this.getClass()),
-						Router.OutputFormat.JSON, ((ResultsDisplayPage) page).getQuery());
-				System.out.println(jsonOutput);
-				JSONObject output = new JSONObject(jsonOutput);
+				JSONObject output = myApp.getContactOutput();
 				JSONArray results = output.getJSONArray("results");
 				
-				LinearLayout resultsLayout = new LinearLayout(ContactResultsPage.this);
+				LinearLayout resultsLayout = new LinearLayout(page);
 				resultsLayout.setOrientation(LinearLayout.VERTICAL);
 				
-				TextView resultsNo = new TextView(ContactResultsPage.this);
+				TextView resultsNo = new TextView(page);
 				resultsNo.setTextSize(16);
 				resultsNo.setTextColor(R.color.blue);
 				resultsNo.setPadding(10, 20, 0, 20);
@@ -70,36 +61,37 @@ public class ContactResultsPage extends ResultsDisplayPage {
 				String notification = "Your search returned "+results.length()+" result(s).";
 				if (results.length() > 50)
 				{
-					notification = notification + " Try adding an initial to get more specific results.";
+					notification = notification + 
+					" Try adding an initial to get more specific results.";
 				}
 				resultsNo.setText(notification);
 				outputs.add(resultsNo);
 				
 				if (results.length() > 0)
 				{
-					ScrollView scr = new ScrollView(ContactResultsPage.this);
+					ScrollView scr = new ScrollView(page);
 					
 					for (int i = 0; i < results.length(); i++)
 					{
 						JSONObject result = results.getJSONObject(i);
-						LinearLayout thisResult = new LinearLayout(ContactResultsPage.this);
+						LinearLayout thisResult = new LinearLayout(page);
 						thisResult.setOrientation(LinearLayout.VERTICAL);
 						
 						//name field
-						TextView name = new TextView(ContactResultsPage.this);
+						TextView name = new TextView(page);
 						name.setTextSize(18);
 						final String finalName = result.getString("cn"); //declared as final for use in an onClickListener later
 						name.setText((i+1)+". "+finalName);
 						
 						//ou field, i.e. department,college, etc - can have many, stored as
 						//a JSONArray in result
-						LinearLayout ouLayout = new LinearLayout(ContactResultsPage.this);
+						LinearLayout ouLayout = new LinearLayout(page);
 						String ou = new String();
 						ouLayout.setOrientation(LinearLayout.VERTICAL);
 						JSONArray ouFields = result.getJSONArray("ou");
 						for (int j = 0; j < ouFields.length(); j++)
 						{
-							TextView field = new TextView(ContactResultsPage.this);
+							TextView field = new TextView(page);
 							field.setTextSize(18);
 							field.setText(ouFields.getString(j));
 							ou = ou + ouFields.getString(j) + '\n';
@@ -107,7 +99,7 @@ public class ContactResultsPage extends ResultsDisplayPage {
 						}
 						
 						//e-mail/phone field, can have many, stored as a JSONArray in result
-						LinearLayout fieldLayout = new LinearLayout(ContactResultsPage.this);
+						LinearLayout fieldLayout = new LinearLayout(page);
 						fieldLayout.setOrientation(LinearLayout.VERTICAL);
 						
 						//check if the results are e-mails or phone numbers
@@ -119,7 +111,7 @@ public class ContactResultsPage extends ResultsDisplayPage {
 							for (int j = 0; j < mailFields.length(); j++)
 							{
 								//display each address field
-								TextView field = new TextView(ContactResultsPage.this);
+								TextView field = new TextView(page);
 								field.setTextSize(18);
 								addresses = addresses + mailFields.get(j)+",";
 								field.setText(mailFields.getString(j));
@@ -137,7 +129,7 @@ public class ContactResultsPage extends ResultsDisplayPage {
 							JSONArray phoneFields = result.getJSONArray("telephoneNumber");
 							for (int j = 0; j < phoneFields.length(); j++)
 							{
-								TextView field = new TextView(ContactResultsPage.this);
+								TextView field = new TextView(page);
 								field.setTextSize(18);
 								numbers.add((String) phoneFields.get(j));
 								field.setText(phoneFields.getString(j));
@@ -201,22 +193,7 @@ public class ContactResultsPage extends ResultsDisplayPage {
 				e.printStackTrace();
 				jsonException = true;
 				
-			} catch (UnknownHostException e) {
-				unknownHostException = true;
-				e.printStackTrace();
-			} catch (IOException e) {
-				ioException = true;
-				e.printStackTrace();
 			} 
-			catch (Exception e) {
-				//Anything else is assumed to be caused by a network failure
-				e.printStackTrace();
-				otherException = true;
-			}
-			finally
-			{
-				router.waitForRequests(); //return the router to the waiting state
-			}
 			return null;
 		}
 		
@@ -226,7 +203,6 @@ public class ContactResultsPage extends ResultsDisplayPage {
 			{
 				contentLayout.addView(outputs.get(i));
 			}
-			pDialog.dismiss();
 		}
 	}
 	

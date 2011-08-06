@@ -42,8 +42,6 @@ import android.widget.RelativeLayout;
 public class HomePage extends Page {
 	
 	@InjectView (R.id.gridView) GridView gridview;
-	//@InjectView (R.id.searchField) EditText searchField;
-	//@InjectView (R.id.searchLayout) RelativeLayout searchBar;
 	@InjectView (R.id.bottomLayout) LinearLayout bottomLayout;
 	@InjectView (R.id.homeLayout) LinearLayout homeLayout;
 	protected ImageAdapter gridIconsAdapter;
@@ -72,12 +70,7 @@ public class HomePage extends Page {
     public void onResume()
     {
     	super.onResume();
-    	
-    	if (!loaded)
-    	{
-    		pDialog = ProgressDialog.show(this, "", "Loading...", true, false);
-    		new NetworkPollingTask().execute();
-    	}
+		new NetworkPollingTask().execute();
     }
     
     @Override
@@ -98,24 +91,25 @@ public class HomePage extends Page {
 		protected Void doInBackground(Void... arg0) {
 			try {
 				//Establish a connection
-	    		String jsonText = router.onRequestSent(
-						MollyModule.getName(HomePage.this.getClass()),
-						Router.OutputFormat.JSON,null);
-	    		System.out.println("JSON Text " + jsonText);
-				jsonContent = new JSONObject(jsonText);
-				
-				JSONArray availableApps = jsonContent.getJSONArray("applications");
-				List<String> appsList = new ArrayList<String>(); 
-				for (int i = 0; i < availableApps.length(); i++)
+				if (!loaded)
 				{
-					JSONObject app = availableApps.getJSONObject(i);
-					if (app.getBoolean("display_to_user"))
+					System.out.println("Router called");
+		    		JSONObject output = router.onRequestSent(
+							MollyModule.getName(HomePage.this.getClass()),
+							Router.OutputFormat.JSON,null);
+					
+					JSONArray availableApps = output.getJSONArray("applications");
+					List<String> appsList = new ArrayList<String>(); 
+					for (int i = 0; i < availableApps.length(); i++)
 					{
-						appsList.add(app.getString("local_name")+":index");
+						JSONObject app = availableApps.getJSONObject(i);
+						if (app.getBoolean("display_to_user"))
+						{
+							appsList.add(app.getString("local_name")+":index");
+						}
 					}
+					gridIconsAdapter = new ImageAdapter(HomePage.this, appsList);
 				}
-				gridIconsAdapter = new ImageAdapter(HomePage.this, appsList);
-				
 				if (router.getLocThread() != null)
 		    	{
 			    	if (router.getLocThread().isInterrupted())
@@ -152,7 +146,7 @@ public class HomePage extends Page {
 			}
 			finally
 			{
-				router.waitForRequests(); //return the router to the waiting state
+				//router.waitForRequests(); //return the router to the waiting state
 			}
 			return null;
 		}
@@ -160,7 +154,6 @@ public class HomePage extends Page {
 		@Override
 		public void updateView(Void outputs) {
 			gridview.setAdapter(gridIconsAdapter);
-			pDialog.dismiss();
 			loaded = true;
 		}
     }

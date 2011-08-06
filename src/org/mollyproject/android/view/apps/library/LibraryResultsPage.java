@@ -1,25 +1,19 @@
 package org.mollyproject.android.view.apps.library;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.ResultsDisplayPage;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.HashMultimap;
-
-import android.app.ProgressDialog;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -31,11 +25,10 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class LibraryResultsPage extends ResultsDisplayPage {
+public class LibraryResultsPage extends ContentPage {
 
 	protected int curPageNum;
-	protected ProgressDialog pDialog;
-	
+	protected String query;
 	protected ArrayListMultimap<String,JSONObject> cache;
 	protected List<JSONObject> cachedJSONPages;
 
@@ -46,39 +39,38 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		cache = myApp.getLibCache();
 		query = myApp.getLibraryQuery().toLowerCase();
 		
-		pDialog = ProgressDialog.show(this, "", "Loading...", true, false);
-		
-		new LibraryResultsTask().execute();
+		new LibraryFirstResultTask(this,false).execute();
 	}
 	
-	private List<View> connectAndGenerate(String queryWithPage) throws JSONException
+	private List<View> connectAndGenerate(Page page, String queryWithPage) throws JSONException
 	{
-		String jsonOutput = router.exceptionHandledOnRequestSent(MollyModule.getName(this.getClass()),
+		router.waitForRequests();
+		JSONObject results = router.exceptionHandledOnRequestSent(MollyModule.getName(this.getClass()),
 				this, Router.OutputFormat.JSON, queryWithPage);
-		return generatePage(jsonOutput);
+		
+		return generatePage(this, results);
 	}
 	
-	private List<View> generatePage(String jsonOutput) throws JSONException
+	private List<View> generatePage(final Page page, JSONObject results) throws JSONException
 	{
 		List<View> outputs = new ArrayList<View>();
-		JSONObject results = new JSONObject(jsonOutput);
-		final JSONObject page = results.getJSONObject("page");
+		final JSONObject jsonPage = results.getJSONObject("page");
 		
-		final ScrollView scr = new ScrollView(this);
+		final ScrollView scr = new ScrollView(page);
 		
-		final LinearLayout pageLayout = new LinearLayout(this);
+		final LinearLayout pageLayout = new LinearLayout(page);
 		pageLayout.setOrientation(LinearLayout.VERTICAL);
 		pageLayout.setBackgroundResource(R.drawable.bg_white);
-		final LinearLayout resultsLayout = new LinearLayout(this);
+		final LinearLayout resultsLayout = new LinearLayout(page);
 		resultsLayout.setOrientation(LinearLayout.VERTICAL);
 
-		final TextView resultsNo = new TextView(this);
+		final TextView resultsNo = new TextView(page);
 		resultsNo.setTextSize(16);
 		resultsNo.setTextColor(R.color.black);
 		resultsNo.setPadding(10, 20, 0, 20);
 		resultsNo.setBackgroundResource(R.drawable.bg_white);
 		
-		populateResults(resultsLayout, resultsNo);
+		populateResults(page,resultsLayout, resultsNo);
 		
 		pageLayout.addView(resultsLayout);
 		scr.addView(pageLayout);
@@ -86,18 +78,18 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		outputs.add(resultsNo);
 		outputs.add(scr);
 		
-		Button nextButton = new Button(this);
+		Button nextButton = new Button(page);
 		nextButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
 				LayoutParams.WRAP_CONTENT, 1f));
 		nextButton.setText("View more results");
 		nextButton.setEnabled(false);
 		
-		LinearLayout bottomButtonsLayout = new LinearLayout(this);
+		LinearLayout bottomButtonsLayout = new LinearLayout(page);
 		bottomButtonsLayout.addView(nextButton);
 		
 		pageLayout.addView(bottomButtonsLayout);
 		
-		if (page.getBoolean("has_next"))
+		if (jsonPage.getBoolean("has_next"))
 		{
 			//generate the next page dynamically
 			nextButton.setEnabled(true);
@@ -105,40 +97,40 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 				@Override
 				public void onClick(View v) {
 					try {
-						populateResults(resultsLayout, resultsNo);
+						populateResults(page,resultsLayout, resultsNo);
 					} catch (JSONException e) {
 						e.printStackTrace();
 						Page.popupErrorDialog("JSON Exception", 
 								"There might be a problem with JSON output " +
-								"from server. Please try again later.", LibraryResultsPage.this, true);
+								"from server. Please try again later.", page, true);
 					}
-
 				}
 			});
 		}
 		return outputs;
 	}
 	
-	private void populateResults(LinearLayout resultsLayout, TextView resultsNo) throws JSONException
+	private void populateResults(Page page, LinearLayout resultsLayout, TextView resultsNo) throws JSONException
 	{
-		JSONObject nextPage = new JSONObject();
+		JSONObject nextJSONPage = new JSONObject();
 		System.out.println(cache.toString());
 		if (!cache.containsKey(query) || 
 				(cache.containsKey(query) & cache.get(query).size()<=curPageNum))
 		{
-			JSONObject nextResults = new JSONObject(router.exceptionHandledOnRequestSent(MollyModule.getName(LibraryResultsPage.class),
-					LibraryResultsPage.this, Router.OutputFormat.JSON, query+"?page="+curPageNum));
-			nextPage = nextResults.getJSONObject("page");
-			myApp.updateLibCache(query, nextPage);
+			JSONObject nextResults = router.exceptionHandledOnRequestSent(
+					MollyModule.getName(page.getClass()),
+					page, Router.OutputFormat.JSON, query+"?page="+curPageNum);
+			nextJSONPage = nextResults.getJSONObject("page");
+			myApp.updateLibCache(query, nextJSONPage);
 		}
 		else 
 		{
 			cachedJSONPages = (List<JSONObject>) cache.get(query);
-			nextPage = cachedJSONPages.get(curPageNum);
+			nextJSONPage = cachedJSONPages.get(curPageNum);
 		}
 		curPageNum++;
-		JSONArray newObjects = nextPage.getJSONArray("objects");
-		TextView pageNumView = new TextView(LibraryResultsPage.this);
+		JSONArray newObjects = nextJSONPage.getJSONArray("objects");
+		TextView pageNumView = new TextView(page);
 		pageNumView.setText("Page "+curPageNum);
 		pageNumView.setGravity(Gravity.CENTER);
 		if (curPageNum > 1)
@@ -147,38 +139,38 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		}
 		for (int i = 0; i < newObjects.length(); i++)
 		{
-			LinearLayout thisResultLayout = new LinearLayout(LibraryResultsPage.this);
+			LinearLayout thisResultLayout = new LinearLayout(page);
 			thisResultLayout.setOrientation(LinearLayout.VERTICAL);
 			JSONObject thisResult = newObjects.getJSONObject(i);
 			
 			//next step: display the title, author, publishers, no. of available libraries
-			addTextField(thisResult,"title","",thisResultLayout,18);
-			addTextField(thisResult,"author","Author: ",thisResultLayout,16);
-			addTextField(thisResult,"publisher","Publisher: ",thisResultLayout,16);
-			addTextField(thisResult,"holding_libraries","Libraries: ",thisResultLayout,16);
+			addTextField(page,thisResult,"title","",thisResultLayout,18);
+			addTextField(page,thisResult,"author","Author: ",thisResultLayout,16);
+			addTextField(page,thisResult,"publisher","Publisher: ",thisResultLayout,16);
+			addTextField(page,thisResult,"holding_libraries","Libraries: ",thisResultLayout,16);
 			thisResultLayout.setBackgroundResource(R.drawable.bg_blue);
 			thisResultLayout.setPadding(10, 10, 0, 10);
 			thisResultLayout.setLayoutParams(paramsWithLine);	
 			resultsLayout.addView(thisResultLayout);
 		}
 		
-		resultsNo.setText("Search returned " + nextPage.getString("num_objects") + " items." + '\n'
-		+ "Displaying "+curPageNum+" page(s) of "+nextPage.getString("num_pages")+" pages.");
+		resultsNo.setText("Search returned " + nextJSONPage.getString("num_objects") + " items." + '\n'
+		+ "Displaying "+curPageNum+" page(s) of "+nextJSONPage.getString("num_pages")+" pages.");
 	}
 	
-	private void addTextField(JSONObject jsonSource, String jsonKey, 
+	private void addTextField(Page page, JSONObject jsonSource, String jsonKey, 
 			String additionalText, ViewGroup parentViewGroup, float size) throws JSONException 
 	{
 		if (!jsonSource.isNull(jsonKey))
 		{
-			LinearLayout textLayout = new LinearLayout(this);
+			LinearLayout textLayout = new LinearLayout(page);
 			
 			String text = jsonSource.getString(jsonKey);
-			TextView textView = new TextView(this);
+			TextView textView = new TextView(page);
 			textView.setTextSize(size);
 			textView.setText(text);
 			
-			TextView moreTextView = new TextView(this);
+			TextView moreTextView = new TextView(page);
 			moreTextView.setTextSize(16);
 			moreTextView.setTypeface(Typeface.DEFAULT_BOLD);
 			moreTextView.setText(additionalText);
@@ -195,33 +187,25 @@ public class LibraryResultsPage extends ResultsDisplayPage {
 		return this;
 	}
 
-	private class LibraryResultsTask extends  AsyncTask<LinearLayout, Void, List<View>>
+	private class LibraryFirstResultTask extends  BackgroundTask<LinearLayout, Void, List<View>>
 	{
-		protected boolean jsonException = false;
+		public LibraryFirstResultTask(Page page, boolean b)
+		{
+			super(page,b);
+		}
 		@Override
 		protected List<View> doInBackground(LinearLayout... arg0) {
 			try {
-				return connectAndGenerate(query+"&page="+curPageNum);
+				return connectAndGenerate(page,query+"&page="+curPageNum);
 			} catch (JSONException e) {
 				jsonException = true;
 			}
 			return null;
 		}
 		
-		protected void onPostExecute(List<View> outputs)
-		{
-			if (jsonException)
-			{
-				jsonException = false;
-				popupErrorDialog("JSON Exception", 
-						"There might be a problem with JSON output " +
-						"from server. Please try again.", LibraryResultsPage.this, true);
-			}
-			else
-			{
-				populateViews(outputs,contentLayout);
-			}
-			pDialog.dismiss();
+		@Override
+		public void updateView(List<View> outputs) {
+			populateViews(outputs,contentLayout);
 		}
 	}
 	

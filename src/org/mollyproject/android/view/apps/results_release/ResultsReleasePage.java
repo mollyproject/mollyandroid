@@ -48,13 +48,12 @@ public class ResultsReleasePage extends ContentPage {
 		ArrayListMultimap<Date,String> examsByDate = ArrayListMultimap.create();
 		
 		try {
-			jsonText = router.exceptionHandledOnRequestSent(MollyModule.getName(ResultsReleasePage.class),
+			JSONObject output = router.exceptionHandledOnRequestSent(MollyModule.getName(ResultsReleasePage.class),
 					this,Router.OutputFormat.JSON, null);
 			//Process the json text received
-			if (jsonText != null)
+			if (output != null)
 			{
-				jsonContent = new JSONObject(jsonText);
-				JSONArray entries = (JSONArray) jsonContent.get("entries");
+				JSONArray entries = (JSONArray) output.get("entries");
 				if (entries.length() > 0)
 				{
 

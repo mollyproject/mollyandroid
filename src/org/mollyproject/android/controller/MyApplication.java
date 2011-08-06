@@ -19,7 +19,7 @@ import android.net.ConnectivityManager;
 public class MyApplication extends RoboApplication {
 	protected Router router = null;
 	protected String mapQuery;
-	protected String contactQuery;
+	protected JSONObject contactOutput;
 	protected String libraryQuery;
 	protected String locator;
 	protected ArrayListMultimap<String,JSONObject> libraryCache = ArrayListMultimap.create();
@@ -45,9 +45,9 @@ public class MyApplication extends RoboApplication {
 	
 	public ArrayListMultimap<String, JSONObject> getLibCache() { return libraryCache; }
 	
-	public void setContactQuery(String query) { contactQuery = query; }
+	public void setContactOutput(JSONObject contactOutput) { this.contactOutput = contactOutput; }
 	
-	public String getContactQuery() { return contactQuery; }
+	public JSONObject getContactOutput() { return contactOutput; }
 	
 	public void setMapQuery(String mapQuery) { this.mapQuery = mapQuery; }
 	

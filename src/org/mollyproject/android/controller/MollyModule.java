@@ -79,6 +79,8 @@ public class MollyModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named("library:index_img")).toInstance(R.drawable.library);
 		bind(Integer.class).annotatedWith(Names.named("library:index_bc")).toInstance(R.drawable.library_bc);
 		
+		bind(Page.class).annotatedWith(Names.named("library:search")).to(LibraryResultsPage.class);
+		
 		bind(Page.class).annotatedWith(Names.named("places:index")).to(PlacesPage.class);
 		bind(Integer.class).annotatedWith(Names.named("places:index_img")).toInstance(R.drawable.places);
 		bind(Integer.class).annotatedWith(Names.named("places:index_bc")).toInstance(R.drawable.places_bc);

@@ -6,19 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.mollyproject.android.controller.MollyModule;
-import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.UnimplementedPage;
-import org.mollyproject.android.view.apps.contact.ContactPage;
-import org.mollyproject.android.view.apps.contact.ContactResultsPage;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class LibraryPage extends ContentPage {
 	public static String TITLE = "title";
@@ -115,6 +105,12 @@ public class LibraryPage extends ContentPage {
 	
 	private void searchOnEnterKey(final EditText inputField, final String argID)
 	{
+		//because the library results page will be displayed by a series of pages,
+		//it makes it far easier to do the actual searching on the LibraryResultPage:
+		//Each search request would only return one page so it is easier to get each
+		//result page on demand then concatenate the page found at the end of the
+		//current result rather than find a thousand pages in one go in the main page
+		//and load them all on to the result page
 		inputField.setOnKeyListener(new OnKeyListener(){
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {

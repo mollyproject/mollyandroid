@@ -32,9 +32,6 @@ public abstract class Page extends RoboActivity {
 	//protected ImprovedBreadCrumbBar bcBar;
 	protected MyApplication myApp;
 	protected Router router;
-	protected JSONObject jsonContent;
-	protected String jsonText;
-	protected ProgressDialog pDialog;
 	protected LayoutInflater layoutInflater;
 	
 	//use someLayout.setLayoutParams() with this paramsWithLine as a parameter makes
@@ -91,7 +88,8 @@ public abstract class Page extends RoboActivity {
 		alertDialog.show();
 	}
 	
-	public static void popupErrorDialog(String title, String message, final Page page, final boolean toFinish)
+	public static void popupErrorDialog(String title, String message, final Page page, 
+			final boolean toFinish)
 	{
 		final AlertDialog alertDialog = new AlertDialog.Builder(page).create();
 		alertDialog.setTitle(title);

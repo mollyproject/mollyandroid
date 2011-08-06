@@ -161,8 +161,8 @@ public class LocationThread extends Thread {
 	            Thread.currentThread().interrupt();
 	        } 
 			
-			Looper.loop();
-			Looper.myLooper().quit();
+			//Looper.loop();
+			//Looper.myLooper().quit();
 	}
 	
 	public void setAutoLocationUpdate(boolean b)
