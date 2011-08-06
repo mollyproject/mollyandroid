@@ -53,6 +53,7 @@ public class LibraryResultsPage extends ContentPage {
 	
 	private List<View> generatePage(final Page page, JSONObject results) throws JSONException
 	{
+		//for use in the very first time the page is populated
 		List<View> outputs = new ArrayList<View>();
 		final JSONObject jsonPage = results.getJSONObject("page");
 		
@@ -70,7 +71,7 @@ public class LibraryResultsPage extends ContentPage {
 		resultsNo.setPadding(10, 20, 0, 20);
 		resultsNo.setBackgroundResource(R.drawable.bg_white);
 		
-		populateResults(page,resultsLayout, resultsNo);
+		populateResults(page,getNextResultsPage(page), resultsLayout, resultsNo);
 		
 		pageLayout.addView(resultsLayout);
 		scr.addView(pageLayout);
@@ -96,21 +97,14 @@ public class LibraryResultsPage extends ContentPage {
 			nextButton.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View v) {
-					try {
-						populateResults(page,resultsLayout, resultsNo);
-					} catch (JSONException e) {
-						e.printStackTrace();
-						Page.popupErrorDialog("JSON Exception", 
-								"There might be a problem with JSON output " +
-								"from server. Please try again later.", page, true);
-					}
+					new LibraryNextPageTask(page, resultsLayout, resultsNo, false).execute();
 				}
 			});
 		}
 		return outputs;
 	}
 	
-	private void populateResults(Page page, LinearLayout resultsLayout, TextView resultsNo) throws JSONException
+	private JSONObject getNextResultsPage(Page page) throws JSONException
 	{
 		JSONObject nextJSONPage = new JSONObject();
 		System.out.println(cache.toString());
@@ -129,6 +123,12 @@ public class LibraryResultsPage extends ContentPage {
 			nextJSONPage = cachedJSONPages.get(curPageNum);
 		}
 		curPageNum++;
+		return nextJSONPage;
+	}
+	
+	private void populateResults(Page page, JSONObject nextJSONPage, 
+			LinearLayout resultsLayout, TextView resultsNo) throws JSONException
+	{
 		JSONArray newObjects = nextJSONPage.getJSONArray("objects");
 		TextView pageNumView = new TextView(page);
 		pageNumView.setText("Page "+curPageNum);
@@ -209,4 +209,55 @@ public class LibraryResultsPage extends ContentPage {
 		}
 	}
 	
+	private class LibraryNextPageTask extends BackgroundTask<Void, Void, JSONObject>
+	{
+		protected LinearLayout resultsLayout;
+		protected TextView resultsNo;
+		//A hack:
+		public LibraryNextPageTask(Page page, LinearLayout resultsLayout, 
+				TextView resultsNo, boolean b)
+		{
+			super(page,b);
+			this.resultsLayout = resultsLayout;
+			this.resultsNo = resultsNo;
+		}
+		
+		@Override
+		public void updateView(JSONObject nextJSONPage) {
+			try {
+				populateResults(page, nextJSONPage, resultsLayout, resultsNo);
+			} catch (JSONException e) {
+				//A special case of the updateView method
+				e.printStackTrace();
+				Page.popupErrorDialog("JSON Exception", 
+						"There might be a problem with JSON output " +
+						"from server. Please try again.", page, toDestroyPageAfterFailure);
+			}
+		}
+
+		@Override
+		protected JSONObject doInBackground(Void... arg0) {
+			try {
+				return getNextResultsPage(page);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				jsonException = true;
+			}
+			return null;
+		}
+		
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+

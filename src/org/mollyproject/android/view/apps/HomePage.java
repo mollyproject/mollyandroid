@@ -70,7 +70,7 @@ public class HomePage extends Page {
     public void onResume()
     {
     	super.onResume();
-		new NetworkPollingTask().execute();
+		new NetworkPollingTask(this, false).execute();
     }
     
     @Override
@@ -87,6 +87,10 @@ public class HomePage extends Page {
     	//check for connection everytime the app is started and also spawn the location thread
     	//if necessary
     	
+		public NetworkPollingTask(Page page, boolean b) {
+			super(page,b);
+		}
+
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			try {
