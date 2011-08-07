@@ -87,7 +87,7 @@ public abstract class ContentPage extends Page {
 				//app/index breadcrumb
 				final String app = breadcrumbs.getString("application");
 				JSONObject index = breadcrumbs.getJSONObject("index");
-				appBreadcrumb.setBackgroundResource(MollyModule.getBCImg(index.getString("view_name")));
+				appBreadcrumb.setBackgroundResource(myApp.getImgResourceId(index.getString("view_name")+"_bc"));
 				appBreadcrumb.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -107,7 +107,7 @@ public abstract class ContentPage extends Page {
 					if (!index.getBoolean("parent_is_index"))
 					{
 						final String parentName = parent.getString("view_name");
-						parentBreadcrumb.setBackgroundResource(MollyModule.getBCImg(parentName));
+						parentBreadcrumb.setBackgroundResource(myApp.getImgResourceId(parentName));
 						parentBreadcrumb.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
