@@ -12,6 +12,8 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -20,16 +22,16 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Void, List<View>>
+public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Void, JSONObject>
 {
 	public LibraryFirstResultTask(LibraryResultsPage libraryResultsPage, boolean b)
 	{
 		super(libraryResultsPage,b);
 	}
 	@Override
-	protected List<View> doInBackground(LinearLayout... arg0) {
+	protected JSONObject doInBackground(LinearLayout... arg0) {
 		try {
-			return connectAndGenerate(page,((MyApplication) page.getApplication())
+			return getResults(page,((MyApplication) page.getApplication())
 					.getLibraryQuery()+"&page="+((LibraryResultsPage) page).getCurPageNum());
 		} catch (JSONException e) {
 			jsonException = true;
@@ -38,49 +40,65 @@ public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Voi
 	}
 	
 	@Override
-	public void updateView(List<View> outputs) {
-		page.populateViews(outputs,((LibraryResultsPage) page).getContentLayout());
+	public void updateView(JSONObject results) {
+		try {
+			generatePage((LibraryResultsPage) page, results);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//page.populateViews(outputs,((LibraryResultsPage) page).getContentLayout());
 	}
 	
-	private List<View> connectAndGenerate(Page page, String queryWithPage) throws JSONException
+	private JSONObject getResults(Page page, String queryWithPage) throws JSONException
 	{
-		JSONObject results = page.getRouter().exceptionHandledOnRequestSent(MollyModule.getName(page.getClass()),
+		return page.getRouter().exceptionHandledOnRequestSent(MollyModule.getName(page.getClass()),
 				page, Router.OutputFormat.JSON, queryWithPage);
-		
-		return generatePage((LibraryResultsPage) page, results);
 	}
 	
 	
 	private List<View> generatePage(final LibraryResultsPage page, JSONObject results) throws JSONException
 	{
 		//for use in the very first time the page is populated
+		
+		LayoutInflater layoutInflater = (LayoutInflater) 
+			page.getApplication().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LinearLayout libraryResultsTemplate = (LinearLayout) layoutInflater
+						.inflate(R.layout.library_results_template,page.getContentLayout(), false);
+		page.getContentLayout().addView(libraryResultsTemplate);
+		
+		
+		
+		
 		List<View> outputs = new ArrayList<View>();
 		final JSONObject jsonPage = results.getJSONObject("page");
 		
-		final ScrollView scr = new ScrollView(page);
+		//final ScrollView scr = new ScrollView(page);
+		ScrollView scr = (ScrollView) page.findViewById(R.id.libraryResultsScroll);
 		
-		final LinearLayout pageLayout = new LinearLayout(page);
-		pageLayout.setOrientation(LinearLayout.VERTICAL);
-		pageLayout.setBackgroundResource(R.drawable.bg_white);
-		final LinearLayout resultsLayout = new LinearLayout(page);
-		resultsLayout.setOrientation(LinearLayout.VERTICAL);
+		final LinearLayout pageLayout = (LinearLayout) page.findViewById(R.id.pageLayout); //new LinearLayout(page);
+		/*pageLayout.setOrientation(LinearLayout.VERTICAL);
+		pageLayout.setBackgroundResource(R.drawable.bg_white);*/
+		final LinearLayout resultsLayout = (LinearLayout) page.findViewById(R.id.resultsLayout); //new LinearLayout(page);
+		//resultsLayout.setOrientation(LinearLayout.VERTICAL);
 
-		final TextView resultsNo = new TextView(page);
-		resultsNo.setTextSize(16);
+		final TextView resultsNo = (TextView) page.findViewById(R.id.libraryResultsNo);//new TextView(page);
+		/*resultsNo.setTextSize(16);
 		resultsNo.setTextColor(R.color.black);
 		resultsNo.setPadding(10, 20, 0, 20);
-		resultsNo.setBackgroundResource(R.drawable.bg_white);
+		resultsNo.setBackgroundResource(R.drawable.bg_white);*/
 		
 		populateResults(page,getNextResultsPage(page), resultsLayout, resultsNo);
 		
 		pageLayout.addView(resultsLayout);
 		scr.addView(pageLayout);
 		
-		outputs.add(resultsNo);
-		outputs.add(scr);
+		//outputs.add(resultsNo);
+		//outputs.add(scr);
 		
-		Button nextButton = new Button(page);
-		nextButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
+		Button nextButton = (Button) page.findViewById(R.id.moreButton);//new Button(page);
+		/*nextButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
 				LayoutParams.WRAP_CONTENT, 1f));
 		nextButton.setText("View more results");
 		nextButton.setEnabled(false);
@@ -88,7 +106,7 @@ public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Voi
 		LinearLayout bottomButtonsLayout = new LinearLayout(page);
 		bottomButtonsLayout.addView(nextButton);
 		
-		pageLayout.addView(bottomButtonsLayout);
+		pageLayout.addView(bottomButtonsLayout);*/
 		
 		if (jsonPage.getBoolean("has_next"))
 		{
@@ -102,6 +120,7 @@ public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Voi
 			});
 		}
 		return outputs;
+		
 	}
 	
 }

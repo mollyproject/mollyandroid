@@ -1,11 +1,10 @@
 package org.mollyproject.android.view.apps.library;
 
-import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.os.Bundle;
 
-public class LibraryResultsPage extends ContentPage {
+public class LibraryResultsPage extends LibraryPage {
 	protected int curPageNum;
 	public void onCreate(Bundle savedInstanceState)
 	{

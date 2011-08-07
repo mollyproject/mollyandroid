@@ -23,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public abstract class ContentPage extends Page {
-	//cannot use guice injections because these following views need to be used by the subclasses as well
 	@InjectView(R.id.appBreadcrumb) protected Button appBreadcrumb;
 	@InjectView (R.id.parentBreadcrumb) protected Button parentBreadcrumb;
 	@InjectView (R.id.homeBreadcrumb) protected Button homeBreadcrumb;

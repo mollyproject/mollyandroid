@@ -6,11 +6,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.mollyproject.android.R;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
+import org.mollyproject.android.view.apps.weather.WeatherPage;
+
+import roboguice.inject.InjectView;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
@@ -25,61 +31,41 @@ public class LibraryPage extends ContentPage {
 	public static String AUTHOR = "author";
 	public static String ISBN = "isbn";
 	
+	protected EditText isbnField;
+	protected EditText authorField;
+	protected EditText titleField;
+	
 	protected Map<String,String> bookArgs = new HashMap<String,String>();
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		LinearLayout searchForm = new LinearLayout(this);
-		searchForm.setOrientation(LinearLayout.VERTICAL);
 		
-		//title field
-		TextView title = new TextView(this);
-		title.setText("Title");
-		final EditText titleField = new EditText(this);
-		searchOnEnterKey(titleField,TITLE);
+		LayoutInflater layoutInflater = (LayoutInflater) 
+				myApp.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LinearLayout libraryTemplate = (LinearLayout) layoutInflater
+					.inflate(R.layout.library_search_bar,contentLayout, false);
+		contentLayout.addView(libraryTemplate);
 		
-		TextView author = new TextView(this);
-		author.setText("Author");
-		final EditText authorField = new EditText(this);
-		searchOnEnterKey(authorField,AUTHOR);
+		titleField = (EditText) findViewById(R.id.titleField);
+		searchOnEnterKey(titleField, TITLE);
 		
-		TextView isbn = new TextView(this);
-		isbn.setText("ISBN");
-		final EditText isbnField = new EditText(this);
+		authorField = (EditText) findViewById(R.id.authorField);
+		searchOnEnterKey(authorField, AUTHOR);
+		
+		isbnField = (EditText) findViewById(R.id.isbnField);
 		searchOnEnterKey(isbnField, ISBN);
 		
-		LinearLayout buttonsLayout = new LinearLayout(this);
-		buttonsLayout.setOrientation(LinearLayout.HORIZONTAL);
-		Button searchButton = new Button(this);
-		searchButton.setText("Search");
-		searchButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
-				LayoutParams.WRAP_CONTENT, 1f));
-		searchButton.setOnClickListener(new OnClickListener(){
-
+		Button searchButton = (Button) findViewById(R.id.searchLibraryButton);
+		searchButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				try {
-					bookArgs.put(TITLE, titleField.getText().toString());
-					bookArgs.put(AUTHOR, authorField.getText().toString());
-					bookArgs.put(ISBN, isbnField.getText().toString());
-					searchBook();
-				} catch (UnsupportedEncodingException e) {
-					//Something is wrong with the query
-					e.printStackTrace();
-					Page.popupErrorDialog("Unsupported Encoding", 
-							"There might be a problem with the search terms. " +
-							"Please try again later.", LibraryPage.this);
-				}
+				LibraryPage.this.searchOnClick();
 			}
-			
 		});
-		Button resetButton = new Button(this);
-		resetButton.setText("Reset");
-		resetButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
-				LayoutParams.WRAP_CONTENT, 1f));
-		resetButton.setOnClickListener(new OnClickListener(){
-
+		
+		Button resetButton = (Button) findViewById(R.id.resetLibraryButton);
+		resetButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				titleField.setText("");
@@ -87,20 +73,24 @@ public class LibraryPage extends ContentPage {
 				isbnField.setText("");
 				bookArgs.clear();
 			}
-			
 		});
-		buttonsLayout.addView(searchButton);
-		buttonsLayout.addView(resetButton);
-		
-		searchForm.addView(title);
-		searchForm.addView(titleField);
-		searchForm.addView(author);
-		searchForm.addView(authorField);
-		searchForm.addView(isbn);
-		searchForm.addView(isbnField);
-		
-		contentLayout.addView(searchForm);
-		contentLayout.addView(buttonsLayout);
+	}
+	
+	public void searchOnClick()
+	{
+		try {
+			System.out.println("Title: "+titleField.getText());
+			bookArgs.put(TITLE, titleField.getText().toString());
+			bookArgs.put(AUTHOR, authorField.getText().toString());
+			bookArgs.put(ISBN, isbnField.getText().toString());
+			searchBook();
+		} catch (UnsupportedEncodingException e) {
+			//Something is wrong with the query
+			e.printStackTrace();
+			Page.popupErrorDialog("Unsupported Encoding", 
+					"There might be a problem with the search terms. " +
+					"Please try again later.", LibraryPage.this);
+		}
 	}
 	
 	private void searchOnEnterKey(final EditText inputField, final String argID)
@@ -150,7 +140,7 @@ public class LibraryPage extends ContentPage {
 		{
 			if (bookArgs.get(key).length() > 0)
 			{
-				query = query+key+"="+URLEncoder.encode(bookArgs.get(key), "UTF-8")+"&";
+				query = query+key+"="+URLEncoder.encode(bookArgs.get(key), "UTF-8");
 				empty = false;
 			}
 		}
