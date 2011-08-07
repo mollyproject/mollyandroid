@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_gravity="center_horizontal"
+  android:layout_width="fill_parent"
+  android:orientation="vertical"
+  android:background="@drawable/bg_white"
+  android:layout_marginTop="10dp"
+  android:layout_height="wrap_content">
+    <TextView android:id="@+id/cityName" 
+    	  android:layout_height="wrap_content" 
+    	  android:layout_width="wrap_content" 
+    	  android:text="Cannot find location"
+    	  android:textColor="@color/black"
+    	  android:layout_marginLeft="10dp"
+    	  android:textSize="20sp">
+    </TextView>
+  	
+    <RelativeLayout
+		  android:layout_gravity="center_horizontal"
+		  android:layout_centerHorizontal="true"
+		  android:layout_width="wrap_content"
+		  android:layout_height="wrap_content">
+  
+	    <ImageView android:id="@+id/currentWeatherIcon" 
+		    android:layout_width="wrap_content" 
+		    android:layout_height="wrap_content"
+		    android:src="@drawable/cloudy2">
+		</ImageView>
+		    
+	    <LinearLayout android:id="@+id/currentWeatherText" 
+		    android:layout_width="wrap_content" 
+		    android:layout_gravity="center_horizontal"
+		    android:layout_alignTop="@+id/currentWeatherIcon"
+		    android:orientation="vertical" 
+		    android:layout_height="wrap_content" 
+		    android:layout_toRightOf="@+id/currentWeatherIcon">
+		    
+	        <TextView android:text="N/A"
+	        	android:textSize="50sp"
+		        android:id="@+id/temperatureText"
+		        android:textStyle="bold"
+		        android:textColor="@color/black"
+		        android:layout_width="wrap_content" 
+		        android:layout_height="wrap_content"
+		        android:layout_marginBottom="-5sp"
+		        android:layout_marginTop="-5sp">
+	        </TextView>
+	        
+	        <TextView android:text="No information available"
+	        	android:textSize="16sp"
+	        	android:layout_marginLeft="4sp"
+	        	android:textColor="@color/black"
+		        android:id="@+id/otherText" 
+		        android:layout_width="wrap_content" 
+		        android:layout_height="wrap_content">
+	        </TextView>
+	    </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
