@@ -44,5 +44,4 @@ public class ContactSearchTask extends BackgroundTask<String, Void, Void>
 		}
 		return null;
 	}
-	
 }

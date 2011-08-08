@@ -1,11 +1,16 @@
 package org.mollyproject.android.view.apps.contact;
 
 import org.json.JSONObject;
+import org.mollyproject.android.R;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
+import roboguice.inject.InjectView;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
@@ -23,11 +28,16 @@ public class ContactPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		LayoutInflater layoutInflater = (LayoutInflater) 
+					myApp.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LinearLayout contactSearchBar = (LinearLayout) layoutInflater
+					.inflate(R.layout.contact_search_bar,contentLayout, false);
+		contentLayout.addView(contactSearchBar);
+		
+		
 		//search bar
-		LinearLayout searchBar = new LinearLayout(this);
-		searchBar.setOrientation(LinearLayout.VERTICAL);
-		//where the search phrase is typed in
-		final EditText searchField = new EditText(this);
+		final EditText searchField = (EditText) findViewById(R.id.contactSearchField);
 		searchField.setOnKeyListener(new OnKeyListener(){
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -47,13 +57,7 @@ public class ContactPage extends ContentPage {
 			}
 		});
 		
-		LinearLayout searchButtons = new LinearLayout(this);
-		searchButtons.setOrientation(LinearLayout.HORIZONTAL);
-		
-		Button emailButton = new Button(this);
-		emailButton.setText("E-mail");
-		emailButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
-					LayoutParams.WRAP_CONTENT, 1f));
+		Button emailButton = (Button) findViewById(R.id.emailButton);
 		emailButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -61,32 +65,26 @@ public class ContactPage extends ContentPage {
 			}
 		});
 		
-		Button phoneButton = new Button(this);
-		phoneButton.setText("Phone");
-		phoneButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
-				LayoutParams.WRAP_CONTENT, 1f));
+		Button phoneButton = (Button) findViewById(R.id.phoneButton);
 		phoneButton.setOnClickListener(new OnClickListener(){
-
 			@Override
 			public void onClick(View v) {
 				searchContact(searchField.getText().toString(),PHONE);
 			}
-			
 		});
-		
-		searchButtons.addView(emailButton,ViewGroup.LayoutParams.FILL_PARENT);
-		searchButtons.addView(phoneButton,ViewGroup.LayoutParams.FILL_PARENT);
-		
-		searchBar.addView(searchField);
-		searchBar.addView(searchButtons);
-		
-		contentLayout.addView(searchBar);
-		//setContentView(R.layout.contacts);
 	}
 	
 	private void searchContact(String query, String medium)
 	{
-		new ContactSearchTask(this,false).execute(query,medium);
+		if (query.length() == 0)
+		{
+			popupErrorDialog("No query found", "Search cannot proceed. " +
+					"Please enter a name into the search box.", this);
+		}
+		else
+		{
+			new ContactSearchTask(this,false).execute(query,medium);
+		}
 	}
 	
 	public void setContactOutput(JSONObject contactOutput)

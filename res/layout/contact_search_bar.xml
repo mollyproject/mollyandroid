@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    <TextView android:text="Enter a name here:" 
+	    android:id="@+id/contactSearchLabel" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content">
+    </TextView>
+    
+    <EditText android:id="@+id/contactSearchField" 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="fill_parent" 
+	    android:inputType="textPersonName">
+    </EditText>
+    <LinearLayout android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:id="@+id/contactSearchButtons">
+    
+        <Button android:text="Email" 
+	        android:id="@+id/emailButton" 
+	        android:layout_width="fill_parent"
+	        android:layout_weight="1" 
+	        android:layout_height="wrap_content">
+        </Button>
+        
+        <Button android:text="Phone" 
+	        android:id="@+id/phoneButton"
+	        android:layout_weight="1" 
+	        android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content">
+        </Button>
+    </LinearLayout>
+    
+</LinearLayout>

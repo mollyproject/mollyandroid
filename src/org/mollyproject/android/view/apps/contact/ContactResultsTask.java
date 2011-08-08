@@ -12,6 +12,7 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.Dialog;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -164,9 +165,8 @@ public class ContactResultsTask extends BackgroundTask<LinearLayout, Void, List<
 				outputs.add(scr);
 				System.out.println("Search completed, returned "+results.length()
 									+" results"+" and page rendered in:");
-				return outputs;
 			}
-			
+			return outputs;
 		} 
 		catch (JSONException e) {
 			//problem here, json not received from server

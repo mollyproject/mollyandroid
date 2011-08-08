@@ -62,7 +62,7 @@ public abstract class ContentPage extends Page {
 		protected JSONObject doInBackground(Void... arg0) {
 			//Download the breadcrumbs
 			try {
-				JSONObject jsonOutput = router.onRequestSent(myApp.getLocator(), 
+				JSONObject jsonOutput = router.onRequestSent(MollyModule.getName(getInstance().getClass()), 
 						Router.OutputFormat.JSON, null);
 				JSONObject breadcrumbs = jsonOutput.getJSONObject("breadcrumbs");
 				return breadcrumbs;
@@ -90,7 +90,7 @@ public abstract class ContentPage extends Page {
 				appBreadcrumb.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Intent myIntent = new Intent(v.getContext(), myApp.getPageClass(app+":index").getClass());
+						Intent myIntent = new Intent(v.getContext(), myApp.getPageClass(app+":index"));
 						startActivityForResult(myIntent, 0);
 					}
 				});
@@ -98,12 +98,13 @@ public abstract class ContentPage extends Page {
 				String title = breadcrumbs.getString("page_title"); 
 				
 				//check for parent breadcrumb
+				System.out.println(breadcrumbs.toString(1));
 				if (!breadcrumbs.isNull("parent"))
 				{
 					JSONObject parent = breadcrumbs.getJSONObject("parent");
 					//change page title if necessary
 					title = parent.getString("title");
-					if (!index.getBoolean("parent_is_index"))
+					if (!breadcrumbs.getBoolean("parent_is_index"))
 					{
 						final String parentName = parent.getString("view_name");
 						parentBreadcrumb.setBackgroundResource(myApp.getImgResourceId(parentName));
@@ -119,13 +120,15 @@ public abstract class ContentPage extends Page {
 					}
 					else { 
 						parentBreadcrumb.setText(title); 
-						parentBreadcrumb.setEnabled(false); 
-						}
+						parentBreadcrumb.setEnabled(false);
+						appBreadcrumb.setEnabled(true);
+					}
 				}
-				else { parentBreadcrumb.setText(title); 
+				else { 
+					parentBreadcrumb.setText(title); 
 					parentBreadcrumb.setEnabled(false); 
 					appBreadcrumb.setEnabled(false); 
-					}
+				}
 				
 			} catch (JSONException e) {
 				e.printStackTrace();
