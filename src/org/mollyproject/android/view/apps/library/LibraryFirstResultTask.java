@@ -77,7 +77,8 @@ public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Voi
 		Button nextButton = (Button) page.findViewById(R.id.moreButton);
 		
 		nextButton.setEnabled(false);
-		if (jsonPage.getBoolean("has_next"))
+		System.out.println();
+		if (jsonPage.getBoolean("has_next") & jsonPage.getInt("num_pages") > 1)
 		{
 			//generate the next page dynamically
 			nextButton.setEnabled(true);

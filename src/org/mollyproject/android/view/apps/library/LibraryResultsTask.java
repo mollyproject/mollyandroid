@@ -43,7 +43,7 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 		{
 			JSONObject nextResults = page.getRouter().exceptionHandledOnRequestSent(
 					MollyModule.getName(page.getClass()),
-					page, Router.OutputFormat.JSON, query+"?page="+curPageNum);
+					page, Router.OutputFormat.JSON, query+"&page="+curPageNum);
 			nextJSONPage = nextResults.getJSONObject("page");
 			((MyApplication) page.getApplication()).updateLibCache(query, nextJSONPage);
 		}
@@ -86,6 +86,7 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 		int curPageNum = ((LibraryResultsPage) page).getCurPageNum();
 		JSONArray newObjects = nextJSONPage.getJSONArray("objects");
 		TextView pageNumView = new TextView(page);
+		pageNumView.setTextColor(R.color.blue);
 		pageNumView.setText("Page "+curPageNum);
 		pageNumView.setGravity(Gravity.CENTER);
 		if (curPageNum > 1)
@@ -109,7 +110,7 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 			resultsLayout.addView(thisResultLayout);
 		}
 		
-		if (nextJSONPage.getString("num_objects").equals("0"))
+		if (nextJSONPage.getInt("num_objects") == 0)
 		{
 			resultsNo.setText("Search cannot find anything. Either there is a problem with your query" +
 					" or OLIS is not responding");
