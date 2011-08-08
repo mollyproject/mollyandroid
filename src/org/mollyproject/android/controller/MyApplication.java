@@ -20,6 +20,7 @@ public class MyApplication extends RoboApplication {
 	protected Router router = null;
 	protected String mapQuery;
 	protected JSONObject contactOutput;
+	protected String generalQuery;
 	protected String libraryQuery;
 	protected String locator;
 	protected ArrayListMultimap<String,JSONObject> libraryCache = ArrayListMultimap.create();
@@ -40,6 +41,10 @@ public class MyApplication extends RoboApplication {
 		curTime = now - curTime;
 		System.out.println(curTime+" milliseconds");
 	}
+	
+	public void setGeneralQuery(String generalQuery) { this.generalQuery = generalQuery; }
+	
+	public String getGeneralQuery() { return generalQuery; }
 	
 	public void updateLibCache(String key, JSONObject object) { libraryCache.put(key, object);	}
 	

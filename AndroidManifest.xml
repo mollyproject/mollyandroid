@@ -32,5 +32,6 @@
 		<activity android:name=".view.apps.contact.ContactPage"></activity>
 		<activity android:name=".view.apps.contact.ContactResultsPage"></activity>
 		<activity android:name=".view.apps.weather.WeatherPage"></activity>
+		<activity android:name=".view.apps.search.SearchPage"></activity>
     </application>
 </manifest>

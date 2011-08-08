@@ -78,7 +78,6 @@ public abstract class ContentPage extends Page {
 			} 
 			return null;
 		}
-
 		@Override
 		public void updateView(JSONObject breadcrumbs) {
 			// TODO Auto-generated method stub

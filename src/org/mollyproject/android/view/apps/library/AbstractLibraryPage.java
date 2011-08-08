@@ -41,8 +41,6 @@ public abstract class AbstractLibraryPage extends ContentPage {
 	{
 		super.onCreate(savedInstanceState);
 		
-		LayoutInflater layoutInflater = (LayoutInflater) 
-				myApp.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		LinearLayout libraryTemplate = (LinearLayout) layoutInflater
 					.inflate(R.layout.library_search_bar,contentLayout, false);
 		contentLayout.addView(libraryTemplate);

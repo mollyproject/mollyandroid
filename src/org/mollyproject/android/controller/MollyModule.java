@@ -15,6 +15,7 @@ import org.mollyproject.android.view.apps.library.LibraryPage;
 import org.mollyproject.android.view.apps.library.LibraryResultsPage;
 import org.mollyproject.android.view.apps.map.PlacesPage;
 import org.mollyproject.android.view.apps.results_release.ResultsReleasePage;
+import org.mollyproject.android.view.apps.search.SearchPage;
 import org.mollyproject.android.view.apps.weather.WeatherPage;
 
 import com.google.common.collect.HashBiMap;
@@ -38,7 +39,7 @@ public class MollyModule extends AbstractModule {
 	public static String LIBRARY_PAGE = "library:index";
 	public static String LIBRARY_RESULTS_PAGE = "library:search";
 	public static String CONTACT_RESULTS_PAGE = "contact:result_list";
-	
+	public static String SEARCH_PAGE = "search:index";
 	//The following hash table allows for easier future change in implementation
 	//of new pages
 	protected static HashBiMap<String,Class<? extends Page>> pages 
@@ -51,6 +52,7 @@ public class MollyModule extends AbstractModule {
 		pages.put(FEATURE_VOTE, FeatureVotePage.class);
 		pages.put(FEEDBACK_PAGE, FeedbackPage.class);
 		pages.put(LIBRARY_PAGE, LibraryPage.class);
+		pages.put(SEARCH_PAGE, SearchPage.class);
 		pages.put(LIBRARY_RESULTS_PAGE, LibraryResultsPage.class);
 		pages.put(CONTACT_RESULTS_PAGE, ContactResultsPage.class);
 	}
@@ -58,29 +60,18 @@ public class MollyModule extends AbstractModule {
 	protected static Map<String,Integer> bcImg 
 					= new HashMap<String,Integer>();
 	
-	static {
-		bcImg.put(HOME_PAGE, R.drawable.apple_touch_icon);
-		bcImg.put(RESULTS_PAGE, R.drawable.results_bc);
-		bcImg.put(PLACES_PAGE, R.drawable.places_bc);
-		bcImg.put(CONTACT_PAGE, R.drawable.contact_bc);
-		bcImg.put(FEATURE_VOTE, R.drawable.feature_vote_bc);
-		bcImg.put(LIBRARY_PAGE, R.drawable.library_bc);
-		bcImg.put(LIBRARY_RESULTS_PAGE, R.drawable.library_bc);
-		bcImg.put(CONTACT_RESULTS_PAGE, R.drawable.contact_bc);
-	}
-	
 	@Override
 	protected void configure() {
 		//views and drawables for contact page 
-		bind(Page.class).annotatedWith(Names.named("contact:index")).to(ContactPage.class);
-		bind(Integer.class).annotatedWith(Names.named("contact:index_img")).toInstance(R.drawable.contact);
-		bind(Integer.class).annotatedWith(Names.named("contact:index_bc")).toInstance(R.drawable.contact_bc);
+		bind(Page.class).annotatedWith(Names.named(CONTACT_PAGE)).to(ContactPage.class);
+		bind(Integer.class).annotatedWith(Names.named(CONTACT_PAGE+"_img")).toInstance(R.drawable.contact);
+		bind(Integer.class).annotatedWith(Names.named(CONTACT_PAGE+"_bc")).toInstance(R.drawable.contact_bc);
 		
 		//views and drawables for library page
-		bind(Page.class).annotatedWith(Names.named("library:index")).to(LibraryPage.class);
-		bind(Integer.class).annotatedWith(Names.named("library:index_img")).toInstance(R.drawable.library);
-		bind(Integer.class).annotatedWith(Names.named("library:index_bc")).toInstance(R.drawable.library_bc);
-		bind(Page.class).annotatedWith(Names.named("library:search")).to(LibraryResultsPage.class);
+		bind(Page.class).annotatedWith(Names.named(LIBRARY_PAGE)).to(LibraryPage.class);
+		bind(Integer.class).annotatedWith(Names.named(LIBRARY_PAGE+"_img")).toInstance(R.drawable.library);
+		bind(Integer.class).annotatedWith(Names.named(LIBRARY_PAGE+"_bc")).toInstance(R.drawable.library_bc);
+		bind(Page.class).annotatedWith(Names.named(LIBRARY_RESULTS_PAGE)).to(LibraryResultsPage.class);
 		
 		bind(Page.class).annotatedWith(Names.named("places:index")).to(PlacesPage.class);
 		bind(Integer.class).annotatedWith(Names.named("places:index_img")).toInstance(R.drawable.places);
@@ -91,6 +82,8 @@ public class MollyModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named("weather:index_img")).toInstance(R.drawable.weather);
 		bind(Integer.class).annotatedWith(Names.named("weather:index_bc")).toInstance(R.drawable.weather_bc);
 		
+		bind(Page.class).annotatedWith(Names.named("search:index")).to(SearchPage.class);
+		
 		bind(Page.class).annotatedWith(Names.named("results:index")).to(ResultsReleasePage.class);
 		bind(Page.class).annotatedWith(Names.named("splash")).to(Splash.class);
 		bind(Page.class).annotatedWith(Names.named("home:index")).to(HomePage.class);
@@ -99,43 +92,11 @@ public class MollyModule extends AbstractModule {
 		bind(Page.class).annotatedWith(Named.class).to(UnimplementedPage.class);
 		bind(Integer.class).annotatedWith(Named.class).toInstance(R.drawable.android_button);
 	}
-
-	
-	protected static Map<String,Integer> img 
-		= new HashMap<String,Integer>();
-	static {
-		img.put(CONTACT_PAGE, R.drawable.contact);
-		img.put(LIBRARY_PAGE, R.drawable.library);
-	}
 	
 	public static String getName(Class <? extends Page> pageClass)
 	{
 		return (pages.inverse().get(pageClass));
 	}
-	
-	/*public static int getBCImg(String viewName)
-	{
-		if (bcImg.containsKey(viewName))
-		{
-			return bcImg.get(viewName);
-		}
-		else 
-		{
-			return R.drawable.android_button;
-		}
-	}
-	
-	public static int getImg(String viewName)
-	{
-		if (img.containsKey(viewName))
-		{
-			return img.get(viewName);
-		}
-		else 
-		{
-			return R.drawable.android_button;
-		}
-	}*/
 	
 	public static Class<? extends Page> getPageClass(String s)
 	{

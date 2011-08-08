@@ -86,16 +86,18 @@ public class Router {
 			Page.popupErrorDialog("JSON Exception (Router)", 
 					"There might be a problem with JSON output " +
 					"from server. Please try again later", page);
-		} catch (IOException e)
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			Page.popupErrorDialog("Unknown Host Exception (Router)", 
+					"There might be a problem with network connection. " +
+					"Please try later.", page);
+		}  catch (IOException e)
 		{
 			e.printStackTrace();
 			Page.popupErrorDialog("I/O Exception (Router)", 
-					"There might be a problem with cookie files. " +
+					"There might be a problem with network connection. " +
 					"Please try later.", page);
-		} finally
-		{
-			waitForRequests();
-		}
+		} 
 		return null;
 	}
 	

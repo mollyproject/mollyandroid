@@ -5,6 +5,8 @@ import java.util.List;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.home.HomePage;
+import org.mollyproject.android.view.apps.search.SearchPage;
 
 import roboguice.activity.RoboActivity;
 
@@ -14,12 +16,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -102,6 +107,38 @@ public abstract class Page extends RoboActivity {
 		alertDialog.show();
 	}
 	
+	public void setEnterKeySearch(final EditText searchField, final Page page)
+	{
+		searchField.setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (event.getAction() == KeyEvent.ACTION_DOWN)
+		        {
+		            switch (keyCode)
+		            {
+		                case KeyEvent.KEYCODE_DPAD_CENTER:
+		                case KeyEvent.KEYCODE_ENTER:
+		                	if (searchField.getText().length() > 0)
+		                	{
+			                	myApp.setGeneralQuery(searchField.getText().toString());
+			                	Intent myIntent = new Intent(v.getContext(), SearchPage.class);
+			                	page.startActivityForResult(myIntent, 0);
+		                	}
+		                	else
+		                	{
+		                		Page.popupErrorDialog("No query found", 
+		                				"Please enter some search criteria", v.getContext());
+		                	}
+		                	return true;
+		                default:
+		                    break;
+		            }
+		        }
+				return false;
+			}
+		});
+	}
+	
 	public void setEmailClick(View view, final String finalAdd)
 	{
 		view.setOnClickListener(new OnClickListener(){
@@ -169,6 +206,11 @@ public abstract class Page extends RoboActivity {
 	public Router getRouter()
 	{
 		return router;
+	}
+	
+	public LayoutInflater getLayoutInflater()
+	{
+		return layoutInflater;
 	}
 	
 	@Override
