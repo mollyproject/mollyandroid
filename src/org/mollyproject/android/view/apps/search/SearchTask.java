@@ -61,7 +61,7 @@ public class SearchTask extends BackgroundTask<String, Void, Void> {
 			//ImageView appIcon = (ImageView) page.findViewById(R.id.generalSearchIcon);
 			ImageView appIcon = (ImageView) thisResult.getChildAt(0);
 			appIcon.setImageResource(((MyApplication) page.getApplication())
-					.getImgResourceId(resultMap.get("application") + ":index"));
+					.getImgResourceId(resultMap.get("application") + ":index_img"));
 			//text
 			TextView infoText = (TextView) thisResult.getChildAt(1); //(TextView) page.findViewById(R.id.generalSearchText);
 			infoText.setText(Html.fromHtml(resultMap.get("text")));
@@ -84,7 +84,7 @@ public class SearchTask extends BackgroundTask<String, Void, Void> {
 			{
 				//No results found
 			}
-			else if (results.length() == 1 & results.getJSONObject(0).getBoolean("redirect_if_sole_result"))
+			else if (results.length() == 1)// & results.getJSONObject(0).getBoolean("redirect_if_sole_result"))
 			{
 				//treat the sole-result case as a special case
 			}

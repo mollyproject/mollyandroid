@@ -5,6 +5,7 @@ import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.os.Bundle;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
@@ -17,8 +18,10 @@ public class SearchPage extends ContentPage {
 		RelativeLayout searchBar = (RelativeLayout) 
 				layoutInflater.inflate(R.layout.search_bar,contentLayout, false);
     	contentLayout.addView(searchBar);
-    	final EditText searchField = (EditText) findViewById(R.id.searchField);
-    	setEnterKeySearch(searchField, this);
+    	
+    	EditText searchField = (EditText) findViewById(R.id.searchField);
+    	searchField.setWidth(LayoutParams.FILL_PARENT);
+    	setEnterKeySearch(searchField, this, null);
 		contentLayout.setBackgroundColor(R.color.white);
 		new SearchTask(this,true).execute("query="+myApp.getGeneralQuery());
 	}
