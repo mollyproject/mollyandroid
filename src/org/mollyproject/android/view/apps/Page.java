@@ -107,7 +107,7 @@ public abstract class Page extends RoboActivity {
 		alertDialog.show();
 	}
 	
-	public void setEnterKeySearch(final EditText searchField, final Page page)
+	public void setEnterKeySearch(final EditText searchField, final Page page, final String application)
 	{
 		searchField.setOnKeyListener(new OnKeyListener() {
 			@Override
@@ -120,7 +120,15 @@ public abstract class Page extends RoboActivity {
 		                case KeyEvent.KEYCODE_ENTER:
 		                	if (searchField.getText().length() > 0)
 		                	{
-			                	myApp.setGeneralQuery(searchField.getText().toString());
+		                		if (application == null)
+		                		{
+		                			myApp.setGeneralQuery(searchField.getText().toString());
+		                		}
+		                		else
+		                		{
+		                			myApp.setGeneralQuery(searchField.getText().toString()
+		                					+"&application="+application);
+		                		}
 			                	Intent myIntent = new Intent(v.getContext(), SearchPage.class);
 			                	page.startActivityForResult(myIntent, 0);
 		                	}
