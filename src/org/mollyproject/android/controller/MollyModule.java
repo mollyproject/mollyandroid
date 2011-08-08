@@ -40,6 +40,7 @@ public class MollyModule extends AbstractModule {
 	public static String LIBRARY_RESULTS_PAGE = "library:search";
 	public static String CONTACT_RESULTS_PAGE = "contact:result_list";
 	public static String SEARCH_PAGE = "search:index";
+	public static String WEATHER_PAGE = "weather:index";
 	//The following hash table allows for easier future change in implementation
 	//of new pages
 	protected static HashBiMap<String,Class<? extends Page>> pages 
@@ -55,6 +56,7 @@ public class MollyModule extends AbstractModule {
 		pages.put(SEARCH_PAGE, SearchPage.class);
 		pages.put(LIBRARY_RESULTS_PAGE, LibraryResultsPage.class);
 		pages.put(CONTACT_RESULTS_PAGE, ContactResultsPage.class);
+		pages.put(WEATHER_PAGE, WeatherPage.class);
 	}
 	
 	protected static Map<String,Integer> bcImg 
