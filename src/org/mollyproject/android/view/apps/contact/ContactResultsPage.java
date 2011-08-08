@@ -1,11 +1,10 @@
 package org.mollyproject.android.view.apps.contact;
 
-import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.os.Bundle;
 
-public class ContactResultsPage extends ContentPage {
+public class ContactResultsPage extends AbstractContactPage {
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);

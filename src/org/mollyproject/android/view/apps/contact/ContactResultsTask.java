@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 public class ContactResultsTask extends BackgroundTask<LinearLayout, Void, List<View>>
 {
+	protected LinearLayout contentLayout;
 	public ContactResultsTask(ContactResultsPage contactResultsPage,
 			boolean b) {
 		super(contactResultsPage,b);
@@ -29,6 +30,8 @@ public class ContactResultsTask extends BackgroundTask<LinearLayout, Void, List<
 	@Override
 	protected List<View> doInBackground(LinearLayout... args) {
 		try {
+			contentLayout = args[0];
+			
 			List<View> outputs = new ArrayList<View>();
 			JSONObject searchOutput = ((MyApplication) page.getApplication()).getContactOutput();
 			JSONArray results = searchOutput.getJSONArray("results");
@@ -164,7 +167,7 @@ public class ContactResultsTask extends BackgroundTask<LinearLayout, Void, List<
 				scr.addView(resultsLayout);
 				outputs.add(scr);
 				System.out.println("Search completed, returned "+results.length()
-									+" results"+" and page rendered in:");
+									+" results");
 			}
 			return outputs;
 		} 
@@ -179,6 +182,7 @@ public class ContactResultsTask extends BackgroundTask<LinearLayout, Void, List<
 	
 	@Override
 	public void updateView(List<View> outputs) {
-		page.populateViews(outputs, ((ContactResultsPage) page).getContentLayout());
+		System.out.println("updating view...");
+		page.populateViews(outputs, contentLayout);
 	}
 }

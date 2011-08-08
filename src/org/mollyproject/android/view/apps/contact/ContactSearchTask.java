@@ -7,13 +7,14 @@ import java.net.UnknownHostException;
 import org.json.JSONException;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import android.content.Intent;
 
 public class ContactSearchTask extends BackgroundTask<String, Void, Void>
 {
 
-	public ContactSearchTask(ContactPage contactPage, boolean b) {
+	public ContactSearchTask(AbstractContactPage contactPage, boolean b) {
 		super(contactPage, b);
 	}
 
@@ -26,8 +27,7 @@ public class ContactSearchTask extends BackgroundTask<String, Void, Void>
 		//args = { query, medium }
 		try {
 			String searchQuery = "query="+URLEncoder.encode(args[0],"UTF-8")+"&medium="+args[1];
-			((ContactPage) page).setContactOutput(page.getRouter().onRequestSent(MollyModule
-					.getName(ContactResultsPage.class),
+			((AbstractContactPage) page).setContactOutput(page.getRouter().onRequestSent("contact:result_list",
 					Router.OutputFormat.JSON, searchQuery));
 			Intent myIntent = new Intent (page, page.getRouter().getDestination());
 			//myApp.timeStart();

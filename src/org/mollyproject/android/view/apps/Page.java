@@ -145,6 +145,7 @@ public abstract class Page extends RoboActivity {
 	{
 		for (int i = 0; i < outputs.size(); i++)
 		{
+			System.out.println("adding view...");
 			contentLayout.addView(outputs.get(i));
 		}
 	}
