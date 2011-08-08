@@ -7,7 +7,7 @@
     <TextView android:text="Title" 
 	    android:id="@+id/titleLabel" 
 	    android:layout_width="wrap_content"
-	    android:textSize="20dp"
+	    android:textSize="16dp"
 	    android:layout_height="wrap_content">
     </TextView>
     
@@ -18,7 +18,7 @@
     
     <TextView android:text="Author" 
 	    android:id="@+id/authorLabel"
-	    android:textSize="20dp" 
+	    android:textSize="16dp" 
 	    android:layout_width="wrap_content" 
 	    android:layout_height="wrap_content">
     </TextView>
@@ -30,7 +30,7 @@
     
     <TextView android:text="ISBN" 
 	    android:id="@+id/isbnLabel" 
-	    android:textSize="20dp"
+	    android:textSize="16dp"
 	    android:layout_width="wrap_content" 
 	    android:layout_height="wrap_content">
     </TextView>

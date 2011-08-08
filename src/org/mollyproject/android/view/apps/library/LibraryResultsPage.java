@@ -4,7 +4,7 @@ import org.mollyproject.android.view.apps.Page;
 
 import android.os.Bundle;
 
-public class LibraryResultsPage extends LibraryPage {
+public class LibraryResultsPage extends AbstractLibraryPage {
 	protected int curPageNum;
 	public void onCreate(Bundle savedInstanceState)
 	{

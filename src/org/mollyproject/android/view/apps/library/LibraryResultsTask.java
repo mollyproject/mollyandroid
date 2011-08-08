@@ -109,8 +109,16 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 			resultsLayout.addView(thisResultLayout);
 		}
 		
-		resultsNo.setText("Search returned " + nextJSONPage.getString("num_objects") + " items." + '\n'
-		+ "Displaying "+curPageNum+" page(s) of "+nextJSONPage.getString("num_pages")+" pages.");
+		if (nextJSONPage.getString("num_objects").equals("0"))
+		{
+			resultsNo.setText("Search cannot find anything. Either there is a problem with your query" +
+					" or OLIS is not responding");
+		}
+		else
+		{
+			resultsNo.setText("Search returned " + nextJSONPage.getString("num_objects") + " items." + '\n'
+			+ "Displaying "+curPageNum+" page(s) of "+nextJSONPage.getString("num_pages")+" pages.");
+		}
 	}
 
 }

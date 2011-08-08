@@ -68,46 +68,15 @@ public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Voi
 						.inflate(R.layout.library_results_template,page.getContentLayout(), false);
 		page.getContentLayout().addView(libraryResultsTemplate);
 		
-		
-		
-		
 		List<View> outputs = new ArrayList<View>();
 		final JSONObject jsonPage = results.getJSONObject("page");
-		
-		//final ScrollView scr = new ScrollView(page);
-		ScrollView scr = (ScrollView) page.findViewById(R.id.libraryResultsScroll);
-		
-		final LinearLayout pageLayout = (LinearLayout) page.findViewById(R.id.pageLayout); //new LinearLayout(page);
-		/*pageLayout.setOrientation(LinearLayout.VERTICAL);
-		pageLayout.setBackgroundResource(R.drawable.bg_white);*/
-		final LinearLayout resultsLayout = (LinearLayout) page.findViewById(R.id.resultsLayout); //new LinearLayout(page);
-		//resultsLayout.setOrientation(LinearLayout.VERTICAL);
-
-		final TextView resultsNo = (TextView) page.findViewById(R.id.libraryResultsNo);//new TextView(page);
-		/*resultsNo.setTextSize(16);
-		resultsNo.setTextColor(R.color.black);
-		resultsNo.setPadding(10, 20, 0, 20);
-		resultsNo.setBackgroundResource(R.drawable.bg_white);*/
+		final LinearLayout resultsLayout = (LinearLayout) page.findViewById(R.id.resultsLayout); 
+		final TextView resultsNo = (TextView) page.findViewById(R.id.libraryResultsNo);
 		
 		populateResults(page,getNextResultsPage(page), resultsLayout, resultsNo);
+		Button nextButton = (Button) page.findViewById(R.id.moreButton);
 		
-		pageLayout.addView(resultsLayout);
-		scr.addView(pageLayout);
-		
-		//outputs.add(resultsNo);
-		//outputs.add(scr);
-		
-		Button nextButton = (Button) page.findViewById(R.id.moreButton);//new Button(page);
-		/*nextButton.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
-				LayoutParams.WRAP_CONTENT, 1f));
-		nextButton.setText("View more results");
 		nextButton.setEnabled(false);
-		
-		LinearLayout bottomButtonsLayout = new LinearLayout(page);
-		bottomButtonsLayout.addView(nextButton);
-		
-		pageLayout.addView(bottomButtonsLayout);*/
-		
 		if (jsonPage.getBoolean("has_next"))
 		{
 			//generate the next page dynamically

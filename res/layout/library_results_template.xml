@@ -6,10 +6,14 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
   
-    <TextView android:text="Search has returned no results..." 
+    <TextView android:text="Search has returned no results..."
+    	android:textColor="@color/blue"
+    	android:textSize="16sp"
+    	android:background="@drawable/bg_white" 
 	    android:id="@+id/libraryResultsNo" 
 	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content">
+	    android:layout_height="wrap_content"
+	    android:padding="10dp">
     </TextView>
     
     <ScrollView android:layout_width="fill_parent" 
@@ -20,15 +24,16 @@
 	        android:layout_width="fill_parent"
 	        android:orientation="vertical"
 	        android:background="@drawable/bg_white"
-	        android:layout_height="fill_parent">
+	        android:layout_height="wrap_content">
 	        
             <LinearLayout android:layout_width="fill_parent" 
-	            android:layout_height="fill_parent" 
+	            android:layout_height="wrap_content" 
 	            android:id="@+id/resultsLayout" 
 	            android:orientation="vertical">
             </LinearLayout>
 	        
-	        <Button android:text="View more results" 
+	        <Button android:text="View more results"
+	        	android:enabled="false"
 			    android:id="@+id/moreButton" 
 			    android:layout_width="fill_parent" 
 			    android:layout_height="wrap_content">
