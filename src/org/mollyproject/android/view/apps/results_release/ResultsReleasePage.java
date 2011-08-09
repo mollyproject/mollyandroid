@@ -118,6 +118,12 @@ public class ResultsReleasePage extends ContentPage {
 		System.out.println("Called "+this);
 		return this;
 	}
+
+	@Override
+	public String getAdditionalParams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 }

@@ -18,4 +18,10 @@ public class ContactResultsPage extends AbstractContactPage {
 		return this;
 	}
 
+	@Override
+	public String getAdditionalParams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

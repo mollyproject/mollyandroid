@@ -19,4 +19,11 @@ public class WeatherPage extends ContentPage {
 		return this;
 	}
 
+
+	@Override
+	public String getAdditionalParams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -30,6 +30,7 @@ public abstract class ContentPage extends Page {
 	@InjectView (R.id.extraTextView) protected TextView extraTextView;
 	@InjectView (R.id.contentLayout) protected LinearLayout contentLayout;
 	protected boolean loaded = false;
+	protected JSONObject jsonContent;
 	//aka ImplementedPage
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -63,7 +64,8 @@ public abstract class ContentPage extends Page {
 			//Download the breadcrumbs
 			try {
 				JSONObject jsonOutput = router.onRequestSent(MollyModule.getName(getInstance().getClass()), 
-						null, Router.OutputFormat.JSON, null);
+						getAdditionalParams(), Router.OutputFormat.JSON, null);
+				jsonContent = jsonOutput;
 				JSONObject breadcrumbs = jsonOutput.getJSONObject("breadcrumbs");
 				return breadcrumbs;
 			} catch (UnknownHostException e) {
@@ -140,6 +142,8 @@ public abstract class ContentPage extends Page {
 			
 		}
 	}
+	
+	public abstract String getAdditionalParams();
 	
 	public LinearLayout getContentLayout()
 	{

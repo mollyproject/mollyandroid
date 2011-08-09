@@ -49,7 +49,7 @@ public class PodcastsCategoryResultTask extends BackgroundTask<List<Map<String,S
 			
 			ImageView podcastIcon = (ImageView) iconsLayout.getChildAt(0); 
 			String urlStr = resultMap.get("logoURL");
-			downloadImageAndShow(urlStr,podcastIcon);
+			//downloadImageAndShow(urlStr,podcastIcon);
 			
 			TextView infoText = (TextView) thisResult.getChildAt(1);
 			infoText.setText(Html.fromHtml("<font size=18>" + resultMap.get("title") + "</font>" +
@@ -75,6 +75,7 @@ public class PodcastsCategoryResultTask extends BackgroundTask<List<Map<String,S
 			Bitmap bmImg = BitmapFactory.decodeStream(is);
 			imView.setImageBitmap(bmImg);
 		} catch (IOException e) {
+			imView.setImageResource(R.drawable.android_button);
 			e.printStackTrace();
 		}
 	}

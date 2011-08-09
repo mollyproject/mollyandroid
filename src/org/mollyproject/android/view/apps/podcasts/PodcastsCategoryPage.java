@@ -22,4 +22,10 @@ public class PodcastsCategoryPage extends ContentPage {
 	public Page getInstance() {
 		return this;
 	}
+	
+	@Override
+	public String getAdditionalParams() {
+		// TODO Auto-generated method stub
+		return myApp.getPodcastsSlug();
+	}
 }

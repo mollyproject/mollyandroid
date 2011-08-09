@@ -35,4 +35,9 @@ public class UnimplementedPage extends ContentPage {
 	public Page getInstance() {
 		return this;
 	}
+
+	@Override
+	public String getAdditionalParams() {
+		return null;
+	}
 }

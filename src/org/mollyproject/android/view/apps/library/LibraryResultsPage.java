@@ -27,6 +27,12 @@ public class LibraryResultsPage extends AbstractLibraryPage {
 	public Page getInstance() {
 		return this;
 	}
+
+	@Override
+	public String getAdditionalParams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 
 

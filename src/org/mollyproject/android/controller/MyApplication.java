@@ -25,7 +25,7 @@ public class MyApplication extends RoboApplication {
 	protected List<Map<String,String>> podcastsOutput;
 	protected String libraryQuery;
 	protected String locator;
-	protected String podcastsSlug;
+	protected String podcastsSlug = null;
 	protected ArrayListMultimap<String,JSONObject> libraryCache = ArrayListMultimap.create();
 	protected boolean destroyed = false;
 	protected Injector injector;
