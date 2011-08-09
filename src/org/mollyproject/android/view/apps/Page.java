@@ -7,6 +7,7 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.home.HomePage;
 import org.mollyproject.android.view.apps.search.SearchPage;
+import org.mollyproject.android.view.apps.search.SearchTask;
 
 import roboguice.activity.RoboActivity;
 
@@ -122,15 +123,15 @@ public abstract class Page extends RoboActivity {
 		                	{
 		                		if (application == null)
 		                		{
-		                			myApp.setGeneralQuery(searchField.getText().toString());
+		                			new SearchTask(page,false)
+		                					.execute(searchField.getText().toString());
 		                		}
 		                		else
 		                		{
-		                			myApp.setGeneralQuery(searchField.getText().toString()
+		                			new SearchTask(page,false)
+                					.execute(searchField.getText().toString()
 		                					+"&application="+application);
 		                		}
-			                	Intent myIntent = new Intent(v.getContext(), SearchPage.class);
-			                	page.startActivityForResult(myIntent, 0);
 		                	}
 		                	else
 		                	{

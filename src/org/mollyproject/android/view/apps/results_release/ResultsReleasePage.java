@@ -49,7 +49,7 @@ public class ResultsReleasePage extends ContentPage {
 		
 		try {
 			JSONObject output = router.exceptionHandledOnRequestSent(MollyModule.getName(ResultsReleasePage.class),
-					this,Router.OutputFormat.JSON, null);
+					null, this,Router.OutputFormat.JSON, null);
 			//Process the json text received
 			if (output != null)
 			{

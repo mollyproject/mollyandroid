@@ -65,11 +65,6 @@ public class HomePage extends Page {
     {
     	gridview.setAdapter(newGridAdapter);
     }
-    
-    public void search(View v)
-    {
-    	
-    }
 }
 
 

@@ -63,7 +63,7 @@ public abstract class ContentPage extends Page {
 			//Download the breadcrumbs
 			try {
 				JSONObject jsonOutput = router.onRequestSent(MollyModule.getName(getInstance().getClass()), 
-						Router.OutputFormat.JSON, null);
+						null, Router.OutputFormat.JSON, null);
 				JSONObject breadcrumbs = jsonOutput.getJSONObject("breadcrumbs");
 				return breadcrumbs;
 			} catch (UnknownHostException e) {

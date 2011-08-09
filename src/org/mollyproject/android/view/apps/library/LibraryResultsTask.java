@@ -42,7 +42,7 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 				(cache.containsKey(query) & cache.get(query).size()<=curPageNum))
 		{
 			JSONObject nextResults = page.getRouter().exceptionHandledOnRequestSent(
-					MollyModule.getName(page.getClass()),
+					MollyModule.getName(page.getClass()), null,
 					page, Router.OutputFormat.JSON, query+"&page="+curPageNum);
 			nextJSONPage = nextResults.getJSONObject("page");
 			((MyApplication) page.getApplication()).updateLibCache(query, nextJSONPage);

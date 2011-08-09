@@ -28,7 +28,7 @@ public class ContactSearchTask extends BackgroundTask<String, Void, Void>
 		try {
 			String searchQuery = "query="+URLEncoder.encode(args[0],"UTF-8")+"&medium="+args[1];
 			((AbstractContactPage) page).setContactOutput(page.getRouter().onRequestSent("contact:result_list",
-					Router.OutputFormat.JSON, searchQuery));
+					null, Router.OutputFormat.JSON, searchQuery));
 			Intent myIntent = new Intent (page, page.getRouter().getDestination());
 			//myApp.timeStart();
 			page.startActivityForResult(myIntent,0);

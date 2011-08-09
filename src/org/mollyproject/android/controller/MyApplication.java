@@ -1,6 +1,7 @@
 package org.mollyproject.android.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.mollyproject.android.view.apps.Page;
@@ -20,9 +21,10 @@ public class MyApplication extends RoboApplication {
 	protected Router router = null;
 	protected String mapQuery;
 	protected JSONObject contactOutput;
-	protected String generalQuery;
+	protected List<Map<String,String>> generalOutput;
 	protected String libraryQuery;
 	protected String locator;
+	protected String podcastsSlug;
 	protected ArrayListMultimap<String,JSONObject> libraryCache = ArrayListMultimap.create();
 	protected boolean destroyed = false;
 	protected Injector injector;
@@ -42,9 +44,13 @@ public class MyApplication extends RoboApplication {
 		System.out.println(curTime+" milliseconds");
 	}
 	
-	public void setGeneralQuery(String generalQuery) { this.generalQuery = generalQuery; }
+	public void setPodcastsSlug(String slug) { podcastsSlug = slug; }
 	
-	public String getGeneralQuery() { return generalQuery; }
+	public String getPodcastsSlug() { return podcastsSlug; }
+	
+	public void setGeneralOutput(List<Map<String,String>> generalOutput) { this.generalOutput = generalOutput; }
+	
+	public List<Map<String,String>> getGeneralOutput() { System.out.println(generalOutput); return generalOutput; }
 	
 	public void updateLibCache(String key, JSONObject object) { libraryCache.put(key, object);	}
 	

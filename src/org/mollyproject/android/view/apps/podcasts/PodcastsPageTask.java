@@ -59,7 +59,7 @@ public class PodcastsPageTask extends BackgroundTask<Void, Void, List<Map<String
 	@Override
 	protected List<Map<String,String>> doInBackground(Void... params) {
 		try {
-			JSONArray jsonCategories = page.getRouter().onRequestSent("podcasts:index", 
+			JSONArray jsonCategories = page.getRouter().onRequestSent("podcasts:index", null,
 					Router.OutputFormat.JSON, null).getJSONArray("categories");
 			List<Map<String,String>> resultMapsList = new ArrayList<Map<String, String>>();
 			

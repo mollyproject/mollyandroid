@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 public class SearchPage extends ContentPage {
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -22,8 +23,7 @@ public class SearchPage extends ContentPage {
     	EditText searchField = (EditText) findViewById(R.id.searchField);
     	searchField.setWidth(LayoutParams.FILL_PARENT);
     	setEnterKeySearch(searchField, this, null);
-		contentLayout.setBackgroundColor(R.color.white);
-		new SearchTask(this,true).execute("query="+myApp.getGeneralQuery());
+		new SearchResultsTask(this,true).execute(myApp.getGeneralOutput());
 	}
 	@Override
 	public Page getInstance() {

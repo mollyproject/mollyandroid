@@ -69,10 +69,10 @@ public class Router {
 		return outputStr;
 	}
 	
-	public JSONObject exceptionHandledOnRequestSent(String locator,Page page, OutputFormat format, String query)
+	public JSONObject exceptionHandledOnRequestSent(String locator, String arg, Page page, OutputFormat format, String query)
 	{
 		try{
-			return onRequestSent(locator, format, query);
+			return onRequestSent(locator, arg, format, query);
 		}
 		catch (MalformedURLException e)
 		{
@@ -101,7 +101,7 @@ public class Router {
 		return null;
 	}
 	
-	public JSONObject onRequestSent(String locator,OutputFormat format, String query) 
+	public JSONObject onRequestSent(String locator, String arg, OutputFormat format, String query) 
 							throws JSONException, UnknownHostException, IOException {
 		//to be included in AsyncTask subclasses where no UI is allowed
 		//in the doInBackground method
@@ -113,7 +113,15 @@ public class Router {
 			waiting = false;
 			//if an exception is thrown, waiting might be false forever
 			String urlStr = new String();
-			String reverseReq = mOX + "reverse/?name="+locator;
+			String reverseReq = new String();
+			if (arg != null)
+			{
+				reverseReq = mOX + "reverse/?name="+locator + "&arg=" + arg;
+			}
+			else
+			{
+				reverseReq = mOX + "reverse/?name="+locator;
+			}
 			urlStr = getFrom(reverseReq);
 			String outputStr = new String();
 			
@@ -163,7 +171,7 @@ public class Router {
 	{
 		//Router connects to server, then cookieMgr gets the cookies
 		//cookieMgr extracts csrftoken, then pass to LocThread
-		onRequestSent(MollyModule.HOME_PAGE, OutputFormat.JSON, null); //csrftoken can only be received after at least 1 request
+		onRequestSent(MollyModule.HOME_PAGE, null, OutputFormat.JSON, null); //csrftoken can only be received after at least 1 request
 		String token = cookieMgr.getCSRFToken();//if connection goes through, csrftoken should be available
 		currentLocThread = new LocationThread(new URL(mOX),myApp,token);
 		currentLocThread.start();

@@ -34,5 +34,6 @@
 		<activity android:name=".view.apps.weather.WeatherPage"></activity>
 		<activity android:name=".view.apps.search.SearchPage"></activity>
 		<activity android:name=".view.apps.podcasts.PodcastsPage"></activity>
+		<activity android:name=".view.apps.podcasts.PodcastsCategoryPage"></activity>
     </application>
 </manifest>

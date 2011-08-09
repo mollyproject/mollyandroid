@@ -53,7 +53,7 @@ public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Voi
 	
 	private JSONObject getResults(Page page, String queryWithPage) throws JSONException
 	{
-		return page.getRouter().exceptionHandledOnRequestSent(MollyModule.getName(page.getClass()),
+		return page.getRouter().exceptionHandledOnRequestSent(MollyModule.getName(page.getClass()), null,
 				page, Router.OutputFormat.JSON, queryWithPage);
 	}
 	

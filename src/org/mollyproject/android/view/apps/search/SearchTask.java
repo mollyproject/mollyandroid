@@ -18,6 +18,7 @@ import org.mollyproject.android.controller.Router.OutputFormat;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.ContentPage;
 
+import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,44 +30,17 @@ import android.widget.TextView;
 public class SearchTask extends BackgroundTask<String, Void, List<Map<String,String>>> {
 
 	protected String searchQuery;
-	public SearchTask(SearchPage searchPage, boolean b)
+	public SearchTask(Page page, boolean b)
 	{
-		super(searchPage, b);
+		super(page, b);
 	}
 	
-	public String getSearchQuery() { return searchQuery; }
-	
-	public void setSearchQuery(String searchQuery) { this.searchQuery = searchQuery; }
-
 	@Override
-	public void updateView(List<Map<String,String>> resultMapsList) {
-		// TODO Auto-generated method stub
-		LayoutInflater inflater = page.getLayoutInflater();
-		LinearLayout generalResultsLayout = (LinearLayout) inflater.inflate(R.layout.search_results_page, 
-				((SearchPage) page).getContentLayout(), false);
-		((SearchPage) page).getContentLayout().addView(generalResultsLayout);
+	public void updateView(List<Map<String,String>> outputs) {
 		
-		LinearLayout resultsLayout = (LinearLayout) page.findViewById(R.id.generalResultsList);
-		
-		for (int i = 0; i < resultMapsList.size(); i++)
-		{
-			Map<String,String> resultMap = resultMapsList.get(i);
-			
-			LinearLayout thisResult = (LinearLayout) inflater.inflate(R.layout.general_search_result, 
-						((SearchPage) page).getContentLayout(), false);
-			resultsLayout.addView(thisResult);
-			thisResult.setLayoutParams(Page.paramsWithLine);
-			//image view
-			//ImageView appIcon = (ImageView) page.findViewById(R.id.generalSearchIcon);
-			ImageView appIcon = (ImageView) thisResult.getChildAt(0);
-			appIcon.setImageResource(((MyApplication) page.getApplication())
-					.getImgResourceId(resultMap.get("application") + ":index_img"));
-			//text
-			TextView infoText = (TextView) thisResult.getChildAt(1); //(TextView) page.findViewById(R.id.generalSearchText);
-			infoText.setText(Html.fromHtml(resultMap.get("text")));
-			System.out.println("app: "+resultMap.get("application"));
-		}
-		
+		((MyApplication) page.getApplication()).setGeneralOutput(outputs);
+		Intent myIntent = new Intent(page, SearchPage.class);
+		page.startActivityForResult(myIntent, 0);
 	}
 
 	@Override
@@ -74,11 +48,11 @@ public class SearchTask extends BackgroundTask<String, Void, List<Map<String,Str
 		//send query to server, and get back json response
 		try {
 			//get the result:
-			JSONArray results = page.getRouter().onRequestSent("search:index", Router.OutputFormat.JSON, 
-					queries[0]).getJSONArray("results");
+			JSONArray results = page.getRouter().onRequestSent("search:index", null, Router.OutputFormat.JSON, 
+					"&query="+queries[0]).getJSONArray("results");
 			
 			List<Map<String,String>> resultMapsList = new ArrayList<Map<String,String>>();
-			
+			System.out.println("result maps list: " + resultMapsList);
 			//store results in the list of maps, I could have just returned the JSONArray then process it
 			//in updateView, but I don't want to handle the exceptions outside of the background method
 			if (results.length() == 0)
@@ -119,6 +93,7 @@ public class SearchTask extends BackgroundTask<String, Void, List<Map<String,Str
 					resultMapsList.add(resultMap);
 				}
 			}
+			
 			return resultMapsList;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

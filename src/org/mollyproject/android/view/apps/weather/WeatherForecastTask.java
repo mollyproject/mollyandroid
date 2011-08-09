@@ -52,7 +52,7 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, Void>{
 		//Get weather info
 		try {
 			JSONObject jsonOutput = page.getRouter()
-				.onRequestSent("weather:index", Router.OutputFormat.JSON, null);
+				.onRequestSent("weather:index", null, Router.OutputFormat.JSON, null);
 			
 			//There are 2 sections in the weather page, an observation bar and a 3-day forecast layout
 			
