@@ -13,6 +13,18 @@
         android:layout_width="fill_parent" 
         android:orientation="vertical"
         android:layout_height="fill_parent">
+            <TextView android:textSize="18dp"
+	            android:layout_width="wrap_content" 
+	            android:id="@+id/searchResultsHeader" 
+	            android:text="Results" 
+	            android:textColor="@color/blue" 
+	            android:layout_gravity="center_vertical" 
+	            android:layout_height="wrap_content" 
+	            android:textStyle="bold" 
+	            android:layout_marginLeft="5dp" 
+	            android:layout_marginTop="10dp" 
+	            android:layout_marginBottom="10dp">
+            </TextView>
         </LinearLayout>
     </ScrollView>
     

@@ -26,10 +26,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class SearchTask extends BackgroundTask<String, Void, Void> {
+public class SearchTask extends BackgroundTask<String, Void, List<Map<String,String>>> {
 
 	protected String searchQuery;
-	protected List<Map<String,String>> resultMapsList = new ArrayList<Map<String,String>>();
 	public SearchTask(SearchPage searchPage, boolean b)
 	{
 		super(searchPage, b);
@@ -40,15 +39,15 @@ public class SearchTask extends BackgroundTask<String, Void, Void> {
 	public void setSearchQuery(String searchQuery) { this.searchQuery = searchQuery; }
 
 	@Override
-	public void updateView(Void outputs) {
+	public void updateView(List<Map<String,String>> resultMapsList) {
 		// TODO Auto-generated method stub
 		LayoutInflater inflater = page.getLayoutInflater();
 		LinearLayout generalResultsLayout = (LinearLayout) inflater.inflate(R.layout.search_results_page, 
 				((SearchPage) page).getContentLayout(), false);
 		((SearchPage) page).getContentLayout().addView(generalResultsLayout);
 		
-		ScrollView scr = (ScrollView) page.findViewById(R.id.generalResultsScroll);
 		LinearLayout resultsLayout = (LinearLayout) page.findViewById(R.id.generalResultsList);
+		
 		for (int i = 0; i < resultMapsList.size(); i++)
 		{
 			Map<String,String> resultMap = resultMapsList.get(i);
@@ -71,12 +70,14 @@ public class SearchTask extends BackgroundTask<String, Void, Void> {
 	}
 
 	@Override
-	protected Void doInBackground(String... queries) {
+	protected List<Map<String,String>> doInBackground(String... queries) {
 		//send query to server, and get back json response
 		try {
 			//get the result:
 			JSONArray results = page.getRouter().onRequestSent("search:index", Router.OutputFormat.JSON, 
 					queries[0]).getJSONArray("results");
+			
+			List<Map<String,String>> resultMapsList = new ArrayList<Map<String,String>>();
 			
 			//store results in the list of maps, I could have just returned the JSONArray then process it
 			//in updateView, but I don't want to handle the exceptions outside of the background method
@@ -110,7 +111,7 @@ public class SearchTask extends BackgroundTask<String, Void, Void> {
 					//search excerpts:
 					if (!result.isNull("excerpt"))
 					{
-						text = text + result.getString("excerpt") + "<br />";
+						text = text + result.getString("excerpt");
 					}
 					resultMap.put("text", text);
 					//application
@@ -118,6 +119,7 @@ public class SearchTask extends BackgroundTask<String, Void, Void> {
 					resultMapsList.add(resultMap);
 				}
 			}
+			return resultMapsList;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			unknownHostException = true;
