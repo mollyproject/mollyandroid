@@ -23,7 +23,7 @@ public class SearchPage extends ContentPage {
     	EditText searchField = (EditText) findViewById(R.id.searchField);
     	searchField.setWidth(LayoutParams.FILL_PARENT);
     	setEnterKeySearch(searchField, this, null);
-		new SearchResultsTask(this,true).execute(myApp.getGeneralOutput());
+		new SearchResultsTask(this,true, true).execute(myApp.getGeneralOutput());
 	}
 	@Override
 	public Page getInstance() {

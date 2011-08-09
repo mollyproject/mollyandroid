@@ -21,9 +21,9 @@ import android.widget.TextView;
 
 public class PodcastsCategoryResultTask extends BackgroundTask<List<Map<String,String>>, Void, List<Map<String,String>>>{
 	
-	public PodcastsCategoryResultTask(PodcastsCategoryPage podcastsCategoryPage, boolean b)
+	public PodcastsCategoryResultTask(PodcastsCategoryPage podcastsCategoryPage, boolean toDestroy, boolean dialog)
 	{
-		super(podcastsCategoryPage, b);
+		super(podcastsCategoryPage, toDestroy, dialog);
 	}
 	@Override
 	public void updateView(List<Map<String, String>> resultMapsList) {

@@ -10,7 +10,7 @@ public class LibraryResultsPage extends AbstractLibraryPage {
 	{
 		super.onCreate(savedInstanceState);
 		curPageNum = 0;
-		new LibraryFirstResultTask(this,false).execute();
+		new LibraryFirstResultTask(this,false, true).execute();
 	}
 	
 	public void increaseCurPageNum()

@@ -22,9 +22,9 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, Void>{
 	protected String temperature;
 	protected String others;
 	protected String city;
-	public WeatherForecastTask(WeatherPage weatherPage, boolean b)
+	public WeatherForecastTask(WeatherPage weatherPage, boolean toDestroy, boolean dialog)
 	{
-		super(weatherPage,b);
+		super(weatherPage,toDestroy, dialog);
 		temperature = new String();
 		others = new String();
 	}

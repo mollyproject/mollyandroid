@@ -1,5 +1,8 @@
 package org.mollyproject.android.view.apps.contact;
 
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,32 +11,39 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
-import org.mollyproject.android.controller.MyApplication;
+import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.Dialog;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class ContactResultsTask extends BackgroundTask<LinearLayout, Void, List<View>>
+public class ContactResultsTask extends BackgroundTask<String, Void, LinearLayout>
 {
 	protected LinearLayout contentLayout;
-	public ContactResultsTask(ContactResultsPage contactResultsPage,
-			boolean b) {
-		super(contactResultsPage,b);
+	protected LinearLayout contactSearchBar;
+	public ContactResultsTask(ContactPage contactPage, LinearLayout contactSearchBar,
+			boolean toDestroy, boolean dialog) {
+		super(contactPage,toDestroy,dialog);
+		contentLayout = ((ContactPage) page).getContentLayout();
+		this.contactSearchBar = contactSearchBar;
 	}
 
 	@Override
-	protected List<View> doInBackground(LinearLayout... args) {
+	protected LinearLayout doInBackground(String... args) {
 		try {
-			contentLayout = args[0];
-			
+			String searchQuery = "query="+URLEncoder.encode(args[0],"UTF-8")+"&medium="+args[1];
+			//((ContactPage) page).setContactOutput();
+
 			List<View> outputs = new ArrayList<View>();
-			JSONObject searchOutput = ((MyApplication) page.getApplication()).getContactOutput();
+			JSONObject searchOutput = page.getRouter().onRequestSent("contact:result_list",
+					null, Router.OutputFormat.JSON, searchQuery);
 			JSONArray results = searchOutput.getJSONArray("results");
 			
 			LinearLayout resultsLayout = new LinearLayout(page);
@@ -52,11 +62,12 @@ public class ContactResultsTask extends BackgroundTask<LinearLayout, Void, List<
 				" Try adding an initial to get more specific results.";
 			}
 			resultsNo.setText(notification);
-			outputs.add(resultsNo);
+			resultsLayout.addView(resultsNo);
+			//outputs.add(resultsNo);
 			
 			if (results.length() > 0)
 			{
-				ScrollView scr = new ScrollView(page);
+				//ScrollView scr = new ScrollView(page);
 				
 				for (int i = 0; i < results.length(); i++)
 				{
@@ -164,25 +175,35 @@ public class ContactResultsTask extends BackgroundTask<LinearLayout, Void, List<
 					resultsLayout.addView(thisResult);
 				}
 				resultsLayout.setBackgroundResource(R.drawable.bg_white);
-				scr.addView(resultsLayout);
-				outputs.add(scr);
+				//scr.addView(resultsLayout);
+				outputs.add(resultsLayout);
 				System.out.println("Search completed, returned "+results.length()
 									+" results");
 			}
-			return outputs;
-		} 
-		catch (JSONException e) {
-			//problem here, json not received from server
+			return resultsLayout;
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			unknownHostException = true;
+		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;
-			
-		} 
+		} catch (IOException e) {
+			e.printStackTrace();
+			ioException = true;
+		}
 		return null;
 	}
 	
 	@Override
-	public void updateView(List<View> outputs) {
-		System.out.println("updating view...");
-		page.populateViews(outputs, contentLayout);
+	public void updateView(LinearLayout resultsLayout) {
+		((ViewGroup) contactSearchBar.getParent()).removeAllViews();
+		contentLayout.removeAllViews();
+		
+		resultsLayout.addView(contactSearchBar, 0);
+		ScrollView scroll = new ScrollView(page);
+		scroll.addView(resultsLayout);
+		contentLayout.addView(scroll);
+		//Page.populateViews(outputs, scroll);
+		page.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	}
 }

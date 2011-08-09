@@ -28,9 +28,9 @@ import android.widget.TextView;
 
 public class PodcastsPageTask extends BackgroundTask<Void, Void, List<Map<String,String>>>{
 	
-	public PodcastsPageTask(PodcastsPage podcastsPage, boolean b)
+	public PodcastsPageTask(PodcastsPage podcastsPage, boolean toDestroy, boolean dialog)
 	{
-		super(podcastsPage, b);
+		super(podcastsPage, toDestroy, dialog);
 		
 	}
 	
@@ -61,7 +61,7 @@ public class PodcastsPageTask extends BackgroundTask<Void, Void, List<Map<String
 				@Override
 				public void onClick(View v) {
 					((MyApplication) page.getApplication()).setPodcastsSlug(resultMap.get("slug"));
-					new PodcastsCategoryTask((PodcastsPage) page,toDestroyPageAfterFailure)
+					new PodcastsCategoryTask((PodcastsPage) page,toDestroyPageAfterFailure, dialogEnabled)
 																	.execute(resultMap.get("slug"));
 				}
 			});

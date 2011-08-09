@@ -16,9 +16,9 @@ import android.widget.TextView;
 
 public class SearchResultsTask extends BackgroundTask<List<Map<String,String>>, Void, List<Map<String,String>>>{
 	
-	public SearchResultsTask(SearchPage searchPage, boolean b)
+	public SearchResultsTask(SearchPage searchPage, boolean toDestroy, boolean dialog)
 	{
-		super(searchPage, b);
+		super(searchPage, toDestroy, dialog);
 	}
 	
 	@Override

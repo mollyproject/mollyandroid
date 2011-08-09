@@ -24,9 +24,9 @@ import android.widget.ImageView;
 
 public class PodcastsCategoryTask extends BackgroundTask<String, Void, List<Map<String,String>>>{
 	
-	public PodcastsCategoryTask(PodcastsPage podcastsCategoryPage, boolean b)
+	public PodcastsCategoryTask(PodcastsPage podcastsCategoryPage, boolean toDestroy, boolean dialog)
 	{
-		super(podcastsCategoryPage, b);
+		super(podcastsCategoryPage, toDestroy, dialog);
 	}
 	
 	@Override

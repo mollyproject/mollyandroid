@@ -24,9 +24,9 @@ import android.widget.TextView;
 
 public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Void, JSONObject>
 {
-	public LibraryFirstResultTask(LibraryResultsPage libraryResultsPage, boolean b)
+	public LibraryFirstResultTask(LibraryResultsPage libraryResultsPage, boolean toDestroy, boolean dialog)
 	{
-		super(libraryResultsPage,b);
+		super(libraryResultsPage,toDestroy, dialog);
 	}
 	@Override
 	protected JSONObject doInBackground(LinearLayout... arg0) {
@@ -84,7 +84,7 @@ public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Voi
 			nextButton.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View v) {
-					new LibraryNextPageTask(page, resultsLayout, resultsNo, false).execute();
+					new LibraryNextPageTask(page, resultsLayout, resultsNo, false, true).execute();
 				}
 			});
 		}

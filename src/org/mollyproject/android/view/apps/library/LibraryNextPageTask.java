@@ -14,9 +14,9 @@ public class LibraryNextPageTask extends LibraryResultsTask<Void, Void, JSONObje
 	protected LinearLayout resultsLayout;
 	protected TextView resultsNo;
 	public LibraryNextPageTask(LibraryResultsPage libraryResultsPage, LinearLayout resultsLayout, 
-			TextView resultsNo, boolean b)
+			TextView resultsNo, boolean toDestroy, boolean dialog)
 	{
-		super(libraryResultsPage,b);
+		super(libraryResultsPage,toDestroy, dialog);
 		this.resultsLayout = resultsLayout;
 		this.resultsNo = resultsNo;
 	}

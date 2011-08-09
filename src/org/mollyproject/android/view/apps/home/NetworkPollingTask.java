@@ -19,8 +19,8 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 	//if necessary
 	protected boolean loaded;
 	
-	public NetworkPollingTask(HomePage homePage, boolean b) {
-		super(homePage,b);
+	public NetworkPollingTask(HomePage homePage, boolean toDestroy, boolean dialog) {
+		super(homePage,toDestroy, dialog);
 		loaded = false;
 	}
 

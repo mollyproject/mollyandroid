@@ -10,7 +10,7 @@ public class WeatherPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		new WeatherForecastTask(this, true).execute();
+		new WeatherForecastTask(this, true, true).execute();
 	}
 	
 	

@@ -52,12 +52,12 @@ public class HomePage extends Page {
     	super.onResume();
     	if (firstLoad)
     	{
-    		new NetworkPollingTask(this, true).execute();
+    		new NetworkPollingTask(this, true, true).execute();
     		firstLoad = false;
     	}
     	else
     	{
-    		new NetworkPollingTask(this, false).execute();
+    		new NetworkPollingTask(this, false, true).execute();
     	}
     }
     

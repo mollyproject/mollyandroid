@@ -30,9 +30,9 @@ import android.widget.TextView;
 public class SearchTask extends BackgroundTask<String, Void, List<Map<String,String>>> {
 
 	protected String searchQuery;
-	public SearchTask(Page page, boolean b)
+	public SearchTask(Page page, boolean toDestroy, boolean dialog)
 	{
-		super(page, b);
+		super(page, toDestroy, dialog);
 	}
 	
 	@Override

@@ -26,9 +26,9 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 	protected List<JSONObject> cachedJSONPages;
 	protected String query;
 	
-	public LibraryResultsTask(LibraryResultsPage libraryResultsPage, boolean toDestroyPageAfterFailure)
+	public LibraryResultsTask(LibraryResultsPage libraryResultsPage, boolean toDestroy, boolean dialog)
 	{
-		super(libraryResultsPage, toDestroyPageAfterFailure);
+		super(libraryResultsPage, toDestroy, dialog);
 		cache = (ArrayListMultimap<String, JSONObject>) 
 			((MyApplication) page.getApplication()).getLibCache();
 		query = (String) ((MyApplication) page.getApplication()).getLibraryQuery();

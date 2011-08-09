@@ -15,7 +15,7 @@ public class PodcastsCategoryPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		new PodcastsCategoryResultTask(this, true).execute(myApp.getPodcastsOutput());
+		new PodcastsCategoryResultTask(this, true, true).execute(myApp.getPodcastsOutput());
 	}
 	
 	@Override

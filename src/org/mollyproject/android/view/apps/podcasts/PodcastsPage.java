@@ -22,7 +22,7 @@ public class PodcastsPage extends ContentPage {
 		searchField.setWidth(LayoutParams.FILL_PARENT);
 		setEnterKeySearch(searchField, this, "podcasts");
 		
-		new PodcastsPageTask(this,true).execute();
+		new PodcastsPageTask(this,true, true).execute();
 	}
 	
 	@Override

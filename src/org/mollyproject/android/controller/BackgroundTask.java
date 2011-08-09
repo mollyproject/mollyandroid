@@ -17,18 +17,12 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 	protected ProgressDialog pDialog;
 	protected boolean dialogEnabled;
 	
-	public BackgroundTask(Page page, boolean toDestroyPageAfterFailure)
+	public BackgroundTask(Page page, boolean toDestroyPageAfterFailure, boolean dialogEnabled)
 	{
 		super();
 		this.page = page;
 		this.toDestroyPageAfterFailure = toDestroyPageAfterFailure;
-		dialogEnabled = true;
-	}
-	
-	public BackgroundTask()
-	{
-		super();
-		dialogEnabled = false;
+		this.dialogEnabled = dialogEnabled;
 	}
 	
 	@Override

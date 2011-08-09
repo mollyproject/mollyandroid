@@ -7,7 +7,6 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.Splash;
 import org.mollyproject.android.view.apps.*;
 import org.mollyproject.android.view.apps.contact.ContactPage;
-import org.mollyproject.android.view.apps.contact.ContactResultsPage;
 import org.mollyproject.android.view.apps.features.FeatureVotePage;
 import org.mollyproject.android.view.apps.feedback.FeedbackPage;
 import org.mollyproject.android.view.apps.home.HomePage;
@@ -59,7 +58,7 @@ public class MollyModule extends AbstractModule {
 		pages.put(LIBRARY_PAGE, LibraryPage.class);
 		pages.put(SEARCH_PAGE, SearchPage.class);
 		pages.put(LIBRARY_RESULTS_PAGE, LibraryResultsPage.class);
-		pages.put(CONTACT_RESULTS_PAGE, ContactResultsPage.class);
+		//pages.put(CONTACT_RESULTS_PAGE, ContactResultsPage.class);
 		pages.put(WEATHER_PAGE, WeatherPage.class);
 		pages.put(PODCAST_PAGE, PodcastsPage.class);
 		pages.put(PODCAST_CATEGORY_PAGE, PodcastsCategoryPage.class);

@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -123,12 +124,12 @@ public abstract class Page extends RoboActivity {
 		                	{
 		                		if (application == null)
 		                		{
-		                			new SearchTask(page,false)
+		                			new SearchTask(page,false, true)
 		                					.execute(searchField.getText().toString());
 		                		}
 		                		else
 		                		{
-		                			new SearchTask(page,false)
+		                			new SearchTask(page,false, true)
                 					.execute(searchField.getText().toString()
 		                					+"&application="+application);
 		                		}
@@ -187,13 +188,14 @@ public abstract class Page extends RoboActivity {
     	});
 	}
 	
-	public void populateViews(List<View> outputs, LinearLayout contentLayout)
+	public static void populateViews(List<View> outputs, ViewGroup contentLayout)
 	{
 		for (int i = 0; i < outputs.size(); i++)
 		{
 			System.out.println("adding view...");
 			contentLayout.addView(outputs.get(i));
 		}
+		contentLayout.invalidate();
 	}
 	
 	@Override

@@ -57,7 +57,7 @@ public abstract class ContentPage extends Page {
 	{
 		//new breadcrumb parser
 		public PageSetupTask(Page page) {
-			super(page, true);
+			super(page, true, true);
 		}
 		@Override
 		protected JSONObject doInBackground(Void... arg0) {
