@@ -22,6 +22,7 @@ public class MyApplication extends RoboApplication {
 	protected String mapQuery;
 	protected JSONObject contactOutput;
 	protected List<Map<String,String>> generalOutput;
+	protected List<Map<String,String>> podcastsOutput;
 	protected String libraryQuery;
 	protected String locator;
 	protected String podcastsSlug;
@@ -34,15 +35,9 @@ public class MyApplication extends RoboApplication {
 				 				.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
 	
-	private long curTime = 0;
-	public void timeStart() { curTime = System.currentTimeMillis(); }
+	public void setPodcastsOutput(List<Map<String,String>> podcastsOutput) { this.podcastsOutput = podcastsOutput; }
 	
-	public void timeStop()
-	{
-		long now = System.currentTimeMillis();
-		curTime = now - curTime;
-		System.out.println(curTime+" milliseconds");
-	}
+	public List<Map<String,String>> getPodcastsOutput() { return podcastsOutput; }
 	
 	public void setPodcastsSlug(String slug) { podcastsSlug = slug; }
 	

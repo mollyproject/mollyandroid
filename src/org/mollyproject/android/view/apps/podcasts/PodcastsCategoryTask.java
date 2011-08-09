@@ -1,47 +1,95 @@
 package org.mollyproject.android.view.apps.podcasts;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.controller.MyApplication;
 
-public class PodcastsCategoryTask extends BackgroundTask<Void, Void, Void>{
-	protected String slug;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.widget.ImageView;
+
+public class PodcastsCategoryTask extends BackgroundTask<String, Void, List<Map<String,String>>>{
 	
-	public PodcastsCategoryTask(String slug, PodcastsCategoryPage podcastsCategoryPage, boolean b)
+	public PodcastsCategoryTask(PodcastsPage podcastsCategoryPage, boolean b)
 	{
 		super(podcastsCategoryPage, b);
-		this.slug = slug;
 	}
 	
 	@Override
-	public void updateView(Void outputs) {
-		// TODO Auto-generated method stub
-		
+	public void updateView(List<Map<String,String>> resultMapsList) {
+		((MyApplication) page.getApplication()).setPodcastsOutput(resultMapsList);
+		System.out.println("REACHED END OF PODCAST_CAT_TASK");
+		Intent myIntent = new Intent(page, PodcastsCategoryPage.class);
+		page.startActivityForResult(myIntent, 0);
+
 	}
 
 	@Override
-	protected Void doInBackground(Void... params) {
+	protected List<Map<String, String>> doInBackground(String... args) {
 		try {
-			JSONObject jsonOutput = page.getRouter().onRequestSent("podcast:category", slug,
-					Router.OutputFormat.JSON, "");
-			JSONArray podcasts = jsonOutput.getJSONArray("podcasts"); 
+			//args[0] should be the slug
+			JSONObject jsonOutput = page.getRouter().onRequestSent("podcasts:category", args[0],
+					Router.OutputFormat.JSON, null);
+			JSONArray podcasts = jsonOutput.getJSONArray("podcasts");
+			List<Map<String,String>> resultMapsList = new ArrayList<Map<String,String>>();
+			
+			for (int i = 0; i < podcasts.length(); i++)
+			{
+				JSONObject result = podcasts.getJSONObject(i);
+				Map<String,String> resultMap = new HashMap<String,String>();
+				resultMap.put("title", result.getString("title"));
+				resultMap.put("description", result.getString("description"));
+				resultMap.put("logoURL", result.getString("logo"));
+				resultMap.put("slug", result.getString("slug"));
+				resultMap.put("medium", result.getString("medium"));
+				resultMapsList.add(resultMap);
+			}
+			return resultMapsList;
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			unknownHostException = true;
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			jsonException = true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			ioException = true;
 		}
 		return null;
 	}
 	
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

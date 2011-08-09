@@ -144,8 +144,7 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		}
 		if (!empty)
 		{
-			myApp.setLibraryQuery(query);
-			System.out.println("Library "+query);
+			myApp.setLibraryQuery(query.trim());
 			Intent myIntent = new Intent (this, myApp.getPageClass("library:search"));
 			startActivityForResult(myIntent,0);
 		}

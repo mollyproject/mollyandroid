@@ -81,7 +81,6 @@ public class SearchTask extends BackgroundTask<String, Void, List<Map<String,Str
 						text = text + result.getString("additional") + "<br />";
 					}
 					
-					
 					//search excerpts:
 					if (!result.isNull("excerpt"))
 					{

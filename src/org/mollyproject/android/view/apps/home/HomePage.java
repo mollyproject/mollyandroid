@@ -23,6 +23,7 @@ public class HomePage extends Page {
 	protected ArrayList<Button> breadCrumbs;
 	protected LinearLayout bcLayout;
 	protected boolean loaded = false;
+	protected boolean firstLoad = true;
 	/** Called when the activity is first created. */
     @Override
     
@@ -49,7 +50,15 @@ public class HomePage extends Page {
     public void onResume()
     {
     	super.onResume();
-		new NetworkPollingTask(this, false).execute();
+    	if (firstLoad)
+    	{
+    		new NetworkPollingTask(this, true).execute();
+    		firstLoad = false;
+    	}
+    	else
+    	{
+    		new NetworkPollingTask(this, false).execute();
+    	}
     }
     
     @Override

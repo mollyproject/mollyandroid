@@ -13,11 +13,15 @@ import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.search.SearchPage;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -47,12 +51,20 @@ public class PodcastsPageTask extends BackgroundTask<Void, Void, List<Map<String
 		resultsLayout.setOrientation(LinearLayout.VERTICAL);
 		for (int i = 0; i < resultMapsList.size(); i++)
 		{
-			Map<String,String> resultMap = resultMapsList.get(i);
+			final Map<String,String> resultMap = resultMapsList.get(i);
 			LinearLayout thisResult = (LinearLayout) inflater.inflate
 					(R.layout.podcasts_search_result, ((PodcastsPage) page).getContentLayout(),false);
 			resultsLayout.addView(thisResult);
 			thisResult.setLayoutParams(Page.paramsWithLine);
 			((TextView) thisResult.getChildAt(0)).setText(resultMap.get("name"));
+			thisResult.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					((MyApplication) page.getApplication()).setPodcastsSlug(resultMap.get("slug"));
+					new PodcastsCategoryTask((PodcastsPage) page,toDestroyPageAfterFailure)
+																	.execute(resultMap.get("slug"));
+				}
+			});
 		}
 	}
 

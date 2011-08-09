@@ -10,10 +10,12 @@ public class PodcastsCategoryPage extends ContentPage {
 	protected static final int VIDEO = 1;
 	protected static final int ALL = 2;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		new PodcastsCategoryResultTask(this, true).execute(myApp.getPodcastsOutput());
 	}
 	
 	@Override
