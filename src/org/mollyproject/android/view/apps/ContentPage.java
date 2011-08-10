@@ -45,7 +45,6 @@ public abstract class ContentPage extends Page {
 				startActivityForResult(myIntent,0);
 			}
 		});
-		
 		if (!loaded)
 		{
 			new PageSetupTask(this).execute();
@@ -59,15 +58,13 @@ public abstract class ContentPage extends Page {
 		public PageSetupTask(Page page) {
 			super(page, true, true);
 		}
+		
 		@Override
-		protected JSONObject doInBackground(Void... arg0) {
-			//Download the breadcrumbs
+		protected void onPreExecute() {
+			super.onPreExecute();
 			try {
-				JSONObject jsonOutput = router.onRequestSent(MollyModule.getName(getInstance().getClass()), 
+				jsonContent = router.onRequestSent(MollyModule.getName(getInstance().getClass()), 
 						getAdditionalParams(), Router.OutputFormat.JSON, null);
-				jsonContent = jsonOutput;
-				JSONObject breadcrumbs = jsonOutput.getJSONObject("breadcrumbs");
-				return breadcrumbs;
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 				unknownHostException = true;
@@ -77,6 +74,18 @@ public abstract class ContentPage extends Page {
 			} catch (IOException e) {
 				e.printStackTrace();
 				ioException = true;
+			}
+		}
+		
+		@Override
+		protected JSONObject doInBackground(Void... arg0) {
+			//Download the breadcrumbs
+			try {
+				JSONObject breadcrumbs = jsonContent.getJSONObject("breadcrumbs");
+				return breadcrumbs;
+			} catch (JSONException e) {
+				e.printStackTrace();
+				jsonException = true;
 			} 
 			return null;
 		}

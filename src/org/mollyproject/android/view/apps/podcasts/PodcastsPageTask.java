@@ -26,7 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class PodcastsPageTask extends BackgroundTask<Void, Void, List<Map<String,String>>>{
+public class PodcastsPageTask extends BackgroundTask<JSONObject, Void, List<Map<String,String>>>{
 	
 	public PodcastsPageTask(PodcastsPage podcastsPage, boolean toDestroy, boolean dialog)
 	{
@@ -61,18 +61,17 @@ public class PodcastsPageTask extends BackgroundTask<Void, Void, List<Map<String
 				@Override
 				public void onClick(View v) {
 					((MyApplication) page.getApplication()).setPodcastsSlug(resultMap.get("slug"));
-					new PodcastsCategoryTask((PodcastsPage) page,toDestroyPageAfterFailure, dialogEnabled)
-																	.execute(resultMap.get("slug"));
+					Intent myIntent = new Intent(page, PodcastsCategoryPage.class);
+					page.startActivityForResult(myIntent, 0);
 				}
 			});
 		}
 	}
 
 	@Override
-	protected List<Map<String,String>> doInBackground(Void... params) {
+	protected List<Map<String,String>> doInBackground(JSONObject... args) {
 		try {
-			JSONArray jsonCategories = page.getRouter().onRequestSent("podcasts:index", null,
-					Router.OutputFormat.JSON, null).getJSONArray("categories");
+			JSONArray jsonCategories = args[0].getJSONArray("categories");
 			List<Map<String,String>> resultMapsList = new ArrayList<Map<String, String>>();
 			
 			for (int i = 0; i < jsonCategories.length(); i++)
@@ -84,13 +83,7 @@ public class PodcastsPageTask extends BackgroundTask<Void, Void, List<Map<String
 				resultMapsList.add(resultMap);
 			}
 			return resultMapsList;
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
