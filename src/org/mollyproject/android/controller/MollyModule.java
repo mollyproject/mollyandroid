@@ -14,6 +14,7 @@ import org.mollyproject.android.view.apps.home.HomePage;
 import org.mollyproject.android.view.apps.library.LibraryPage;
 import org.mollyproject.android.view.apps.library.LibraryResultsPage;
 import org.mollyproject.android.view.apps.map.PlacesPage;
+import org.mollyproject.android.view.apps.podcasts.IndividualPodcastPage;
 import org.mollyproject.android.view.apps.podcasts.PodcastsCategoryPage;
 import org.mollyproject.android.view.apps.podcasts.PodcastsPage;
 import org.mollyproject.android.view.apps.results_release.ResultsReleasePage;
@@ -45,6 +46,7 @@ public class MollyModule extends AbstractModule {
 	public static String WEATHER_PAGE = "weather:index";
 	public static String PODCAST_PAGE = "podcasts:index";
 	public static String PODCAST_CATEGORY_PAGE = "podcasts:category";
+	public static String INDIVIDUAL_PODCAST_PAGE = "podcasts:podcast";
 	//The following hash table allows for easier future change in implementation
 	//of new pages
 	protected static HashBiMap<String,Class<? extends Page>> pages 
@@ -63,6 +65,7 @@ public class MollyModule extends AbstractModule {
 		pages.put(WEATHER_PAGE, WeatherPage.class);
 		pages.put(PODCAST_PAGE, PodcastsPage.class);
 		pages.put(PODCAST_CATEGORY_PAGE, PodcastsCategoryPage.class);
+		pages.put(INDIVIDUAL_PODCAST_PAGE, IndividualPodcastPage.class);
 	}
 	
 	protected static Map<String,Integer> bcImg 
@@ -101,6 +104,7 @@ public class MollyModule extends AbstractModule {
 															.toInstance(R.drawable.podcasts_bc);
 		
 		bind(Page.class).annotatedWith(Names.named(PODCAST_CATEGORY_PAGE)).to(PodcastsCategoryPage.class);
+		bind(Page.class).annotatedWith(Names.named(INDIVIDUAL_PODCAST_PAGE)).to(IndividualPodcastPage.class);
 		
 		bind(Page.class).annotatedWith(Names.named(RESULTS_PAGE)).to(ResultsReleasePage.class);
 		bind(Page.class).annotatedWith(Names.named("splash")).to(Splash.class);
