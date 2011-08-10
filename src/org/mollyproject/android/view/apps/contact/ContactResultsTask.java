@@ -28,10 +28,10 @@ public class ContactResultsTask extends BackgroundTask<String, Void, LinearLayou
 {
 	protected LinearLayout contentLayout;
 	protected LinearLayout contactSearchBar;
-	public ContactResultsTask(ContactPage contactPage, LinearLayout contactSearchBar,
+	public ContactResultsTask(AbstractContactPage contactPage, LinearLayout contactSearchBar,
 			boolean toDestroy, boolean dialog) {
 		super(contactPage,toDestroy,dialog);
-		contentLayout = ((ContactPage) page).getContentLayout();
+		contentLayout = ((AbstractContactPage) page).getContentLayout();
 		this.contactSearchBar = contactSearchBar;
 	}
 
