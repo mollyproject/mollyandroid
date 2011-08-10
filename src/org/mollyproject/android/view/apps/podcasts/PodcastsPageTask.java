@@ -1,7 +1,5 @@
 package org.mollyproject.android.view.apps.podcasts;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,18 +10,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
-import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
-import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.search.SearchPage;
-
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class PodcastsPageTask extends BackgroundTask<JSONObject, Void, List<Map<String,String>>>{
@@ -61,7 +55,8 @@ public class PodcastsPageTask extends BackgroundTask<JSONObject, Void, List<Map<
 				@Override
 				public void onClick(View v) {
 					((MyApplication) page.getApplication()).setPodcastsSlug(resultMap.get("slug"));
-					Intent myIntent = new Intent(page, PodcastsCategoryPage.class);
+					Intent myIntent = new Intent(page, ((MyApplication) page.getApplication())
+							.getPageClass(MollyModule.PODCAST_CATEGORY_PAGE));
 					page.startActivityForResult(myIntent, 0);
 				}
 			});

@@ -4,6 +4,7 @@ import org.mollyproject.android.view.apps.Page;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.view.LayoutInflater;
 
 public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 	protected boolean jsonException = false;
@@ -16,6 +17,8 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 	protected Page page;
 	protected ProgressDialog pDialog;
 	protected boolean dialogEnabled;
+	protected LayoutInflater inflater;
+	protected MyApplication myApp;
 	
 	public BackgroundTask(Page page, boolean toDestroyPageAfterFailure, boolean dialogEnabled)
 	{
@@ -23,6 +26,8 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		this.page = page;
 		this.toDestroyPageAfterFailure = toDestroyPageAfterFailure;
 		this.dialogEnabled = dialogEnabled;
+		inflater = page.getLayoutInflater();
+		myApp = (MyApplication) page.getApplication();
 	}
 	
 	@Override

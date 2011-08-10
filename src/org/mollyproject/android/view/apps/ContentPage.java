@@ -113,9 +113,10 @@ public abstract class ContentPage extends Page {
 				{
 					JSONObject parent = breadcrumbs.getJSONObject("parent");
 					//change page title if necessary
-					title = parent.getString("title");
+					
 					if (!breadcrumbs.getBoolean("parent_is_index"))
 					{
+						title = parent.getString("title");
 						final String parentName = parent.getString("view_name");
 						parentBreadcrumb.setBackgroundResource(myApp.getImgResourceId(parentName));
 						parentBreadcrumb.setOnClickListener(new OnClickListener() {

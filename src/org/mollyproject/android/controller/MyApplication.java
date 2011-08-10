@@ -1,5 +1,6 @@
 package org.mollyproject.android.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 
 public class MyApplication extends RoboApplication {
@@ -29,10 +31,27 @@ public class MyApplication extends RoboApplication {
 	protected ArrayListMultimap<String,JSONObject> libraryCache = ArrayListMultimap.create();
 	protected boolean destroyed = false;
 	protected Injector injector;
+	Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
 	
 	public boolean isOnline() {
 		 return ((ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE))
 				 				.getActiveNetworkInfo().isConnectedOrConnecting();
+	}
+	
+	public synchronized void updatePodcastIconsCache(String logoURL, Bitmap bitmap)
+	{
+		podcastIconsCache.put(logoURL, bitmap);
+	}
+	
+	public synchronized boolean hasPodcastIcon(String logoURL)
+	{
+		return podcastIconsCache.containsKey(logoURL);
+	}
+	
+	public synchronized Bitmap getIcon(String logoURL)
+	{
+		System.out.println("podcast image cache");
+		return podcastIconsCache.get(logoURL);
 	}
 	
 	public void setPodcastsOutput(List<Map<String,String>> podcastsOutput) { this.podcastsOutput = podcastsOutput; }

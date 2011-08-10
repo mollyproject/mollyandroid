@@ -81,33 +81,37 @@ public class MollyModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named(LIBRARY_PAGE+"_bc")).toInstance(R.drawable.library_bc);
 		bind(Page.class).annotatedWith(Names.named(LIBRARY_RESULTS_PAGE)).to(LibraryResultsPage.class);
 		
-		bind(Page.class).annotatedWith(Names.named("places:index")).to(PlacesPage.class);
-		bind(Integer.class).annotatedWith(Names.named("places:index_img")).toInstance(R.drawable.places);
-		bind(Integer.class).annotatedWith(Names.named("places:index_bc")).toInstance(R.drawable.places_bc);
+		bind(Page.class).annotatedWith(Names.named(PLACES_PAGE)).to(PlacesPage.class);
+		bind(Integer.class).annotatedWith(Names.named(PLACES_PAGE+"_img")).toInstance(R.drawable.places);
+		bind(Integer.class).annotatedWith(Names.named(PLACES_PAGE+"_bc")).toInstance(R.drawable.places_bc);
 
 		//views and drawables for weather page
-		bind(Page.class).annotatedWith(Names.named("weather:index")).to(WeatherPage.class);
-		bind(Integer.class).annotatedWith(Names.named("weather:index_img")).toInstance(R.drawable.weather);
-		bind(Integer.class).annotatedWith(Names.named("weather:index_bc")).toInstance(R.drawable.weather_bc);
+		bind(Page.class).annotatedWith(Names.named(WEATHER_PAGE)).to(WeatherPage.class);
+		bind(Integer.class).annotatedWith(Names.named(WEATHER_PAGE+"_img")).toInstance(R.drawable.weather);
+		bind(Integer.class).annotatedWith(Names.named(WEATHER_PAGE+"_bc")).toInstance(R.drawable.weather_bc);
 		
 		//search page
-		bind(Page.class).annotatedWith(Names.named("search:index")).to(SearchPage.class);
+		bind(Page.class).annotatedWith(Names.named(SEARCH_PAGE)).to(SearchPage.class);
 		
 		//podcasts page
-		bind(Page.class).annotatedWith(Names.named("podcasts:index")).to(PodcastsPage.class);
-		bind(Integer.class).annotatedWith(Names.named("podcasts:index_img"))
+		bind(Page.class).annotatedWith(Names.named(PODCAST_PAGE)).to(PodcastsPage.class);
+		bind(Integer.class).annotatedWith(Names.named(PODCAST_PAGE+"_img"))
 															.toInstance(R.drawable.podcasts);
-		bind(Integer.class).annotatedWith(Names.named("podcasts:index_bc"))
+		bind(Integer.class).annotatedWith(Names.named(PODCAST_PAGE+"_bc"))
 															.toInstance(R.drawable.podcasts_bc);
 		
-		bind(Page.class).annotatedWith(Names.named("podcasts:category")).to(PodcastsPage.class);
+		bind(Page.class).annotatedWith(Names.named(PODCAST_CATEGORY_PAGE)).to(PodcastsCategoryPage.class);
 		
-		bind(Page.class).annotatedWith(Names.named("results:index")).to(ResultsReleasePage.class);
+		bind(Page.class).annotatedWith(Names.named(RESULTS_PAGE)).to(ResultsReleasePage.class);
 		bind(Page.class).annotatedWith(Names.named("splash")).to(Splash.class);
-		bind(Page.class).annotatedWith(Names.named("home:index")).to(HomePage.class);
+		bind(Page.class).annotatedWith(Names.named(HOME_PAGE)).to(HomePage.class);
 		
 		//Unimplemented pages and default images
 		bind(Page.class).annotatedWith(Named.class).to(UnimplementedPage.class);
+		
+		bind(Integer.class).annotatedWith(Names.named("audio")).toInstance(R.drawable.list_audio);
+		bind(Integer.class).annotatedWith(Names.named("video")).toInstance(R.drawable.list_video);
+		
 		bind(Integer.class).annotatedWith(Named.class).toInstance(R.drawable.android_button);
 	}
 	
