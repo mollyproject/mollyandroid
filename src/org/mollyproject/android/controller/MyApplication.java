@@ -30,6 +30,7 @@ public class MyApplication extends RoboApplication {
 	protected String libraryQuery;
 	protected String locator;
 	protected String podcastsSlug = null;
+	protected String indPodcastSlug = null;
 	protected ArrayListMultimap<String,JSONObject> libraryCache = ArrayListMultimap.create();
 	protected boolean destroyed = false;
 	protected Injector injector;
@@ -66,6 +67,10 @@ public class MyApplication extends RoboApplication {
 	public void setPodcastsOutput(List<Map<String,String>> podcastsOutput) { this.podcastsOutput = podcastsOutput; }
 	
 	public List<Map<String,String>> getPodcastsOutput() { return podcastsOutput; }
+	
+	public void setIndPodcastSlug(String slug) { indPodcastSlug = slug; }
+	
+	public String getIndPodcastSlug() { return indPodcastSlug; }
 	
 	public void setPodcastsSlug(String slug) { podcastsSlug = slug; }
 	

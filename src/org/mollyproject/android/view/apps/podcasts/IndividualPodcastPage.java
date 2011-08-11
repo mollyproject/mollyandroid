@@ -4,10 +4,16 @@ import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 public class IndividualPodcastPage extends ContentPage {
-
+	
+	@Override
+	public void onCreate(android.os.Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		new IndividualPodcastTask(this, true, true).execute(myApp.getIndPodcastSlug());
+	};
+	
 	@Override
 	public String getAdditionalParams() {
-		return myApp.getPodcastsSlug();
+		return myApp.getIndPodcastSlug();
 	}
 
 	@Override

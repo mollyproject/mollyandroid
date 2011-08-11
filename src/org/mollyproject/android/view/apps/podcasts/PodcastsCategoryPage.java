@@ -11,6 +11,7 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -52,7 +53,6 @@ public class PodcastsCategoryPage extends ContentPage {
 		LinearLayout resultsLayout = (LinearLayout) findViewById(R.id.generalResultsList);
 		for (int i = 0; i < resultMapsList.size(); i++)
 		{
-			
 			final Map<String,String> resultMap = resultMapsList.get(i);
 			
 			LinearLayout thisResult = (LinearLayout) layoutInflater.inflate(R.layout.podcast_category_result, 
@@ -63,7 +63,9 @@ public class PodcastsCategoryPage extends ContentPage {
 				
 				@Override
 				public void onClick(View v) {
-					myApp.setPodcastsSlug(resultMap.get("slug"));
+					myApp.setIndPodcastSlug(resultMap.get("slug"));
+					Intent myIntent = new Intent(PodcastsCategoryPage.this, IndividualPodcastPage.class);
+					PodcastsCategoryPage.this.startActivityForResult(myIntent, 0);
 				}
 			});
 			
@@ -79,7 +81,7 @@ public class PodcastsCategoryPage extends ContentPage {
 			TextView infoText = (TextView) thisResult.getChildAt(1);
 			infoText.setText(Html.fromHtml("<font size=18>" + resultMap.get("title") + "</font>" +
 					"<br/>" + resultMap.get("description")));
-			new DownloadImageTask(podcastIcon, urlStr).execute();
+			new DownloadImageTask(this,podcastIcon, urlStr).execute();
 			/*if (myApp.hasPodcastIcon(urlStr))
 			{
 				podcastIcon.setImageBitmap(myApp.getIcon(urlStr));
@@ -107,86 +109,4 @@ public class PodcastsCategoryPage extends ContentPage {
 		}
 	}
 	
-	public class DownloadImageTask extends AsyncTask<Void, Void, Void>
-	{
-		protected ImageView imView;
-		protected String urlStr;
-		protected boolean defaultIcon;
-		protected boolean iconCached;
-		protected Bitmap bitmap;
-		public DownloadImageTask(ImageView imView, String urlStr)
-		{
-			super();
-			this.imView = imView;
-			this.urlStr = urlStr;
-			defaultIcon = false;
-			iconCached = myApp.hasPodcastIcon(urlStr);
-		}
-		
-		@Override
-		protected void onPostExecute(Void result) {
-			if (defaultIcon)
-			{
-				imView.setImageResource(R.drawable.android_button);
-			}
-			else
-			{
-				imView.setImageBitmap(bitmap);
-			}
-		};
-		
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			if (!myApp.hasPodcastIcon(urlStr))
-			{
-				try {
-					Random random = new Random();
-					Thread.sleep(random.nextInt(10000));
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if (!myApp.hasPodcastIcon(urlStr))
-			{
-				try {
-					URL url = new URL(urlStr);
-					System.out.println(urlStr);
-					HttpURLConnection conn= (HttpURLConnection)url.openConnection();
-					conn.setDoInput(true);
-					//conn.setConnectTimeout(5);
-					conn.connect();
-					InputStream is = conn.getInputStream();
-					bitmap = BitmapFactory.decodeStream(is);
-
-			        int width = bitmap.getWidth();
-			        int height = bitmap.getHeight();
-			        int newWidth = getWindow().getWindowManager().getDefaultDisplay().getWidth()/4;
-			        int newHeight = getWindow().getWindowManager().getDefaultDisplay().getWidth()/4;
-			       
-			        // calculate the scale - in this case = 0.4f
-			        float scaleWidth = ((float) newWidth) / width;
-			        float scaleHeight = ((float) newHeight) / height;
-			       
-			        // create a matrix for the manipulation
-			        Matrix matrix = new Matrix();
-			        // resize the bit map
-			        matrix.postScale(scaleWidth, scaleHeight);
-			        bitmap = Bitmap.createBitmap(bitmap, 0, 0,
-	                          width, height, matrix, true);
-					myApp.updatePodcastIconsCache(urlStr, bitmap);
-					//imView.setImageBitmap(bitmap);
-				} catch (Exception e) {
-					e.printStackTrace();
-					defaultIcon = true;
-					//imView.setImageResource(R.drawable.android_button);
-				}
-			}
-			else
-			{
-				bitmap = myApp.getIcon(urlStr);
-			}
-			return null;
-		}
-	}
 }

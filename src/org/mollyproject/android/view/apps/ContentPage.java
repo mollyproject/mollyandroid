@@ -86,7 +86,11 @@ public abstract class ContentPage extends Page {
 			} catch (JSONException e) {
 				e.printStackTrace();
 				jsonException = true;
-			} 
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+				nullPointerException = true;
+			}
+		
 			return null;
 		}
 		@Override
@@ -116,20 +120,25 @@ public abstract class ContentPage extends Page {
 					
 					if (!breadcrumbs.getBoolean("parent_is_index"))
 					{
+						//parent is not index, all breadcrumbs visible
+						appBreadcrumb.setEnabled(true);
+						
 						title = parent.getString("title");
 						final String parentName = parent.getString("view_name");
-						parentBreadcrumb.setBackgroundResource(myApp.getImgResourceId(parentName));
+						parentBreadcrumb.setBackgroundResource(R.drawable.bg_blue);
+						parentBreadcrumb.setText("....");
 						parentBreadcrumb.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
 								Intent myIntent = new Intent(v.getContext(), 
-										myApp.getPageClass(parentName+":index"));
+										myApp.getPageClass(parentName));
 								startActivityForResult(myIntent, 0);
 							}
 						});
 						extraTextView.setText(title);
 					}
 					else { 
+						extraTextView.setText("");
 						parentBreadcrumb.setText(title); 
 						parentBreadcrumb.setEnabled(false);
 						appBreadcrumb.setEnabled(true);
@@ -140,7 +149,7 @@ public abstract class ContentPage extends Page {
 					parentBreadcrumb.setEnabled(false); 
 					appBreadcrumb.setEnabled(false); 
 				}
-				
+				contentLayout.invalidate();
 			} catch (JSONException e) {
 				e.printStackTrace();
 				Page.popupErrorDialog("JSON Exception", 

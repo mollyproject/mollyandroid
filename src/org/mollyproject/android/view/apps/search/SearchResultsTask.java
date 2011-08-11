@@ -24,7 +24,7 @@ public class SearchResultsTask extends BackgroundTask<List<Map<String,String>>, 
 	@Override
 	public void updateView(List<Map<String,String>> resultMapsList) {
 		LayoutInflater inflater = page.getLayoutInflater();
-		LinearLayout generalResultsLayout = (LinearLayout) inflater.inflate(R.layout.search_results_page, 
+		LinearLayout generalResultsLayout = (LinearLayout) inflater.inflate(R.layout.general_search_results_page, 
 				((SearchPage) page).getContentLayout(), false);
 		((SearchPage) page).getContentLayout().addView(generalResultsLayout);
 		

@@ -35,7 +35,7 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 	{
 		if (dialogEnabled)
 		{
-			pDialog = ProgressDialog.show(page, "", "Loading...", true, false);
+			pDialog = ProgressDialog.show(page, "", "Loading...", true, true);
 		}
 	}
 	

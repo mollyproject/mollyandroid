@@ -104,6 +104,7 @@ public class MollyModule extends AbstractModule {
 															.toInstance(R.drawable.podcasts_bc);
 		
 		bind(Page.class).annotatedWith(Names.named(PODCAST_CATEGORY_PAGE)).to(PodcastsCategoryPage.class);
+		
 		bind(Page.class).annotatedWith(Names.named(INDIVIDUAL_PODCAST_PAGE)).to(IndividualPodcastPage.class);
 		
 		bind(Page.class).annotatedWith(Names.named(RESULTS_PAGE)).to(ResultsReleasePage.class);
@@ -116,7 +117,7 @@ public class MollyModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named("audio")).toInstance(R.drawable.list_audio);
 		bind(Integer.class).annotatedWith(Names.named("video")).toInstance(R.drawable.list_video);
 		
-		bind(Integer.class).annotatedWith(Named.class).toInstance(R.drawable.android_button);
+		bind(Integer.class).annotatedWith(Named.class).toInstance(R.drawable.unavail_b_2);
 	}
 	
 	public static String getName(Class <? extends Page> pageClass)

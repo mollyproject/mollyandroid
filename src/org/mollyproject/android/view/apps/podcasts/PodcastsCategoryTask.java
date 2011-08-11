@@ -36,7 +36,7 @@ public class PodcastsCategoryTask extends BackgroundTask<String, Void, List<Map<
 	@Override
 	public void updateView(List<Map<String,String>> resultMapsList) {
 		
-		LinearLayout podcastsLayout = (LinearLayout) inflater.inflate(R.layout.search_results_page, 
+		LinearLayout podcastsLayout = (LinearLayout) inflater.inflate(R.layout.general_search_results_page, 
 				((PodcastsCategoryPage) page).getContentLayout(), false);
 		((PodcastsCategoryPage) page).getContentLayout().addView(podcastsLayout);
 		
@@ -44,50 +44,6 @@ public class PodcastsCategoryTask extends BackgroundTask<String, Void, List<Map<
 		
 		((PodcastsCategoryPage) page).updatePage(resultMapsList);
 		
-		/*for (int i = 0; i < resultMapsList.size(); i++)
-		{
-			LinearLayout resultsLayout = (LinearLayout) page.findViewById(R.id.generalResultsList);
-			Map<String,String> resultMap = resultMapsList.get(i);
-			
-			LinearLayout thisResult = (LinearLayout) inflater.inflate(R.layout.podcast_category_result, 
-					((PodcastsCategoryPage) page).getContentLayout(),false);
-			resultsLayout.addView(thisResult);
-			thisResult.setLayoutParams(Page.paramsWithLine);
-			
-			LinearLayout iconsLayout = (LinearLayout) thisResult.getChildAt(0);
-			
-			ImageView podcastIcon = (ImageView) iconsLayout.getChildAt(0); 
-			String urlStr = resultMap.get("logoURL");
-			
-			if (myApp.hasPodcastIcon(urlStr))
-			{
-				podcastIcon.setImageBitmap(myApp.getIcon(urlStr));
-			}
-			else
-			{
-				try {
-					URL url = new URL(urlStr);
-					HttpURLConnection conn= (HttpURLConnection)url.openConnection();
-					conn.setDoInput(true);
-					//conn.setConnectTimeout(5);
-					conn.connect();
-					InputStream is = conn.getInputStream();
-					Bitmap bitmap = BitmapFactory.decodeStream(is);
-					myApp.updatePodcastIconsCache(urlStr, bitmap);
-					podcastIcon.setImageBitmap(bitmap);
-				} catch (Exception e) {
-					e.printStackTrace();
-					//defaultIcon = true;
-					podcastIcon.setImageResource(R.drawable.android_button);
-				}
-				//new DownloadImageTask(podcastIcon, urlStr).execute();
-				//((PodcastsCategoryPage) page).downloadImageAndShow(urlStr,podcastIcon);
-			}
-			
-			TextView infoText = (TextView) thisResult.getChildAt(1);
-			infoText.setText(Html.fromHtml("<font size=18>" + resultMap.get("title") + "</font>" +
-					"<br/>" + resultMap.get("description")));
-		}*/
 		System.out.println("REACHED END OF PODCAST_CAT_TASK");
 	}
 
@@ -132,7 +88,11 @@ public class PodcastsCategoryTask extends BackgroundTask<String, Void, List<Map<
 				resultMapsList.add(resultMap);
 			}
 			return resultMapsList;
-		} catch (UnknownHostException e) {
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			nullPointerException = true;
+		}
+		catch (UnknownHostException e) {
 			e.printStackTrace();
 			unknownHostException = true;
 		} catch (JSONException e) {

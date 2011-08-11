@@ -33,7 +33,7 @@ public class PodcastsPageTask extends BackgroundTask<JSONObject, Void, List<Map<
 		//Exactly the same arrangements and layouts as Search Results 
 		//only with podcasts_search_result
 		LayoutInflater inflater = page.getLayoutInflater();
-		LinearLayout podcastsLayout = (LinearLayout) inflater.inflate(R.layout.search_results_page, 
+		LinearLayout podcastsLayout = (LinearLayout) inflater.inflate(R.layout.general_search_results_page, 
 				((PodcastsPage) page).getContentLayout(), false);
 		((PodcastsPage) page).getContentLayout().addView(podcastsLayout);
 		
