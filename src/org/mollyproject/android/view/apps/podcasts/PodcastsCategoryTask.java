@@ -35,12 +35,11 @@ public class PodcastsCategoryTask extends BackgroundTask<String, Void, List<Map<
 	
 	@Override
 	public void updateView(List<Map<String,String>> resultMapsList) {
-		
 		LinearLayout podcastsLayout = (LinearLayout) inflater.inflate(R.layout.general_search_results_page, 
 				((PodcastsCategoryPage) page).getContentLayout(), false);
 		((PodcastsCategoryPage) page).getContentLayout().addView(podcastsLayout);
 		
-		TextView header = (TextView) page.findViewById(R.id.searchResultsHeader);
+		//TextView header = (TextView) page.findViewById(R.id.searchResultsHeader);
 		
 		((PodcastsCategoryPage) page).updatePage(resultMapsList);
 		

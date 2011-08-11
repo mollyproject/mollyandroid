@@ -157,6 +157,7 @@ public abstract class ContentPage extends Page {
 						"from server. Please try again.", page, true);
 			} finally {
 				loaded = true;
+				contentLayout.invalidate();
 			}
 			
 		}

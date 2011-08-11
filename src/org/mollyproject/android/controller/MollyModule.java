@@ -117,6 +117,8 @@ public class MollyModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named("audio")).toInstance(R.drawable.list_audio);
 		bind(Integer.class).annotatedWith(Names.named("video")).toInstance(R.drawable.list_video);
 		
+		bind(Integer.class).annotatedWith(Names.named("default_white")).toInstance(R.drawable.unavail_w_1);
+		bind(Integer.class).annotatedWith(Names.named("default_blue")).toInstance(R.drawable.unavail_b_2);
 		bind(Integer.class).annotatedWith(Named.class).toInstance(R.drawable.unavail_b_2);
 	}
 	

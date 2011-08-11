@@ -17,6 +17,7 @@ import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 
+import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -54,9 +55,11 @@ public class IndividualPodcastTask extends BackgroundTask<String, Void, Void>{
 			new DownloadImageTask(page,podcastLogo, logoUrl).execute();
 		}
 		
+		TextView titleText = (TextView) page.findViewById(R.id.indPodcastTitle);
+		titleText.setText(Html.fromHtml("<b>"+ podcastMap.get("title") + "</b>" + "<br/>" + "<br/>"));
+		
 		TextView descriptionText = (TextView) page.findViewById(R.id.indPodcastDescription);
-		descriptionText.setText(Html.fromHtml("<b>"+ podcastMap.get("title") + "</b>" + "<br/>" + "<br/>"
-					+ podcastMap.get("description")));
+		descriptionText.setText(podcastMap.get("description"));
 		
 		LinearLayout scrLayout = (LinearLayout) page.findViewById(R.id.indPodcastScrollLayout);
 		//items list
@@ -123,5 +126,5 @@ public class IndividualPodcastTask extends BackgroundTask<String, Void, Void>{
 		
 		return null;
 	}
-
+	
 }

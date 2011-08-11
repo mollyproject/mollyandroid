@@ -8,15 +8,14 @@
     <LinearLayout android:id="@+id/breadcrumbs"
 		    android:layout_width="fill_parent" 
 		    android:layout_gravity="center_vertical"
-		    android:layout_height="wrap_content"
-		    android:layout_marginTop="5dp">
+		    android:gravity="center_vertical"
+		    android:layout_height="wrap_content" android:layout_marginTop="5dp" android:layout_marginBottom="5dp">
 		    
         	<Button android:text="" 
 		        android:id="@+id/homeBreadcrumb" 
 		        android:layout_width="wrap_content" 
 		        android:layout_height="wrap_content"
-		        android:layout_gravity="center_vertical"
-		        android:background="@drawable/apple_touch_icon" android:layout_marginLeft="5dp">
+		        android:background="@drawable/apple_touch_icon" android:layout_marginLeft="5dp" android:layout_gravity="center_vertical">
        		</Button>
         	<Button android:text="" 
 	        	android:id="@+id/appBreadcrumb" 
@@ -34,7 +33,7 @@
 	        	android:background="@drawable/bg_blue"
 	        	android:textColor="@color/white"
 	        	android:layout_gravity="center_vertical"
-	        	android:layout_height="fill_parent" android:layout_marginLeft="5dp" android:layout_marginRight="5dp">
+	        	android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:layout_marginRight="5dp">
         	</Button>
         	
         	<TextView android:text="" 
