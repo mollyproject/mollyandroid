@@ -1,5 +1,7 @@
 package org.mollyproject.android.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,13 @@ public class MyApplication extends RoboApplication {
 	protected boolean destroyed = false;
 	protected Injector injector;
 	Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
+	
+	public static DateFormat defaultDateFormat = new SimpleDateFormat
+			("EEE, d MMM yyyy HH:mm:ss Z");
+	public static DateFormat myDateFormat = new SimpleDateFormat
+			("d MMM yyyy");
+	public static DateFormat podcastDateFormat = new SimpleDateFormat
+			("yyyy-MM-d HH:mm:ss");
 	
 	public boolean isOnline() {
 		 return ((ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE))

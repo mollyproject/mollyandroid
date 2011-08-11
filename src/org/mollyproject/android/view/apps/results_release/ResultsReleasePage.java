@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
@@ -34,11 +35,6 @@ public class ResultsReleasePage extends ContentPage {
 	public void onCreate (Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
-		DateFormat defaultDateFormat = new SimpleDateFormat
-				("EEE, d MMM yyyy HH:mm:ss Z");
-		DateFormat myDateFormat = new SimpleDateFormat
-				("d MMM yyy");
 		
 		ScrollView scr = new ScrollView(getApplicationContext());
 		
@@ -67,9 +63,9 @@ public class ResultsReleasePage extends ContentPage {
 								.replace(" now available", "");
 						title = title.substring(0, title.length() - 7);
 						
-						Date updatedDate = defaultDateFormat.parse
+						Date updatedDate = MyApplication.defaultDateFormat.parse
 											(entry.getString("updated"));
-						Date myDate = new Date(myDateFormat.format(updatedDate));
+						Date myDate = new Date(MyApplication.myDateFormat.format(updatedDate));
 						examsByDate.put(myDate, title);
 						//System.out.println(myDate+" "+title);
 					}
@@ -84,7 +80,7 @@ public class ResultsReleasePage extends ContentPage {
 				Date thisDate = (dates.next());
 				TextView dateView = new TextView(getApplicationContext());
 				dateView.setTextSize(24);
-				dateView.setText('\n'+myDateFormat.format(thisDate));
+				dateView.setText('\n'+MyApplication.myDateFormat.format(thisDate));
 				allText.addView(dateView);
 				
 				List<String> results = (List<String>) examsByDate.get(thisDate);
