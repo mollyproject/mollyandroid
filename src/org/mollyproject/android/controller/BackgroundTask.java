@@ -13,6 +13,7 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 	protected boolean otherException = false;
 	protected boolean malformedURLException = false;
 	protected boolean nullPointerException = false;
+	protected boolean parseException = false; 
 	protected boolean toDestroyPageAfterFailure;
 	protected Page page;
 	protected ProgressDialog pDialog;
@@ -71,6 +72,12 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		{
 			ioException = false;
 			Page.popupErrorDialog("I/O Exception. Cannot connect to server. ", 
+					"Please try again later.", page, toDestroyPageAfterFailure);
+		} 
+		else if (parseException)
+		{
+			parseException = false;
+			Page.popupErrorDialog("Parse Exception. Bad input from server. ", 
 					"Please try again later.", page, toDestroyPageAfterFailure);
 		} 
 		else if (otherException)

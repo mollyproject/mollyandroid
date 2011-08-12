@@ -108,9 +108,12 @@ public class MollyModule extends AbstractModule {
 		bind(Page.class).annotatedWith(Names.named(INDIVIDUAL_PODCAST_PAGE)).to(IndividualPodcastPage.class);
 		
 		bind(Page.class).annotatedWith(Names.named(RESULTS_PAGE)).to(ResultsReleasePage.class);
+		bind(Integer.class).annotatedWith(Names.named(RESULTS_PAGE+"_img")).toInstance(R.drawable.results);
+		bind(Integer.class).annotatedWith(Names.named(RESULTS_PAGE+"_bc")).toInstance(R.drawable.results_bc);
+		
 		bind(Page.class).annotatedWith(Names.named("splash")).to(Splash.class);
 		bind(Page.class).annotatedWith(Names.named(HOME_PAGE)).to(HomePage.class);
-		
+
 		//Unimplemented pages and default images
 		bind(Page.class).annotatedWith(Named.class).to(UnimplementedPage.class);
 		
