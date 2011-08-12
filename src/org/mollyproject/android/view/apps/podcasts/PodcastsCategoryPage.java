@@ -92,10 +92,8 @@ public class PodcastsCategoryPage extends ContentPage {
 			
 			thisResult.setLayoutParams(Page.paramsWithLine);
 			
-			LinearLayout iconsLayout = (LinearLayout) thisResult.getChildAt(0);
-			
 			String medium = resultMap.get("medium");
-			ImageView mediumIcon = (ImageView) iconsLayout.getChildAt(1);
+			ImageView mediumIcon = (ImageView) thisResult.findViewById(R.id.mediaIcon);
 			mediumIcon.setImageResource(myApp.getImgResourceId(medium));
 			
 			if (firstLoad)
@@ -114,10 +112,10 @@ public class PodcastsCategoryPage extends ContentPage {
 			}
 			
 			//medium text
-			ImageView podcastIcon = (ImageView) iconsLayout.getChildAt(0); 
+			ImageView podcastIcon = (ImageView) thisResult.findViewById(R.id.podcastIcon); 
 			String urlStr = resultMap.get("logoURL");
-			TextView infoText = (TextView) thisResult.getChildAt(1);
-			infoText.setText(Html.fromHtml("<font size=18>" + resultMap.get("title") + "</font>" +
+			TextView podcastText = (TextView) thisResult.findViewById(R.id.podcastText);
+			podcastText.setText(Html.fromHtml("<font size=18>" + resultMap.get("title") + "</font>" +
 					"<br/>" + resultMap.get("description")));
 			try
 			{

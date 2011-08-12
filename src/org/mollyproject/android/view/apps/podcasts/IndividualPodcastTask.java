@@ -70,15 +70,13 @@ public class IndividualPodcastTask extends BackgroundTask<String, Void, Void>{
 					((IndividualPodcastPage) page).getContentLayout(), false);
 			
 			//description text
-			TextView itemDescription = (TextView) itemLayout.getChildAt(0);
+			TextView itemDescription = (TextView) itemLayout.findViewById(R.id.podcastIndividualText);
 			itemDescription.setText(Html.fromHtml("<b>" + itemMap.get("title") + "</b>" + "<br/>"
 						+ itemMap.get("published_date") + "<br/>"
 						+ itemMap.get("description")));
 			
 			//medium icon
-			RelativeLayout mediumLayout = (RelativeLayout) itemLayout.getChildAt(1);
-			
-			ImageView mediumIcon = (ImageView) mediumLayout.getChildAt(0);
+			ImageView mediumIcon = (ImageView) itemLayout.findViewById(R.id.mediumIcon);
 			mediumIcon.setImageResource(myApp.getImgResourceId(podcastMap.get("medium")));
 			
 			scrLayout.addView(itemLayout);

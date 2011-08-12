@@ -40,11 +40,11 @@ public class SearchResultsTask extends BackgroundTask<List<Map<String,String>>, 
 			thisResult.setLayoutParams(Page.paramsWithLine);
 			//image view
 			//ImageView appIcon = (ImageView) generalResultsLayout.findViewById(R.id.generalSearchIcon);
-			ImageView appIcon = (ImageView) thisResult.getChildAt(0);
+			ImageView appIcon = (ImageView) thisResult.findViewById(R.id.generalSearchIcon);
 			appIcon.setImageResource(((MyApplication) page.getApplication())
 					.getImgResourceId(resultMap.get("application") + ":index_img"));
 			//text
-			TextView infoText = (TextView) thisResult.getChildAt(1); //(TextView) generalResultsLayout.findViewById(R.id.generalSearchText);
+			TextView infoText = (TextView) thisResult.findViewById(R.id.generalSearchText); //(TextView) generalResultsLayout.findViewById(R.id.generalSearchText);
 			infoText.setText(Html.fromHtml(resultMap.get("text")));
 			System.out.println("app: "+resultMap.get("application"));
 		}

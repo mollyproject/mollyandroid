@@ -67,7 +67,7 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMult
 				{
 					allText = allText + "<br/>" + result;
 				}
-				TextView resultsText = ((TextView) thisResult.getChildAt(0));
+				TextView resultsText = ((TextView) thisResult.findViewById(R.id.plainTextResultText));
 				resultsText.setText(Html.fromHtml(allText));
 				resultsLayout.addView(thisResult);
 			}

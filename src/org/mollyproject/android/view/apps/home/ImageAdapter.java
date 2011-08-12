@@ -2,6 +2,7 @@ package org.mollyproject.android.view.apps.home;
 
 import java.util.List;
 
+import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 
@@ -29,7 +30,11 @@ public class ImageAdapter extends BaseAdapter {
     
     // create a new ImageView for each item referenced by the Adapter
     public View getView(final int position, View convertView, ViewGroup parent) {
+                
+        View view = page.getLayoutInflater().inflate(R.layout.grid_icon_layout, 
+        		((HomePage) page).getHomeLayout());       
         ImageView imageView;
+
         final MyApplication myApp = (MyApplication) page.getApplication();
         if (convertView == null) {  // if it's not recycled, initialize some attributes
             imageView = new ImageView(page);
