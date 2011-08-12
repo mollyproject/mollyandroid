@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/showAllItem" android:visible="true" android:enabled="true" android:title="Show all items"></item><item android:visible="true" android:title="Show audios only" android:enabled="true" android:checkable="true" android:id="@+id/showAudioItem"></item>
+    <item android:visible="true" android:title="Show videos only" android:enabled="true" android:id="@+id/showVideoItem"></item>
+    
+    
+</menu>

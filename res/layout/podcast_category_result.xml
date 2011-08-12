@@ -11,13 +11,13 @@
 	    android:id="@+id/podcastIconsLayout" 
 	    android:orientation="vertical" android:layout_gravity="center_vertical" android:layout_marginLeft="5dp" android:layout_marginTop="5dp" android:layout_marginBottom="5dp">
 	    
-	    <ImageView android:src="@drawable/android_button" 
+	    <ImageView android:src="@drawable/unavail_w_2" 
 		    android:layout_height="wrap_content" 
 		    android:id="@+id/podcastIcon" 
 		    android:layout_width="wrap_content" android:layout_gravity="center_horizontal">
     	</ImageView>
     	
-    	 <ImageView android:src="@drawable/android_button" 
+    	 <ImageView android:src="@drawable/list_document" 
 		    android:layout_height="wrap_content" 
 		    android:id="@+id/mediaIcon" 
 		    android:layout_width="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginTop="5dp">
