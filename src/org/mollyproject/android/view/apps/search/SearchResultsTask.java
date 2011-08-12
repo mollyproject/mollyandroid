@@ -28,7 +28,7 @@ public class SearchResultsTask extends BackgroundTask<List<Map<String,String>>, 
 				((SearchPage) page).getContentLayout(), false);
 		((SearchPage) page).getContentLayout().addView(generalResultsLayout);
 		
-		LinearLayout resultsLayout = (LinearLayout) page.findViewById(R.id.generalResultsList);
+		LinearLayout resultsLayout = (LinearLayout) generalResultsLayout.findViewById(R.id.generalResultsList);
 		
 		for (int i = 0; i < resultMapsList.size(); i++)
 		{
@@ -39,12 +39,12 @@ public class SearchResultsTask extends BackgroundTask<List<Map<String,String>>, 
 			resultsLayout.addView(thisResult);
 			thisResult.setLayoutParams(Page.paramsWithLine);
 			//image view
-			//ImageView appIcon = (ImageView) page.findViewById(R.id.generalSearchIcon);
+			//ImageView appIcon = (ImageView) generalResultsLayout.findViewById(R.id.generalSearchIcon);
 			ImageView appIcon = (ImageView) thisResult.getChildAt(0);
 			appIcon.setImageResource(((MyApplication) page.getApplication())
 					.getImgResourceId(resultMap.get("application") + ":index_img"));
 			//text
-			TextView infoText = (TextView) thisResult.getChildAt(1); //(TextView) page.findViewById(R.id.generalSearchText);
+			TextView infoText = (TextView) thisResult.getChildAt(1); //(TextView) generalResultsLayout.findViewById(R.id.generalSearchText);
 			infoText.setText(Html.fromHtml(resultMap.get("text")));
 			System.out.println("app: "+resultMap.get("application"));
 		}

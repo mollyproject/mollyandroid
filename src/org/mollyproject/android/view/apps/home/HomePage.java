@@ -41,6 +41,11 @@ public class HomePage extends Page {
     	setEnterKeySearch(searchField, this, null);
     }
     
+    public LinearLayout getHomeLayout()
+    {
+    	return homeLayout;
+    }
+    
     public Page getInstance()
     {
     	return this;

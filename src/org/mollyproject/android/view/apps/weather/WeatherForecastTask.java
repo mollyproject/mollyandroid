@@ -39,9 +39,9 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, Void>{
 		((WeatherPage) page).getContentLayout().addView(observationBar);
 		
 		//Cannot do injection by InjectView outside of an Activity, roboguice limitation
-		TextView temperatureText = (TextView) page.findViewById(R.id.temperatureText);
-		TextView otherText = (TextView) page.findViewById(R.id.otherText);
-		TextView cityName = (TextView) page.findViewById(R.id.cityName);
+		TextView temperatureText = (TextView) observationBar.findViewById(R.id.temperatureText);
+		TextView otherText = (TextView) observationBar.findViewById(R.id.otherText);
+		TextView cityName = (TextView) observationBar.findViewById(R.id.cityName);
 		temperatureText.setText(temperature);
 		otherText.setText(others);
 		cityName.setText(city);

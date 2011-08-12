@@ -8,7 +8,7 @@
   android:layout_height="wrap_content">
   
     <TextView android:text="Result" 
-	    android:id="@+id/podcastsResultText"
+	    android:id="@+id/plainTextResultText"
 	    android:textColor="@color/white"
 	    android:textSize="18dp"
 	    android:paddingLeft="10dp"

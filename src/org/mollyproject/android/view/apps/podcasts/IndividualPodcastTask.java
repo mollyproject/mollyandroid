@@ -44,7 +44,7 @@ public class IndividualPodcastTask extends BackgroundTask<String, Void, Void>{
 		LinearLayout indPodcastLayout = (LinearLayout) inflater.inflate(R.layout.individual_podcast_page, 
 				((IndividualPodcastPage) page).getContentLayout(), true);
 		
-		ImageView podcastLogo = (ImageView) page.findViewById(R.id.indPodcastIcon);
+		ImageView podcastLogo = (ImageView) indPodcastLayout.findViewById(R.id.indPodcastIcon);
 		String logoUrl = podcastMap.get("logoUrl");
 		if (myApp.hasPodcastIcon(logoUrl))
 		{
@@ -55,13 +55,13 @@ public class IndividualPodcastTask extends BackgroundTask<String, Void, Void>{
 			new DownloadImageTask(page,podcastLogo, logoUrl).execute();
 		}
 		
-		TextView titleText = (TextView) page.findViewById(R.id.indPodcastTitle);
+		TextView titleText = (TextView) indPodcastLayout.findViewById(R.id.indPodcastTitle);
 		titleText.setText(Html.fromHtml("<b>"+ podcastMap.get("title") + "</b>" + "<br/>" + "<br/>"));
 		
-		TextView descriptionText = (TextView) page.findViewById(R.id.indPodcastDescription);
+		TextView descriptionText = (TextView) indPodcastLayout.findViewById(R.id.indPodcastDescription);
 		descriptionText.setText(podcastMap.get("description"));
 		
-		LinearLayout scrLayout = (LinearLayout) page.findViewById(R.id.indPodcastScrollLayout);
+		LinearLayout scrLayout = (LinearLayout) indPodcastLayout.findViewById(R.id.indPodcastScrollLayout);
 		//items list
 		for (int i = 0; i < itemMapsList.size(); i++)
 		{

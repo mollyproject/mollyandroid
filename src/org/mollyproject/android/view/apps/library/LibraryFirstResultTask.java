@@ -70,11 +70,11 @@ public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Voi
 		
 		List<View> outputs = new ArrayList<View>();
 		final JSONObject jsonPage = results.getJSONObject("page");
-		final LinearLayout resultsLayout = (LinearLayout) page.findViewById(R.id.resultsLayout); 
-		final TextView resultsNo = (TextView) page.findViewById(R.id.libraryResultsNo);
+		final LinearLayout resultsLayout = (LinearLayout) libraryResultsTemplate.findViewById(R.id.resultsLayout); 
+		final TextView resultsNo = (TextView) libraryResultsTemplate.findViewById(R.id.libraryResultsNo);
 		
 		populateResults(page,getNextResultsPage(page), resultsLayout, resultsNo);
-		Button nextButton = (Button) page.findViewById(R.id.moreButton);
+		Button nextButton = (Button) libraryResultsTemplate.findViewById(R.id.moreButton);
 		
 		nextButton.setEnabled(false);
 		if (jsonPage.getBoolean("has_next") & jsonPage.getInt("num_pages") > 1)

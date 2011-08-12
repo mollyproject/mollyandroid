@@ -46,10 +46,10 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMult
 					((ResultsReleasePage) page).getContentLayout(), false);
 			((ResultsReleasePage) page).getContentLayout().addView(releasesLayout);
 			
-			TextView headerText = (TextView) page.findViewById(R.id.searchResultsHeader);
+			TextView headerText = (TextView) releasesLayout.findViewById(R.id.searchResultsHeader);
 			headerText.setText("Sorted by Latest first");
 			
-			LinearLayout resultsLayout = (LinearLayout) page.findViewById(R.id.generalResultsList);
+			LinearLayout resultsLayout = (LinearLayout) releasesLayout.findViewById(R.id.generalResultsList);
 			
 			while(dates.hasNext())
 			{

@@ -5,6 +5,7 @@ import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -18,6 +19,7 @@ public class PodcastsPage extends ContentPage {
 		layoutInflater.inflate(R.layout.search_bar,contentLayout, false);
 		contentLayout.addView(searchBar);
 		
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		EditText searchField = (EditText) findViewById(R.id.searchField);
 		searchField.setWidth(LayoutParams.FILL_PARENT);
 		setEnterKeySearch(searchField, this, "podcasts");
