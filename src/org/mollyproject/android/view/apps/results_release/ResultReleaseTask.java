@@ -14,7 +14,6 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.podcasts.PodcastsPage;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -55,12 +54,13 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMult
 			while(dates.hasNext())
 			{
 				LinearLayout thisResult = (LinearLayout) inflater.inflate
-						(R.layout.podcasts_search_result, ((ResultsReleasePage) page).getContentLayout(),false);
+						(R.layout.plain_text_search_result, ((ResultsReleasePage) page).getContentLayout(),false);
 				thisResult.setLayoutParams(Page.paramsWithLine);
 				String allText = new String();
 				
 				Date thisDate = (dates.next());
-				allText = "<b>" + MyApplication.myDateFormat.format(thisDate) + "</b>";
+				allText = "<b>"+ "<font size = 24>" + MyApplication.myDateFormat.format(thisDate) 
+						+ "</font>" + "</b>";
 				
 				List<String> results = (List<String>) examsByDate.get(thisDate);
 				for (String result : results)

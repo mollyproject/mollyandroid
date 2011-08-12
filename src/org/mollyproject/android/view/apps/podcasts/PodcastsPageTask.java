@@ -47,7 +47,7 @@ public class PodcastsPageTask extends BackgroundTask<JSONObject, Void, List<Map<
 		{
 			final Map<String,String> resultMap = resultMapsList.get(i);
 			LinearLayout thisResult = (LinearLayout) inflater.inflate
-					(R.layout.podcasts_search_result, ((PodcastsPage) page).getContentLayout(),false);
+					(R.layout.plain_text_search_result, ((PodcastsPage) page).getContentLayout(),false);
 			resultsLayout.addView(thisResult);
 			thisResult.setLayoutParams(Page.paramsWithLine);
 			((TextView) thisResult.getChildAt(0)).setText(resultMap.get("name"));
