@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.apps.podcasts;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
@@ -32,6 +33,14 @@ public class PodcastsCategoryPage extends ContentPage {
 	protected List<Map<String,String>> videos;
 	protected volatile boolean rejectedDownloadImages = false;
 	protected boolean firstLoad;
+	
+	protected static Map<Integer,String> mediumTexts = new HashMap<Integer,String>();
+	static {
+		mediumTexts.put(ALL, "Showing all types of media.");
+		mediumTexts.put(AUDIO, "Showing only audios.");
+		mediumTexts.put(VIDEO, "Showing only videos.");
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -66,6 +75,8 @@ public class PodcastsCategoryPage extends ContentPage {
 					contentLayout,false);
 			resultsLayout.addView(thisResult);
 			
+			showMedium(currentlyShowing);
+			
 			thisResult.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -87,6 +98,8 @@ public class PodcastsCategoryPage extends ContentPage {
 			if (firstLoad)
 			{
 				all.add(resultMap);
+				TextView mediumText = (TextView) findViewById(R.id.searchResultsHeader);
+				mediumText.setText("Showing all types of media.");
 			}
 			if (medium.equals("video") & firstLoad)
 			{
@@ -97,6 +110,7 @@ public class PodcastsCategoryPage extends ContentPage {
 				audios.add(resultMap);
 			}
 			
+			//medium text
 			ImageView podcastIcon = (ImageView) iconsLayout.getChildAt(0); 
 			String urlStr = resultMap.get("logoURL");
 			TextView infoText = (TextView) thisResult.getChildAt(1);
@@ -119,6 +133,14 @@ public class PodcastsCategoryPage extends ContentPage {
 			
 		}
 		firstLoad = false;
+	}
+	
+	protected void showMedium(int medium)
+	{
+		//only for use after R.layout.podcast_category_result is inflated in its scope
+		//otherwise the textview will be null
+		TextView mediumText = (TextView) findViewById(R.id.searchResultsHeader);
+		mediumText.setText(mediumTexts.get(medium));
 	}
 	
 	@Override
