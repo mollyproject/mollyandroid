@@ -37,8 +37,8 @@ public class PodcastsPageTask extends BackgroundTask<JSONObject, Void, List<Map<
 				((PodcastsPage) page).getContentLayout(), false);
 		((PodcastsPage) page).getContentLayout().addView(podcastsLayout);
 		
-		//TextView header = (TextView) page.findViewById(R.id.searchResultsHeader);
-		//header.setText("By division");
+		TextView header = (TextView) page.findViewById(R.id.searchResultsHeader);
+		header.setText("By division");
 		
 		LinearLayout resultsLayout = (LinearLayout) page.findViewById(R.id.generalResultsList);
 		

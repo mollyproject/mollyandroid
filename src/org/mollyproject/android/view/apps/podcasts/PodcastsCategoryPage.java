@@ -66,6 +66,9 @@ public class PodcastsCategoryPage extends ContentPage {
 	
 	public void updatePage(List<Map<String,String>> resultMapsList)
 	{
+		//this is a hack: the view hierachy must be done in one UI thread only so I cannot inflate
+		//the resultsLayout in the BackgroundTask then download the logos to the imageviews in another
+		//So I have to do this here but still want to keep the progress spinner thus keeping the task
 		LinearLayout resultsLayout = (LinearLayout) findViewById(R.id.generalResultsList);
 		for (int i = 0; i < resultMapsList.size(); i++)
 		{
