@@ -1,5 +1,6 @@
 package org.mollyproject.android.view.apps.library;
 
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.Page;
 
 public class LibraryPage extends AbstractLibraryPage {
@@ -11,7 +12,11 @@ public class LibraryPage extends AbstractLibraryPage {
 
 	@Override
 	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getName() {
+		return MollyModule.LIBRARY_PAGE;
 	}
 }

@@ -7,19 +7,15 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
-import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Void, JSONObject>
@@ -31,6 +27,7 @@ public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Voi
 	@Override
 	protected JSONObject doInBackground(LinearLayout... arg0) {
 		try {
+			//just download the results and pass the json response on
 			return getResults(page,((MyApplication) page.getApplication())
 					.getLibraryQuery()+"&page="+((LibraryResultsPage) page).getCurPageNum());
 		} catch (JSONException e) {
@@ -42,18 +39,17 @@ public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Voi
 	@Override
 	public void updateView(JSONObject results) {
 		try {
+			//generate the page with the given json response
 			generatePage((LibraryResultsPage) page, results);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			jsonException = true;
 		}
-		
-		//page.populateViews(outputs,((LibraryResultsPage) page).getContentLayout());
 	}
 	
 	private JSONObject getResults(Page page, String queryWithPage) throws JSONException
 	{
-		return page.getRouter().exceptionHandledOnRequestSent(MollyModule.getName(page.getClass()), null,
+		return page.getRouter().exceptionHandledOnRequestSent(page.getName(), null,
 				page, Router.OutputFormat.JSON, queryWithPage);
 	}
 	
@@ -62,8 +58,7 @@ public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Voi
 	{
 		//for use in the very first time the page is populated
 		
-		LayoutInflater layoutInflater = (LayoutInflater) 
-			page.getApplication().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater layoutInflater = page.getLayoutInflater();
 		LinearLayout libraryResultsTemplate = (LinearLayout) layoutInflater
 						.inflate(R.layout.library_results_template,page.getContentLayout(), false);
 		page.getContentLayout().addView(libraryResultsTemplate);

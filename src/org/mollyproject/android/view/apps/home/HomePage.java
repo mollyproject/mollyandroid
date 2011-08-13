@@ -1,12 +1,12 @@
 package org.mollyproject.android.view.apps.home;
 import java.util.ArrayList;
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.Page;
 import roboguice.inject.InjectView;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +34,6 @@ public class HomePage extends Page {
     	RelativeLayout searchBar = (RelativeLayout) layoutInflater.inflate
     											(R.layout.search_bar,homeLayout, false);
     	homeLayout.addView(searchBar,0);
-    	
     	final EditText searchField = (EditText) findViewById(R.id.searchField);
     	searchField.setWidth(200);
     	searchField.invalidate();
@@ -50,7 +49,6 @@ public class HomePage extends Page {
     {
     	return this;
     }
-	
     @Override
     public void onResume()
     {
@@ -79,6 +77,11 @@ public class HomePage extends Page {
     {
     	gridview.setAdapter(newGridAdapter);
     }
+
+	@Override
+	public String getName() {
+		return MollyModule.HOME_PAGE;
+	}
 }
 
 

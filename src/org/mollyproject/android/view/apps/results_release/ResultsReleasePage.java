@@ -1,5 +1,6 @@
 package org.mollyproject.android.view.apps.results_release;
 
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
@@ -11,6 +12,11 @@ public class ResultsReleasePage extends ContentPage {
 	public void onCreate (Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
 		new ResultReleaseTask(this, true, true).execute(jsonContent);
 	}
 	
@@ -22,8 +28,12 @@ public class ResultsReleasePage extends ContentPage {
 
 	@Override
 	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getName() {
+		return MollyModule.RESULTS_PAGE;
 	}
 	
 

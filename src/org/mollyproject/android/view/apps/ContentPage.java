@@ -6,14 +6,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
-import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
-
-import com.google.inject.Inject;
 
 import roboguice.inject.InjectView;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -45,11 +41,15 @@ public abstract class ContentPage extends Page {
 				startActivityForResult(myIntent,0);
 			}
 		});
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
 		if (!loaded)
 		{
 			new PageSetupTask(this).execute();
 		}
-		
 	}
 	
 	protected class PageSetupTask extends BackgroundTask<Void, Void, JSONObject>
@@ -63,7 +63,7 @@ public abstract class ContentPage extends Page {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			try {
-				jsonContent = router.onRequestSent(MollyModule.getName(getInstance().getClass()), 
+				jsonContent = router.onRequestSent(getName(), 
 						getAdditionalParams(), Router.OutputFormat.JSON, null);
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
@@ -100,7 +100,8 @@ public abstract class ContentPage extends Page {
 				//app/index breadcrumb
 				final String app = breadcrumbs.getString("application");
 				JSONObject index = breadcrumbs.getJSONObject("index");
-				appBreadcrumb.setBackgroundResource(myApp.getImgResourceId(index.getString("view_name")+"_bc"));
+				appBreadcrumb.setBackgroundResource
+						(myApp.getImgResourceId(index.getString("view_name")+"_bc"));
 				appBreadcrumb.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {

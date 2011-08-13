@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.apps.map;
 
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -40,8 +41,11 @@ public class PlacesPage extends ContentPage {
 	}
 	@Override
 	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public String getName() {
+		return MollyModule.PLACES_PAGE;
 	}
 	
 }

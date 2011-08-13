@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
@@ -17,11 +18,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PodcastsCategoryPage extends ContentPage {
 	protected static final int AUDIO = R.id.showAudioItem;
@@ -45,12 +46,18 @@ public class PodcastsCategoryPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		new PodcastsCategoryTask(this,true, true).execute(myApp.getPodcastsSlug());
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		firstLoad = true;
 		currentlyShowing = ALL;
 		all = new ArrayList<Map<String,String>>();
 		audios = new ArrayList<Map<String,String>>();
 		videos = new ArrayList<Map<String,String>>();
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		new PodcastsCategoryTask(this,true, true).execute(myApp.getPodcastsSlug());
 	}
 	
 	@Override
@@ -66,9 +73,6 @@ public class PodcastsCategoryPage extends ContentPage {
 	
 	public void updatePage(List<Map<String,String>> resultMapsList)
 	{
-		//this is a hack: the view hierachy must be done in one UI thread only so I cannot inflate
-		//the resultsLayout in the BackgroundTask then download the logos to the imageviews in another
-		//So I have to do this here but still want to keep the progress spinner thus keeping the task
 		LinearLayout resultsLayout = (LinearLayout) findViewById(R.id.generalResultsList);
 		for (int i = 0; i < resultMapsList.size(); i++)
 		{
@@ -188,6 +192,11 @@ public class PodcastsCategoryPage extends ContentPage {
 		MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.audio_video, menu);
 	    return true;
+	}
+
+	@Override
+	public String getName() {
+		return MollyModule.PODCAST_CATEGORY_PAGE;
 	}
 }
 

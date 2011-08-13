@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.apps.search;
 
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
@@ -11,7 +12,6 @@ import android.widget.RelativeLayout;
 
 public class SearchPage extends ContentPage {
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -23,7 +23,12 @@ public class SearchPage extends ContentPage {
     	EditText searchField = (EditText) findViewById(R.id.searchField);
     	searchField.setWidth(LayoutParams.FILL_PARENT);
     	setEnterKeySearch(searchField, this, null);
-		new SearchResultsTask(this,true, true).execute(myApp.getGeneralOutput());
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		new SearchTask(this, true, true).execute(myApp.getGeneralQuery());
 	}
 	@Override
 	public Page getInstance() {
@@ -31,8 +36,11 @@ public class SearchPage extends ContentPage {
 	}
 	@Override
 	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public String getName() {
+		return MollyModule.SEARCH_PAGE;
 	}
 
 }

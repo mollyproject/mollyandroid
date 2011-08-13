@@ -41,7 +41,6 @@ public class CookieManager {
     private DateFormat dateFormat;
 
     public CookieManager(MyApplication myApp) throws IOException, JSONException {
-    	//this.context = context;
     	setApp(myApp);
     	cookies = new JSONObject();
     	

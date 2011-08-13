@@ -10,7 +10,8 @@ import android.widget.TextView;
 public class LibraryNextPageTask extends LibraryResultsTask<Void, Void, JSONObject>
 {
 	
-	//A hack:
+	//A hack, because resultsNo and resultsLayout cannot be passed along with JSONObject in the
+	//same argument, just inject them right here in the constructor:
 	protected LinearLayout resultsLayout;
 	protected TextView resultsNo;
 	public LibraryNextPageTask(LibraryResultsPage libraryResultsPage, LinearLayout resultsLayout, 

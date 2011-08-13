@@ -8,26 +8,23 @@ import org.mollyproject.android.view.apps.Page;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
-import android.widget.TextView;
 
 public class Splash extends Page {
-	protected boolean splashed = false;
+	protected boolean splashed = false; //this records whether the splash page has been shown in the session
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		TextView welcomeText = new TextView(this);
-		welcomeText.setText("Molly Android");
-		
-		setContentView(R.layout.splash);
-		Thread splashThread = new Thread() {
+		setContentView(R.layout.splash); //view the splash image
+		new Thread() {
 			@Override
 			public void run()
 			{
 				Looper.prepare();
 				try 
 				{
-					Thread.sleep(3000);
+					//spawn a little timer to jump to home page without blocking UI thread
+					Thread.sleep(3000); 
 				}
 				catch (InterruptedException e)
 				{
@@ -35,13 +32,13 @@ public class Splash extends Page {
 				}
 				finally
 				{
+					//go to home page
 					Intent myIntent = new Intent(getApplicationContext(), 
-							MollyModule.getPageClass(MollyModule.HOME_PAGE));
+							myApp.getPageClass(MollyModule.HOME_PAGE));
 					startActivityForResult(myIntent, 0);
 				}
 			};
-		};
-		splashThread.start();
+		}.start();
 	}
 	
 	@Override 
@@ -50,13 +47,19 @@ public class Splash extends Page {
 		super.onResume();
 		if (splashed)
 		{
+			//in case the splash page is navigated to from the home page, just skip it
 			finish();
 		}
 		splashed = true;
 	}
+	
 	@Override
 	public Page getInstance() {
-		// TODO Auto-generated method stub
 		return this;
+	}
+
+	@Override
+	public String getName() {
+		return MollyModule.SPLASH;
 	}
 }

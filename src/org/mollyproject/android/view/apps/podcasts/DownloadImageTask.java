@@ -19,7 +19,6 @@ public class DownloadImageTask extends AsyncTask<Void, Void, Void>
 	protected ImageView imView;
 	protected String urlStr;
 	protected boolean defaultIcon;
-	protected boolean iconCached;
 	protected Bitmap bitmap;
 	protected Page page;
 	protected MyApplication myApp;
@@ -31,7 +30,6 @@ public class DownloadImageTask extends AsyncTask<Void, Void, Void>
 		this.urlStr = urlStr;
 		defaultIcon = false;
 		myApp = (MyApplication) page.getApplication();
-		iconCached = ((MyApplication) page.getApplication()).hasPodcastIcon(urlStr);
 	}
 	
 	@Override
@@ -48,50 +46,47 @@ public class DownloadImageTask extends AsyncTask<Void, Void, Void>
 	
 	@Override
 	protected Void doInBackground(Void... arg0) {
-		
+		//first the thread waits for an amount of time, this is to avoid "deadlocks" when all 
+		//20+ image download thread starts all to gether 
 		if (!myApp.hasPodcastIcon(urlStr))
 		{
 			try {
 				Random random = new Random();
 				Thread.sleep(random.nextInt(10000));
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		if (!myApp.hasPodcastIcon(urlStr))
 		{
+			//now check again and start download the image if necessary
 			try {
 				URL url = new URL(urlStr);
 				System.out.println(urlStr);
 				HttpURLConnection conn= (HttpURLConnection)url.openConnection();
 				conn.setDoInput(true);
-				//conn.setConnectTimeout(5);
 				conn.connect();
 				InputStream is = conn.getInputStream();
 				bitmap = BitmapFactory.decodeStream(is);
-
+				
+				//matrix used to resize image:
 		        int width = bitmap.getWidth();
 		        int height = bitmap.getHeight();
 		        int newWidth = page.getWindow().getWindowManager().getDefaultDisplay().getWidth()/4;
 		        int newHeight = page.getWindow().getWindowManager().getDefaultDisplay().getWidth()/4;
 		       
-		        // calculate the scale - in this case = 0.4f
 		        float scaleWidth = ((float) newWidth) / width;
 		        float scaleHeight = ((float) newHeight) / height;
 		       
-		        // create a matrix for the manipulation
 		        Matrix matrix = new Matrix();
-		        // resize the bit map
+		        //resize the bitmap
 		        matrix.postScale(scaleWidth, scaleHeight);
 		        bitmap = Bitmap.createBitmap(bitmap, 0, 0,
                           width, height, matrix, true);
 				myApp.updatePodcastIconsCache(urlStr, bitmap);
-				//imView.setImageBitmap(bitmap);
 			} catch (Exception e) {
 				e.printStackTrace();
 				defaultIcon = true;
-				//imView.setImageResource(R.drawable.android_button);
 			}
 		}
 		else

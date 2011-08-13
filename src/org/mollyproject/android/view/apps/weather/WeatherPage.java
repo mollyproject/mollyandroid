@@ -1,5 +1,6 @@
 package org.mollyproject.android.view.apps.weather;
 
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
@@ -13,17 +14,19 @@ public class WeatherPage extends ContentPage {
 		new WeatherForecastTask(this, true, true).execute();
 	}
 	
-	
 	@Override
 	public Page getInstance() {
 		return this;
 	}
 
-
 	@Override
 	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getName() {
+		return MollyModule.WEATHER_PAGE;
 	}
 
 }

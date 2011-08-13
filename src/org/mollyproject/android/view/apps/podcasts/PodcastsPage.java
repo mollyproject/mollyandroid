@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.apps.podcasts;
 
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
@@ -24,6 +25,11 @@ public class PodcastsPage extends ContentPage {
 		searchField.setWidth(LayoutParams.FILL_PARENT);
 		setEnterKeySearch(searchField, this, "podcasts");
 		System.out.println("jsonContent "+jsonContent);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
 		new PodcastsPageTask(this,true, true).execute(jsonContent);
 	}
 	
@@ -34,8 +40,12 @@ public class PodcastsPage extends ContentPage {
 
 	@Override
 	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getName() {
+		return MollyModule.PODCAST_PAGE;
 	}
 
 }

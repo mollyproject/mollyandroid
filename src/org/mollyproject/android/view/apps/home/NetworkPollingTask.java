@@ -32,7 +32,7 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 			{
 				System.out.println("Router called");
 	    		JSONObject output = page.getRouter().onRequestSent(
-						MollyModule.getName(page.getClass()), null,
+						page.getName(), null,
 						Router.OutputFormat.JSON,null);
 				
 				JSONArray availableApps = output.getJSONArray("applications");

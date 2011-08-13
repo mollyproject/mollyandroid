@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.controller.Router.OutputFormat;
@@ -36,11 +37,33 @@ public class SearchTask extends BackgroundTask<String, Void, List<Map<String,Str
 	}
 	
 	@Override
-	public void updateView(List<Map<String,String>> outputs) {
+	public void updateView(List<Map<String,String>> resultMapsList) {
 		
-		((MyApplication) page.getApplication()).setGeneralOutput(outputs);
-		Intent myIntent = new Intent(page, SearchPage.class);
-		page.startActivityForResult(myIntent, 0);
+		LayoutInflater inflater = page.getLayoutInflater();
+		LinearLayout generalResultsLayout = (LinearLayout) inflater.inflate(R.layout.general_search_results_page, 
+				((SearchPage) page).getContentLayout(), false);
+		((SearchPage) page).getContentLayout().addView(generalResultsLayout);
+		
+		LinearLayout resultsLayout = (LinearLayout) generalResultsLayout.findViewById(R.id.generalResultsList);
+		
+		for (int i = 0; i < resultMapsList.size(); i++)
+		{
+			Map<String,String> resultMap = resultMapsList.get(i);
+			
+			LinearLayout thisResult = (LinearLayout) inflater.inflate(R.layout.general_search_result, 
+						((SearchPage) page).getContentLayout(), false);
+			resultsLayout.addView(thisResult);
+			thisResult.setLayoutParams(Page.paramsWithLine);
+			ImageView appIcon = (ImageView) thisResult.findViewById(R.id.generalSearchIcon);
+			appIcon.setImageResource(((MyApplication) page.getApplication())
+					.getImgResourceId(resultMap.get("application") + ":index_img"));
+			//text
+			TextView infoText = (TextView) thisResult.findViewById(R.id.generalSearchText); //(TextView) generalResultsLayout.findViewById(R.id.generalSearchText);
+			infoText.setText(Html.fromHtml(resultMap.get("text")));
+		}
+		
+		/*Intent myIntent = new Intent(page, SearchPage.class);
+		page.startActivityForResult(myIntent, 0);*/
 	}
 
 	@Override
@@ -48,7 +71,7 @@ public class SearchTask extends BackgroundTask<String, Void, List<Map<String,Str
 		//send query to server, and get back json response
 		try {
 			//get the result:
-			JSONArray results = page.getRouter().onRequestSent("search:index", null, Router.OutputFormat.JSON, 
+			JSONArray results = page.getRouter().onRequestSent(MollyModule.SEARCH_PAGE, null, Router.OutputFormat.JSON, 
 					"&query="+queries[0]).getJSONArray("results");
 			
 			List<Map<String,String>> resultMapsList = new ArrayList<Map<String,String>>();

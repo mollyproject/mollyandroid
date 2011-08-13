@@ -3,10 +3,9 @@ package org.mollyproject.android.view.apps;
 import java.util.List;
 
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.view.apps.home.HomePage;
-import org.mollyproject.android.view.apps.search.SearchPage;
 import org.mollyproject.android.view.apps.search.SearchTask;
 
 import roboguice.activity.RoboActivity;
@@ -122,17 +121,21 @@ public abstract class Page extends RoboActivity {
 		                case KeyEvent.KEYCODE_ENTER:
 		                	if (searchField.getText().length() > 0)
 		                	{
+		                		String[] argsToPass = new String[1];
 		                		if (application == null)
 		                		{
-		                			new SearchTask(page,false, true)
-		                					.execute(searchField.getText().toString());
+		                			argsToPass[0] = searchField.getText().toString();
+		                			myApp.setGeneralQuery(argsToPass);
 		                		}
 		                		else
 		                		{
-		                			new SearchTask(page,false, true)
-                					.execute(searchField.getText().toString()
-		                					+"&application="+application);
+		                			argsToPass[0] = searchField.getText()
+		                						.toString()+"&application="+application;
+		                			myApp.setGeneralQuery(argsToPass);
 		                		}
+		                		Intent myIntent = new Intent(page, 
+		                					myApp.getPageClass(MollyModule.SEARCH_PAGE));
+		                		page.startActivityForResult(myIntent, 0);
 		                	}
 		                	else
 		                	{
@@ -237,4 +240,6 @@ public abstract class Page extends RoboActivity {
     	super.onDestroy();
 		router.stopCurrentLocThread();	
     }
+    
+    public abstract String getName();
 }

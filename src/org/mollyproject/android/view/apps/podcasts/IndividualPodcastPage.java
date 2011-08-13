@@ -1,5 +1,6 @@
 package org.mollyproject.android.view.apps.podcasts;
 
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
@@ -19,6 +20,11 @@ public class IndividualPodcastPage extends ContentPage {
 	@Override
 	public Page getInstance() {
 		return this;
+	}
+
+	@Override
+	public String getName() {
+		return MollyModule.INDIVIDUAL_PODCAST_PAGE;
 	}
 
 }

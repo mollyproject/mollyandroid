@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.webkit.WebView;
 
 public class UnimplementedPage extends ContentPage {
+	//for pages that are not customised yet, simply load a WebView pointing to the url on the web site
 	protected WebView webView;
 	protected String locator;
 	public void onCreate(Bundle savedInstanceState)
@@ -15,7 +16,6 @@ public class UnimplementedPage extends ContentPage {
 		webView = new WebView(this);
 		try {
 			String temp = getActualURL(locator);
-			System.out.println(temp);
 			webView.loadUrl(temp);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -39,5 +39,10 @@ public class UnimplementedPage extends ContentPage {
 	@Override
 	public String getAdditionalParams() {
 		return null;
+	}
+
+	@Override
+	public String getName() {
+		return locator;
 	}
 }

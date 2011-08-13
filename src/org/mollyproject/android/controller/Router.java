@@ -13,18 +13,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.view.apps.Page;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-
 public class Router {
 	protected CookieManager cookieMgr;
-	protected boolean waiting;	
 	protected LocationThread currentLocThread;
 	protected String csrfToken;
 	protected boolean firstReq;
-	protected String destinationPage; //view_name of the page to go to
-	//protected Context context;
 	protected MyApplication myApp;
 	public final static String mOX =  "http://dev.m.ox.ac.uk/";
 
@@ -32,12 +25,10 @@ public class Router {
 
 	public Router (MyApplication myApp) throws IOException, JSONException 
 	{
-		waiting = true;	
 		this.myApp = myApp;
 		cookieMgr = new CookieManager(myApp);
 		firstReq = true;
-		destinationPage = new String();
-		currentLocThread = null;
+		currentLocThread = null; //this will get checked regularly for null to avoid NullPointerException
 	}
     
 	public void setApp(MyApplication myApp)
@@ -103,68 +94,61 @@ public class Router {
 	
 	public JSONObject onRequestSent(String locator, String arg, OutputFormat format, String query) 
 							throws JSONException, UnknownHostException, IOException {
-		//to be included in AsyncTask subclasses where no UI is allowed
-		//in the doInBackground method
+		/*basic method for all requests for json response, it sets up a url to be sent
+		  to the server as follow:
+		  1. it looks up the url to the required page using the reverse api with either the
+		  view_name only or both the view_name and the extra argument (arg)
+		  2. then it returns the url, and open a connection to that one itself
+		  3. get the response
+		  For now it seems quite pointless in including the switch statement and the 
+		  format parameters, but I will change this in the future if some other formats are needed,
+		  for now JSON is the sole choice and the method only needs to return JSON
+		  
+		  this method is also to be included in AsyncTask subclasses where no UI is allowed
+		  in the doInBackground method
+		*/
 		
 		//Geting the actual URL from the server using the locator (view name)
 		//and the reverse API in Molly
-		System.out.println("Is waiting "+waiting);
-		//if (waiting) {
-			waiting = false;
-			//if an exception is thrown, waiting might be false forever
-			String urlStr = new String();
-			String reverseReq = new String();
-			if (arg != null)
-			{
-				reverseReq = mOX + "reverse/?name="+locator + "&arg=" + arg;
-			}
-			else
-			{
-				reverseReq = mOX + "reverse/?name="+locator;
-			}
-			urlStr = getFrom(reverseReq);
-			String outputStr = new String();
-			
-			switch(format){
-			//Depending on the format wanted, get the output
-			case JSON:
-				urlStr = urlStr+"?format=json";
-				break;
-			}
-			
-			if (query != null)
-			{
-				urlStr = urlStr+"&"+query;
-			}
-			
-			outputStr = getFrom(urlStr);
-			
-			if (firstReq)
-			{ 
-				URL url = new URL(urlStr);
-				cookieMgr.storeCookies(url.openConnection());
-				//spawnNewLocThread();
-				System.out.println("Router, LocThread starts");
-				firstReq = false;
-			}
-			cookieMgr.setCookies(new URL(urlStr).openConnection());
-	        waiting = true;
-	        JSONObject output = new JSONObject(outputStr);
-	        System.out.println(output);
-	        if (query!=null)
-	        {
-	        	//only when there is some actual query, set the new destination
-	        	destinationPage = output.getString("view_name");
-	        	System.out.println("Destination "+destinationPage);
-	        }
-	        return output;
-		//} 
-		//return null;
-	}
-	
-	public Class <? extends Page> getDestination()
-	{
-		return MollyModule.getPageClass(destinationPage);
+		//if an exception is thrown, waiting might be false forever
+		String urlStr = new String();
+		String reverseReq = new String();
+		if (arg != null)
+		{
+			reverseReq = mOX + "reverse/?name="+locator + "&arg=" + arg;
+		}
+		else
+		{
+			reverseReq = mOX + "reverse/?name="+locator;
+		}
+		urlStr = getFrom(reverseReq);
+		String outputStr = new String();
+		
+		switch(format){
+		//Depending on the format wanted, get the output
+		case JSON:
+			urlStr = urlStr+"?format=json";
+			break;
+		}
+		
+		if (query != null)
+		{
+			urlStr = urlStr+"&"+query;
+		}
+		
+		outputStr = getFrom(urlStr);
+		
+		if (firstReq)
+		{
+			//try storing cookies if this is the first request ever
+			URL url = new URL(urlStr);
+			cookieMgr.storeCookies(url.openConnection());
+			firstReq = false;
+		}
+		//set cookie for connection
+		cookieMgr.setCookies(new URL(urlStr).openConnection());
+        JSONObject output = new JSONObject(outputStr);
+        return output;
 	}
 	
 	public void spawnNewLocThread() throws JSONException, UnknownHostException, IOException
@@ -189,11 +173,6 @@ public class Router {
 			*/
 			currentLocThread = null;
 		}
-	}
-	
-	public void waitForRequests()
-	{
-		waiting = true;
 	}
 	
 	public LocationThread getLocThread()

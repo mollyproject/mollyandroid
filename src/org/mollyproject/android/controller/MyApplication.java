@@ -22,10 +22,11 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 
 public class MyApplication extends RoboApplication {
-	protected Router router = null;
+	//Intermediate stage for caching data in a session
+	protected Router router = null; //make router null at first and check for it every time to avoid null pointers
 	protected String mapQuery;
-	protected String[] contactQuery;
-	protected List<Map<String,String>> generalOutput;
+	protected String[] contactQuery; //arbitrary array of contact query, should expect the actual query and the required medium
+	protected String[] generalQuery;
 	protected List<Map<String,String>> podcastsOutput;
 	protected String libraryQuery;
 	protected String locator;
@@ -76,9 +77,9 @@ public class MyApplication extends RoboApplication {
 	
 	public String getPodcastsSlug() { return podcastsSlug; }
 	
-	public void setGeneralOutput(List<Map<String,String>> generalOutput) { this.generalOutput = generalOutput; }
+	public void setGeneralQuery(String[] query) { this.generalQuery = query; }
 	
-	public List<Map<String,String>> getGeneralOutput() { System.out.println(generalOutput); return generalOutput; }
+	public String[] getGeneralQuery() { return generalQuery; }
 	
 	public void updateLibCache(String key, JSONObject object) { libraryCache.put(key, object);	}
 	

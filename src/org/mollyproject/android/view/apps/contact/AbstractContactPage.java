@@ -1,8 +1,8 @@
 package org.mollyproject.android.view.apps.contact;
 
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
-import org.mollyproject.android.view.apps.Page;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public abstract class AbstractContactPage extends ContentPage {
+	//to use a common search bar for both the contact:index page and contact:results_list page
 	public static String PHONE = "phone";
 	public static String EMAIL = "email";
 	public static String MEDIUM = "medium";
@@ -22,11 +23,11 @@ public abstract class AbstractContactPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
+
+		//inflate the search bar and put it right on top
 		contactSearchBar = (LinearLayout) layoutInflater
 					.inflate(R.layout.contact_search_bar,contentLayout, false);
 		contentLayout.addView(contactSearchBar);
-		
 		
 		//search bar
 		final EditText searchField = (EditText) findViewById(R.id.contactSearchField);
@@ -37,6 +38,7 @@ public abstract class AbstractContactPage extends ContentPage {
 		        {
 		            switch (keyCode)
 		            {
+		            //search for contact with medium = email by default if enter key is pressed
 		                case KeyEvent.KEYCODE_DPAD_CENTER:
 		                case KeyEvent.KEYCODE_ENTER:
 		                	searchContact(searchField.getText().toString(),EMAIL);
@@ -53,6 +55,7 @@ public abstract class AbstractContactPage extends ContentPage {
 		emailButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
+				//search by email if button clicked
 				searchContact(searchField.getText().toString(),EMAIL);
 			}
 		});
@@ -61,6 +64,7 @@ public abstract class AbstractContactPage extends ContentPage {
 		phoneButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
+				//search by phone if button clicked
 				searchContact(searchField.getText().toString(),PHONE);
 			}
 		});
@@ -76,10 +80,8 @@ public abstract class AbstractContactPage extends ContentPage {
 		else
 		{
 			myApp.setContactOutput(query,medium);
-			Intent myIntent = new Intent(this,ContactResultsPage.class);
+			Intent myIntent = new Intent(this,myApp.getPageClass(MollyModule.CONTACT_RESULTS_PAGE));
 			startActivityForResult(myIntent, 0);
-			//new ContactResultsTask((AbstractContactPage) getInstance(),
-			//			contactSearchBar,false,true).execute(query,medium);
 		}
 	}
 }

@@ -42,7 +42,7 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 				(cache.containsKey(query) & cache.get(query).size()<=curPageNum))
 		{
 			JSONObject nextResults = page.getRouter().exceptionHandledOnRequestSent(
-					MollyModule.getName(page.getClass()), null,
+					page.getName(), null,
 					page, Router.OutputFormat.JSON, query+"&page="+curPageNum);
 			nextJSONPage = nextResults.getJSONObject("page");
 			((MyApplication) page.getApplication()).updateLibCache(query, nextJSONPage);
@@ -59,6 +59,7 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 	protected void addTextField(Page page, JSONObject jsonSource, String jsonKey, 
 			String additionalText, ViewGroup parentViewGroup, float size) throws JSONException 
 	{
+		//add a text with the content specified in the json object to the specified page 
 		if (!jsonSource.isNull(jsonKey))
 		{
 			LinearLayout textLayout = new LinearLayout(page);
@@ -83,6 +84,7 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 	protected void populateResults(Page page, JSONObject nextJSONPage, 
 			LinearLayout resultsLayout, TextView resultsNo) throws JSONException
 	{
+		//prepare the json and get the page needed to display
 		int curPageNum = ((LibraryResultsPage) page).getCurPageNum();
 		JSONArray newObjects = nextJSONPage.getJSONArray("objects");
 		TextView pageNumView = new TextView(page);

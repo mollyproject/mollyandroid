@@ -1,15 +1,10 @@
 package org.mollyproject.android.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.mollyproject.android.R;
 import org.mollyproject.android.Splash;
 import org.mollyproject.android.view.apps.*;
 import org.mollyproject.android.view.apps.contact.ContactPage;
 import org.mollyproject.android.view.apps.contact.ContactResultsPage;
-import org.mollyproject.android.view.apps.features.FeatureVotePage;
-import org.mollyproject.android.view.apps.feedback.FeedbackPage;
 import org.mollyproject.android.view.apps.home.HomePage;
 import org.mollyproject.android.view.apps.library.LibraryPage;
 import org.mollyproject.android.view.apps.library.LibraryResultsPage;
@@ -21,18 +16,12 @@ import org.mollyproject.android.view.apps.results_release.ResultsReleasePage;
 import org.mollyproject.android.view.apps.search.SearchPage;
 import org.mollyproject.android.view.apps.weather.WeatherPage;
 
-import com.google.common.collect.HashBiMap;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 public class MollyModule extends AbstractModule {
-	//I don't want a simple list of Strings because that makes it more difficult
-	//to query from, and Java won't take : as part of the name if that variable
-	//is not a String, thus the complication introduced by the getStringLocator()
+	//Config class, holds constant strings and bindings, etc for use in MyApplication and various other places
 	
-	//public static enum ViewNames { places_index, home_index, result_index };
-	//ClassPathResource res = new ClassPathResource("spring-beans.xml");
-	//BeanFactory factory = new XmlBeanFactory(res);
 	public static String HOME_PAGE = "home:index";
 	public static String RESULTS_PAGE = "results:index";
 	public static String PLACES_PAGE = "places:index";
@@ -47,29 +36,7 @@ public class MollyModule extends AbstractModule {
 	public static String PODCAST_PAGE = "podcasts:index";
 	public static String PODCAST_CATEGORY_PAGE = "podcasts:category";
 	public static String INDIVIDUAL_PODCAST_PAGE = "podcasts:podcast";
-	//The following hash table allows for easier future change in implementation
-	//of new pages
-	protected static HashBiMap<String,Class<? extends Page>> pages 
-					= HashBiMap.create();
-	static {
-		pages.put(HOME_PAGE, HomePage.class);
-		pages.put(RESULTS_PAGE, ResultsReleasePage.class);
-		pages.put(PLACES_PAGE, PlacesPage.class);
-		pages.put(CONTACT_PAGE, ContactPage.class);
-		pages.put(FEATURE_VOTE, FeatureVotePage.class);
-		pages.put(FEEDBACK_PAGE, FeedbackPage.class);
-		pages.put(LIBRARY_PAGE, LibraryPage.class);
-		pages.put(SEARCH_PAGE, SearchPage.class);
-		pages.put(LIBRARY_RESULTS_PAGE, LibraryResultsPage.class);
-		pages.put(CONTACT_RESULTS_PAGE, ContactResultsPage.class);
-		pages.put(WEATHER_PAGE, WeatherPage.class);
-		pages.put(PODCAST_PAGE, PodcastsPage.class);
-		pages.put(PODCAST_CATEGORY_PAGE, PodcastsCategoryPage.class);
-		pages.put(INDIVIDUAL_PODCAST_PAGE, IndividualPodcastPage.class);
-	}
-	
-	protected static Map<String,Integer> bcImg 
-					= new HashMap<String,Integer>();
+	public static String SPLASH = "splash";
 	
 	@Override
 	protected void configure() {
@@ -123,15 +90,5 @@ public class MollyModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named("default_white")).toInstance(R.drawable.unavail_w_1);
 		bind(Integer.class).annotatedWith(Names.named("default_blue")).toInstance(R.drawable.unavail_b_7);
 		bind(Integer.class).annotatedWith(Named.class).toInstance(R.drawable.unavail_b_7);
-	}
-	
-	public static String getName(Class <? extends Page> pageClass)
-	{
-		return (pages.inverse().get(pageClass));
-	}
-	
-	public static Class<? extends Page> getPageClass(String s)
-	{
-		return pages.get(s);
 	}
 }

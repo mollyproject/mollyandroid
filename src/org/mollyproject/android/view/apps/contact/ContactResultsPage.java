@@ -1,5 +1,6 @@
 package org.mollyproject.android.view.apps.contact;
 
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.Page;
 
 import android.os.Bundle;
@@ -9,8 +10,13 @@ public class ContactResultsPage extends AbstractContactPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
 		new ContactResultsTask((AbstractContactPage) getInstance(),
-							contactSearchBar,false,true).execute(myApp.getContactQuery());
+				contactSearchBar,false,true).execute(myApp.getContactQuery());
 	}
 	
 	@Override
@@ -20,8 +26,12 @@ public class ContactResultsPage extends AbstractContactPage {
 
 	@Override
 	public Page getInstance() {
-		// TODO Auto-generated method stub
 		return this;
+	}
+
+	@Override
+	public String getName() {
+		return MollyModule.CONTACT_RESULTS_PAGE;
 	}
 
 }

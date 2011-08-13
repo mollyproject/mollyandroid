@@ -20,13 +20,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public abstract class AbstractLibraryPage extends ContentPage {
+	//make use of the search bar for both lib page and lib results page
 	public static String TITLE = "title";
 	public static String AUTHOR = "author";
 	public static String ISBN = "isbn";
@@ -35,26 +38,32 @@ public abstract class AbstractLibraryPage extends ContentPage {
 	protected EditText authorField;
 	protected EditText titleField;
 	
-	protected Map<String,String> bookArgs = new HashMap<String,String>();
+	protected Map<String,String> bookArgs = new HashMap<String,String>(); //this is used to store the input in each text field
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		//some rearrangement, to put contentlayout inside a scrollview
+		ScrollView scr = new ScrollView(this);
+		((ViewGroup) contentLayout.getParent()).addView(scr,1);
+		((ViewGroup) contentLayout.getParent()).removeView(contentLayout);
+		scr.addView(contentLayout);
 		
-		LinearLayout libraryTemplate = (LinearLayout) layoutInflater
+		//inflate the searchbar
+		LinearLayout librarySearchBar = (LinearLayout) layoutInflater
 					.inflate(R.layout.library_search_bar,contentLayout, false);
-		contentLayout.addView(libraryTemplate);
+		contentLayout.addView(librarySearchBar);
 		
-		titleField = (EditText) findViewById(R.id.titleField);
+		titleField = (EditText) librarySearchBar.findViewById(R.id.titleField);
 		searchOnEnterKey(titleField, TITLE);
 		
-		authorField = (EditText) findViewById(R.id.authorField);
+		authorField = (EditText) librarySearchBar.findViewById(R.id.authorField);
 		searchOnEnterKey(authorField, AUTHOR);
 		
-		isbnField = (EditText) findViewById(R.id.isbnField);
+		isbnField = (EditText) librarySearchBar.findViewById(R.id.isbnField);
 		searchOnEnterKey(isbnField, ISBN);
 		
-		Button searchButton = (Button) findViewById(R.id.searchLibraryButton);
+		Button searchButton = (Button) librarySearchBar.findViewById(R.id.searchLibraryButton);
 		searchButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -62,10 +71,11 @@ public abstract class AbstractLibraryPage extends ContentPage {
 			}
 		});
 		
-		Button resetButton = (Button) findViewById(R.id.resetLibraryButton);
+		Button resetButton = (Button) librarySearchBar.findViewById(R.id.resetLibraryButton);
 		resetButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				//clear out every field
 				titleField.setText("");
 				authorField.setText("");
 				isbnField.setText("");
@@ -77,6 +87,7 @@ public abstract class AbstractLibraryPage extends ContentPage {
 	public void searchOnClick()
 	{
 		try {
+			//record all the search queries available and start the search
 			System.out.println("Title: "+titleField.getText());
 			bookArgs.put(TITLE, titleField.getText().toString());
 			bookArgs.put(AUTHOR, authorField.getText().toString());

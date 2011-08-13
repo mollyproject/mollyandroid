@@ -31,8 +31,8 @@ public class ImageAdapter extends BaseAdapter {
     // create a new ImageView for each item referenced by the Adapter
     public View getView(final int position, View convertView, ViewGroup parent) {
                 
-        View view = page.getLayoutInflater().inflate(R.layout.grid_icon_layout, 
-        		((HomePage) page).getHomeLayout());       
+        //View view = page.getLayoutInflater().inflate(R.layout.grid_icon_layout, 
+        //		((HomePage) page).getHomeLayout());       
         ImageView imageView;
 
         final MyApplication myApp = (MyApplication) page.getApplication();
