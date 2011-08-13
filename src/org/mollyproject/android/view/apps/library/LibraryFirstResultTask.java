@@ -7,7 +7,6 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
-import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
@@ -28,8 +27,7 @@ public class LibraryFirstResultTask extends LibraryResultsTask<LinearLayout, Voi
 	protected JSONObject doInBackground(LinearLayout... arg0) {
 		try {
 			//just download the results and pass the json response on
-			return getResults(page,((MyApplication) page.getApplication())
-					.getLibraryQuery()+"&page="+((LibraryResultsPage) page).getCurPageNum());
+			return getResults(page,query+"&page="+((LibraryResultsPage) page).getCurPageNum());
 		} catch (JSONException e) {
 			jsonException = true;
 		}

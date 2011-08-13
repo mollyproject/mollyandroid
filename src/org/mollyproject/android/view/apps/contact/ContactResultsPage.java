@@ -15,6 +15,7 @@ public class ContactResultsPage extends AbstractContactPage {
 	@Override
 	public void onResume() {
 		super.onResume();
+		//query from myApp is extracted here and processed in the background
 		new ContactResultsTask((AbstractContactPage) getInstance(),
 				contactSearchBar,false,true).execute(myApp.getContactQuery());
 	}

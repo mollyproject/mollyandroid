@@ -7,20 +7,22 @@
     <TextView android:text="Title" 
 	    android:id="@+id/titleLabel" 
 	    android:layout_width="wrap_content"
-	    android:textSize="16dp"
-	    android:layout_height="wrap_content">
+	    android:textSize="18dp"
+	    android:textColor="@color/white"
+	    android:layout_height="wrap_content" android:layout_marginLeft="5dp">
     </TextView>
     
     <EditText android:id="@+id/titleField" 
-	    android:layout_height="wrap_content" 
+	    android:layout_height="wrap_content"
 	    android:layout_width="fill_parent">
     </EditText>
     
     <TextView android:text="Author" 
 	    android:id="@+id/authorLabel"
-	    android:textSize="16dp" 
+	    android:textSize="18dp" 
+	    android:textColor="@color/white"
 	    android:layout_width="wrap_content" 
-	    android:layout_height="wrap_content">
+	    android:layout_height="wrap_content" android:layout_marginLeft="5dp">
     </TextView>
     
     <EditText android:id="@+id/authorField" 
@@ -30,9 +32,10 @@
     
     <TextView android:text="ISBN" 
 	    android:id="@+id/isbnLabel" 
-	    android:textSize="16dp"
+	    android:textSize="18dp"
+	    android:textColor="@color/white"
 	    android:layout_width="wrap_content" 
-	    android:layout_height="wrap_content">
+	    android:layout_height="wrap_content" android:layout_marginLeft="5dp">
     </TextView>
     
     <EditText android:id="@+id/isbnField" 
@@ -42,7 +45,7 @@
     
     <LinearLayout android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
-	    android:id="@+id/librarySearchButtons">
+	    android:id="@+id/librarySearchButtons" android:layout_marginTop="2dp">
         <Button android:text="Search"
 	        android:id="@+id/searchLibraryButton" 
 	        android:layout_width="fill_parent"

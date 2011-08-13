@@ -46,7 +46,6 @@ public class PodcastsCategoryPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		firstLoad = true;
 		currentlyShowing = ALL;
 		all = new ArrayList<Map<String,String>>();

@@ -8,7 +8,7 @@
   
     <TextView android:text="Search has returned no results..."
     	android:textColor="@color/blue"
-    	android:textSize="16sp"
+    	android:textSize="18dp"
     	android:background="@drawable/bg_white" 
 	    android:id="@+id/libraryResultsNo" 
 	    android:layout_width="fill_parent" 

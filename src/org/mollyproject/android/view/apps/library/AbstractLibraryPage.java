@@ -7,26 +7,20 @@ import java.util.Map;
 import java.util.Set;
 
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.weather.WeatherPage;
-
-import roboguice.inject.InjectView;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 public abstract class AbstractLibraryPage extends ContentPage {
 	//make use of the search bar for both lib page and lib results page
@@ -38,8 +32,9 @@ public abstract class AbstractLibraryPage extends ContentPage {
 	protected EditText authorField;
 	protected EditText titleField;
 	
-	protected Map<String,String> bookArgs = new HashMap<String,String>(); //this is used to store the input in each text field
 	
+	protected Map<String,String> bookArgs = new HashMap<String,String>(); //this is used to store the input in each text field
+	protected Map<String,String> currentSearchArgs = new HashMap<String,String>();
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -63,6 +58,11 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		isbnField = (EditText) librarySearchBar.findViewById(R.id.isbnField);
 		searchOnEnterKey(isbnField, ISBN);
 		
+		if (myApp.getLibraryArgs() != null)
+		{
+			currentSearchArgs = myApp.getLibraryArgs();
+		}
+		
 		Button searchButton = (Button) librarySearchBar.findViewById(R.id.searchLibraryButton);
 		searchButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -84,14 +84,25 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		});
 	}
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!currentSearchArgs.isEmpty())
+		{
+			titleField.setText(currentSearchArgs.get(TITLE));
+			isbnField.setText(currentSearchArgs.get(ISBN));
+			authorField.setText(currentSearchArgs.get(AUTHOR));
+		}
+	}
+	
 	public void searchOnClick()
 	{
 		try {
 			//record all the search queries available and start the search
 			System.out.println("Title: "+titleField.getText());
-			bookArgs.put(TITLE, titleField.getText().toString());
-			bookArgs.put(AUTHOR, authorField.getText().toString());
-			bookArgs.put(ISBN, isbnField.getText().toString());
+			bookArgs.put(TITLE, titleField.getText().toString().trim());
+			bookArgs.put(AUTHOR, authorField.getText().toString().trim());
+			bookArgs.put(ISBN, isbnField.getText().toString().trim());
 			searchBook();
 		} catch (UnsupportedEncodingException e) {
 			//Something is wrong with the query
@@ -120,7 +131,9 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		                case KeyEvent.KEYCODE_DPAD_CENTER:
 		                	
 		                case KeyEvent.KEYCODE_ENTER:
-		                	bookArgs.put(argID, inputField.getText().toString());
+		                	//.trim() won't make a difference in searching but does in caching
+		                	//it should reduce the amount of unecessary cache
+		                	bookArgs.put(argID, inputField.getText().toString().trim());
 						try {
 							searchBook();
 						} catch (UnsupportedEncodingException e) {
@@ -142,21 +155,20 @@ public abstract class AbstractLibraryPage extends ContentPage {
 
 	private void searchBook() throws UnsupportedEncodingException
 	{
-		String query = new String();
 		Set<String> keys = bookArgs.keySet();
 		boolean empty = true;
 		for (String key : keys)
 		{
 			if (bookArgs.get(key).length() > 0)
 			{
-				query = query+key+"="+URLEncoder.encode(bookArgs.get(key), "UTF-8");
+				bookArgs.put(key, URLEncoder.encode(bookArgs.get(key), "UTF-8"));
 				empty = false;
 			}
 		}
 		if (!empty)
 		{
-			myApp.setLibraryQuery(query.trim());
-			Intent myIntent = new Intent (this, myApp.getPageClass("library:search"));
+			myApp.setLibraryArgs(bookArgs);
+			Intent myIntent = new Intent (this, myApp.getPageClass(MollyModule.LIBRARY_RESULTS_PAGE));
 			startActivityForResult(myIntent,0);
 		}
 		else

@@ -9,8 +9,13 @@ public class IndividualPodcastPage extends ContentPage {
 	@Override
 	public void onCreate(android.os.Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		new IndividualPodcastTask(this, true, true).execute(myApp.getIndPodcastSlug());
 	};
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		new IndividualPodcastTask(this, true, true).execute(myApp.getIndPodcastSlug());
+	}
 	
 	@Override
 	public String getAdditionalParams() {

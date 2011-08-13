@@ -79,6 +79,7 @@ public abstract class AbstractContactPage extends ContentPage {
 		}
 		else
 		{
+			//send query to myApp
 			myApp.setContactOutput(query,medium);
 			Intent myIntent = new Intent(this,myApp.getPageClass(MollyModule.CONTACT_RESULTS_PAGE));
 			startActivityForResult(myIntent, 0);

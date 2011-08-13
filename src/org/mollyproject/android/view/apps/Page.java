@@ -6,10 +6,7 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.view.apps.search.SearchTask;
-
 import roboguice.activity.RoboActivity;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
@@ -33,7 +31,7 @@ public abstract class Page extends RoboActivity {
 	//protected ImprovedBreadCrumbBar bcBar;
 	protected MyApplication myApp;
 	protected Router router;
-	protected LayoutInflater layoutInflater;
+	protected LayoutInflater layoutInflater; //a layout inflater helps bringing a pre-designed xml layout into the UI
 	
 	//use someLayout.setLayoutParams() with this paramsWithLine as a parameter makes
 	//a gap of 5px below the LinearLayout, this is used here to make gaps between views
@@ -46,6 +44,7 @@ public abstract class Page extends RoboActivity {
 	public void onCreate (Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		myApp = (MyApplication) getApplication();
 		router = myApp.getRouter();
 		if (router == null)

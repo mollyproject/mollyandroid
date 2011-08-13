@@ -11,6 +11,11 @@ public class LibraryResultsPage extends AbstractLibraryPage {
 	{
 		super.onCreate(savedInstanceState);
 		curPageNum = 0;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
 		new LibraryFirstResultTask(this,false, true).execute();
 	}
 	

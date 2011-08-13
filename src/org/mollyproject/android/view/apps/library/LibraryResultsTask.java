@@ -1,13 +1,13 @@
 package org.mollyproject.android.view.apps.library;
 
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
-import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
@@ -21,17 +21,25 @@ import android.widget.TextView;
 import com.google.common.collect.ArrayListMultimap;
 
 public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
-	
+	//display the library search results
 	protected ArrayListMultimap<String,JSONObject> cache;
 	protected List<JSONObject> cachedJSONPages;
-	protected String query;
+	protected String query = new String();
 	
 	public LibraryResultsTask(LibraryResultsPage libraryResultsPage, boolean toDestroy, boolean dialog)
 	{
 		super(libraryResultsPage, toDestroy, dialog);
 		cache = (ArrayListMultimap<String, JSONObject>) 
 			((MyApplication) page.getApplication()).getLibCache();
-		query = (String) ((MyApplication) page.getApplication()).getLibraryQuery();
+		//get the query from myApp
+		Map<String,String> bookArgs = ((MyApplication) page.getApplication()).getLibraryArgs();
+		for (String key : bookArgs.keySet())
+		{
+			if (bookArgs.get(key).length() > 0)
+			{
+				query = query + "&" + key + "=" + bookArgs.get(key);
+			}
+		}
 	}
 	
 	protected JSONObject getNextResultsPage(Page page) throws JSONException
@@ -84,7 +92,7 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 	protected void populateResults(Page page, JSONObject nextJSONPage, 
 			LinearLayout resultsLayout, TextView resultsNo) throws JSONException
 	{
-		//prepare the json and get the page needed to display
+		//prepare the json and get the page of results needed to display
 		int curPageNum = ((LibraryResultsPage) page).getCurPageNum();
 		JSONArray newObjects = nextJSONPage.getJSONArray("objects");
 		TextView pageNumView = new TextView(page);
@@ -120,7 +128,8 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 		else
 		{
 			resultsNo.setText("Search returned " + nextJSONPage.getString("num_objects") + " items." + '\n'
-			+ "Displaying "+curPageNum+" page(s) of "+nextJSONPage.getString("num_pages")+" pages.");
+			+ "Displaying "+curPageNum+" page(s) of "+nextJSONPage.getString("num_pages")+" pages. " +
+					"Notice: these results are unordered.");
 		}
 	}
 

@@ -7,7 +7,6 @@ import roboguice.inject.InjectView;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -29,7 +28,6 @@ public class HomePage extends Page {
     
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-    	this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     	setContentView(R.layout.grid_viewer);
     	RelativeLayout searchBar = (RelativeLayout) layoutInflater.inflate
     											(R.layout.search_bar,homeLayout, false);

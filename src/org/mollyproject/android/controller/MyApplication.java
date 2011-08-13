@@ -28,7 +28,7 @@ public class MyApplication extends RoboApplication {
 	protected String[] contactQuery; //arbitrary array of contact query, should expect the actual query and the required medium
 	protected String[] generalQuery;
 	protected List<Map<String,String>> podcastsOutput;
-	protected String libraryQuery;
+	protected Map<String,String> libraryQuery = null;
 	protected String locator;
 	protected String podcastsSlug = null;
 	protected String indPodcastSlug = null;
@@ -97,9 +97,9 @@ public class MyApplication extends RoboApplication {
 	
 	public void setRouter(Router router) { this.router = router; }
 
-	public void setLibraryQuery(String query) { libraryQuery = query; }
+	public void setLibraryArgs(Map<String,String> query) { libraryQuery = query; }
 	
-	public String getLibraryQuery() { return libraryQuery; }
+	public Map<String,String> getLibraryArgs() { return libraryQuery; }
 	
 	public String getLocator() { return locator; }
 	

@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
@@ -37,11 +38,11 @@ public class ContactResultsTask extends BackgroundTask<String, Void, LinearLayou
 	@Override
 	protected LinearLayout doInBackground(String... args) {
 		try {
+			//args should be { query, medium }, otherwise there will be an unknown host exception
 			String searchQuery = "query="+URLEncoder.encode(args[0],"UTF-8")+"&medium="+args[1];
-			//((ContactPage) page).setContactOutput();
 
 			List<View> outputs = new ArrayList<View>();
-			JSONObject searchOutput = page.getRouter().onRequestSent("contact:result_list",
+			JSONObject searchOutput = page.getRouter().onRequestSent(MollyModule.CONTACT_RESULTS_PAGE,
 					null, Router.OutputFormat.JSON, searchQuery);
 			JSONArray results = searchOutput.getJSONArray("results");
 			
@@ -202,7 +203,5 @@ public class ContactResultsTask extends BackgroundTask<String, Void, LinearLayou
 		ScrollView scroll = new ScrollView(page);
 		scroll.addView(resultsLayout);
 		contentLayout.addView(scroll);
-		//Page.populateViews(outputs, scroll);
-		page.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	}
 }

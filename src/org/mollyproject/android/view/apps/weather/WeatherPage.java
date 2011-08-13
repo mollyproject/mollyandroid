@@ -11,6 +11,11 @@ public class WeatherPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
 		new WeatherForecastTask(this, true, true).execute();
 	}
 	
