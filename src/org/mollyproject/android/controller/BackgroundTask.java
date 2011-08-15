@@ -43,6 +43,11 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 	@Override
 	protected void onPostExecute(C outputs)
 	{
+		if (outputs != null)
+		{
+			updateView(outputs);
+		}
+		
 		if (jsonException)
 		{
 			jsonException = false;
@@ -86,10 +91,6 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 			Page.popupErrorDialog("Cannot connect to server. ", 
 					"Please try again later.", page, toDestroyPageAfterFailure);
 		} 
-		else
-		{
-			updateView(outputs);
-		}
 		System.out.println("Dialog enabled "+dialogEnabled);
 		if (dialogEnabled)
 		{
