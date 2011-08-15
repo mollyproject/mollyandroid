@@ -48,8 +48,16 @@ public class SearchPage extends ContentPage {
 
 	@Override
 	public String getQuery() throws UnsupportedEncodingException {
-		return ("&query=" + URLEncoder.encode(myApp.getGeneralQuery()[0],"UTF-8")
-						+ "&application=" + URLEncoder.encode(myApp.getGeneralQuery()[1], "UTF-8"));
+		String[] generalQuery = myApp.getGeneralQuery();
+		if (generalQuery[1] == null)
+		{
+			return ("&query=" + URLEncoder.encode(generalQuery[0],"UTF-8"));
+		}
+		else
+		{
+			return ("&query=" + URLEncoder.encode(generalQuery[0],"UTF-8")
+				+"&application=" + URLEncoder.encode(generalQuery[1], "UTF-8"));
+		}
 	}
 
 }
