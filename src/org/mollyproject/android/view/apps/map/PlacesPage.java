@@ -9,18 +9,27 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 
-import roboguice.inject.InjectView;
-
 import android.os.Bundle;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class PlacesPage extends ContentPage {
 
-	//@InjectView (R.id.mapview) MapView mapview;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		
+		RelativeLayout placesSearchLayout = (RelativeLayout) layoutInflater
+							.inflate(R.layout.search_bar, contentLayout, false);
+		contentLayout.addView(placesSearchLayout);
 		
+		EditText searchField = (EditText) placesSearchLayout.findViewById(R.id.searchField);
+		searchField.setWidth(LayoutParams.FILL_PARENT);
+    	setEnterKeySearch(searchField, this, "places");
+    	
+    	
 		/*MapView mapView = (MapView) findViewById(R.id.mapview);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setBuiltInZoomControls(true);

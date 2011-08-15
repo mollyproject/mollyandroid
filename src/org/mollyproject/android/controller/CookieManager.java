@@ -29,23 +29,21 @@ public class CookieManager {
 	//protected Context context;
 	protected MyApplication myApp;
 	protected JSONObject cookies; //store the cookies in JSON format	
-    
     private static final String SET_COOKIE = "Set-Cookie";
     private static final String PATH = "Path";
     private static final String EXPIRES = "expires";
     private static final String DATE_FORMAT = "EEE, dd-MMM-yyyy hh:mm:ss z";
     private static final String SET_COOKIE_SEPARATOR="; ";
     private static final String COOKIE = "Cookie";
-    
+    private static final String LOCATION = "X-Current-Location";
+    private static final String LOCATION_SEPERATOR = ", ";
     private static final char NAME_VALUE_SEPARATOR = '=';
     private DateFormat dateFormat;
 
     public CookieManager(MyApplication myApp) throws IOException, JSONException {
-    	setApp(myApp);
+    	this.myApp = myApp;
     	cookies = new JSONObject();
-    	
     	cookiesFile = myApp.getFileStreamPath(COOKIESFILE);
-    	
     	//check if file exists
     	if (cookiesFile.exists())
     	{
@@ -82,7 +80,6 @@ public class CookieManager {
      */
     public void storeCookies(URLConnection conn) throws JSONException, IOException
     {    	    		
-    	System.out.println("cookies: "+cookies);
     	if (cookies.length() == 0)
     	{
 			String headerName;
@@ -92,10 +89,7 @@ public class CookieManager {
 			    if (headerName.equalsIgnoreCase(SET_COOKIE)) {
 			    	//Extract the cookie in the specified header field
 			    	cookieField = conn.getHeaderField(i);
-			    	System.out.println("Cookie Field: "+cookieField);
-			    	
 			    	JSONObject cookie = Cookie.toJSONObject(cookieField);		    	
-			    	System.out.println("JSONCookie "+cookie);
 			    	//put the cookie found in the JSON mappings
 			    	cookies.put((String) cookie.get("name"), cookie);
 			    }		   	    
@@ -122,11 +116,12 @@ public class CookieManager {
      */
     public void setCookies(URLConnection conn) throws IllegalStateException, 
     												IOException, JSONException {
+    	//set cookies to a connection, also updates the location
 		URL url = conn.getURL();
 		String path = url.getPath();
 		
 		StringBuffer cookieStringBuffer = new StringBuffer();
-		
+		//append the cookies part with Set-cookies as the header
 		Iterator<String> cookieNames = cookies.keys();
 		while(cookieNames.hasNext()) {
 		    String cookieName = cookieNames.next();
@@ -143,8 +138,16 @@ public class CookieManager {
 				if (cookieNames.hasNext()) cookieStringBuffer.append(SET_COOKIE_SEPARATOR);
 		    }
 		}
-		System.out.println("Set Cookies: "+cookieStringBuffer.toString());
 	    conn.setRequestProperty(COOKIE, cookieStringBuffer.toString());
+	    
+	    //location part
+	    StringBuffer locStringBuffer = new StringBuffer();
+	    locStringBuffer.append(myApp.getLocTracker().getCurrentLoc().getLatitude());
+	    locStringBuffer.append(LOCATION_SEPERATOR);
+	    locStringBuffer.append(myApp.getLocTracker().getCurrentLoc().getLongitude());
+	    locStringBuffer.append(LOCATION_SEPERATOR);
+	    locStringBuffer.append(myApp.getLocTracker().getCurrentLoc().getAccuracy());
+	    conn.setRequestProperty(LOCATION, locStringBuffer.toString());
     }
 
     private boolean isNotExpired(String cookieExpires) {

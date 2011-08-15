@@ -140,7 +140,7 @@ public class Router {
 		
 		if (firstReq)
 		{
-			//try storing cookies if this is the first request ever
+			//try storing cookies if this is the first request
 			URL url = new URL(urlStr);
 			cookieMgr.storeCookies(url.openConnection());
 			firstReq = false;
@@ -149,17 +149,6 @@ public class Router {
 		cookieMgr.setCookies(new URL(urlStr).openConnection());
         JSONObject output = new JSONObject(outputStr);
         return output;
-	}
-	
-	public void spawnNewLocThread() throws JSONException, UnknownHostException, IOException
-	{
-		//Router connects to server, then cookieMgr gets the cookies
-		//cookieMgr extracts csrftoken, then pass to LocThread
-		onRequestSent(MollyModule.HOME_PAGE, null, OutputFormat.JSON, null); //csrftoken can only be received after at least 1 request
-		String token = cookieMgr.getCSRFToken();//if connection goes through, csrftoken should be available
-		currentLocThread = new LocationThread(new URL(mOX),myApp,token);
-		currentLocThread.start();
-		System.out.println("New LocThread spawned");
 	}
 	
 	public void stopCurrentLocThread()

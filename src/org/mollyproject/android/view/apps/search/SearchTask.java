@@ -15,17 +15,11 @@ import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.controller.Router.OutputFormat;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.ContentPage;
-
-import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class SearchTask extends BackgroundTask<String, Void, List<Map<String,String>>> {
