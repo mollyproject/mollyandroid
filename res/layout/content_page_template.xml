@@ -45,11 +45,14 @@
         	android:layout_height="wrap_content">
         	</TextView>
     </LinearLayout>
-    
-    <LinearLayout android:layout_height="fill_parent" 
-	    android:id="@+id/contentLayout" 
-	    android:layout_width="fill_parent"
-	    android:orientation="vertical" android:layout_weight="1">
-    </LinearLayout>
-    
+    <ScrollView 
+	    android:id="@+id/contentScroll" 
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content">
+	    <LinearLayout android:layout_height="fill_parent" 
+		    android:id="@+id/contentLayout" 
+		    android:layout_width="fill_parent"
+		    android:orientation="vertical" android:layout_weight="1">
+	    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

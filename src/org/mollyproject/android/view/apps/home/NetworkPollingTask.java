@@ -47,23 +47,6 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 				}
 				return new ImageAdapter(page, appsList);
 			}
-			if (page.getRouter().getLocThread() != null)
-	    	{
-		    	if (page.getRouter().getLocThread().isInterrupted())
-		    	{
-		    		System.out.println("LocThread needs to restart");
-		    		page.getRouter().spawnNewLocThread();
-		    	}
-    		}
-			else
-			{
-				//LocThread is actually null, it is not there
-				//this happens when either no connection has been made before
-				//or the LocThread has been made null and checked explicitly 
-				//to prevent the NullPointerException
-				
-				page.getRouter().spawnNewLocThread();
-			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			malformedURLException = true;

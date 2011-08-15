@@ -198,10 +198,7 @@ public class ContactResultsTask extends BackgroundTask<String, Void, LinearLayou
 	public void updateView(LinearLayout resultsLayout) {
 		((ViewGroup) contactSearchBar.getParent()).removeAllViews();
 		contentLayout.removeAllViews();
-		
 		resultsLayout.addView(contactSearchBar, 0);
-		ScrollView scroll = new ScrollView(page);
-		scroll.addView(resultsLayout);
-		contentLayout.addView(scroll);
+		contentLayout.addView(resultsLayout);
 	}
 }

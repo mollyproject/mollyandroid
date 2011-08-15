@@ -16,11 +16,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 public abstract class AbstractLibraryPage extends ContentPage {
 	//make use of the search bar for both lib page and lib results page
@@ -38,12 +36,6 @@ public abstract class AbstractLibraryPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		//some rearrangement, to put contentlayout inside a scrollview
-		ScrollView scr = new ScrollView(this);
-		((ViewGroup) contentLayout.getParent()).addView(scr,1);
-		((ViewGroup) contentLayout.getParent()).removeView(contentLayout);
-		scr.addView(contentLayout);
-		
 		//inflate the searchbar
 		LinearLayout librarySearchBar = (LinearLayout) layoutInflater
 					.inflate(R.layout.library_search_bar,contentLayout, false);
