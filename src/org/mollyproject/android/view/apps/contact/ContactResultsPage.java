@@ -2,6 +2,7 @@ package org.mollyproject.android.view.apps.contact;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.Page;
@@ -41,7 +42,7 @@ public class ContactResultsPage extends AbstractContactPage {
 	@Override
 	public String getQuery() throws UnsupportedEncodingException {
 		String[] args = myApp.getContactQuery();
-		return ("query="+URLEncoder.encode(args[0],"UTF-8")+"&medium="+args[1]);
+		return ("&query="+URLEncoder.encode(args[0],"UTF-8")+"&medium="+args[1]);
 	}
 
 }

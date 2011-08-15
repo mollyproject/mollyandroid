@@ -116,7 +116,7 @@ public class Router {
 		String reverseReq = new String();
 		if (arg != null)
 		{
-			reverseReq = mOX + "reverse/?name="+locator + "&arg=" + arg;
+			reverseReq = mOX + "reverse/?name="+locator + arg;
 		}
 		else
 		{
@@ -134,7 +134,7 @@ public class Router {
 		
 		if (query != null)
 		{
-			urlStr = urlStr+"&"+query;
+			urlStr = urlStr+query;
 		}
 		
 		outputStr = getFrom(urlStr);

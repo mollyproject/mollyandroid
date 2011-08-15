@@ -1,16 +1,19 @@
-package org.mollyproject.android.view.apps.contact;
+package org.mollyproject.android.view.apps.map;
 
 import java.util.List;
 
-import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.os.Bundle;
 
-public class ContactPage extends AbstractContactPage {
-	public void onCreate(Bundle savedInstanceState)
-	{
+public class PlacesResultsPage extends ContentPage {
+	protected String oxpoints;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 	}
 	
 	@Override
@@ -25,11 +28,12 @@ public class ContactPage extends AbstractContactPage {
 
 	@Override
 	public String getName() {
-		return MollyModule.CONTACT_PAGE;
+		return null;
 	}
 
 	@Override
 	public String getQuery() {
 		return null;
 	}
+	
 }

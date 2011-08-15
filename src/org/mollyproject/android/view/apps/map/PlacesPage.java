@@ -1,5 +1,7 @@
 package org.mollyproject.android.view.apps.map;
 
+import java.util.List;
+
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
@@ -30,14 +32,6 @@ public class PlacesPage extends ContentPage {
     	setEnterKeySearch(searchField, this, "places");
     	
     	
-		/*MapView mapView = (MapView) findViewById(R.id.mapview);
-        mapView.setTileSource(TileSourceFactory.MAPNIK);
-        mapView.setBuiltInZoomControls(true);
-        MapController mapController = mapView.getController();
-        mapController.setZoom(15);
-        GeoPoint point2 = new GeoPoint(51496994, -134733);
-        mapController.setCenter(point2);
-		//contentLayout.addView(mapView);*/
 	}
     protected boolean isRouteDisplayed() {
         // TODO Auto-generated method stub
