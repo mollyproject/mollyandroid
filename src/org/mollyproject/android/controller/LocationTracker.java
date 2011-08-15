@@ -6,13 +6,14 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 
 public class LocationTracker {
 	protected MyApplication myApp;
 	protected LocationManager locMgr;
 	protected String provider;
-	private static double DEFAULT_LON = -1.255939;
-	private static double DEFAULT_LAT = 51.752527;
+	public static double DEFAULT_LON = -1.255939;
+	public static double DEFAULT_LAT = 51.752527;
 	protected Location loc;
 	protected boolean autoLoc;
 	

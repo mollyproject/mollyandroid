@@ -18,7 +18,7 @@ public class PlacesResultsPage extends ContentPage {
 	
 	@Override
 	public String getAdditionalParams() {
-		return null;
+		return ("&arg=oxpoints"+"&arg="+oxpoints);
 	}
 
 	@Override

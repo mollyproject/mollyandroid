@@ -20,6 +20,9 @@ public class Router {
 	protected String csrfToken;
 	protected boolean firstReq;
 	protected MyApplication myApp;
+	protected double lat;
+	protected double lon;
+	protected double accuracy;
 	public final static String mOX =  "http://dev.m.ox.ac.uk/";
 
 	public static enum OutputFormat { JSON, FRAGMENT, JS, YAML, XML, HTML };
@@ -30,6 +33,9 @@ public class Router {
 		cookieMgr = new CookieManager(myApp);
 		firstReq = true;
 		locTracker = new LocationTracker(myApp);
+		lat = LocationTracker.DEFAULT_LAT;
+		lon = LocationTracker.DEFAULT_LON;
+		accuracy = 0;
 	}
     
 	public void setApp(MyApplication myApp)
@@ -149,9 +155,19 @@ public class Router {
 		}
 		//set cookie for connection
 		cookieMgr.setCookies(urlConn);
-		cookieMgr.setLocation(urlConn, locTracker.getCurrentLoc().getLatitude(), 
-					locTracker.getCurrentLoc().getLongitude(), locTracker.getCurrentLoc().getAccuracy());
+		
+		//the method requestLocationUpdates is async, so cannot be called from here (as onRequestSent
+		//is always called from another asynctask -> needs to update these parameters in the main thread
+		//first
+		cookieMgr.setLocation(urlConn, lat,lon, accuracy);
         return new JSONObject(outputStr);
+	}
+	
+	public void setLocationParams(double lat, double lon, double accuracy)
+	{
+		this.lat = lat;
+		this.lon = lon;
+		this.accuracy = accuracy;
 	}
 	
 	/*public void stopCurrentLocThread()

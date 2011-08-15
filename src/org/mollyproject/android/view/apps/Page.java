@@ -124,6 +124,7 @@ public abstract class Page extends RoboActivity {
 		                		if (application == null)
 		                		{
 		                			argsToPass[0] = searchField.getText().toString();
+		                			argsToPass[1] = null;
 		                			myApp.setGeneralQuery(argsToPass);
 		                		}
 		                		else

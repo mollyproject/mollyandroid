@@ -1,13 +1,9 @@
 package org.mollyproject.android.view.apps.map;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
-import org.mollyproject.android.view.apps.ContentPage;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
@@ -33,11 +29,10 @@ public class PlacesResultsTask extends BackgroundTask<JSONObject, Void, JSONObje
 	        mapView.setTileSource(TileSourceFactory.MAPNIK);
 	        mapView.setBuiltInZoomControls(true);
 	        MapController mapController = mapView.getController();
-	  
-				mapController.setZoom(entity.getInt("zoom"));
-			
+			mapController.setZoom(entity.getInt("zoom"));
 	        JSONObject metadata = entity.getJSONObject("metadata");
-	        GeoPoint point = new GeoPoint(metadata.getDouble("geo_lat"), metadata.getDouble("geo_long"));
+	        GeoPoint point = new GeoPoint(metadata.getDouble("geo_lat"), 
+	        		metadata.getDouble("geo_long"));
 	        mapController.setCenter(point);
         } catch (JSONException e) {
 			e.printStackTrace();
