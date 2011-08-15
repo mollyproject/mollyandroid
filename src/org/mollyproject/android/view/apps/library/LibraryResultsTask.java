@@ -123,7 +123,7 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 		if (nextJSONPage.getInt("num_objects") == 0)
 		{
 			resultsNo.setText("Search cannot find anything. Either there is a problem with your query" +
-					" or OLIS is not responding");
+					" or server is not responding");
 		}
 		else
 		{
