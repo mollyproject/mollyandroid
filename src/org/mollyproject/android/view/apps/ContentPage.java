@@ -125,7 +125,6 @@ public abstract class ContentPage extends Page {
 						//parent is not index, all breadcrumbs visible
 						appBreadcrumb.setEnabled(true);
 						
-						title = parent.getString("title");
 						final String parentName = parent.getString("view_name");
 						parentBreadcrumb.setBackgroundResource(R.drawable.bg_blue);
 						parentBreadcrumb.setText("....");
@@ -139,7 +138,8 @@ public abstract class ContentPage extends Page {
 						});
 						extraTextView.setText(title);
 					}
-					else { 
+					else {
+						title = parent.getString("title");
 						extraTextView.setText("");
 						parentBreadcrumb.setText(title); 
 						parentBreadcrumb.setEnabled(false);

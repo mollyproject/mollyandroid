@@ -16,8 +16,12 @@ import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
+
+import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -54,7 +58,7 @@ public class SearchTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 			{
 				for (int i = 0; i < results.length(); i++)
 				{
-					JSONObject result = results.getJSONObject(i);
+					final JSONObject result = results.getJSONObject(i);
 					LinearLayout thisResult = (LinearLayout) inflater.inflate(R.layout.general_search_result, 
 								((SearchPage) page).getContentLayout(), false);
 					resultsLayout.addView(thisResult);
@@ -81,6 +85,30 @@ public class SearchTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 					//text
 					TextView infoText = (TextView) thisResult.findViewById(R.id.generalSearchText);
 					infoText.setText(Html.fromHtml(text));
+					
+					thisResult.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							try {
+								if (result.getString("application").equals("places"))
+								{
+									System.out.println("SEARCH RESULT PRESSED");
+									String[] placesArgs = new String[2];
+									JSONObject entity = result.getJSONObject("entity");
+									placesArgs[0] = entity.getString("identifier_scheme");
+									placesArgs[1] = entity.getString("identifier_value");
+									myApp.setPlacesArgs(placesArgs);
+									Intent myIntent = new Intent
+												(page, myApp.getPageClass(MollyModule.PLACES_ENTITY));
+									page.startActivityForResult(myIntent, 0);
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+					});
 				}
 			}
 		} catch (JSONException e)

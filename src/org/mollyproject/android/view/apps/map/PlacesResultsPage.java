@@ -2,6 +2,7 @@ package org.mollyproject.android.view.apps.map;
 
 import java.util.List;
 
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
@@ -13,12 +14,12 @@ public class PlacesResultsPage extends ContentPage {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 	}
 	
 	@Override
 	public String getAdditionalParams() {
-		return ("&arg=oxpoints"+"&arg="+oxpoints);
+		String[] args = myApp.getPlacesArgs();
+		return ("&arg="+args[0]+"&arg="+args[1]);
 	}
 
 	@Override
@@ -28,7 +29,7 @@ public class PlacesResultsPage extends ContentPage {
 
 	@Override
 	public String getName() {
-		return null;
+		return MollyModule.PLACES_ENTITY;
 	}
 
 	@Override

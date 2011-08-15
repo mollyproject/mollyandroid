@@ -28,6 +28,7 @@ public class MyApplication extends RoboApplication {
 	protected String mapQuery;
 	protected String[] contactQuery; //arbitrary array of contact query, should expect the actual query and the required medium
 	protected String[] generalQuery;
+	protected String[] placesArgs;
 	protected List<Map<String,String>> podcastsOutput;
 	protected Map<String,String> libraryQuery = null;
 	protected String locator;
@@ -51,7 +52,9 @@ public class MyApplication extends RoboApplication {
 				 				.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
 	
-	//public LocationTracker getLocTracker() { return locTracker; }
+	public void setPlacesArgs(String[] args) { placesArgs = args; }
+	
+	public String[] getPlacesArgs() { return placesArgs; }
 	
 	public synchronized void updatePodcastIconsCache(String logoURL, Bitmap bitmap)
 	{
