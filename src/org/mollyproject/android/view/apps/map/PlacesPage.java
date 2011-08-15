@@ -56,5 +56,9 @@ public class PlacesPage extends ContentPage {
 	public String getName() {
 		return MollyModule.PLACES_PAGE;
 	}
+	@Override
+	public String getQuery() {
+		return null;
+	}
 	
 }

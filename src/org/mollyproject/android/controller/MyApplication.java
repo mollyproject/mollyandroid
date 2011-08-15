@@ -36,7 +36,7 @@ public class MyApplication extends RoboApplication {
 	protected ArrayListMultimap<String,JSONObject> libraryCache = ArrayListMultimap.create();
 	protected boolean destroyed = false;
 	protected Injector injector;
-	protected LocationTracker locTracker = new LocationTracker(this);
+	//protected LocationTracker locTracker = new LocationTracker(this);
 	Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
 	
 	public static DateFormat defaultDateFormat = new SimpleDateFormat
@@ -51,7 +51,7 @@ public class MyApplication extends RoboApplication {
 				 				.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
 	
-	public LocationTracker getLocTracker() { return locTracker; }
+	//public LocationTracker getLocTracker() { return locTracker; }
 	
 	public synchronized void updatePodcastIconsCache(String logoURL, Bitmap bitmap)
 	{

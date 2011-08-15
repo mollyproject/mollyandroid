@@ -32,4 +32,9 @@ public class IndividualPodcastPage extends ContentPage {
 		return MollyModule.INDIVIDUAL_PODCAST_PAGE;
 	}
 
+	@Override
+	public String getQuery() {
+		return null;
+	}
+
 }

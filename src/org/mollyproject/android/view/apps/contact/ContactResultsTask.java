@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class ContactResultsTask extends BackgroundTask<String, Void, LinearLayout>
+public class ContactResultsTask extends BackgroundTask<JSONObject, Void, LinearLayout>
 {
 	protected LinearLayout contentLayout;
 	protected LinearLayout contactSearchBar;
@@ -36,14 +36,12 @@ public class ContactResultsTask extends BackgroundTask<String, Void, LinearLayou
 	}
 
 	@Override
-	protected LinearLayout doInBackground(String... args) {
+	protected LinearLayout doInBackground(JSONObject... args) {
 		try {
-			//args should be { query, medium }, otherwise there will be an unknown host exception
-			String searchQuery = "query="+URLEncoder.encode(args[0],"UTF-8")+"&medium="+args[1];
+			//args should be { query, medium }
 
 			List<View> outputs = new ArrayList<View>();
-			JSONObject searchOutput = page.getRouter().onRequestSent(MollyModule.CONTACT_RESULTS_PAGE,
-					null, Router.OutputFormat.JSON, searchQuery);
+			JSONObject searchOutput = args[0];
 			JSONArray results = searchOutput.getJSONArray("results");
 			
 			LinearLayout resultsLayout = new LinearLayout(page);
@@ -181,15 +179,9 @@ public class ContactResultsTask extends BackgroundTask<String, Void, LinearLayou
 									+" results");
 			}
 			return resultsLayout;
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			unknownHostException = true;
 		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			ioException = true;
 		}
 		return null;
 	}

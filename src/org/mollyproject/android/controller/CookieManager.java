@@ -67,6 +67,8 @@ public class CookieManager {
     	this.myApp = myApp;
     }
     
+    //public void 
+    
     /**
      * Retrieves and stores cookies returned by the host on the other side
      * of the the open java.net.URLConnection.
@@ -116,7 +118,7 @@ public class CookieManager {
      */
     public void setCookies(URLConnection conn) throws IllegalStateException, 
     												IOException, JSONException {
-    	//set cookies to a connection, also updates the location
+    	//set cookies to a connection
 		URL url = conn.getURL();
 		String path = url.getPath();
 		
@@ -139,16 +141,20 @@ public class CookieManager {
 		    }
 		}
 	    conn.setRequestProperty(COOKIE, cookieStringBuffer.toString());
-	    
-	    //location part
-	    StringBuffer locStringBuffer = new StringBuffer();
-	    locStringBuffer.append(myApp.getLocTracker().getCurrentLoc().getLatitude());
-	    locStringBuffer.append(LOCATION_SEPERATOR);
-	    locStringBuffer.append(myApp.getLocTracker().getCurrentLoc().getLongitude());
-	    locStringBuffer.append(LOCATION_SEPERATOR);
-	    locStringBuffer.append(myApp.getLocTracker().getCurrentLoc().getAccuracy());
-	    conn.setRequestProperty(LOCATION, locStringBuffer.toString());
     }
+    
+    public void setLocation(URLConnection conn, double lat, double lon, double accuracy) throws IllegalStateException, 
+													IOException
+	{
+    	//location part
+	    StringBuffer locStringBuffer = new StringBuffer();
+	    locStringBuffer.append(lat);
+	    locStringBuffer.append(LOCATION_SEPERATOR);
+	    locStringBuffer.append(lon);
+	    locStringBuffer.append(LOCATION_SEPERATOR);
+	    locStringBuffer.append(accuracy);
+	    conn.setRequestProperty(LOCATION, locStringBuffer.toString());
+	}
 
     private boolean isNotExpired(String cookieExpires) {
 		if (cookieExpires == null) return true;

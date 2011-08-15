@@ -1,5 +1,7 @@
 package org.mollyproject.android.view.apps.weather;
 
+import java.io.UnsupportedEncodingException;
+
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
@@ -32,6 +34,11 @@ public class WeatherPage extends ContentPage {
 	@Override
 	public String getName() {
 		return MollyModule.WEATHER_PAGE;
+	}
+
+	@Override
+	public String getQuery() throws UnsupportedEncodingException {
+		return null;
 	}
 
 }

@@ -197,6 +197,11 @@ public class PodcastsCategoryPage extends ContentPage {
 	public String getName() {
 		return MollyModule.PODCAST_CATEGORY_PAGE;
 	}
+
+	@Override
+	public String getQuery() {
+		return null;
+	}
 }
 
 

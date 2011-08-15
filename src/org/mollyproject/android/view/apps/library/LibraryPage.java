@@ -19,4 +19,9 @@ public class LibraryPage extends AbstractLibraryPage {
 	public String getName() {
 		return MollyModule.LIBRARY_PAGE;
 	}
+
+	@Override
+	public String getQuery() {
+		return null;
+	}
 }

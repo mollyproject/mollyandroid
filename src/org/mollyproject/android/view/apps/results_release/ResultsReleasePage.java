@@ -35,6 +35,11 @@ public class ResultsReleasePage extends ContentPage {
 	public String getName() {
 		return MollyModule.RESULTS_PAGE;
 	}
+
+	@Override
+	public String getQuery() {
+		return null;
+	}
 	
 
 }

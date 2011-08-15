@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class SearchTask extends BackgroundTask<String, Void, List<Map<String,String>>> {
+public class SearchTask extends BackgroundTask<JSONObject, Void, List<Map<String,String>>> {
 
 	protected String searchQuery;
 	public SearchTask(Page page, boolean toDestroy, boolean dialog)
@@ -61,12 +61,12 @@ public class SearchTask extends BackgroundTask<String, Void, List<Map<String,Str
 	}
 
 	@Override
-	protected List<Map<String,String>> doInBackground(String... queries) {
+	protected List<Map<String,String>> doInBackground(JSONObject... args) {
 		//send query to server, and get back json response
 		try {
 			//get the result:
-			JSONArray results = page.getRouter().onRequestSent(MollyModule.SEARCH_PAGE, null, Router.OutputFormat.JSON, 
-					"&query="+queries[0]).getJSONArray("results");
+			JSONArray results = args[0].getJSONArray("results"); //page.getRouter().onRequestSent(MollyModule.SEARCH_PAGE, null, Router.OutputFormat.JSON, 
+					//"&query="+queries[0])
 			
 			List<Map<String,String>> resultMapsList = new ArrayList<Map<String,String>>();
 			System.out.println("result maps list: " + resultMapsList);
@@ -111,15 +111,9 @@ public class SearchTask extends BackgroundTask<String, Void, List<Map<String,Str
 			}
 			
 			return resultMapsList;
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			unknownHostException = true;
 		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			ioException = true;
 		}
 		return null;
 	}

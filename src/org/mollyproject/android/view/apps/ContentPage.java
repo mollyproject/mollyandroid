@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.apps;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.UnknownHostException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,7 +65,7 @@ public abstract class ContentPage extends Page {
 			super.onPreExecute();
 			try {
 				jsonContent = router.onRequestSent(getName(), 
-						getAdditionalParams(), Router.OutputFormat.JSON, null);
+						getAdditionalParams(), Router.OutputFormat.JSON, getQuery());
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 				unknownHostException = true;
@@ -163,6 +164,8 @@ public abstract class ContentPage extends Page {
 			
 		}
 	}
+	
+	public abstract String getQuery() throws UnsupportedEncodingException;
 	
 	public abstract String getAdditionalParams();
 	

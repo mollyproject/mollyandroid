@@ -13,7 +13,6 @@ public class ContactPage extends AbstractContactPage {
 	
 	@Override
 	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -25,5 +24,10 @@ public class ContactPage extends AbstractContactPage {
 	@Override
 	public String getName() {
 		return MollyModule.CONTACT_PAGE;
+	}
+
+	@Override
+	public String getQuery() {
+		return null;
 	}
 }

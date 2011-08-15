@@ -46,4 +46,9 @@ public class PodcastsPage extends ContentPage {
 		return MollyModule.PODCAST_PAGE;
 	}
 
+	@Override
+	public String getQuery() {
+		return null;
+	}
+
 }

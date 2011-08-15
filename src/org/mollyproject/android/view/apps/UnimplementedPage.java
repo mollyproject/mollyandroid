@@ -45,4 +45,9 @@ public class UnimplementedPage extends ContentPage {
 	public String getName() {
 		return locator;
 	}
+
+	@Override
+	public String getQuery() {
+		return null;
+	}
 }

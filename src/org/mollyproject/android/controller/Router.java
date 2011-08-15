@@ -15,7 +15,8 @@ import org.mollyproject.android.view.apps.Page;
 
 public class Router {
 	protected CookieManager cookieMgr;
-	protected LocationThread currentLocThread;
+	//protected LocationThread currentLocThread;
+	protected LocationTracker locTracker;
 	protected String csrfToken;
 	protected boolean firstReq;
 	protected MyApplication myApp;
@@ -28,7 +29,7 @@ public class Router {
 		this.myApp = myApp;
 		cookieMgr = new CookieManager(myApp);
 		firstReq = true;
-		currentLocThread = null; //this will get checked regularly for null to avoid NullPointerException
+		locTracker = new LocationTracker(myApp);
 	}
     
 	public void setApp(MyApplication myApp)
@@ -138,20 +139,22 @@ public class Router {
 		
 		outputStr = getFrom(urlStr);
 		
+		URL url = new URL(urlStr);
+		URLConnection urlConn = url.openConnection();
 		if (firstReq)
 		{
 			//try storing cookies if this is the first request
-			URL url = new URL(urlStr);
-			cookieMgr.storeCookies(url.openConnection());
+			cookieMgr.storeCookies(urlConn);
 			firstReq = false;
 		}
 		//set cookie for connection
-		cookieMgr.setCookies(new URL(urlStr).openConnection());
-        JSONObject output = new JSONObject(outputStr);
-        return output;
+		cookieMgr.setCookies(urlConn);
+		cookieMgr.setLocation(urlConn, locTracker.getCurrentLoc().getLatitude(), 
+					locTracker.getCurrentLoc().getLongitude(), locTracker.getCurrentLoc().getAccuracy());
+        return new JSONObject(outputStr);
 	}
 	
-	public void stopCurrentLocThread()
+	/*public void stopCurrentLocThread()
 	{
 		if (currentLocThread != null)
 		{
@@ -159,7 +162,7 @@ public class Router {
 			/*currentLocThread is set to null as a measure to avoid the NullPointerException
 			that is thrown when the app resumes after the interrupted LocationThread is wiped
 			out by Android. 
-			*/
+			
 			currentLocThread = null;
 		}
 	}
@@ -167,5 +170,5 @@ public class Router {
 	public LocationThread getLocThread()
 	{
 		return currentLocThread;
-	}
+	}*/
 }
