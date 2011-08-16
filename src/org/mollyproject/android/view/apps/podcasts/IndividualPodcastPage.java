@@ -29,6 +29,9 @@ public class IndividualPodcastPage extends ContentPage {
 		super.onResume();
 		try
 		{
+			String parentSlug = jsonContent.getJSONObject("category").getString("slug");
+			myApp.setPodcastsSlug(parentSlug);
+			
 			JSONObject jsonInfo = jsonContent.getJSONObject("podcast");
 			
 			LinearLayout indPodcastLayout = (LinearLayout) layoutInflater.inflate(R.layout.individual_podcast_page, 

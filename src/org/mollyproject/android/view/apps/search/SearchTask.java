@@ -92,7 +92,8 @@ public class SearchTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 						public void onClick(View v) {
 							// TODO Auto-generated method stub
 							try {
-								if (result.getString("application").equals("places"))
+								String app = result.getString("application");
+								if (app.equals("places"))
 								{
 									System.out.println("SEARCH RESULT PRESSED");
 									String[] placesArgs = new String[2];
@@ -104,6 +105,15 @@ public class SearchTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 												(page, myApp.getPageClass(MollyModule.PLACES_ENTITY));
 									page.startActivityForResult(myIntent, 0);
 								}
+								else if (app.equals("podcasts"))
+								{
+									String indSlug = result.getString("url").replace("/podcasts/", "");
+									myApp.setIndPodcastSlug(indSlug);
+									Intent myIntent = new Intent
+										(page, myApp.getPageClass(MollyModule.INDIVIDUAL_PODCAST_PAGE));
+									page.startActivityForResult(myIntent, 0);
+								}
+							
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
