@@ -17,9 +17,20 @@ public class PlacesResultsPage extends ContentPage {
 	}
 	
 	@Override
+	public void onResume() {
+		super.onResume();
+		new PlacesResultsTask(this, true, true).execute(jsonContent);
+	}
+	
+	@Override
 	public String getAdditionalParams() {
 		String[] args = myApp.getPlacesArgs();
-		return ("&arg="+args[0]+"&arg="+args[1]);
+		String argsText = new String();
+		for (String arg : args)
+		{
+			argsText = argsText + "&arg" + arg;
+		}
+		return argsText;
 	}
 
 	@Override
