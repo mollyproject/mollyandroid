@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
@@ -29,9 +32,9 @@ public class PodcastsCategoryPage extends ContentPage {
 	protected static final int VIDEO = R.id.showVideoItem;
 	protected static final int ALL = R.id.showAllItem;
 	protected int currentlyShowing;
-	protected List<Map<String,String>> all;
-	protected List<Map<String,String>> audios;
-	protected List<Map<String,String>> videos;
+	protected JSONArray all;
+	protected JSONArray audios;
+	protected JSONArray videos;
 	protected volatile boolean rejectedDownloadImages = false;
 	protected boolean firstLoad;
 	
@@ -48,15 +51,20 @@ public class PodcastsCategoryPage extends ContentPage {
 		super.onCreate(savedInstanceState);
 		firstLoad = true;
 		currentlyShowing = ALL;
-		all = new ArrayList<Map<String,String>>();
-		audios = new ArrayList<Map<String,String>>();
-		videos = new ArrayList<Map<String,String>>();
+		all = new JSONArray();
+		audios = new JSONArray();
+		videos = new JSONArray();
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		new PodcastsCategoryTask(this,true, true).execute(myApp.getPodcastsSlug());
+		try {
+			updatePage(jsonContent.getJSONArray("podcasts"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		//new PodcastsCategoryTask(this,true, true).execute(myApp.getPodcastsSlug());
 	}
 	
 	@Override
@@ -66,63 +74,86 @@ public class PodcastsCategoryPage extends ContentPage {
 	
 	@Override
 	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
-		return myApp.getPodcastsSlug();
+		return ("&arg=" + myApp.getPodcastsSlug());
 	}
 	
-	public void updatePage(List<Map<String,String>> resultMapsList)
+	public void updatePage(JSONArray podcasts)
 	{
+		LinearLayout podcastsLayout = (LinearLayout) layoutInflater.inflate(R.layout.general_search_results_page, 
+				contentLayout, false);
+		contentLayout.addView(podcastsLayout);
+		
 		LinearLayout resultsLayout = (LinearLayout) findViewById(R.id.generalResultsList);
-		for (int i = 0; i < resultMapsList.size(); i++)
+		
+		for (int i = 0; i < podcasts.length(); i++)
 		{
-			final Map<String,String> resultMap = resultMapsList.get(i);
-			
-			LinearLayout thisResult = (LinearLayout) layoutInflater.inflate(R.layout.podcast_category_result, 
-					contentLayout,false);
-			resultsLayout.addView(thisResult);
-			
-			showMedium(currentlyShowing);
-			
-			thisResult.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					myApp.setIndPodcastSlug(resultMap.get("slug"));
-					Intent myIntent = new Intent(PodcastsCategoryPage.this, IndividualPodcastPage.class);
-					PodcastsCategoryPage.this.startActivityForResult(myIntent, 0);
-				}
-			});
-			
-			thisResult.setLayoutParams(Page.paramsWithLine);
-			
-			String medium = resultMap.get("medium");
-			ImageView mediumIcon = (ImageView) thisResult.findViewById(R.id.mediaIcon);
-			mediumIcon.setImageResource(myApp.getImgResourceId(medium));
-			
-			if (firstLoad)
-			{
-				all.add(resultMap);
-				TextView mediumText = (TextView) findViewById(R.id.searchResultsHeader);
-				mediumText.setText("Showing all types of media.");
-			}
-			if (medium.equals("video") & firstLoad)
-			{
-				videos.add(resultMap);
-			}
-			else if (medium.equals("audio") & firstLoad)
-			{
-				audios.add(resultMap);
-			}
-			
-			//medium text
-			ImageView podcastIcon = (ImageView) thisResult.findViewById(R.id.podcastIcon); 
-			String urlStr = resultMap.get("logoURL");
-			TextView podcastText = (TextView) thisResult.findViewById(R.id.podcastText);
-			podcastText.setText(Html.fromHtml("<font size=18>" + resultMap.get("title") + "</font>" +
-					"<br/>" + resultMap.get("description")));
 			try
 			{
+				final JSONObject result = podcasts.getJSONObject(i);
+				
+				LinearLayout thisResult = (LinearLayout) layoutInflater.inflate(R.layout.podcast_category_result, 
+						contentLayout,false);
+				resultsLayout.addView(thisResult);
+				
+				showMedium(currentlyShowing);
+				final String slug = result.getString("slug");
+				thisResult.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						myApp.setIndPodcastSlug(slug);
+						Intent myIntent = new Intent(PodcastsCategoryPage.this, IndividualPodcastPage.class);
+						PodcastsCategoryPage.this.startActivityForResult(myIntent, 0);
+					}
+				});
+				
+				thisResult.setLayoutParams(Page.paramsWithLine);
+				
+				String medium = result.getString("medium");
+				ImageView mediumIcon = (ImageView) thisResult.findViewById(R.id.mediaIcon);
+				mediumIcon.setImageResource(myApp.getImgResourceId(medium));
+				
+				if (firstLoad)
+				{
+					all.put(result);
+					TextView mediumText = (TextView) findViewById(R.id.searchResultsHeader);
+					mediumText.setText("Showing all types of media.");
+				}
+				if (medium.equals("video") & firstLoad)
+				{
+					videos.put(result);
+				}
+				else if (medium.equals("audio") & firstLoad)
+				{
+					audios.put(result);
+				}
+				
+				//medium text
+				ImageView podcastIcon = (ImageView) thisResult.findViewById(R.id.podcastIcon); 
+				String urlStr = result.getString("logo");
+				
+				TextView podcastText = (TextView) thisResult.findViewById(R.id.podcastText);
+				
+				String description = result.getString("description");
+				if (description.length() > 60)
+				{
+					int j = 40;
+					if (description.charAt(40) != ' ')
+					{
+						
+						while (description.charAt(j) != ' ')
+						{
+							j++;
+							System.out.println("STUCK HERE");
+						}
+					}
+					description = description.substring(0, j)+"...";
+				}
+				podcastText.setText(Html.fromHtml("<font size=18>" + result.getString("title") + "</font>" +
+						"<br/>" + description));
+				
 				new DownloadImageTask(this,podcastIcon, urlStr).execute();
+				
 			} catch (RejectedExecutionException e) {
 				e.printStackTrace();
 				if (!rejectedDownloadImages)
@@ -133,8 +164,9 @@ public class PodcastsCategoryPage extends ContentPage {
 							, this, false);
 					rejectedDownloadImages = true;
 				}
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
-			
 		}
 		firstLoad = false;
 	}
