@@ -27,6 +27,7 @@ public abstract class ContentPage extends Page {
 	@InjectView (R.id.extraTextView) protected TextView extraTextView;
 	@InjectView (R.id.contentLayout) protected LinearLayout contentLayout;
 	protected boolean loaded = false;
+	protected volatile boolean jsonDownloaded = false;
 	protected JSONObject jsonContent;
 	//aka ImplementedPage
 	public void onCreate(Bundle savedInstanceState)
@@ -49,6 +50,7 @@ public abstract class ContentPage extends Page {
 		super.onResume();
 		if (!loaded)
 		{
+			loaded = true;
 			new PageSetupTask(this).execute();
 		}
 	}
@@ -60,12 +62,11 @@ public abstract class ContentPage extends Page {
 			super(page, true, true);
 		}
 		
-		@Override
+		/*@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			try {
-				jsonContent = router.onRequestSent(getName(), 
-						getAdditionalParams(), Router.OutputFormat.JSON, getQuery());
+				
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 				unknownHostException = true;
@@ -76,12 +77,15 @@ public abstract class ContentPage extends Page {
 				e.printStackTrace();
 				ioException = true;
 			}
-		}
+		}*/
 		
 		@Override
 		protected JSONObject doInBackground(Void... arg0) {
 			//Download the breadcrumbs
 			try {
+				jsonContent = router.onRequestSent(getName(), 
+						getAdditionalParams(), Router.OutputFormat.JSON, getQuery());
+				jsonDownloaded = true;
 				JSONObject breadcrumbs = jsonContent.getJSONObject("breadcrumbs");
 				return breadcrumbs;
 			} catch (JSONException e) {
@@ -90,6 +94,15 @@ public abstract class ContentPage extends Page {
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 				nullPointerException = true;
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		
 			return null;
@@ -157,11 +170,7 @@ public abstract class ContentPage extends Page {
 				Page.popupErrorDialog("JSON Exception", 
 						"There might be a problem with JSON output " +
 						"from server. Please try again.", page, true);
-			} finally {
-				loaded = true;
-				contentLayout.invalidate();
-			}
-			
+			} 
 		}
 	}
 	

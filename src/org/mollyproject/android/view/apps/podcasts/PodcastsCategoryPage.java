@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
@@ -59,12 +60,12 @@ public class PodcastsCategoryPage extends ContentPage {
 	@Override
 	public void onResume() {
 		super.onResume();
-		try {
+		/*try {
 			updatePage(jsonContent.getJSONArray("podcasts"));
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}
-		//new PodcastsCategoryTask(this,true, true).execute(myApp.getPodcastsSlug());
+		}*/
+		new PodcastsCategoryTask(this,true, true).execute();
 	}
 	
 	@Override
@@ -233,6 +234,42 @@ public class PodcastsCategoryPage extends ContentPage {
 	@Override
 	public String getQuery() {
 		return null;
+	}
+	
+	private class PodcastsCategoryTask extends BackgroundTask<Void, Void, JSONObject>
+	{
+
+		public PodcastsCategoryTask(Page page,
+				boolean toDestroyPageAfterFailure, boolean dialogEnabled) {
+			super(page, toDestroyPageAfterFailure, dialogEnabled);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void updateView(JSONObject outputs) {
+			try {
+				JSONArray podcasts = outputs.getJSONArray("podcasts");
+				updatePage(podcasts);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
+		}
+
+		@Override
+		protected JSONObject doInBackground(Void... params) {
+			while (!jsonDownloaded)
+			{
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return jsonContent;
+		}
+		
 	}
 }
 
