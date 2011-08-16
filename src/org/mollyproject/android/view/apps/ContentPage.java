@@ -131,7 +131,6 @@ public abstract class ContentPage extends Page {
 				if (!breadcrumbs.isNull("parent"))
 				{
 					JSONObject parent = breadcrumbs.getJSONObject("parent");
-					//change page title if necessary
 					
 					if (!breadcrumbs.getBoolean("parent_is_index"))
 					{
@@ -152,7 +151,6 @@ public abstract class ContentPage extends Page {
 						extraTextView.setText(title);
 					}
 					else {
-						title = parent.getString("title");
 						extraTextView.setText("");
 						parentBreadcrumb.setText(title); 
 						parentBreadcrumb.setEnabled(false);

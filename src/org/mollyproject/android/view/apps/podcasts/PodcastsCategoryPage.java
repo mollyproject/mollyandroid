@@ -96,7 +96,9 @@ public class PodcastsCategoryPage extends ContentPage {
 						contentLayout,false);
 				resultsLayout.addView(thisResult);
 				
-				showMedium(currentlyShowing);
+				TextView mediumText = (TextView) findViewById(R.id.searchResultsHeader);
+				mediumText.setText(mediumTexts.get(currentlyShowing));
+				
 				final String slug = result.getString("slug");
 				thisResult.setOnClickListener(new OnClickListener() {
 					
@@ -117,7 +119,6 @@ public class PodcastsCategoryPage extends ContentPage {
 				if (firstLoad)
 				{
 					all.put(result);
-					TextView mediumText = (TextView) findViewById(R.id.searchResultsHeader);
 					mediumText.setText("Showing all types of media.");
 				}
 				if (medium.equals("video") & firstLoad)
@@ -176,8 +177,7 @@ public class PodcastsCategoryPage extends ContentPage {
 	{
 		//only for use after R.layout.podcast_category_result is inflated in its scope
 		//otherwise the textview will be null
-		TextView mediumText = (TextView) findViewById(R.id.searchResultsHeader);
-		mediumText.setText(mediumTexts.get(medium));
+		
 	}
 	
 	@Override
