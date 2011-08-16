@@ -120,15 +120,16 @@ public abstract class Page extends RoboActivity {
 		                case KeyEvent.KEYCODE_ENTER:
 		                	if (searchField.getText().length() > 0)
 		                	{
-		                		String[] argsToPass = new String[2];
+		                		
 		                		if (application == null)
 		                		{
+		                			String[] argsToPass = new String[1];
 		                			argsToPass[0] = searchField.getText().toString();
-		                			argsToPass[1] = null;
 		                			myApp.setGeneralQuery(argsToPass);
 		                		}
 		                		else
 		                		{
+		                			String[] argsToPass = new String[2];
 		                			argsToPass[0] = searchField.getText()
 		                						.toString();
 		                			argsToPass[1] = application;

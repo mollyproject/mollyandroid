@@ -30,8 +30,6 @@ public class PlacesPage extends ContentPage {
 		EditText searchField = (EditText) placesSearchLayout.findViewById(R.id.searchField);
 		searchField.setWidth(LayoutParams.FILL_PARENT);
     	setEnterKeySearch(searchField, this, "places");
-    	
-    	
 	}
     protected boolean isRouteDisplayed() {
         // TODO Auto-generated method stub
