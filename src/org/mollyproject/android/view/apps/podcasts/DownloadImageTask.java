@@ -33,6 +33,12 @@ public class DownloadImageTask extends AsyncTask<Void, Void, Void>
 	}
 	
 	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		((PodcastsCategoryPage) page).incRunningImgThreads();
+	}
+	
+	@Override
 	protected void onPostExecute(Void result) {
 		if (defaultIcon)
 		{
@@ -42,6 +48,7 @@ public class DownloadImageTask extends AsyncTask<Void, Void, Void>
 		{
 			imView.setImageBitmap(bitmap);
 		}
+		((PodcastsCategoryPage) page).decRunningImgThreads();
 	};
 	
 	@Override

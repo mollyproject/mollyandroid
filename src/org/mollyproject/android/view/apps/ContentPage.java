@@ -27,7 +27,7 @@ public abstract class ContentPage extends Page {
 	@InjectView (R.id.extraTextView) protected TextView extraTextView;
 	@InjectView (R.id.contentLayout) protected LinearLayout contentLayout;
 	protected boolean loaded = false;
-	protected volatile boolean jsonDownloaded = false;
+	protected boolean jsonDownloaded = false;
 	protected boolean jsonProcessed = false;
 	protected JSONObject jsonContent;
 	//aka ImplementedPage
@@ -67,9 +67,14 @@ public abstract class ContentPage extends Page {
 		return jsonContent;
 	}
 	
-	public boolean downloadedJSON()
+	public synchronized boolean downloadedJSON()
 	{
 		return jsonDownloaded;
+	}
+	
+	public synchronized boolean jsonProcessed()
+	{
+		return jsonProcessed;
 	}
 	
 	public void doneProcessingJSON()

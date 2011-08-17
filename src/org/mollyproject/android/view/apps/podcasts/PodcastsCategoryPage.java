@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.json.JSONArray;
@@ -37,8 +38,10 @@ public class PodcastsCategoryPage extends ContentPage {
 	protected JSONArray all;
 	protected JSONArray audios;
 	protected JSONArray videos;
-	
+	protected Queue<Map<ImageView,String>> imageDownloadQueue;
+	protected int runningImageThreads;
 	protected boolean firstLoad;
+	protected ImageBatchesTask imageTask = null;
 	
 	protected static Map<Integer,String> mediumTexts = new HashMap<Integer,String>();
 	static {
@@ -57,6 +60,32 @@ public class PodcastsCategoryPage extends ContentPage {
 		all = new JSONArray();
 		audios = new JSONArray();
 		videos = new JSONArray();
+		runningImageThreads = 0;
+	}
+	
+	public Queue<Map<ImageView,String>> getDownloadQueue()
+	{
+		return imageDownloadQueue;
+	}
+	
+	public void updateDownloadQueue(Queue<Map<ImageView,String>> downloadQueue)
+	{
+		imageDownloadQueue = downloadQueue;
+	}
+	
+	public synchronized void incRunningImgThreads()
+	{
+		runningImageThreads++;
+	}
+	
+	public synchronized void decRunningImgThreads()
+	{
+		runningImageThreads--;
+	}
+	
+	public int getRunningImgThreads()
+	{
+		return runningImageThreads;
 	}
 	
 	@Override
@@ -66,6 +95,14 @@ public class PodcastsCategoryPage extends ContentPage {
 		{
 			new PodcastsCategoryTask(this,true, true).execute();
 		}
+		imageTask = new ImageBatchesTask(this, false, false);
+		imageTask.execute();
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		imageTask.cancel(true);
 	}
 	
 	@Override

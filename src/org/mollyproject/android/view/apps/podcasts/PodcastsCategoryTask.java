@@ -1,5 +1,11 @@
 package org.mollyproject.android.view.apps.podcasts;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.json.JSONArray;
@@ -21,11 +27,16 @@ import android.widget.TextView;
 
 public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONArray>
 {
-	protected volatile boolean rejectedDownloadImages = false;
+	protected volatile boolean rejectedDownloadImages;
+	//Map<ImageView,String> imagesCache;
+	Queue<Map<ImageView,String>> downloadQueue;
+	protected int spawned;
 	public PodcastsCategoryTask(PodcastsCategoryPage page,
 			boolean toDestroyPageAfterFailure, boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
-		// TODO Auto-generated constructor stub
+		rejectedDownloadImages = false;
+		spawned = 0;
+		downloadQueue = new LinkedList<Map<ImageView,String>>();
 	}
 
 	@Override
@@ -74,10 +85,9 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 		contentLayout.addView(podcastsLayout);
 		
 		LinearLayout resultsLayout = (LinearLayout) podcastsLayout.findViewById(R.id.generalResultsList);
-		
-		for (int i = 0; i < podcasts.length(); i++)
+		try
 		{
-			try
+			for (int i = 0; i < podcasts.length(); i++)
 			{
 				final JSONObject result = podcasts.getJSONObject(i);
 				
@@ -117,7 +127,6 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 					int j = 40;
 					if (description.charAt(40) != ' ')
 					{
-						
 						while (description.charAt(j) != ' ') { j++;	}
 					}
 					description = description.substring(0, j)+"...";
@@ -126,26 +135,51 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 						"<br/>" + description));
 				
 				((PodcastsCategoryPage) page).populateArrays(result,medium);
-				
-				new DownloadImageTask(page,podcastIcon, urlStr).execute();
-				
-			} catch (RejectedExecutionException e) {
-				e.printStackTrace();
-				if (!rejectedDownloadImages)
-				{
-					/*Toast.makeText(this, "Image download request rejected. " +
-						"Some images will not show up properly.", Toast.LENGTH_LONG).show();*/
-					Page.popupErrorDialog("Image request rejected","Some images will not show up properly."
-							, page, false);
-					rejectedDownloadImages = true;
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-				jsonException = true;
+				Map<ImageView,String> imagesCache = new HashMap<ImageView,String>();
+				imagesCache.put(podcastIcon,urlStr);
+				downloadQueue.add(imagesCache);
 			}
+			//new ImageBatchesTask(page, false, false).execute(downloadQueue);
+			((ContentPage) page).doneProcessingJSON();
+		} catch (RejectedExecutionException e) {
+			e.printStackTrace();
+			if (!rejectedDownloadImages)
+			{
+				/*Toast.makeText(this, "Image download request rejected. " +
+					"Some images will not show up properly.", Toast.LENGTH_LONG).show();*/
+				Page.popupErrorDialog("Image request rejected","Some images will not show up properly."
+						, page, false);
+				rejectedDownloadImages = true;
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			jsonException = true;
 		}
-		((ContentPage) page).doneProcessingJSON();
+		
 		((PodcastsCategoryPage) page).firstLoadDone();
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
