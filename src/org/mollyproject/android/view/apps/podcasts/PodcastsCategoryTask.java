@@ -140,6 +140,7 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 				downloadQueue.add(imagesCache);
 			}
 			//new ImageBatchesTask(page, false, false).execute(downloadQueue);
+			((PodcastsCategoryPage) page).setDownloadQueue(downloadQueue);
 			((ContentPage) page).doneProcessingJSON();
 		} catch (RejectedExecutionException e) {
 			e.printStackTrace();

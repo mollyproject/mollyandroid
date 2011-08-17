@@ -49,7 +49,7 @@ public class IndividualPodcastTask extends BackgroundTask<Void,Void,JSONObject>
 			}
 			else
 			{
-				new DownloadImageTask(page,podcastLogo, logoUrl).execute();
+				//new DownloadImageTask(page,podcastLogo, logoUrl).execute();
 			}
 			
 			TextView titleText = (TextView) indPodcastLayout.findViewById(R.id.indPodcastTitle);

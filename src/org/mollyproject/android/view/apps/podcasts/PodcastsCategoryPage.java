@@ -68,7 +68,7 @@ public class PodcastsCategoryPage extends ContentPage {
 		return imageDownloadQueue;
 	}
 	
-	public void updateDownloadQueue(Queue<Map<ImageView,String>> downloadQueue)
+	public void setDownloadQueue(Queue<Map<ImageView,String>> downloadQueue)
 	{
 		imageDownloadQueue = downloadQueue;
 	}
@@ -100,8 +100,8 @@ public class PodcastsCategoryPage extends ContentPage {
 	}
 	
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
+	public void onPause() {
+		super.onPause();
 		imageTask.cancel(true);
 	}
 	

@@ -71,6 +71,7 @@ public class ImageBatchesTask extends BackgroundTask<Void,Void,Queue<Map<ImageVi
 				new DownloadImageTask(page, imView, imageCache.get(imView)).execute();
 			}
 		}
+		System.out.println("Is cancelled "+ isCancelled());
 		return null;
 	}
 
