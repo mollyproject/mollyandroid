@@ -54,7 +54,7 @@ public class ImageBatchesTask extends BackgroundTask<Void,Void,Queue<Map<ImageVi
 		System.out.println("Queue length: "+downloadQueue.size());
 		while(!downloadQueue.isEmpty() & !isCancelled())
 		{
-			while (((PodcastsCategoryPage) page).getRunningImgThreads() > 4)
+			while (((PodcastsCategoryPage) page).getRunningImgThreads() > 10)
 			{
 				//System.out.println("Threads running: " + ((PodcastsCategoryPage) page).getRunningImgThreads());
 				try {
