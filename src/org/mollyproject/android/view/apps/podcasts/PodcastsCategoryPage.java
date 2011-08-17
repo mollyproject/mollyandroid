@@ -80,6 +80,7 @@ public class PodcastsCategoryPage extends ContentPage {
 	
 	public void updatePage(JSONArray podcasts)
 	{
+		contentLayout.removeAllViews();
 		LinearLayout podcastsLayout = (LinearLayout) layoutInflater.inflate(R.layout.general_search_results_page, 
 				contentLayout, false);
 		contentLayout.addView(podcastsLayout);

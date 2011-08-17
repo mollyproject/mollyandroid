@@ -35,7 +35,7 @@ public class MyApplication extends RoboApplication {
 	protected String podcastsSlug = null;
 	protected String indPodcastSlug = null;
 	protected ArrayListMultimap<String,JSONObject> libraryCache = ArrayListMultimap.create();
-	public boolean destroyed = true;
+	protected boolean destroyed = true;
 	protected Injector injector;
 	//protected LocationTracker locTracker = new LocationTracker(this);
 	Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
@@ -46,6 +46,10 @@ public class MyApplication extends RoboApplication {
 			("d MMM yyyy");
 	public static DateFormat podcastDateFormat = new SimpleDateFormat
 			("yyyy-MM-d HH:mm:ss");
+	
+	public void setDestroyed(boolean b) { destroyed = b; }
+	
+	public boolean isDestroyed() { return destroyed; }
 	
 	public boolean isOnline() {
 		 return ((ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE))
