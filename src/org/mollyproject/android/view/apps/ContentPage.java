@@ -62,29 +62,27 @@ public abstract class ContentPage extends Page {
 		}
 	}
 	
+	public JSONObject getJSONContent()
+	{
+		return jsonContent;
+	}
+	
+	public boolean downloadedJSON()
+	{
+		return jsonDownloaded;
+	}
+	
+	public void doneProcessingJSON()
+	{
+		 jsonProcessed = true;
+	}
+	
 	protected class PageSetupTask extends BackgroundTask<Void, Void, JSONObject>
 	{
 		//new breadcrumb parser
 		public PageSetupTask(Page page) {
 			super(page, true, true);
 		}
-		
-		/*@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			try {
-				
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-				unknownHostException = true;
-			} catch (JSONException e) {
-				e.printStackTrace();
-				jsonException = true;
-			} catch (IOException e) {
-				e.printStackTrace();
-				ioException = true;
-			}
-		}*/
 		
 		@Override
 		protected JSONObject doInBackground(Void... arg0) {
@@ -102,14 +100,13 @@ public abstract class ContentPage extends Page {
 				e.printStackTrace();
 				nullPointerException = true;
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				unknownHostException = true;
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				ioException = true;
 			}
 		
 			return null;

@@ -1,5 +1,8 @@
 package org.mollyproject.android.view.apps.library;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.view.apps.Page;
@@ -7,7 +10,7 @@ import org.mollyproject.android.view.apps.Page;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class LibraryNextPageTask extends LibraryResultsTask<Void, Void, JSONObject>
+public class LibraryNextPageTask extends AbstractLibraryResultsTask<Void, Void, JSONObject>
 {
 	
 	//A hack, because resultsNo and resultsLayout cannot be passed along with JSONObject in the
@@ -42,7 +45,16 @@ public class LibraryNextPageTask extends LibraryResultsTask<Void, Void, JSONObje
 			return getNextResultsPage(page);
 		} catch (JSONException e) {
 			e.printStackTrace();
+			((LibraryResultsPage) page).decreaseCurPageNum();
 			jsonException = true;
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			((LibraryResultsPage) page).decreaseCurPageNum();
+			unknownHostException = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			((LibraryResultsPage) page).decreaseCurPageNum();
+			ioException = true;
 		}
 		return null;
 	}

@@ -1,5 +1,7 @@
 package org.mollyproject.android.view.apps.library;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,38 +22,33 @@ import android.widget.TextView;
 
 import com.google.common.collect.ArrayListMultimap;
 
-public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
+public abstract class AbstractLibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 	//display the library search results
 	protected ArrayListMultimap<String,JSONObject> cache;
 	protected List<JSONObject> cachedJSONPages;
 	protected String query = new String();
 	
-	public LibraryResultsTask(LibraryResultsPage libraryResultsPage, boolean toDestroy, boolean dialog)
+	public AbstractLibraryResultsTask(LibraryResultsPage libraryResultsPage, boolean toDestroy, boolean dialog)
 	{
 		super(libraryResultsPage, toDestroy, dialog);
 		cache = (ArrayListMultimap<String, JSONObject>) 
 			((MyApplication) page.getApplication()).getLibCache();
-		//get the query from myApp
-		Map<String,String> bookArgs = ((MyApplication) page.getApplication()).getLibraryArgs();
-		for (String key : bookArgs.keySet())
-		{
-			if (bookArgs.get(key).length() > 0)
-			{
-				query = query + "&" + key + "=" + bookArgs.get(key);
-			}
-		}
+		//get the query from page
+		query = ((LibraryResultsPage) page).getQuery();
 	}
 	
-	protected JSONObject getNextResultsPage(Page page) throws JSONException
+	protected JSONObject getNextResultsPage(Page page) throws JSONException, UnknownHostException, IOException
 	{
+		((LibraryResultsPage) page).increaseCurPageNum();
 		int curPageNum = ((LibraryResultsPage) page).getCurPageNum();
+		
 		JSONObject nextJSONPage = new JSONObject();
 		if (!cache.containsKey(query) || 
 				(cache.containsKey(query) & cache.get(query).size()<=curPageNum))
 		{
-			JSONObject nextResults = page.getRouter().exceptionHandledOnRequestSent(
+			JSONObject nextResults = page.getRouter().onRequestSent(
 					page.getName(), null,
-					page, Router.OutputFormat.JSON, query+"&page="+curPageNum);
+					Router.OutputFormat.JSON, ((LibraryResultsPage) page).getQuery()+"&page="+curPageNum);
 			nextJSONPage = nextResults.getJSONObject("page");
 			((MyApplication) page.getApplication()).updateLibCache(query, nextJSONPage);
 		}
@@ -60,7 +57,7 @@ public abstract class LibraryResultsTask<A,B,C> extends BackgroundTask<A,B,C> {
 			cachedJSONPages = (List<JSONObject>) cache.get(query);
 			nextJSONPage = cachedJSONPages.get(curPageNum);
 		}
-		((LibraryResultsPage) page).increaseCurPageNum();
+		
 		return nextJSONPage;
 	}
 	

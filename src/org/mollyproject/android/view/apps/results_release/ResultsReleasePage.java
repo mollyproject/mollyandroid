@@ -19,7 +19,7 @@ public class ResultsReleasePage extends ContentPage {
 		super.onResume();
 		if (!jsonProcessed)
 		{
-			new ResultReleaseTask(this, true, true).execute(jsonContent);
+			new ResultReleaseTask(this, true, true).execute();
 		}
 	}
 	

@@ -9,10 +9,12 @@ import android.os.Bundle;
 
 public class LibraryResultsPage extends AbstractLibraryPage {
 	protected int curPageNum; //the current maximum page for a particular result displayed
+	protected String query;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		curPageNum = 0;
+		bookArgs = myApp.getLibraryArgs();
+		curPageNum = 1;
 	}
 	
 	@Override
@@ -24,6 +26,11 @@ public class LibraryResultsPage extends AbstractLibraryPage {
 	public void increaseCurPageNum()
 	{
 		curPageNum++;
+	}
+	
+	public void decreaseCurPageNum()
+	{
+		curPageNum--;
 	}
 	
 	public int getCurPageNum()
@@ -48,7 +55,16 @@ public class LibraryResultsPage extends AbstractLibraryPage {
 
 	@Override
 	public String getQuery() {
-		return null;
+		query = new String();
+		for (String key : bookArgs.keySet())
+		{
+			if (bookArgs.get(key).length() > 0)
+			{
+				query = query + "&" + key + "=" + bookArgs.get(key);
+			}
+		}
+		System.out.println("Lib query" + query);
+		return query;
 	}
 }
 

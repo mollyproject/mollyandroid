@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
+import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -75,10 +76,20 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMult
 
 	@Override
 	protected  ListMultimap<Date,String> doInBackground(JSONObject... args) {
-		// TODO Auto-generated method stub
+		
+		while (!((ContentPage) page).downloadedJSON())
+		{
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		ListMultimap<Date,String> examsByDate = ArrayListMultimap.create();
+		
 		try {
-			JSONObject output = args[0];
+			JSONObject output = ((ContentPage) page).getJSONContent();
 			
 			//Process the json text received
 			if (output != null)
