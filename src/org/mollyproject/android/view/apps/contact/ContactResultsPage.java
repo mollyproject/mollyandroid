@@ -10,10 +10,11 @@ import org.mollyproject.android.view.apps.Page;
 import android.os.Bundle;
 
 public class ContactResultsPage extends AbstractContactPage {
-
+	protected String[] args;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		args = myApp.getContactQuery();
 	}
 	
 	@Override
@@ -41,7 +42,7 @@ public class ContactResultsPage extends AbstractContactPage {
 
 	@Override
 	public String getQuery() throws UnsupportedEncodingException {
-		String[] args = myApp.getContactQuery();
+		
 		return ("&query="+URLEncoder.encode(args[0],"UTF-8")+"&medium="+args[1]);
 	}
 

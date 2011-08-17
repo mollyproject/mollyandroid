@@ -35,7 +35,7 @@ public class MyApplication extends RoboApplication {
 	protected String podcastsSlug = null;
 	protected String indPodcastSlug = null;
 	protected ArrayListMultimap<String,JSONObject> libraryCache = ArrayListMultimap.create();
-	protected boolean destroyed = false;
+	public boolean destroyed = true;
 	protected Injector injector;
 	//protected LocationTracker locTracker = new LocationTracker(this);
 	Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();

@@ -19,10 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class IndividualPodcastPage extends ContentPage {
-	
+	protected String slug; 
 	@Override
 	public void onCreate(android.os.Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		slug = myApp.getIndPodcastSlug();
 	};
 	
 	@Override
@@ -36,7 +37,7 @@ public class IndividualPodcastPage extends ContentPage {
 	
 	@Override
 	public String getAdditionalParams() {
-		return ("&arg="+myApp.getIndPodcastSlug());
+		return ("&arg="+slug);
 	}
 
 	@Override

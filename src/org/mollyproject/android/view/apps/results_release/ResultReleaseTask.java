@@ -29,7 +29,6 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMult
 	public ResultReleaseTask(ResultsReleasePage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
-		
 	}
 
 	@Override

@@ -49,6 +49,12 @@ public abstract class ContentPage extends Page {
 	@Override
 	public void onResume() {
 		super.onResume();
+		if (myApp.destroyed)
+		{
+			//in case the app is resumed after sleeping for a while and its cache is claimed
+			loaded = false;
+			jsonProcessed = false;
+		}
 		if (!loaded)
 		{
 			loaded = true;

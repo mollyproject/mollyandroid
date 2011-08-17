@@ -33,6 +33,7 @@ public class PodcastsCategoryPage extends ContentPage {
 	protected static final int VIDEO = R.id.showVideoItem;
 	protected static final int ALL = R.id.showAllItem;
 	protected int currentlyShowing;
+	protected String slug;
 	protected JSONArray all;
 	protected JSONArray audios;
 	protected JSONArray videos;
@@ -50,6 +51,7 @@ public class PodcastsCategoryPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		slug = myApp.getPodcastsSlug();
 		firstLoad = true;
 		currentlyShowing = ALL;
 		all = new JSONArray();
@@ -73,7 +75,7 @@ public class PodcastsCategoryPage extends ContentPage {
 	
 	@Override
 	public String getAdditionalParams() {
-		return ("&arg=" + myApp.getPodcastsSlug());
+		return ("&arg=" + slug);
 	}
 	
 	public void updatePage(JSONArray podcasts)

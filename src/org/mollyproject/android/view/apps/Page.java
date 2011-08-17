@@ -44,6 +44,7 @@ public abstract class Page extends RoboActivity {
 	public void onCreate (Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		myApp.destroyed = false;
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		myApp = (MyApplication) getApplication();
 		router = myApp.getRouter();

@@ -25,10 +25,11 @@ import android.widget.ScrollView;
 
 public class PlacesResultsPage extends ContentPage {
 	protected MapView mapView;
+	protected String[] args;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		args = myApp.getPlacesArgs();
 		//somehow map doesn't show up if added directly to contentLayout, thus leading to
 		//this destructive approach (for this page only)
 		LinearLayout originalLayout = (LinearLayout) breadcrumbs.getParent();
@@ -68,7 +69,7 @@ public class PlacesResultsPage extends ContentPage {
 
 	@Override
 	public String getAdditionalParams() {
-		String[] args = myApp.getPlacesArgs();
+		
 		String argsText = new String();
 		for (String arg : args)
 		{

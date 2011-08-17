@@ -27,11 +27,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class SearchPage extends ContentPage {
-	
+	protected String[] generalQuery;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		generalQuery = myApp.getGeneralQuery();
 		RelativeLayout searchBar = (RelativeLayout) 
 				layoutInflater.inflate(R.layout.search_bar,contentLayout, false);
     	contentLayout.addView(searchBar);
@@ -64,7 +65,6 @@ public class SearchPage extends ContentPage {
 
 	@Override
 	public String getQuery() throws UnsupportedEncodingException {
-		String[] generalQuery = myApp.getGeneralQuery();
 		if (generalQuery.length == 1)
 		{
 			return ("&query=" + URLEncoder.encode(generalQuery[0],"UTF-8"));
