@@ -28,6 +28,7 @@ public abstract class ContentPage extends Page {
 	@InjectView (R.id.contentLayout) protected LinearLayout contentLayout;
 	protected boolean loaded = false;
 	protected volatile boolean jsonDownloaded = false;
+	protected boolean jsonProcessed = false;
 	protected JSONObject jsonContent;
 	//aka ImplementedPage
 	public void onCreate(Bundle savedInstanceState)

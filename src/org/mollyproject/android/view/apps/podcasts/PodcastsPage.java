@@ -41,7 +41,10 @@ public class PodcastsPage extends ContentPage {
 	@Override
 	public void onResume() {
 		super.onResume();
-		new PodcastsPageTask(this,true, true).execute();
+		if (!jsonProcessed)
+		{
+			new PodcastsPageTask(this,true, true).execute();
+		}
 	}
 	
 	@Override
@@ -110,6 +113,7 @@ public class PodcastsPage extends ContentPage {
 						}
 					});
 				}
+				jsonProcessed = true;
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

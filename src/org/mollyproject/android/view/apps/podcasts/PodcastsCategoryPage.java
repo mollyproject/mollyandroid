@@ -60,12 +60,10 @@ public class PodcastsCategoryPage extends ContentPage {
 	@Override
 	public void onResume() {
 		super.onResume();
-		/*try {
-			updatePage(jsonContent.getJSONArray("podcasts"));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}*/
-		new PodcastsCategoryTask(this,true, true).execute();
+		if (!jsonProcessed)
+		{
+			new PodcastsCategoryTask(this,true, true).execute();
+		}
 	}
 	
 	@Override
@@ -250,6 +248,7 @@ public class PodcastsCategoryPage extends ContentPage {
 			try {
 				JSONArray podcasts = outputs.getJSONArray("podcasts");
 				updatePage(podcasts);
+				jsonProcessed = true;
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
