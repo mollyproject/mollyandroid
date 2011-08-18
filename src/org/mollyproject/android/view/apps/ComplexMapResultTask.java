@@ -15,7 +15,7 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
 public class ComplexMapResultTask extends BackgroundTask<Void,Void,JSONObject>{
-
+	protected boolean exceptionCaught = false;
 	public ComplexMapResultTask(PageWithMap page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
@@ -56,6 +56,7 @@ public class ComplexMapResultTask extends BackgroundTask<Void,Void,JSONObject>{
 	        ((ContentPage) page).doneProcessingJSON();
 		} catch (JSONException e) {
 			e.printStackTrace();
+			exceptionCaught = true;
 			jsonException = true;
 		}
 	}
