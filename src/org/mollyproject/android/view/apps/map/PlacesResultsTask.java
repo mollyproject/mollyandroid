@@ -43,17 +43,17 @@ public class PlacesResultsTask extends BackgroundTask<Void,Void,JSONObject>
 				point = new GeoPoint(attrs.getDouble("lat"), attrs.getDouble("lon"));
 
 			}
-	        OverlayItem marker = new OverlayItem(title, "", point);
-	        overlayItems.add(marker);
 
-	        ItemizedIconOverlay<OverlayItem> overlay = new ItemizedIconOverlay<OverlayItem>(page,overlayItems, null);
-	        
 	        MapView mapView = ((PlacesResultsPage) page).getMapView();
 	        
 	        MapController mapController = mapView.getController();
 	        mapController.setCenter(point);
 
+	        OverlayItem markerOverlay = new OverlayItem(title, "", point);
+	        overlayItems.add(markerOverlay);
+	        ItemizedIconOverlay<OverlayItem> overlay = new ItemizedIconOverlay<OverlayItem>(page,overlayItems, null);
 	        mapView.getOverlays().add(overlay);
+	        
 	        ((ContentPage) page).doneProcessingJSON();
         } catch (JSONException e) {
 			e.printStackTrace();

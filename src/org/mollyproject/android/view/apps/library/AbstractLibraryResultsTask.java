@@ -11,12 +11,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -87,12 +91,12 @@ public abstract class AbstractLibraryResultsTask<A,B,C> extends BackgroundTask<A
 		}
 	}
 	
-	protected void populateResults(Page page, JSONObject nextJSONPage, 
+	protected void populateResults(final Page page, JSONObject nextJSONPage, 
 			LinearLayout resultsLayout, TextView resultsNo) throws JSONException
 	{
 		//prepare the json and get the page of results needed to display
 		int curPageNum = ((LibraryResultsPage) page).getCurPageNum();
-		JSONArray newObjects = nextJSONPage.getJSONArray("objects");
+		JSONArray books = nextJSONPage.getJSONArray("objects");
 		TextView pageNumView = new TextView(page);
 		pageNumView.setTextColor(R.color.blue);
 		pageNumView.setText("Page "+curPageNum);
@@ -101,11 +105,12 @@ public abstract class AbstractLibraryResultsTask<A,B,C> extends BackgroundTask<A
 		{
 			resultsLayout.addView(pageNumView);
 		}
-		for (int i = 0; i < newObjects.length(); i++)
+		//display each of the results and point to their corresponding library book result page
+		for (int i = 0; i < books.length(); i++)
 		{
 			LinearLayout thisResultLayout = new LinearLayout(page);
 			thisResultLayout.setOrientation(LinearLayout.VERTICAL);
-			JSONObject thisResult = newObjects.getJSONObject(i);
+			final JSONObject thisResult = books.getJSONObject(i);
 			
 			//next step: display the title, author, publishers, no. of available libraries
 			addTextField(page,thisResult,"title","",thisResultLayout,18);
@@ -114,7 +119,23 @@ public abstract class AbstractLibraryResultsTask<A,B,C> extends BackgroundTask<A
 			addTextField(page,thisResult,"holding_libraries","Libraries: ",thisResultLayout,16);
 			thisResultLayout.setBackgroundResource(R.drawable.bg_blue);
 			thisResultLayout.setPadding(10, 10, 0, 10);
-			thisResultLayout.setLayoutParams(Page.paramsWithLine);	
+			thisResultLayout.setLayoutParams(Page.paramsWithLine);
+			
+			thisResultLayout.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					try {
+						myApp.setBookNumber(thisResult.getString("control_number"));
+						Intent myIntent = new Intent(page,myApp.getPageClass(MollyModule.LIBRARY_BOOK_RESULT_PAGE));
+						page.startActivityForResult(myIntent, 0);
+					} catch (JSONException e) {
+						e.printStackTrace();
+						//To-do: pop up error
+					}
+				}
+			});
+			
 			resultsLayout.addView(thisResultLayout);
 		}
 		

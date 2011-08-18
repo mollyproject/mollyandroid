@@ -45,6 +45,11 @@ public abstract class PageWithMap extends ContentPage {
         mapController.setCenter(new GeoPoint(LocationTracker.DEFAULT_LAT,LocationTracker.DEFAULT_LON));
 	}
 	
+	public LinearLayout getMapLayout()
+	{
+		return mapLayout;
+	}
+	
 	public MapView getMapView()
 	{
 		return mapView;
