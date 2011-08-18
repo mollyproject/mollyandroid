@@ -2,6 +2,7 @@ package org.mollyproject.android.view.apps.library;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public abstract class AbstractLibraryResultsTask<A,B,C> extends BackgroundTask<A
 		query = ((LibraryResultsPage) page).getQuery();
 	}
 	
-	protected JSONObject getNextResultsPage(Page page) throws JSONException, UnknownHostException, IOException
+	protected JSONObject getNextResultsPage(Page page) throws JSONException, UnknownHostException, IOException, ParseException
 	{
 		((LibraryResultsPage) page).increaseCurPageNum();
 		int curPageNum = ((LibraryResultsPage) page).getCurPageNum();

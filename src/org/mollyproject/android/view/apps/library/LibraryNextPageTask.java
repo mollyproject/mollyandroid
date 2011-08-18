@@ -2,6 +2,7 @@ package org.mollyproject.android.view.apps.library;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.text.ParseException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,6 +56,9 @@ public class LibraryNextPageTask extends AbstractLibraryResultsTask<Void, Void, 
 			e.printStackTrace();
 			((LibraryResultsPage) page).decreaseCurPageNum();
 			ioException = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			parseException = true;
 		}
 		return null;
 	}

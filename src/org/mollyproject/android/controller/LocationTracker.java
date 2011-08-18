@@ -60,7 +60,7 @@ public class LocationTracker {
 	    }
     };
     
-    public boolean getAutoLoc()
+    public boolean isAutoLoc()
     {
     	return autoLoc;
     }
@@ -70,11 +70,16 @@ public class LocationTracker {
 		autoLoc = b;
 	}
 	
+	public void startLocUpdate()
+	{
+		locMgr.requestLocationUpdates(provider, 0, 0,locationListener);
+	}
+	
 	public Location getCurrentLoc()
 	{
 		if (autoLoc)
 		{
-			locMgr.requestLocationUpdates(provider, 0, 0,locationListener);
+			//locMgr.requestLocationUpdates(provider, 0, 0,locationListener);
 			if (locMgr.getLastKnownLocation(provider) != null)
 			{
 				loc = locMgr.getLastKnownLocation(provider);

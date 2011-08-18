@@ -6,12 +6,28 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.view.apps.Page;
+
+import android.location.Location;
 
 public class Router {
 	protected CookieManager cookieMgr;
@@ -20,9 +36,7 @@ public class Router {
 	protected String csrfToken;
 	protected boolean firstReq;
 	protected MyApplication myApp;
-	protected double lat;
-	protected double lon;
-	protected double accuracy;
+	protected HttpClient client;
 	public final static String mOX =  "http://dev.m.ox.ac.uk/";
 
 	public static enum OutputFormat { JSON, FRAGMENT, JS, YAML, XML, HTML };
@@ -33,9 +47,8 @@ public class Router {
 		cookieMgr = new CookieManager(myApp);
 		firstReq = true;
 		locTracker = new LocationTracker(myApp);
-		lat = LocationTracker.DEFAULT_LAT;
-		lon = LocationTracker.DEFAULT_LON;
-		accuracy = 0;
+		locTracker.startLocUpdate();
+		client = new DefaultHttpClient();
 	}
     
 	public void setApp(MyApplication myApp)
@@ -45,26 +58,22 @@ public class Router {
     
 	//Take an URL String, convert to URL, open connection then process 
 	//and return the response
-	public static String getFrom (String urlStr) throws MalformedURLException,
-											IOException, UnknownHostException, SocketTimeoutException
+	public String getFrom (String urlStr) throws MalformedURLException,
+					IOException, UnknownHostException, SocketTimeoutException, JSONException, ParseException
 	{
-		String outputStr = new String();		
+        String getURL = urlStr;
+        System.out.println("Getting from: " + urlStr);
+        HttpGet get = new HttpGet(getURL);
+        HttpResponse responseGet = client.execute(get);  
+        
+        HttpEntity resEntityGet = responseGet.getEntity();  
+        if (resEntityGet != null) {  
+            //do something with the response
+        	return EntityUtils.toString(resEntityGet);
+        }
+        
+		return null;
 		
-		System.out.println("Router, Processing: " + urlStr);
-		URLConnection revConn = new URL(urlStr).openConnection();
-		revConn.setConnectTimeout(20000);
-		revConn.setReadTimeout(20000);
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-								revConn.getInputStream()));
-		String inputLine;
-		
-		while ((inputLine = in.readLine()) != null) 
-		{
-			outputStr = outputStr.concat(inputLine);
-		}
-		in.close();
-		System.out.println("Router, Output: " + outputStr);
-		return outputStr;
 	}
 	
 	public JSONObject exceptionHandledOnRequestSent(String locator, String arg, Page page, OutputFormat format, String query)
@@ -95,12 +104,17 @@ public class Router {
 			Page.popupErrorDialog("I/O Exception (Router)", 
 					"There might be a problem with network connection. " +
 					"Please try later.", page);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			Page.popupErrorDialog("Parse Exception (Router)", 
+					"There might be a problem with network connection. " +
+					"Please try later.", page);
 		} 
 		return null;
 	}
 	
 	public JSONObject onRequestSent(String locator, String arg, OutputFormat format, String query) 
-							throws JSONException, UnknownHostException, IOException {
+							throws JSONException, UnknownHostException, IOException, ParseException {
 		/*basic method for all requests for json response, it sets up a url to be sent
 		  to the server as follow:
 		  1. it looks up the url to the required page using the reverse api with either the
@@ -129,6 +143,7 @@ public class Router {
 			reverseReq = mOX + "reverse/?name="+locator;
 		}
 		urlStr = getFrom(reverseReq);
+		
 		String outputStr = new String();
 		
 		switch(format){
@@ -145,46 +160,56 @@ public class Router {
 		
 		outputStr = getFrom(urlStr);
 		
-		URL url = new URL(urlStr);
-		URLConnection urlConn = url.openConnection();
+		//Check for cookies here, after the first "proper" request, not the reverse request
 		if (firstReq)
-		{
-			//try storing cookies if this is the first request
-			cookieMgr.storeCookies(urlConn);
-			firstReq = false;
-		}
-		//set cookie for connection
-		cookieMgr.setCookies(urlConn);
+			{
+				//cookiestore is empty and first request then try storing cookies if this is the first request
+				cookieMgr.storeCookies(((DefaultHttpClient)client).getCookieStore());
+				System.out.println("first req cookies: " + ((DefaultHttpClient)client).getCookieStore().getCookies().size());
+				firstReq = false;
+			}
+			
+		((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
+	        
 		
 		//the method requestLocationUpdates is async, so cannot be called from here (as onRequestSent
 		//is always called from another asynctask -> needs to update these parameters in the main thread
 		//first
-		cookieMgr.setLocation(urlConn, lat,lon, accuracy);
+		Location loc = locTracker.getCurrentLoc();
+		System.out.println("Location: " + " lat: " + loc.getLatitude()
+				+ " lon: " +loc.getLongitude() + " acc: " + loc.getAccuracy());
+		cookieMgr.setLocation(new URL(urlStr).openConnection(), 
+				loc.getLatitude(),loc.getLongitude(), loc.getAccuracy());
+		
         return new JSONObject(outputStr);
 	}
 	
-	public void setLocationParams(double lat, double lon, double accuracy)
+	public void updateLocationManually(String locationName) throws JSONException, 
+				ClientProtocolException, IOException, ParseException
 	{
-		this.lat = lat;
-		this.lon = lon;
-		this.accuracy = accuracy;
+		HttpClient client = new DefaultHttpClient();  
+		((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
+        String postURL = "http://dev.m.ox.ac.uk/geolocation/";
+        HttpPost post = new HttpPost(postURL);
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        
+        params.add(new BasicNameValuePair("csrfmiddlewaretoken", cookieMgr.getCSRFToken()));
+        params.add(new BasicNameValuePair("format", "json"));
+        params.add(new BasicNameValuePair("method", "geocoded"));
+        params.add(new BasicNameValuePair("name", locationName));
+        
+        UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params,HTTP.UTF_8);
+        post.setEntity(ent);
+        HttpResponse responsePOST = client.execute(post);
+        
+        BufferedReader rd = new BufferedReader
+    			(new InputStreamReader(responsePOST.getEntity().getContent()));
+	    String line;
+	    System.out.println("Testing manual Loc update");
+	    
+	    while ((line = rd.readLine()) != null) {
+	        System.out.println(line);
+	    }
+	    rd.close();
 	}
-	
-	/*public void stopCurrentLocThread()
-	{
-		if (currentLocThread != null)
-		{
-			currentLocThread.stopThread();
-			/*currentLocThread is set to null as a measure to avoid the NullPointerException
-			that is thrown when the app resumes after the interrupted LocationThread is wiped
-			out by Android. 
-			
-			currentLocThread = null;
-		}
-	}
-	
-	public LocationThread getLocThread()
-	{
-		return currentLocThread;
-	}*/
 }

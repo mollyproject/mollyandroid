@@ -3,6 +3,7 @@ package org.mollyproject.android.view.apps.home;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +64,9 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 		} catch (IOException e) {
 			e.printStackTrace();
 			ioException = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			parseException = true;
 		}
 		return null;
 	}

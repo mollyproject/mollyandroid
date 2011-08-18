@@ -2,6 +2,7 @@ package org.mollyproject.android.view.apps.weather;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.text.ParseException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -131,6 +132,9 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, Void>{
 		} catch (IOException e) {
 			e.printStackTrace();
 			ioException = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			parseException = true;
 		}
 		
 		return null;

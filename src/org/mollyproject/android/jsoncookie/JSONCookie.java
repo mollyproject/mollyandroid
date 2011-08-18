@@ -34,7 +34,7 @@ SOFTWARE.
  * @author JSON.org
  * @version 2010-12-24
  */
-public class Cookie {
+public class JSONCookie {
 
     /**
      * Produce a copy of a string in which the characters '+', '%', '=', ';'

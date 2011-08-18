@@ -30,7 +30,7 @@ public class UnimplementedPage extends ContentPage {
 	
 	public String getActualURL(String string) throws Exception
 	{
-		return Router.getFrom((Router.mOX +"reverse/?name="+ string));
+		return router.getFrom((Router.mOX +"reverse/?name="+ string));
 	}
 
 	@Override

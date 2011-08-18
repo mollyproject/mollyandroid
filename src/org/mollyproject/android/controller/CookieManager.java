@@ -1,12 +1,27 @@
 package org.mollyproject.android.controller;
 
-import java.net.*;
-import java.io.*;
-import java.util.*;
-import java.text.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
-import org.json.*;
-import org.mollyproject.android.jsoncookie.Cookie;
+import org.apache.http.client.CookieStore;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.cookie.BasicClientCookie;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.mollyproject.android.jsoncookie.JSONCookie;
 
 import android.content.Context;
 
@@ -32,7 +47,7 @@ public class CookieManager {
     private static final String SET_COOKIE = "Set-Cookie";
     private static final String PATH = "Path";
     private static final String EXPIRES = "expires";
-    private static final String DATE_FORMAT = "EEE, dd-MMM-yyyy hh:mm:ss z";
+    private static final String DATE_FORMAT = "EEE MMM dd hh:mm:ss z yyyy";
     private static final String SET_COOKIE_SEPARATOR="; ";
     private static final String COOKIE = "Cookie";
     private static final String LOCATION = "X-Current-Location";
@@ -80,21 +95,28 @@ public class CookieManager {
      * @throws java.io.IOException Thrown if conn is not open.
      * @throws JSONException 
      */
-    public void storeCookies(URLConnection conn) throws JSONException, IOException
+    public void storeCookies(CookieStore cookieStore) throws JSONException, IOException
     {    	    		
     	if (cookies.length() == 0)
     	{
-			String headerName;
-			String cookieField;
-			for (int i=1; (headerName = conn.getHeaderFieldKey(i)) != null; i++) {
-				System.out.println("header field "+conn.getHeaderFieldKey(i)+" "+conn.getHeaderField(i));
-			    if (headerName.equalsIgnoreCase(SET_COOKIE)) {
+			//String headerName;
+			//String cookieField;
+			List<Cookie> cookieList = cookieStore.getCookies();
+			for (int i = 0; i < cookieList.size(); i++) {//(int i=1; (headerName = conn.getHeaderFieldKey(i)) != null; i++) {
+				//System.out.println("header field "+conn.getHeaderFieldKey(i)+" "+conn.getHeaderField(i));
+				Cookie cookie = cookieList.get(i);
+				//headerName = 
+				//if (cookie.getName().equalsIgnoreCase(SET_COOKIE)) {
 			    	//Extract the cookie in the specified header field
-			    	cookieField = conn.getHeaderField(i);
-			    	JSONObject cookie = Cookie.toJSONObject(cookieField);		    	
+			    	//cookieField = conn.getHeaderField(i);
+			    	JSONObject jsonCookie = new JSONObject();//JSONCookie.toJSONObject(cookie.toString());	    	
 			    	//put the cookie found in the JSON mappings
-			    	cookies.put((String) cookie.get("name"), cookie);
-			    }		   	    
+			    	jsonCookie.put(EXPIRES, cookie.getExpiryDate());
+			    	jsonCookie.put(PATH,"/");
+			    	jsonCookie.put("domain", Router.mOX);
+			    	jsonCookie.put("value",cookie.getValue());
+			    	cookies.put(cookie.getName(), jsonCookie);
+			    //}		   	    
 			}
 			System.out.println("CookieManager, Cookies "+cookies);
 			writeCookiesToFile();
@@ -103,6 +125,25 @@ public class CookieManager {
     	{
     		System.out.println("Dont store anything, session saved.");
     	}
+    }
+    
+    public BasicCookieStore getCookieStore() throws JSONException, ParseException
+    {
+    	BasicCookieStore basicCookieStore = new BasicCookieStore();
+    	
+		//append the cookies part with Set-cookies as the header
+		Iterator<String> cookieNames = cookies.keys();
+		while(cookieNames.hasNext()) {
+		    String cookieName = cookieNames.next();
+		    JSONObject cookie = (JSONObject) cookies.get(cookieName);
+	    	System.out.println("Cookie Name, Set cookie "+cookie);
+			BasicClientCookie basicCookie = new BasicClientCookie(cookieName,cookie.getString("value"));
+			basicCookie.setExpiryDate(dateFormat.parse((String) cookie.get(EXPIRES).toString()));
+			basicCookie.setDomain("dev.m.ox.ac.uk");
+			basicCookie.setPath("/");
+			basicCookieStore.addCookie(basicCookie);
+		}
+		return basicCookieStore;
     }
     
     /**
@@ -141,6 +182,7 @@ public class CookieManager {
 		    }
 		}
 	    conn.setRequestProperty(COOKIE, cookieStringBuffer.toString());
+	    System.out.println("conn getReqProperties" + conn.getRequestProperty(COOKIE));
     }
     
     public void setLocation(URLConnection conn, double lat, double lon, double accuracy) throws IllegalStateException, 
@@ -181,6 +223,7 @@ public class CookieManager {
     
     public String getCSRFToken() throws JSONException
     {
+    	System.out.println((String) ((JSONObject) cookies.get("csrftoken")).getString("value"));
     	return (String) ((JSONObject) cookies.get("csrftoken")).getString("value");
     }
     
