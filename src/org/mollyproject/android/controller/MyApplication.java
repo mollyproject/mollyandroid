@@ -29,6 +29,7 @@ public class MyApplication extends RoboApplication {
 	protected String[] contactQuery; //arbitrary array of contact query, should expect the actual query and the required medium
 	protected String[] generalQuery;
 	protected String[] placesArgs;
+	protected String bookControlNumber;
 	protected List<Map<String,String>> podcastsOutput;
 	protected Map<String,String> libraryQuery = null;
 	protected String locator;
@@ -55,6 +56,10 @@ public class MyApplication extends RoboApplication {
 		 return ((ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE))
 				 				.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
+	
+	public String getBookNumber() { return bookControlNumber; }
+	
+	public void setBookNumber(String controlNumber) { bookControlNumber = controlNumber; }
 	
 	public void setPlacesArgs(String[] args) { placesArgs = args; }
 	

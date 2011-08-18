@@ -6,8 +6,10 @@ import org.mollyproject.android.view.apps.*;
 import org.mollyproject.android.view.apps.contact.ContactPage;
 import org.mollyproject.android.view.apps.contact.ContactResultsPage;
 import org.mollyproject.android.view.apps.home.HomePage;
+import org.mollyproject.android.view.apps.library.LibraryBookResultPage;
 import org.mollyproject.android.view.apps.library.LibraryPage;
 import org.mollyproject.android.view.apps.library.LibraryResultsPage;
+import org.mollyproject.android.view.apps.map.PlacesNearbyPage;
 import org.mollyproject.android.view.apps.map.PlacesPage;
 import org.mollyproject.android.view.apps.map.PlacesResultsPage;
 import org.mollyproject.android.view.apps.podcasts.IndividualPodcastPage;
@@ -26,12 +28,14 @@ public class MollyModule extends AbstractModule {
 	public static String HOME_PAGE = "home:index";
 	public static String RESULTS_PAGE = "results:index";
 	public static String PLACES_PAGE = "places:index";
+	public static String PLACES_NEARBY = "places:nearby-list";
 	public static String PLACES_ENTITY = "places:entity";
 	public static String CONTACT_PAGE = "contact:index";
 	public static String FEATURE_VOTE = "feature_vote:index";
 	public static String FEEDBACK_PAGE = "feedback:index";
 	public static String LIBRARY_PAGE = "library:index";
 	public static String LIBRARY_RESULTS_PAGE = "library:search";
+	public static String LIBRARY_BOOK_RESULT_PAGE = "library:item-detail";
 	public static String CONTACT_RESULTS_PAGE = "contact:result_list";
 	public static String SEARCH_PAGE = "search:index";
 	public static String WEATHER_PAGE = "weather:index";
@@ -52,12 +56,15 @@ public class MollyModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named(LIBRARY_PAGE+"_img")).toInstance(R.drawable.library);
 		bind(Integer.class).annotatedWith(Names.named(LIBRARY_PAGE+"_bc")).toInstance(R.drawable.library_bc);
 		bind(Page.class).annotatedWith(Names.named(LIBRARY_RESULTS_PAGE)).to(LibraryResultsPage.class);
+		bind(Page.class).annotatedWith(Names.named(LIBRARY_BOOK_RESULT_PAGE)).to(LibraryBookResultPage.class);
 		
 		bind(Page.class).annotatedWith(Names.named(PLACES_PAGE)).to(PlacesPage.class);
 		bind(Integer.class).annotatedWith(Names.named(PLACES_PAGE+"_img")).toInstance(R.drawable.places);
 		bind(Integer.class).annotatedWith(Names.named(PLACES_PAGE+"_bc")).toInstance(R.drawable.places_bc);
 
 		bind(Page.class).annotatedWith(Names.named(PLACES_ENTITY)).to(PlacesResultsPage.class);
+		
+		bind(Page.class).annotatedWith(Names.named(PLACES_NEARBY)).to(PlacesNearbyPage.class);
 		
 		//views and drawables for weather page
 		bind(Page.class).annotatedWith(Names.named(WEATHER_PAGE)).to(WeatherPage.class);
