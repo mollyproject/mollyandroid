@@ -10,6 +10,7 @@ import org.mollyproject.android.view.apps.Page;
 
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LibraryNextPageTask extends AbstractLibraryResultsTask<Void, Void, JSONObject>
 {
@@ -34,9 +35,14 @@ public class LibraryNextPageTask extends AbstractLibraryResultsTask<Void, Void, 
 		} catch (JSONException e) {
 			//A special case of the updateView method
 			e.printStackTrace();
-			Page.popupErrorDialog("JSON Exception", 
+			jsonException = true;
+			Toast.makeText(page.getApplicationContext(), "JSON Exception. " +
 					"There might be a problem with JSON output " +
-					"from server. Please try again.", page, toDestroyPageAfterFailure);
+					"from server. Please try again later.", Toast.LENGTH_SHORT).show();
+			
+			/*Page.popupErrorDialog("JSON Exception", 
+					"There might be a problem with JSON output " +
+					"from server. Please try again.", page, toDestroyPageAfterFailure);*/
 		}
 	}
 

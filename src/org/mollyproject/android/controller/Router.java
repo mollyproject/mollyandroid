@@ -77,43 +77,6 @@ public class Router {
 		
 	}
 	
-	public JSONObject exceptionHandledOnRequestSent(String locator, String arg, Page page, OutputFormat format, String query)
-	{
-		try{
-			return onRequestSent(locator, arg, format, query);
-		}
-		catch (MalformedURLException e)
-		{
-			e.printStackTrace();
-			Page.popupErrorDialog("Malformed URL (Router)",
-					"Please try restarting the app", page);
-			
-		}catch (JSONException e)
-		{
-			e.printStackTrace();
-			Page.popupErrorDialog("JSON Exception (Router)", 
-					"There might be a problem with JSON output " +
-					"from server. Please try again later", page);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			Page.popupErrorDialog("Unknown Host Exception (Router)", 
-					"There might be a problem with network connection. " +
-					"Please try later.", page);
-		}  catch (IOException e)
-		{
-			e.printStackTrace();
-			Page.popupErrorDialog("I/O Exception (Router)", 
-					"There might be a problem with network connection. " +
-					"Please try later.", page);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			Page.popupErrorDialog("Parse Exception (Router)", 
-					"There might be a problem with network connection. " +
-					"Please try later.", page);
-		} 
-		return null;
-	}
-	
 	public String reverse(String locator, String arg) throws SocketTimeoutException, 
 			MalformedURLException, UnknownHostException, IOException, JSONException, ParseException
 	{

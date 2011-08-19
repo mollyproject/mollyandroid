@@ -13,6 +13,7 @@ import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public abstract class AbstractContactPage extends ContentPage {
 	//to use a common search bar for both the contact:index page and contact:results_list page
@@ -74,8 +75,10 @@ public abstract class AbstractContactPage extends ContentPage {
 	{
 		if (query.length() == 0)
 		{
-			popupErrorDialog("No query found", "Search cannot proceed. " +
-					"Please enter a name into the search box.", this);
+			Toast.makeText(this, "No query found. Search cannot proceed. " +
+					"Please enter a name into the search box.", Toast.LENGTH_SHORT).show();
+			/*popupErrorDialog("No query found", "Search cannot proceed. " +
+					"Please enter a name into the search box.", this);*/
 		}
 		else
 		{

@@ -19,6 +19,7 @@ import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public abstract class AbstractLibraryPage extends ContentPage {
 	//make use of the search bar for both lib page and lib results page
@@ -99,9 +100,14 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		} catch (UnsupportedEncodingException e) {
 			//Something is wrong with the query
 			e.printStackTrace();
-			Page.popupErrorDialog("Unsupported Encoding", 
+			
+			Toast.makeText(getApplicationContext(), "Unsupported Encoding" +
 					"There might be a problem with the search terms. " +
-					"Please try again later.", AbstractLibraryPage.this.getInstance());
+					"Please try again later.", Toast.LENGTH_SHORT).show();
+			
+			/*Page.popupErrorDialog("Unsupported Encoding", 
+					"There might be a problem with the search terms. " +
+					"Please try again later.", AbstractLibraryPage.this.getInstance());*/
 		}
 	}
 	
@@ -131,9 +137,12 @@ public abstract class AbstractLibraryPage extends ContentPage {
 						} catch (UnsupportedEncodingException e) {
 							//Something is wrong with the query
 							e.printStackTrace();
-							Page.popupErrorDialog("Unsupported Encoding", 
+							Toast.makeText(getApplicationContext(), "Unsupported Encoding" +
 									"There might be a problem with the search terms. " +
-									"Please try again later.", AbstractLibraryPage.this.getInstance());
+									"Please try again later.", Toast.LENGTH_SHORT).show();
+							/*Page.popupErrorDialog("Unsupported Encoding", 
+									"There might be a problem with the search terms. " +
+									"Please try again later.", AbstractLibraryPage.this.getInstance());*/
 						}
 		                    return true;
 		                default:
@@ -165,8 +174,10 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		}
 		else
 		{
-			popupErrorDialog("Cannot perform search", "Please enter some search criteria"
-					, this);
+			Toast.makeText(getApplicationContext(), "Cannot perform search. "
+					+"Please enter some search criteria", Toast.LENGTH_SHORT).show();
+			/*popupErrorDialog("Cannot perform search", "Please enter some search criteria"
+					, this);*/
 		}
 	}
 }

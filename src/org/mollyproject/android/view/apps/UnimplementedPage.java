@@ -6,6 +6,7 @@ import org.mollyproject.android.controller.Router;
 
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 public class UnimplementedPage extends ContentPage {
 	//for pages that are not customised yet, simply load a WebView pointing to the url on the web site
@@ -21,9 +22,11 @@ public class UnimplementedPage extends ContentPage {
 			webView.loadUrl(temp);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Page.popupErrorDialog("Loading Page failed", 
+			Toast.makeText(getApplicationContext(), "Loading Page failed. " +
+					"Please try again later", Toast.LENGTH_SHORT).show();
+			/*Page.popupErrorDialog("Loading Page failed", 
 					"Page is not loaded. " +
-					"Please try again later", this, true);
+					"Please try again later", this, true);*/
 		}
 		contentLayout.addView(webView);
 	}

@@ -52,12 +52,14 @@ public abstract class Page extends RoboActivity {
 		{
 			try {
 				router = new Router(myApp);
+				myApp.setRouter(router);
 			} catch (Exception e) {
 				e.printStackTrace();
-				Page.popupErrorDialog("Network Connection cannot be set up. ", 
-						"Please try again later", this, true);
+				Toast.makeText(this.getApplicationContext(), "Network Connection cannot be set up. " + 
+						"Please try again later", Toast.LENGTH_SHORT).show();
+				/*Page.popupErrorDialog("Network Connection cannot be set up. ", 
+						"Please try again later", this, true);*/
 			}
-			myApp.setRouter(router);
 		}
 		else
 		{
@@ -142,8 +144,10 @@ public abstract class Page extends RoboActivity {
 		                	}
 		                	else
 		                	{
-		                		Page.popupErrorDialog("No query found", 
-		                				"Please enter some search criteria", v.getContext());
+		                		Toast.makeText(getApplicationContext(), "No query found. " + 
+		                				"Please enter some search criteria", Toast.LENGTH_SHORT).show();
+		                		/*Page.popupErrorDialog("No query found", 
+		                				"Please enter some search criteria", v.getContext());*/
 		                	}
 		                	return true;
 		                default:

@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONArray>
 {
@@ -146,10 +147,10 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 			e.printStackTrace();
 			if (!rejectedDownloadImages)
 			{
-				/*Toast.makeText(this, "Image download request rejected. " +
-					"Some images will not show up properly.", Toast.LENGTH_LONG).show();*/
-				Page.popupErrorDialog("Image request rejected","Some images will not show up properly."
-						, page, false);
+				Toast.makeText(page.getApplicationContext(), "Image download request rejected. " +
+					"Some images will not show up properly.", Toast.LENGTH_LONG).show();
+				/*Page.popupErrorDialog("Image request rejected","Some images will not show up properly."
+						, page, false);*/
 				rejectedDownloadImages = true;
 			}
 		} catch (JSONException e) {
