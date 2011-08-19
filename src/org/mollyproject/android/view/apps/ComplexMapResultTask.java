@@ -71,7 +71,10 @@ public class ComplexMapResultTask extends BackgroundTask<Void,Void,JSONObject>{
 	        	//3: title
 	        	GeoPoint markerPosition = new GeoPoint(marker.getDouble(0),marker.getDouble(1));
 	        	OverlayItem markerOverlay = new OverlayItem(marker.getString(3), "", markerPosition);
-	        	markerOverlay.setMarker(drawNumberOnImage(i+1, R.drawable.android_button));
+	        	if (marker.getString(2) != "green_star")
+	        	{
+	        		markerOverlay.setMarker(drawNumberOnImage(i, R.drawable.android_button));
+	        	}
 	        	overlayItems.add(markerOverlay);
 	        }
 	        ItemizedIconOverlay<OverlayItem> overlay = new ItemizedIconOverlay<OverlayItem>(page,overlayItems, null);

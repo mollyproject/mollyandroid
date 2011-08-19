@@ -21,7 +21,6 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.mollyproject.android.jsoncookie.JSONCookie;
 
 import android.content.Context;
 
@@ -43,21 +42,23 @@ public class CookieManager {
 	protected File cookiesFile;
 	//protected Context context;
 	protected MyApplication myApp;
-	protected JSONObject cookies; //store the cookies in JSON format	
-    private static final String SET_COOKIE = "Set-Cookie";
+	protected JSONObject jsonCookies; //store the cookies in JSON format
+	protected BasicCookieStore basicCookies;
+	
     private static final String PATH = "Path";
+    private static final String DOMAIN = "domain";
+    private static final String VALUE = "value";
+    private static final String NAME = "name";
+    private static final String NULL = "/";
     private static final String EXPIRES = "expires";
     private static final String DATE_FORMAT = "EEE MMM dd hh:mm:ss z yyyy";
-    private static final String SET_COOKIE_SEPARATOR="; ";
-    private static final String COOKIE = "Cookie";
-    private static final String LOCATION = "X-Current-Location";
-    private static final String LOCATION_SEPERATOR = ", ";
-    private static final char NAME_VALUE_SEPARATOR = '=';
     private DateFormat dateFormat;
 
-    public CookieManager(MyApplication myApp) throws IOException, JSONException {
+    public CookieManager(MyApplication myApp) throws IOException, JSONException, ParseException {
     	this.myApp = myApp;
-    	cookies = new JSONObject();
+    	dateFormat = new SimpleDateFormat(DATE_FORMAT);
+    	jsonCookies = new JSONObject();
+    	basicCookies = new BasicCookieStore();
     	cookiesFile = myApp.getFileStreamPath(COOKIESFILE);
     	//check if file exists
     	if (cookiesFile.exists())
@@ -70,134 +71,86 @@ public class CookieManager {
 	    	{
 	    		//there is something in the file, if the JSON text is not in the 
 	    		//right format an exception will be thrown
-	    		cookies = new JSONObject(recoveredJSONStr);
+	    		jsonCookies = new JSONObject(recoveredJSONStr);
+	    		
+	    		//have json data, now construct the cookie store from it
+	    		basicCookies = getNewCookieStore();
 	    	}
     	}
     	//the else case is dealt with by doing a storeCookies() call in Router 
-    	dateFormat = new SimpleDateFormat(DATE_FORMAT);
+    	
     }    
     
-    public void setApp(MyApplication myApp)
-    {
-    	this.myApp = myApp;
-    }
-    
-    //public void 
-    
-    /**
-     * Retrieves and stores cookies returned by the host on the other side
-     * of the the open java.net.URLConnection.
-     *
-     * The connection MUST have been opened using the connect()
-     * method or a IOException will be thrown.
-     *
-     * @param conn a java.net.URLConnection - must be open, or IOException will be thrown
-     * @throws java.io.IOException Thrown if conn is not open.
-     * @throws JSONException 
-     */
     public void storeCookies(CookieStore cookieStore) throws JSONException, IOException
-    {    	    		
-    	if (cookies.length() == 0)
+    {   
+    	//this should only be called when:
+    	//1. this is the first request made
+    	//2. the session id is added to the cookies. In this case, all other fields are unchanged
+    	
+    	System.out.println("CookieMgr store: " + basicCookies.getCookies());
+    	System.out.println("Client store: "+ cookieStore.getCookies());
+    	
+    	//clear all expired cookies
+    	basicCookies.clearExpired(new Date());
+    	
+    	//if the cookies stored in the app has expired (cleared after the function call above)
+    	//or needs to update, then assign to the new cookie store
+    	if (basicCookies.getCookies().size() < cookieStore.getCookies().size())
     	{
-			//String headerName;
-			//String cookieField;
+	    	basicCookies = (BasicCookieStore) cookieStore;
+	    	jsonCookies = new JSONObject();
 			List<Cookie> cookieList = cookieStore.getCookies();
-			for (int i = 0; i < cookieList.size(); i++) {//(int i=1; (headerName = conn.getHeaderFieldKey(i)) != null; i++) {
-				//System.out.println("header field "+conn.getHeaderFieldKey(i)+" "+conn.getHeaderField(i));
+			for (int i = 0; i < cookieList.size(); i++) {
 				Cookie cookie = cookieList.get(i);
-				//headerName = 
-				//if (cookie.getName().equalsIgnoreCase(SET_COOKIE)) {
-			    	//Extract the cookie in the specified header field
-			    	//cookieField = conn.getHeaderField(i);
-			    	JSONObject jsonCookie = new JSONObject();//JSONCookie.toJSONObject(cookie.toString());	    	
-			    	//put the cookie found in the JSON mappings
-			    	jsonCookie.put(EXPIRES, cookie.getExpiryDate());
-			    	jsonCookie.put(PATH,"/");
-			    	jsonCookie.put("domain", Router.mOX);
-			    	jsonCookie.put("value",cookie.getValue());
-			    	cookies.put(cookie.getName(), jsonCookie);
-			    //}		   	    
+		    	JSONObject jsonCookie = new JSONObject();    	
+		    	//put the cookie found in the JSON mappings
+		    	jsonCookie.put(EXPIRES, cookie.getExpiryDate());
+		    	jsonCookie.put(PATH,NULL);
+		    	jsonCookie.put(DOMAIN, Router.mOX);
+		    	jsonCookie.put(VALUE,cookie.getValue());
+		    	jsonCookie.put(NAME,cookie.getName());
+		    	jsonCookies.put(cookie.getName(), jsonCookie);
 			}
-			System.out.println("CookieManager, Cookies "+cookies);
+			System.out.println("Stored Cookies from client: "+jsonCookies);
 			writeCookiesToFile();
-    	}    	
-    	else 
-    	{
-    		System.out.println("Dont store anything, session saved.");
     	}
     }
     
-    public BasicCookieStore getCookieStore() throws JSONException, ParseException
+    public BasicCookieStore getCookieStore()
     {
+    	return basicCookies;
+    }
+    
+    public BasicCookieStore getNewCookieStore() throws JSONException, ParseException
+    {
+    	//reconstruct a totally new basic cookie store from the json data
     	BasicCookieStore basicCookieStore = new BasicCookieStore();
     	
 		//append the cookies part with Set-cookies as the header
-		Iterator<String> cookieNames = cookies.keys();
+		Iterator<String> cookieNames = jsonCookies.keys();
 		while(cookieNames.hasNext()) {
+			//process the cookies one by one
 		    String cookieName = cookieNames.next();
-		    JSONObject cookie = (JSONObject) cookies.get(cookieName);
+		    
+		    //pick a cookie
+		    JSONObject cookie = (JSONObject) jsonCookies.get(cookieName);
 	    	System.out.println("Cookie Name, Set cookie "+cookie);
-			BasicClientCookie basicCookie = new BasicClientCookie(cookieName,cookie.getString("value"));
-			basicCookie.setExpiryDate(dateFormat.parse((String) cookie.get(EXPIRES).toString()));
+	    	
+	    	//construct a BasicClientCookie from the json data 
+			BasicClientCookie basicCookie = new BasicClientCookie(cookieName,cookie.getString(VALUE));
+			System.out.println(dateFormat);
+			System.out.println(cookie.getString(EXPIRES));
+			//System.out.println(dateFormat.parse(cookie.getString(EXPIRES)));
+			basicCookie.setExpiryDate(dateFormat.parse(cookie.getString(EXPIRES)));
 			basicCookie.setDomain("dev.m.ox.ac.uk");
 			basicCookie.setPath("/");
+			
+			//add to the (basic client) cookie store
 			basicCookieStore.addCookie(basicCookie);
 		}
 		return basicCookieStore;
     }
     
-    /**
-     * Prior to opening a URLConnection, calling this method will set all
-     * unexpired cookies that match the path or subpaths for the underlying URL
-     *
-     * The connection MUST NOT have been opened 
-     * method or an IOException will be thrown.
-     *
-     * @param conn a java.net.URLConnection - must NOT be open, or IOException will be thrown
-     * @throws java.io.IOException Thrown if conn has already been opened.
-     * @throws JSONException 
-     */
-    public void setCookies(URLConnection conn) throws IllegalStateException, 
-    												IOException, JSONException {
-    	//set cookies to a connection
-		URL url = conn.getURL();
-		String path = url.getPath();
-		
-		StringBuffer cookieStringBuffer = new StringBuffer();
-		//append the cookies part with Set-cookies as the header
-		Iterator<String> cookieNames = cookies.keys();
-		while(cookieNames.hasNext()) {
-		    String cookieName = cookieNames.next();
-		    JSONObject cookie = (JSONObject) cookies.get(cookieName);
-		    
-		    // check cookie to ensure path matches  and cookie is not expired
-		    // if all is cool, add cookie to header string 
-		    if (comparePaths((String)cookie.get(PATH), path) && 
-		    					isNotExpired((String)cookie.get(EXPIRES))) {
-		    	System.out.println("Cookie Name, Set cookie "+cookie);
-				cookieStringBuffer.append(cookieName);
-				cookieStringBuffer.append(NAME_VALUE_SEPARATOR);
-				cookieStringBuffer.append(cookie.getString("value"));
-				if (cookieNames.hasNext()) cookieStringBuffer.append(SET_COOKIE_SEPARATOR);
-		    }
-		}
-	    conn.setRequestProperty(COOKIE, cookieStringBuffer.toString());
-	    System.out.println("conn getReqProperties" + conn.getRequestProperty(COOKIE));
-    }
-    
-    public void setLocation(URLConnection conn, double lat, double lon, double accuracy) throws IllegalStateException, 
-													IOException
-	{
-    	//location part
-	    StringBuffer locStringBuffer = new StringBuffer();
-	    locStringBuffer.append(lat);
-	    locStringBuffer.append(LOCATION_SEPERATOR);
-	    locStringBuffer.append(lon);
-	    locStringBuffer.append(LOCATION_SEPERATOR);
-	    locStringBuffer.append(accuracy);
-	    conn.setRequestProperty(LOCATION, locStringBuffer.toString());
-	}
-
     private boolean isNotExpired(String cookieExpires) {
 		if (cookieExpires == null) return true;
 		Date now = new Date();
@@ -223,8 +176,8 @@ public class CookieManager {
     
     public String getCSRFToken() throws JSONException
     {
-    	System.out.println((String) ((JSONObject) cookies.get("csrftoken")).getString("value"));
-    	return (String) ((JSONObject) cookies.get("csrftoken")).getString("value");
+    	System.out.println((String) ((JSONObject) jsonCookies.get("csrftoken")).getString("value"));
+    	return (String) ((JSONObject) jsonCookies.get("csrftoken")).getString("value");
     }
     
     public String readCookiesFromFile() throws IOException, JSONException
@@ -245,10 +198,13 @@ public class CookieManager {
     
     public void writeCookiesToFile() throws IOException
     {
+    	File dir = myApp.getFilesDir();
+    	File file = new File(dir, COOKIESFILE);
+    	System.out.println("File deleted "+file.delete());
     	FileOutputStream fos = myApp.openFileOutput(COOKIESFILE, 
 				Context.MODE_PRIVATE);
 		OutputStreamWriter osw = new OutputStreamWriter(fos);
-		osw.write(cookies.toString());		
+		osw.write(jsonCookies.toString());		
 		osw.flush();
 		osw.close();
     }

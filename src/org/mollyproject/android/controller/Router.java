@@ -20,7 +20,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -43,7 +42,7 @@ public class Router {
 
 	public static enum OutputFormat { JSON, FRAGMENT, JS, YAML, XML, HTML };
 
-	public Router (MyApplication myApp) throws IOException, JSONException 
+	public Router (MyApplication myApp) throws IOException, JSONException, ParseException 
 	{
 		this.myApp = myApp;
 		cookieMgr = new CookieManager(myApp);
@@ -115,6 +114,23 @@ public class Router {
 		return null;
 	}
 	
+	public String reverse(String locator, String arg) throws SocketTimeoutException, 
+			MalformedURLException, UnknownHostException, IOException, JSONException, ParseException
+	{
+		//Geting the actual URL from the server using the locator (view name)
+		//and the reverse API in Molly
+		String reverseReq = new String();
+		if (arg != null)
+		{
+			reverseReq = mOX + "reverse/?name="+locator + arg;
+		}
+		else
+		{
+			reverseReq = mOX + "reverse/?name="+locator;
+		}
+		return getFrom(reverseReq);
+	}
+	
 	public JSONObject onRequestSent(String locator, String arg, OutputFormat format, String query) 
 							throws JSONException, UnknownHostException, IOException, ParseException {
 		/*basic method for all requests for json response, it sets up a url to be sent
@@ -131,23 +147,8 @@ public class Router {
 		  in the doInBackground method
 		*/
 		
-		//Geting the actual URL from the server using the locator (view name)
-		//and the reverse API in Molly
-		//if an exception is thrown, waiting might be false forever
-		String urlStr = new String();
-		String reverseReq = new String();
-		if (arg != null)
-		{
-			reverseReq = mOX + "reverse/?name="+locator + arg;
-		}
-		else
-		{
-			reverseReq = mOX + "reverse/?name="+locator;
-		}
-		urlStr = getFrom(reverseReq);
-		
+		String urlStr = reverse(locator,arg);
 		String outputStr = new String();
-		
 		switch(format){
 		//Depending on the format wanted, get the output
 		case JSON:
@@ -164,32 +165,33 @@ public class Router {
 		{
 			((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
 			System.out.println("Cookie set");
+			updateCurrentLocation(locTracker.getCurrentLoc());
 		}
-		
 		outputStr = getFrom(urlStr);
 		
 		//Check for cookies here, after the first "proper" request, not the reverse request
-		if (firstReq)
+		if (firstReq || cookieMgr.getCookieStore().getCookies().size() <
+				((DefaultHttpClient) client).getCookieStore().getCookies().size()) 
 		{
-			//cookiestore is empty and first request then try storing cookies if this is the first request
+			//If cookiestore is empty and first request then try storing cookies if this is the first request
+			//or if the session id is added, in which case the size of the cookie store in the app is smaller
+			//than that of the client
 			cookieMgr.storeCookies(((DefaultHttpClient)client).getCookieStore());
-			//System.out.println("first req cookies: " + ((DefaultHttpClient)client).getCookieStore().getCookies().size());
+			((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
 			firstReq = false;
 		}
-		updateCurrentLocation(urlStr, locTracker.getCurrentLoc());
-		//updateLocationManually("Walton Street");
 		
-		System.out.println("Loc Test: " + getFrom("http://dev.m.ox.ac.uk/geolocation/"));
+		//updateLocationManually("Walton Street");
 		
         return new JSONObject(outputStr);
 	}
 	
-	public void updateCurrentLocation(String urlStr, Location loc) throws JSONException, ParseException, ClientProtocolException, IOException
+	public void updateCurrentLocation(Location loc) throws JSONException, ParseException, ClientProtocolException, IOException
 	{
-		HttpClient client = new DefaultHttpClient();  
-		((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
-        HttpPost post = new HttpPost("http://dev.m.ox.ac.uk/geolocation/");
+        HttpPost post = new HttpPost(reverse("geolocation:index",null));
         List<NameValuePair> params = new ArrayList<NameValuePair>();
+        
+        System.out.println("Cookies before loc test" + ((DefaultHttpClient) client).getCookieStore().getCookies());
         
         params.add(new BasicNameValuePair("csrfmiddlewaretoken", cookieMgr.getCSRFToken()));
         params.add(new BasicNameValuePair("longitude", new Double(loc.getLongitude()).toString()));
@@ -202,7 +204,8 @@ public class Router {
         UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params,HTTP.UTF_8);
         post.setEntity(ent);
         HttpResponse responsePOST = client.execute(post);
-        System.out.println("Location update cookies: " + ((DefaultHttpClient) client).getCookieStore().getCookies());
+        //System.out.println("Location update cookies: " + ((DefaultHttpClient) client).getCookieStore().getCookies());
+        
         BufferedReader rd = new BufferedReader
     			(new InputStreamReader(responsePOST.getEntity().getContent()));
 	    String line;
@@ -212,15 +215,15 @@ public class Router {
 	        System.out.println(line);
 	    }
 	    rd.close();
+	    
+	    //System.out.println("Loc Test: " + getFrom("http://dev.m.ox.ac.uk/geolocation/"));
+	    System.out.println("Cookies after loc test" + ((DefaultHttpClient) client).getCookieStore().getCookies());
 	}
 	
 	public void updateLocationManually(String locationName) throws JSONException, 
 				ClientProtocolException, IOException, ParseException
 	{
-		HttpClient client = new DefaultHttpClient();  
-		((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
-        String postURL = "http://dev.m.ox.ac.uk/geolocation/";
-        HttpPost post = new HttpPost(postURL);
+        HttpPost post = new HttpPost(reverse("geolocation:index",null));
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         
         params.add(new BasicNameValuePair("csrfmiddlewaretoken", cookieMgr.getCSRFToken()));
