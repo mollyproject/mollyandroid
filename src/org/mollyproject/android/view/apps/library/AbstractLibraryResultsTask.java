@@ -17,6 +17,7 @@ import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
@@ -76,10 +77,12 @@ public abstract class AbstractLibraryResultsTask<A,B,C> extends BackgroundTask<A
 			
 			String text = jsonSource.getString(jsonKey);
 			TextView textView = new TextView(page);
+			textView.setTextColor(Color.WHITE); //somehow R.color doesn't work here
 			textView.setTextSize(size);
 			textView.setText(text);
 			
 			TextView moreTextView = new TextView(page);
+			moreTextView.setTextColor(Color.WHITE); 
 			moreTextView.setTextSize(16);
 			moreTextView.setTypeface(Typeface.DEFAULT_BOLD);
 			moreTextView.setText(additionalText);
