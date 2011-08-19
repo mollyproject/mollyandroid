@@ -23,7 +23,7 @@ public class LibraryBookResultPage extends PageWithMap{
 		super.onResume();
 		if (!jsonProcessed)
 		{
-			new ComplexMapResultTask(this, true, true).execute();
+			new LibraryBookResultTask(this, true, true).execute();
 		}
 	}
 	

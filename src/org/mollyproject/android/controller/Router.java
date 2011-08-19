@@ -3,6 +3,7 @@ package org.mollyproject.android.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
@@ -19,6 +20,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -157,7 +159,11 @@ public class Router {
 		{
 			urlStr = urlStr+query;
 		}
-		
+		if (!firstReq)
+		{
+			((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
+			System.out.println("Cookie set");
+		}
 		outputStr = getFrom(urlStr);
 		
 		//Check for cookies here, after the first "proper" request, not the reverse request
@@ -168,20 +174,39 @@ public class Router {
 				System.out.println("first req cookies: " + ((DefaultHttpClient)client).getCookieStore().getCookies().size());
 				firstReq = false;
 			}
-			
-		((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
-	        
-		
-		//the method requestLocationUpdates is async, so cannot be called from here (as onRequestSent
-		//is always called from another asynctask -> needs to update these parameters in the main thread
-		//first
-		Location loc = locTracker.getCurrentLoc();
-		System.out.println("Location: " + " lat: " + loc.getLatitude()
-				+ " lon: " +loc.getLongitude() + " acc: " + loc.getAccuracy());
-		cookieMgr.setLocation(new URL(urlStr).openConnection(), 
-				loc.getLatitude(),loc.getLongitude(), loc.getAccuracy());
-		
+		updateCurrentLocation(urlStr, locTracker.getCurrentLoc());
+		//updateLocationManually("Walton Street");
         return new JSONObject(outputStr);
+	}
+	
+	public void updateCurrentLocation(String urlStr, Location loc) throws JSONException, ParseException, ClientProtocolException, IOException
+	{
+		HttpClient client = new DefaultHttpClient();  
+		((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
+        HttpPost post = new HttpPost("http://dev.m.ox.ac.uk/geolocation/");
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        
+        params.add(new BasicNameValuePair("csrfmiddlewaretoken", cookieMgr.getCSRFToken()));
+        params.add(new BasicNameValuePair("longitude", new Double(loc.getLongitude()).toString()));
+        params.add(new BasicNameValuePair("latitude", new Double(loc.getLatitude()).toString()));
+        params.add(new BasicNameValuePair("accuracy", new Double(loc.getAccuracy()).toString()));
+        params.add(new BasicNameValuePair("method", "html5request"));
+        params.add(new BasicNameValuePair("format", "json"));
+        params.add(new BasicNameValuePair("force", "True"));
+        
+        UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params,HTTP.UTF_8);
+        post.setEntity(ent);
+        HttpResponse responsePOST = client.execute(post);
+        System.out.println(((DefaultHttpClient) client).getCookieStore().getCookies());
+        BufferedReader rd = new BufferedReader
+    			(new InputStreamReader(responsePOST.getEntity().getContent()));
+	    String line;
+	    System.out.println("Updating current location");
+	    
+	    while ((line = rd.readLine()) != null) {
+	        System.out.println(line);
+	    }
+	    rd.close();
 	}
 	
 	public void updateLocationManually(String locationName) throws JSONException, 

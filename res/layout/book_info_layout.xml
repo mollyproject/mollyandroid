@@ -6,14 +6,24 @@
   android:layout_width="fill_parent"
   android:background="@drawable/bg_white"
   android:layout_height="wrap_content">
-    <TextView android:layout_gravity="center_vertical" 
+    <TextView 
 	    android:id="@+id/bookTitle" 
 	    android:text="Book title" 
+	    android:textStyle="bold"
+	    android:textSize="16dp"
 	    android:textColor="@color/black"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
-	    android:layout_marginLeft="5dp" 
-	    android:layout_marginTop="5dp" 
+	    android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:layout_marginTop="5dp">
+    </TextView>
+    <TextView android:textColor="@color/blue"
+	    android:layout_height="wrap_content" 
+	    android:layout_width="fill_parent" 
+	    android:id="@+id/bookDetails" 
+	    android:text="Book Details"
+	    android:textSize="16dp" 
+	    android:layout_marginLeft="10dp" 
+	    android:layout_marginRight="10dp" 
 	    android:layout_marginBottom="5dp">
     </TextView>
     
