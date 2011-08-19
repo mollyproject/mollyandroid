@@ -57,8 +57,6 @@ public abstract class Page extends RoboActivity {
 				e.printStackTrace();
 				Toast.makeText(this.getApplicationContext(), "Network Connection cannot be set up. " + 
 						"Please try again later", Toast.LENGTH_SHORT).show();
-				/*Page.popupErrorDialog("Network Connection cannot be set up. ", 
-						"Please try again later", this, true);*/
 			}
 		}
 		else
@@ -236,15 +234,12 @@ public abstract class Page extends RoboActivity {
 	public void onResume()
 	{
 		super.onResume();
-		router.setApp(myApp);
+		if (myApp.isDestroyed())
+		{
+			//myApp has been claimed by garbage collector/killed to save memory for other apps
+			router.setApp(myApp);
+		}
 	}
-	
-    @Override
-    public void onDestroy()
-    {
-    	super.onDestroy();
-		//router.stopCurrentLocThread();	
-    }
     
     public abstract String getName();
 }

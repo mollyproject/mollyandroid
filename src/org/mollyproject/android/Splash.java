@@ -24,7 +24,7 @@ public class Splash extends Page {
 				try 
 				{
 					//spawn a little timer to jump to home page without blocking UI thread
-					Thread.sleep(3000); 
+					Thread.sleep(10); 
 				}
 				catch (InterruptedException e)
 				{
