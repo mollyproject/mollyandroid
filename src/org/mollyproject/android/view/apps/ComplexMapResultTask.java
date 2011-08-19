@@ -43,10 +43,10 @@ public class ComplexMapResultTask extends BackgroundTask<Void,Void,JSONObject>{
 			{
 				mapController.setZoom(jsonMap.getInt("zoom"));
 			}
-			else
-			{
-				mapController.setZoom(jsonMap.getInt("zoom")-2);
-			}
+			//else
+			//{
+			//	mapController.setZoom(jsonMap.getInt("zoom")-2);
+			//}
 			
 			JSONArray jsonMapCentre = jsonMap.getJSONArray("map_centre");
 			//set map centre
@@ -61,7 +61,7 @@ public class ComplexMapResultTask extends BackgroundTask<Void,Void,JSONObject>{
 	        
 	        //process all markers/overlay items
 			JSONArray jsonMarkers = jsonMap.getJSONArray("markers");
-	        System.out.println(jsonMap.toString(1));
+	        //System.out.println(jsonMap.toString(1));
 	        for (int i = 0; i < jsonMarkers.length(); i++)
 	        {
 	        	JSONArray marker = jsonMarkers.getJSONArray(i);

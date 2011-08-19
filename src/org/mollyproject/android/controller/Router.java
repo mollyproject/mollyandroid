@@ -67,7 +67,7 @@ public class Router {
         System.out.println("Getting from: " + urlStr);
         HttpGet get = new HttpGet(getURL);
         HttpResponse responseGet = client.execute(get);  
-        
+
         HttpEntity resEntityGet = responseGet.getEntity();  
         if (resEntityGet != null) {  
             //do something with the response
@@ -159,23 +159,28 @@ public class Router {
 		{
 			urlStr = urlStr+query;
 		}
+		
 		if (!firstReq)
 		{
 			((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
 			System.out.println("Cookie set");
 		}
+		
 		outputStr = getFrom(urlStr);
 		
 		//Check for cookies here, after the first "proper" request, not the reverse request
 		if (firstReq)
-			{
-				//cookiestore is empty and first request then try storing cookies if this is the first request
-				cookieMgr.storeCookies(((DefaultHttpClient)client).getCookieStore());
-				System.out.println("first req cookies: " + ((DefaultHttpClient)client).getCookieStore().getCookies().size());
-				firstReq = false;
-			}
+		{
+			//cookiestore is empty and first request then try storing cookies if this is the first request
+			cookieMgr.storeCookies(((DefaultHttpClient)client).getCookieStore());
+			//System.out.println("first req cookies: " + ((DefaultHttpClient)client).getCookieStore().getCookies().size());
+			firstReq = false;
+		}
 		updateCurrentLocation(urlStr, locTracker.getCurrentLoc());
 		//updateLocationManually("Walton Street");
+		
+		System.out.println("Loc Test: " + getFrom("http://dev.m.ox.ac.uk/geolocation/"));
+		
         return new JSONObject(outputStr);
 	}
 	
@@ -197,7 +202,7 @@ public class Router {
         UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params,HTTP.UTF_8);
         post.setEntity(ent);
         HttpResponse responsePOST = client.execute(post);
-        System.out.println(((DefaultHttpClient) client).getCookieStore().getCookies());
+        System.out.println("Location update cookies: " + ((DefaultHttpClient) client).getCookieStore().getCookies());
         BufferedReader rd = new BufferedReader
     			(new InputStreamReader(responsePOST.getEntity().getContent()));
 	    String line;

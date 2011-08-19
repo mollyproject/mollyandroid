@@ -141,7 +141,6 @@ public abstract class ContentPage extends Page {
 				String title = breadcrumbs.getString("page_title"); 
 				
 				//check for parent breadcrumb
-				System.out.println(breadcrumbs.toString(1));
 				if (!breadcrumbs.isNull("parent"))
 				{
 					JSONObject parent = breadcrumbs.getJSONObject("parent");
