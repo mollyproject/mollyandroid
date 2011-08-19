@@ -43,10 +43,10 @@ public class ComplexMapResultTask extends BackgroundTask<Void,Void,JSONObject>{
 			{
 				mapController.setZoom(jsonMap.getInt("zoom"));
 			}
-			//else
-			//{
-			//	mapController.setZoom(jsonMap.getInt("zoom")-2);
-			//}
+			else
+			{
+				mapController.setZoom(jsonMap.getInt("zoom")-2);
+			}
 			
 			JSONArray jsonMapCentre = jsonMap.getJSONArray("map_centre");
 			//set map centre
@@ -56,14 +56,13 @@ public class ComplexMapResultTask extends BackgroundTask<Void,Void,JSONObject>{
 			GeoPoint mapCentre = new GeoPoint(jsonMapCentre.getDouble(1),jsonMapCentre.getDouble(0));
 			
 	        mapController.setCenter(mapCentre);
-	        //OverlayItem centreMarker = new OverlayItem("Centre", "", mapCentre);
-	        //overlayItems.add(centreMarker);
 	        
 	        //process all markers/overlay items
 			JSONArray jsonMarkers = jsonMap.getJSONArray("markers");
 	        //System.out.println(jsonMap.toString(1));
 	        for (int i = 0; i < jsonMarkers.length(); i++)
 	        {
+	        	System.out.println(jsonMarkers.toString(1));
 	        	JSONArray marker = jsonMarkers.getJSONArray(i);
 	        	//0: lat
 	        	//1: lon
@@ -71,13 +70,17 @@ public class ComplexMapResultTask extends BackgroundTask<Void,Void,JSONObject>{
 	        	//3: title
 	        	GeoPoint markerPosition = new GeoPoint(marker.getDouble(0),marker.getDouble(1));
 	        	OverlayItem markerOverlay = new OverlayItem(marker.getString(3), "", markerPosition);
-	        	if (marker.getString(2) != "green_star")
+	        	if (!marker.getString(2).equals("green_star"))
 	        	{
+	        		System.out.println("marker icon: " + marker.getString(2));
 	        		markerOverlay.setMarker(drawNumberOnImage(i, R.drawable.android_button));
 	        	}
 	        	overlayItems.add(markerOverlay);
 	        }
-	        ItemizedIconOverlay<OverlayItem> overlay = new ItemizedIconOverlay<OverlayItem>(page,overlayItems, null);
+	        
+	        //add all the overlay items upon the map
+	        ItemizedIconOverlay<OverlayItem> overlay 
+	        				= new ItemizedIconOverlay<OverlayItem>(page,overlayItems, null);
 	        mapView.getOverlays().add(overlay);
 	        ((ContentPage) page).doneProcessingJSON();
 		} catch (JSONException e) {

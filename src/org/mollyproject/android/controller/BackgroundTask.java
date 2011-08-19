@@ -5,6 +5,7 @@ import org.mollyproject.android.view.apps.Page;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
 public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 	protected boolean jsonException = false;
@@ -58,14 +59,18 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		else if (nullPointerException)
 		{
 			nullPointerException = false;
-			Page.popupErrorDialog("Null Pointer Exception. Cannot connect to server. ", 
-					"Please try again later.", page, toDestroyPageAfterFailure);
+			Toast.makeText(page, "Null Pointer Exception. Cannot connect to server. " + 
+							"Please try again later.", Toast.LENGTH_SHORT).show();
+			/*Page.popupErrorDialog("Null Pointer Exception. Cannot connect to server. ", 
+					"Please try again later.", page, toDestroyPageAfterFailure);*/
 		}
 		else if (malformedURLException)
 		{
 			malformedURLException = false;
-			Page.popupErrorDialog("Malformed URL Exception. Cannot connect to server. ", 
-					"Please try again later.", page, toDestroyPageAfterFailure);
+			Toast.makeText(page, "Null Pointer Exception. Cannot connect to server. " + 
+					"Please try again later.", Toast.LENGTH_SHORT).show();
+			/*Page.popupErrorDialog("Malformed URL Exception. Cannot connect to server. ", 
+					"Please try again later.", page, toDestroyPageAfterFailure);*/
 		}
 		else if (unknownHostException)
 		{
