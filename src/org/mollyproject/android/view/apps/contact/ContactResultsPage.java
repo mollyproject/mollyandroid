@@ -15,14 +15,18 @@ public class ContactResultsPage extends AbstractContactPage {
 	{
 		super.onCreate(savedInstanceState);
 		args = myApp.getContactQuery();
+		System.out.println(args[0]);
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
 		//query from myApp is extracted here and processed in the background
-		new ContactResultsTask((AbstractContactPage) getInstance(),
+		if (!jsonProcessed)
+		{
+			new ContactResultsTask((AbstractContactPage) getInstance(),
 				contactSearchBar,false,true).execute(jsonContent);
+		}
 	}
 	
 	@Override

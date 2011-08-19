@@ -146,8 +146,6 @@ public abstract class Page extends RoboActivity {
 		                	{
 		                		Toast.makeText(getApplicationContext(), "No query found. " + 
 		                				"Please enter some search criteria", Toast.LENGTH_SHORT).show();
-		                		/*Page.popupErrorDialog("No query found", 
-		                				"Please enter some search criteria", v.getContext());*/
 		                	}
 		                	return true;
 		                default:
@@ -218,7 +216,7 @@ public abstract class Page extends RoboActivity {
 	        	Toast.makeText(this, "You pressed the text!", Toast.LENGTH_LONG).show();
 	            break;
 	        case R.id.reload:
-	        	
+	        	onResume();
 	            break;
 	    }
 	    return true;

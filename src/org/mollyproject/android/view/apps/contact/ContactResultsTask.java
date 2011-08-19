@@ -13,6 +13,7 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.Dialog;
@@ -37,11 +38,20 @@ public class ContactResultsTask extends BackgroundTask<JSONObject, Void, LinearL
 
 	@Override
 	protected LinearLayout doInBackground(JSONObject... args) {
+		while (!((ContentPage) page).downloadedJSON())
+		{
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		try {
 			//args should be { query, medium }
 
 			List<View> outputs = new ArrayList<View>();
-			JSONObject searchOutput = args[0];
+			JSONObject searchOutput = ((ContentPage) page).getJSONContent();
 			JSONArray results = searchOutput.getJSONArray("results");
 			
 			LinearLayout resultsLayout = new LinearLayout(page);
@@ -178,6 +188,7 @@ public class ContactResultsTask extends BackgroundTask<JSONObject, Void, LinearL
 				System.out.println("Search completed, returned "+results.length()
 									+" results");
 			}
+			((ContentPage) page).doneProcessingJSON();
 			return resultsLayout;
 		} catch (JSONException e) {
 			e.printStackTrace();
