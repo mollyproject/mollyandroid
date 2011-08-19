@@ -181,8 +181,6 @@ public class Router {
 			firstReq = false;
 		}
 		
-		//updateLocationManually("Walton Street");
-		
         return new JSONObject(outputStr);
 	}
 	
