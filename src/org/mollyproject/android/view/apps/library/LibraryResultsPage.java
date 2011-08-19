@@ -20,7 +20,10 @@ public class LibraryResultsPage extends AbstractLibraryPage {
 	@Override
 	public void onResume() {
 		super.onResume();
-		new LibraryFirstResultTask(this,false, true).execute();
+		if (!jsonProcessed)
+		{
+			new LibraryFirstResultTask(this,false, true).execute();
+		}
 	}
 	
 	public void increaseCurPageNum()

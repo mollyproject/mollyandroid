@@ -59,7 +59,7 @@ public class Router {
     
 	//Take an URL String, convert to URL, open connection then process 
 	//and return the response
-	public String getFrom (String urlStr) throws MalformedURLException,
+	public synchronized String getFrom (String urlStr) throws MalformedURLException,
 					IOException, UnknownHostException, SocketTimeoutException, JSONException, ParseException
 	{
         String getURL = urlStr;

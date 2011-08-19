@@ -31,7 +31,6 @@ public abstract class AbstractLibraryPage extends ContentPage {
 	protected EditText authorField;
 	protected EditText titleField;
 	
-	
 	protected Map<String,String> bookArgs = new HashMap<String,String>(); //this is used to store the input in each text field
 	protected Map<String,String> currentSearchArgs = new HashMap<String,String>();
 	public void onCreate(Bundle savedInstanceState)
@@ -53,8 +52,17 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		
 		if (myApp.getLibraryArgs() != null)
 		{
-			currentSearchArgs = myApp.getLibraryArgs();
+			//put the most recent search term into current search args
+			Set<String> cachedArgs = myApp.getLibraryArgs().keySet();
+			for (String key: cachedArgs)
+			{
+				currentSearchArgs.put(key, myApp.getLibraryArgs().get(key));
+			}
 		}
+		
+		bookArgs.put(TITLE, "");
+		bookArgs.put(AUTHOR, "");
+		bookArgs.put(ISBN, "");
 		
 		Button searchButton = (Button) librarySearchBar.findViewById(R.id.searchLibraryButton);
 		searchButton.setOnClickListener(new OnClickListener() {
@@ -80,6 +88,7 @@ public abstract class AbstractLibraryPage extends ContentPage {
 	@Override
 	public void onResume() {
 		super.onResume();
+		System.out.println("current search args: " + currentSearchArgs);
 		if (!currentSearchArgs.isEmpty())
 		{
 			titleField.setText(currentSearchArgs.get(TITLE));
@@ -131,6 +140,7 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		                case KeyEvent.KEYCODE_ENTER:
 		                	//.trim() won't make a difference in searching but does in caching
 		                	//it should reduce the amount of unecessary cache
+		                	System.out.println("text field content: " + inputField.getText());
 		                	bookArgs.put(argID, inputField.getText().toString().trim());
 						try {
 							searchBook();
@@ -140,9 +150,6 @@ public abstract class AbstractLibraryPage extends ContentPage {
 							Toast.makeText(getApplicationContext(), "Unsupported Encoding" +
 									"There might be a problem with the search terms. " +
 									"Please try again later.", Toast.LENGTH_SHORT).show();
-							/*Page.popupErrorDialog("Unsupported Encoding", 
-									"There might be a problem with the search terms. " +
-									"Please try again later.", AbstractLibraryPage.this.getInstance());*/
 						}
 		                    return true;
 		                default:
@@ -156,10 +163,15 @@ public abstract class AbstractLibraryPage extends ContentPage {
 
 	private void searchBook() throws UnsupportedEncodingException
 	{
+		bookArgs.put(TITLE, titleField.getText().toString());
+		bookArgs.put(AUTHOR, authorField.getText().toString());
+		bookArgs.put(ISBN, isbnField.getText().toString());
+		
 		Set<String> keys = bookArgs.keySet();
 		boolean empty = true;
 		for (String key : keys)
 		{
+			System.out.println(key+ ": " + bookArgs.get(key) + " " + bookArgs.get(key).length());
 			if (bookArgs.get(key).length() > 0)
 			{
 				bookArgs.put(key, URLEncoder.encode(bookArgs.get(key), "UTF-8"));
@@ -176,8 +188,6 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		{
 			Toast.makeText(getApplicationContext(), "Cannot perform search. "
 					+"Please enter some search criteria", Toast.LENGTH_SHORT).show();
-			/*popupErrorDialog("Cannot perform search", "Please enter some search criteria"
-					, this);*/
 		}
 	}
 }

@@ -51,8 +51,11 @@ public class LibraryBookResultTask extends ComplexMapResultTask{
 				}
 				if (!book.isNull("isbns"))
 				{
-					details = details + "<br/>" + "<b>ISBN:</b>" + addNonBreakingSpaces(14)
-							+ book.getJSONArray("isbns").getString(0);
+					if (book.getJSONArray("isbns").length() > 0)
+					{
+						details = details + "<br/>" + "<b>ISBN:</b>" + addNonBreakingSpaces(14)
+								+ book.getJSONArray("isbns").getString(0);
+					}
 				}
 				bookDetails.setText(Html.fromHtml(details));
 			} catch (JSONException e) {

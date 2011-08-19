@@ -16,9 +16,10 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 	protected boolean nullPointerException = false;
 	protected boolean parseException = false; 
 	protected boolean toDestroyPageAfterFailure;
+	protected boolean destroyPlease;
 	protected Page page;
-	//protected ProgressDialog pDialog;
-	//protected boolean dialogEnabled;
+	protected ProgressDialog pDialog;
+	protected boolean dialogEnabled;
 	protected LayoutInflater inflater;
 	protected MyApplication myApp;
 	
@@ -27,19 +28,20 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		super();
 		this.page = page;
 		this.toDestroyPageAfterFailure = toDestroyPageAfterFailure;
-		//this.dialogEnabled = dialogEnabled;
+		destroyPlease = false;
+		this.dialogEnabled = dialogEnabled;
 		inflater = page.getLayoutInflater();
 		myApp = (MyApplication) page.getApplication();
 	}
 	
-	/*@Override
+	@Override
 	protected void onPreExecute()
 	{
 		if (dialogEnabled)
 		{
 			pDialog = ProgressDialog.show(page, "", "Loading...", true, true);
 		}
-	}*/
+	}
 	
 	@Override
 	protected void onPostExecute(C outputs)
@@ -52,68 +54,57 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		if (jsonException)
 		{
 			jsonException = false;
+			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "There might be a problem with JSON output " +
 					"from server. Please try again later.", Toast.LENGTH_SHORT).show();
-			/*Page.popupErrorDialog("JSON Exception", 
-					"There might be a problem with JSON output " +
-					"from server. Please try again.", page, toDestroyPageAfterFailure);*/
 		}
 		else if (nullPointerException)
 		{
 			nullPointerException = false;
+			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "Null Pointer Exception. Cannot connect to server. " + 
 							"Please try again later.", Toast.LENGTH_SHORT).show();
-			/*Page.popupErrorDialog("Null Pointer Exception. Cannot connect to server. ", 
-					"Please try again later.", page, toDestroyPageAfterFailure);*/
 		}
 		else if (malformedURLException)
 		{
 			malformedURLException = false;
+			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "Null Pointer Exception. Cannot connect to server. " + 
 					"Please try again later.", Toast.LENGTH_SHORT).show();
-			/*Page.popupErrorDialog("Malformed URL Exception. Cannot connect to server. ", 
-					"Please try again later.", page, toDestroyPageAfterFailure);*/
 		}
 		else if (unknownHostException)
 		{
 			unknownHostException = false;
+			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "Unknown host Exception. Cannot connect to server. " + 
 					"Please try again later.", Toast.LENGTH_SHORT).show();
-			
-			/*Page.popupErrorDialog("Unknown host Exception. Cannot connect to server. ", 
-					"Please try again later.", page, toDestroyPageAfterFailure);*/
 		} 
 		else if (ioException)
 		{
 			ioException = false;
+			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "I/O Exception. Cannot connect to server. " +
 					"Please try again later.", Toast.LENGTH_SHORT).show();
-			
-			/*Page.popupErrorDialog("I/O Exception. Cannot connect to server. ", 
-					"Please try again later.", page, toDestroyPageAfterFailure);*/
 		} 
 		else if (parseException)
 		{
 			parseException = false;
+			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "Parse Exception. Bad input from server. " + 
 					"Please try again later.", Toast.LENGTH_SHORT).show();
-			/*Page.popupErrorDialog("Parse Exception. Bad input from server. ", 
-					"Please try again later.", page, toDestroyPageAfterFailure);*/
 		} 
 		else if (otherException)
 		{
 			otherException = false;
+			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "Cannot connect to server. " +
 					"Please try again later.", Toast.LENGTH_SHORT).show();
-			/*Page.popupErrorDialog("Cannot connect to server. ", 
-					"Please try again later.", page, toDestroyPageAfterFailure);*/
 		} 
-		/*System.out.println("Dialog enabled "+dialogEnabled);
 		if (dialogEnabled)
 		{
 			pDialog.dismiss();
-		}*/
-		if (toDestroyPageAfterFailure)
+		}
+		if (toDestroyPageAfterFailure & destroyPlease)
 		{
 			page.finish();
 		}
