@@ -18,7 +18,10 @@ public class WeatherPage extends ContentPage {
 	@Override
 	public void onResume() {
 		super.onResume();
-		new WeatherForecastTask(this, true, true).execute();
+		if (!jsonProcessed)
+		{
+			new WeatherForecastTask(this, true, true).execute();
+		}
 	}
 	
 	@Override

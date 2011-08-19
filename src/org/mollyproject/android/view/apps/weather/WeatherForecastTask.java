@@ -19,51 +19,25 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class WeatherForecastTask extends BackgroundTask<Void, Void, Void>{
-	protected String temperature;
-	protected String others;
-	protected String city;
+public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 	public WeatherForecastTask(WeatherPage weatherPage, boolean toDestroy, boolean dialog)
 	{
 		super(weatherPage,toDestroy, dialog);
-		temperature = new String();
-		others = new String();
 	}
 	
 	@Override
-	public void updateView(Void outputs) {
-		LayoutInflater layoutInflater = (LayoutInflater) page.getApplication()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		LinearLayout observationBar = (LinearLayout) layoutInflater
-						.inflate(R.layout.weather_observation,
-						((WeatherPage) page).getContentLayout(), false);
-		((WeatherPage) page).getContentLayout().addView(observationBar);
-		
-		//Cannot do injection by InjectView outside of an Activity, roboguice limitation
-		TextView temperatureText = (TextView) observationBar.findViewById(R.id.temperatureText);
-		TextView otherText = (TextView) observationBar.findViewById(R.id.otherText);
-		TextView cityName = (TextView) observationBar.findViewById(R.id.cityName);
-		temperatureText.setText(temperature);
-		otherText.setText(others);
-		cityName.setText(city);
-	}
-
-	@Override
-	protected Void doInBackground(Void... arg0) {
-		//Get weather info
+	public void updateView(JSONObject jsonContent) {
 		try {
-			JSONObject jsonOutput = page.getRouter()
-				.onRequestSent("weather:index", null, Router.OutputFormat.JSON, null);
-			
 			//There are 2 sections in the weather page, an observation bar and a 3-day forecast layout
 			
 			//get the observation bar first:
-			JSONObject observation = jsonOutput.getJSONObject("observation");
+			JSONObject observation = jsonContent.getJSONObject("observation");
 			
-			city = observation.getString("name");
+			String city = observation.getString("name");
 			
-			temperature = observation.getString("temperature")+"°C";
+			String temperature = observation.getString("temperature")+"°C";
 			
+			String others = new String();
 			//min and max temperature
 			if (!observation.isNull("min_temperature"))
 			{
@@ -123,21 +97,39 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, Void>{
 			{
 				others = others + "Sunset at " + observation.getString("sunset");
 			}
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			unknownHostException = true;
+			
+			LayoutInflater layoutInflater = (LayoutInflater) page.getApplication()
+			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LinearLayout observationBar = (LinearLayout) layoutInflater
+						.inflate(R.layout.weather_observation,
+						((WeatherPage) page).getContentLayout(), false);
+			((WeatherPage) page).getContentLayout().addView(observationBar);
+			
+			//Cannot do injection by InjectView outside of an Activity, roboguice limitation
+			TextView temperatureText = (TextView) observationBar.findViewById(R.id.temperatureText);
+			TextView otherText = (TextView) observationBar.findViewById(R.id.otherText);
+			TextView cityName = (TextView) observationBar.findViewById(R.id.cityName);
+			temperatureText.setText(temperature);
+			otherText.setText(others);
+			cityName.setText(city);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			ioException = true;
-		} catch (ParseException e) {
-			e.printStackTrace();
-			parseException = true;
 		}
+	}
+
+	@Override
+	protected JSONObject doInBackground(Void... arg0) {
 		
-		return null;
+		while (!((ContentPage) page).downloadedJSON())
+		{
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		return ((ContentPage) page).getJSONContent();
 	}
 	
 }
