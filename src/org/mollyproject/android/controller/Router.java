@@ -109,7 +109,7 @@ public class Router {
 		  this method is also to be included in AsyncTask subclasses where no UI is allowed
 		  in the doInBackground method
 		*/
-		
+		System.out.println("GET Request");
 		String urlStr = reverse(locator,arg);
 		String outputStr = new String();
 		switch(format){

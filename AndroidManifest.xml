@@ -36,6 +36,8 @@
 		<activity android:name=".view.apps.contact.ContactResultsPage"></activity>
 		<activity android:name=".view.apps.weather.WeatherPage"></activity>
 		<activity android:name=".view.apps.search.SearchPage"></activity>
+		<activity android:name=".view.apps.transport.TransportPage"></activity>
+		<activity android:name=".view.apps.transport.BusPage"></activity>
 		<activity android:name=".view.apps.podcasts.PodcastsPage"></activity>
 		<activity android:name=".view.apps.podcasts.PodcastsCategoryPage"></activity>
 		<activity android:name=".view.apps.podcasts.IndividualPodcastPage"></activity>

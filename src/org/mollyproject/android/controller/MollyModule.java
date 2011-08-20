@@ -17,6 +17,7 @@ import org.mollyproject.android.view.apps.podcasts.PodcastsCategoryPage;
 import org.mollyproject.android.view.apps.podcasts.PodcastsPage;
 import org.mollyproject.android.view.apps.results_release.ResultsReleasePage;
 import org.mollyproject.android.view.apps.search.SearchPage;
+import org.mollyproject.android.view.apps.transport.TransportPage;
 import org.mollyproject.android.view.apps.weather.WeatherPage;
 
 import com.google.inject.AbstractModule;
@@ -42,6 +43,7 @@ public class MollyModule extends AbstractModule {
 	public static String PODCAST_PAGE = "podcasts:index";
 	public static String PODCAST_CATEGORY_PAGE = "podcasts:category";
 	public static String INDIVIDUAL_PODCAST_PAGE = "podcasts:podcast";
+	public static String TRANSPORT_PAGE = "transport:index";
 	public static String SPLASH = "splash";
 	
 	@Override
@@ -51,6 +53,7 @@ public class MollyModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named(CONTACT_PAGE+"_img")).toInstance(R.drawable.contact);
 		bind(Integer.class).annotatedWith(Names.named(CONTACT_PAGE+"_bc")).toInstance(R.drawable.contact_bc);
 		bind(Page.class).annotatedWith(Names.named(CONTACT_RESULTS_PAGE)).to(ContactResultsPage.class);
+		
 		//views and drawables for library page
 		bind(Page.class).annotatedWith(Names.named(LIBRARY_PAGE)).to(LibraryPage.class);
 		bind(Integer.class).annotatedWith(Names.named(LIBRARY_PAGE+"_img")).toInstance(R.drawable.library);
@@ -84,6 +87,9 @@ public class MollyModule extends AbstractModule {
 		bind(Page.class).annotatedWith(Names.named(PODCAST_CATEGORY_PAGE)).to(PodcastsCategoryPage.class);
 		
 		bind(Page.class).annotatedWith(Names.named(INDIVIDUAL_PODCAST_PAGE)).to(IndividualPodcastPage.class);
+		
+		bind(Page.class).annotatedWith(Names.named(TRANSPORT_PAGE)).to(TransportPage.class);
+		bind(Integer.class).annotatedWith(Names.named(TRANSPORT_PAGE+"_img")).toInstance(R.drawable.transport);
 		
 		bind(Page.class).annotatedWith(Names.named(RESULTS_PAGE)).to(ResultsReleasePage.class);
 		bind(Integer.class).annotatedWith(Names.named(RESULTS_PAGE+"_img")).toInstance(R.drawable.results);

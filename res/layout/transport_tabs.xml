@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="fill_parent"
+   	android:layout_height="wrap_content"
+   	android:id="@+id/tabhostLayout"
+   	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
+	    
+    <TabHost android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:id="@+id/tabHost">
+	    
+	    <TabWidget
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:id="@android:id/tabs"/>
+		     <FrameLayout
+		     android:layout_width="fill_parent"
+		     android:layout_height="fill_parent"
+		     android:id="@android:id/tabcontent">
+		     
+		     <LinearLayout
+			     android:layout_width="fill_parent"
+			     android:layout_height="wrap_content"
+			     android:id="@+id/tab1"
+			     android:orientation="vertical"
+			     android:paddingTop="60px">
+			     <TextView  
+				     android:layout_width="fill_parent" 
+				     android:layout_height="100px" 
+				     android:text="Bus"
+				     android:id="@+id/txt1"/>    
+	     	 </LinearLayout>
+	     
+	    	<LinearLayout
+		     	android:layout_width="fill_parent"
+		    	android:layout_height="fill_parent"
+		    	android:id="@+id/tab2"
+			    android:orientation="vertical"
+			    android:paddingTop="60px">
+	     		<TextView  
+				    android:layout_width="fill_parent" 
+				    android:layout_height="100px" 
+				    android:text="Park and Ride"
+				    android:id="@+id/txt2"/>
+	     	</LinearLayout>
+	     
+	     	<LinearLayout
+		     	android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    android:id="@+id/tab3"
+			    android:orientation="vertical"
+			    android:paddingTop="60px">
+			     <TextView  
+				    android:layout_width="fill_parent" 
+				    android:layout_height="100px" 
+				    android:text="Public Transport"
+				    android:id="@+id/txt3"/>
+	     	</LinearLayout>
+	     </FrameLayout>
+    </TabHost>
+</LinearLayout>
