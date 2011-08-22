@@ -5,15 +5,15 @@
   android:layout_width="fill_parent"
   android:orientation="vertical"
   android:background="@drawable/bg_white"
-  android:layout_marginTop="10dp"
   android:layout_height="wrap_content">
     <TextView android:id="@+id/cityName" 
     	  android:layout_height="wrap_content" 
     	  android:layout_width="wrap_content" 
+    	  android:paddingTop="5dp"
     	  android:text="Cannot find location"
     	  android:textColor="@color/black"
     	  android:layout_marginLeft="10dp"
-    	  android:textSize="20sp">
+    	  android:textSize="20dp">
     </TextView>
   	
     <RelativeLayout
@@ -28,7 +28,7 @@
 		    android:src="@drawable/cloudy2">
 		</ImageView>
 		    
-	    <LinearLayout android:id="@+id/currentWeatherText" 
+	    <LinearLayout android:id="@+id/currentWeatherLayout" 
 		    android:layout_width="wrap_content" 
 		    android:layout_gravity="center_horizontal"
 		    android:layout_alignTop="@+id/currentWeatherIcon"
@@ -37,19 +37,19 @@
 		    android:layout_toRightOf="@+id/currentWeatherIcon">
 		    
 	        <TextView android:text="N/A"
-	        	android:textSize="50sp"
+	        	android:textSize="50dp"
 		        android:id="@+id/temperatureText"
 		        android:textStyle="bold"
 		        android:textColor="@color/black"
 		        android:layout_width="wrap_content" 
 		        android:layout_height="wrap_content"
-		        android:layout_marginBottom="-5sp"
-		        android:layout_marginTop="-5sp">
+		        android:layout_marginBottom="-5dp"
+		        android:layout_marginTop="-5dp">
 	        </TextView>
 	        
-	        <TextView android:text="No information available"
-	        	android:textSize="16sp"
-	        	android:layout_marginLeft="4sp"
+	        <TextView android:text="No info available"
+	        	android:textSize="16dp"
+	        	android:layout_marginLeft="4dp"
 	        	android:textColor="@color/black"
 		        android:id="@+id/otherText" 
 		        android:layout_width="wrap_content" 

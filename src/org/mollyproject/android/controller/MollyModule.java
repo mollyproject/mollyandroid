@@ -107,5 +107,104 @@ public class MollyModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named("default_white")).toInstance(R.drawable.unavail_w_1);
 		bind(Integer.class).annotatedWith(Names.named("default_blue")).toInstance(R.drawable.unavail_b_7);
 		bind(Integer.class).annotatedWith(Named.class).toInstance(R.drawable.unavail_b_7);
+		
+		//Lookups for weather icons. Warning: long
+		bind(Integer.class).annotatedWith(Names.named("cloudy1")).toInstance(R.drawable.cloudy1);
+		bind(Integer.class).annotatedWith(Names.named("cloudy1_night")).toInstance(R.drawable.cloudy1_night);
+		bind(Integer.class).annotatedWith(Names.named("cloudy1_small")).toInstance(R.drawable.cloudy1_small);
+		bind(Integer.class).annotatedWith(Names.named("cloudy1_night_small")).toInstance(R.drawable.cloudy1_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("cloudy2")).toInstance(R.drawable.cloudy2);
+		bind(Integer.class).annotatedWith(Names.named("cloudy2_night")).toInstance(R.drawable.cloudy2_night);
+		bind(Integer.class).annotatedWith(Names.named("cloudy2_small")).toInstance(R.drawable.cloudy2_small);
+		bind(Integer.class).annotatedWith(Names.named("cloudy2_night_small")).toInstance(R.drawable.cloudy2_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("cloudy3")).toInstance(R.drawable.cloudy3);
+		bind(Integer.class).annotatedWith(Names.named("cloudy3_night")).toInstance(R.drawable.cloudy3_night);
+		bind(Integer.class).annotatedWith(Names.named("cloudy3_small")).toInstance(R.drawable.cloudy3_small);
+		bind(Integer.class).annotatedWith(Names.named("cloudy3_night_small")).toInstance(R.drawable.cloudy3_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("cloudy4")).toInstance(R.drawable.cloudy4);
+		bind(Integer.class).annotatedWith(Names.named("cloudy4_night")).toInstance(R.drawable.cloudy4_night);
+		bind(Integer.class).annotatedWith(Names.named("cloudy4_small")).toInstance(R.drawable.cloudy4_small);
+		bind(Integer.class).annotatedWith(Names.named("cloudy4_night_small")).toInstance(R.drawable.cloudy4_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("cloudy5")).toInstance(R.drawable.cloudy5);
+		bind(Integer.class).annotatedWith(Names.named("cloudy5_small")).toInstance(R.drawable.cloudy5_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("fog")).toInstance(R.drawable.fog);
+		bind(Integer.class).annotatedWith(Names.named("fog_night")).toInstance(R.drawable.fog_night);
+		bind(Integer.class).annotatedWith(Names.named("fog_small")).toInstance(R.drawable.fog_small);
+		bind(Integer.class).annotatedWith(Names.named("fog_night_small")).toInstance(R.drawable.fog_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("hail")).toInstance(R.drawable.hail);
+		bind(Integer.class).annotatedWith(Names.named("hail_small")).toInstance(R.drawable.hail_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("light_rain")).toInstance(R.drawable.light_rain);
+		bind(Integer.class).annotatedWith(Names.named("light_rain_small")).toInstance(R.drawable.light_rain_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("mist")).toInstance(R.drawable.mist);
+		bind(Integer.class).annotatedWith(Names.named("mist_night")).toInstance(R.drawable.mist_night);
+		bind(Integer.class).annotatedWith(Names.named("mist_small")).toInstance(R.drawable.mist_small);
+		bind(Integer.class).annotatedWith(Names.named("mist_night_small")).toInstance(R.drawable.mist_night_small);
+	
+		bind(Integer.class).annotatedWith(Names.named("overcast")).toInstance(R.drawable.overcast);
+		bind(Integer.class).annotatedWith(Names.named("overcast_small")).toInstance(R.drawable.overcast_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("shower1")).toInstance(R.drawable.shower1);
+		bind(Integer.class).annotatedWith(Names.named("shower1_night")).toInstance(R.drawable.shower1_night);
+		bind(Integer.class).annotatedWith(Names.named("shower1_small")).toInstance(R.drawable.shower1_small);
+		bind(Integer.class).annotatedWith(Names.named("shower1_night_small")).toInstance(R.drawable.shower1_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("shower2")).toInstance(R.drawable.shower2);
+		bind(Integer.class).annotatedWith(Names.named("shower2_night")).toInstance(R.drawable.shower2_night);
+		bind(Integer.class).annotatedWith(Names.named("shower2_small")).toInstance(R.drawable.shower2_small);
+		bind(Integer.class).annotatedWith(Names.named("shower2_night_small")).toInstance(R.drawable.shower2_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("shower3")).toInstance(R.drawable.shower3);
+		bind(Integer.class).annotatedWith(Names.named("shower3_small")).toInstance(R.drawable.shower3_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("sleet")).toInstance(R.drawable.sleet);
+		bind(Integer.class).annotatedWith(Names.named("sleet_small")).toInstance(R.drawable.sleet_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("snow1")).toInstance(R.drawable.snow1);
+		bind(Integer.class).annotatedWith(Names.named("snow1_night")).toInstance(R.drawable.snow1_night);
+		bind(Integer.class).annotatedWith(Names.named("snow1_small")).toInstance(R.drawable.snow1_small);
+		bind(Integer.class).annotatedWith(Names.named("snow1_night_small")).toInstance(R.drawable.snow1_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("snow2")).toInstance(R.drawable.snow2);
+		bind(Integer.class).annotatedWith(Names.named("snow2_night")).toInstance(R.drawable.snow2_night);
+		bind(Integer.class).annotatedWith(Names.named("snow2_small")).toInstance(R.drawable.snow2_small);
+		bind(Integer.class).annotatedWith(Names.named("snow2_night_small")).toInstance(R.drawable.snow2_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("snow3")).toInstance(R.drawable.snow3);
+		bind(Integer.class).annotatedWith(Names.named("snow3_night")).toInstance(R.drawable.snow3_night);
+		bind(Integer.class).annotatedWith(Names.named("snow3_small")).toInstance(R.drawable.snow3_small);
+		bind(Integer.class).annotatedWith(Names.named("snow3_night_small")).toInstance(R.drawable.snow3_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("snow4")).toInstance(R.drawable.snow4);
+		bind(Integer.class).annotatedWith(Names.named("snow4_small")).toInstance(R.drawable.snow4_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("snow5")).toInstance(R.drawable.snow5);
+		bind(Integer.class).annotatedWith(Names.named("snow5_small")).toInstance(R.drawable.snow5_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("sunny")).toInstance(R.drawable.sunny);
+		bind(Integer.class).annotatedWith(Names.named("sunny_night")).toInstance(R.drawable.sunny_night);
+		bind(Integer.class).annotatedWith(Names.named("sunny_small")).toInstance(R.drawable.sunny_small);
+		bind(Integer.class).annotatedWith(Names.named("sunny_night_small")).toInstance(R.drawable.sunny_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("tstorm1")).toInstance(R.drawable.tstorm1);
+		bind(Integer.class).annotatedWith(Names.named("tstorm1_night")).toInstance(R.drawable.tstorm1_night);
+		bind(Integer.class).annotatedWith(Names.named("tstorm1_small")).toInstance(R.drawable.tstorm1_small);
+		bind(Integer.class).annotatedWith(Names.named("tstorm1_night_small")).toInstance(R.drawable.tstorm1_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("tstorm2")).toInstance(R.drawable.tstorm2);
+		bind(Integer.class).annotatedWith(Names.named("tstorm2_night")).toInstance(R.drawable.tstorm2_night);
+		bind(Integer.class).annotatedWith(Names.named("tstorm2_small")).toInstance(R.drawable.tstorm2_small);
+		bind(Integer.class).annotatedWith(Names.named("tstorm2_night_small")).toInstance(R.drawable.tstorm2_night_small);
+		
+		bind(Integer.class).annotatedWith(Names.named("tstorm3")).toInstance(R.drawable.tstorm3);
+		bind(Integer.class).annotatedWith(Names.named("tstorm3_small")).toInstance(R.drawable.tstorm3_small);
+		
 	}
 }

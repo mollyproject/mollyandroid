@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:id="@+id/forecastLayout"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_blue">
+    <TextView android:text="Forecast" 
+	    android:id="@+id/forecastTitle"
+	    android:textColor="@color/white"
+	    android:padding="10dp"
+	    android:textSize="18dp"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content">
+    </TextView>
+    <LinearLayout android:id="@+id/forecastDetailsLayout" 
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:orientation="vertical">
+    </LinearLayout>
+    
+</LinearLayout>
