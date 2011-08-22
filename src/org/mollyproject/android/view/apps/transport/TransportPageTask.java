@@ -16,7 +16,6 @@ public class TransportPageTask extends BackgroundTask<Void, Void, Void>{
 	@Override
 	public void updateView(Void outputs) {
 		// TODO Auto-generated method stub
-		((ContentPage) page).doneProcessingJSON();
 	}
 
 	@Override
@@ -31,6 +30,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, Void>{
 		}
 		System.out.println("HERE");
 		((MyApplication) page.getApplication()).setTransportCache(((ContentPage) page).getJSONContent());
+		((ContentPage) page).doneProcessingJSON();
 		((TransportPage) page).getLAM().dispatchResume();
 		return null;
 	}

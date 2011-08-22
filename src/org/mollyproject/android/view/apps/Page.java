@@ -1,5 +1,6 @@
 package org.mollyproject.android.view.apps;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.mollyproject.android.R;
@@ -240,6 +241,10 @@ public abstract class Page extends RoboActivity {
 			router.setApp(myApp);
 		}
 	}
+	
+	public abstract String getQuery() throws UnsupportedEncodingException;
+	
+	public abstract String getAdditionalParams();
     
     public abstract String getName();
 }

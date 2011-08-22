@@ -44,6 +44,7 @@ public class MollyModule extends AbstractModule {
 	public static String PODCAST_CATEGORY_PAGE = "podcasts:category";
 	public static String INDIVIDUAL_PODCAST_PAGE = "podcasts:podcast";
 	public static String TRANSPORT_PAGE = "transport:index";
+	public static String PUBLIC_TRANSPORT = "transport:public-transport";
 	public static String SPLASH = "splash";
 	
 	@Override

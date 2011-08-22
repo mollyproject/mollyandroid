@@ -185,10 +185,6 @@ public abstract class ContentPage extends Page {
 		}
 	}
 	
-	public abstract String getQuery() throws UnsupportedEncodingException;
-	
-	public abstract String getAdditionalParams();
-	
 	public LinearLayout getContentLayout()
 	{
 		return contentLayout;

@@ -38,6 +38,7 @@ public class MyApplication extends RoboApplication {
 	protected ArrayListMultimap<String,JSONObject> libraryCache = ArrayListMultimap.create();
 	protected boolean destroyed = true;
 	protected Injector injector;
+	protected int lastTransportTab;
 	//protected LocationTracker locTracker = new LocationTracker(this);
 	protected Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
 	protected JSONObject transportCache;
@@ -57,6 +58,10 @@ public class MyApplication extends RoboApplication {
 		 return ((ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE))
 				 				.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
+	
+	public void setLastTransportTab(int i) { lastTransportTab = i; }
+	
+	public int getLastTransportTab() { return lastTransportTab; }
 	
 	public void setTransportCache(JSONObject transportCache) { this.transportCache = transportCache; }
 	

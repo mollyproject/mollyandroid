@@ -1,4 +1,5 @@
 package org.mollyproject.android.view.apps.home;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
@@ -79,6 +80,18 @@ public class HomePage extends Page {
 	@Override
 	public String getName() {
 		return MollyModule.HOME_PAGE;
+	}
+
+	@Override
+	public String getQuery() throws UnsupportedEncodingException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getAdditionalParams() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

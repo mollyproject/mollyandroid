@@ -1,6 +1,8 @@
 package org.mollyproject.android.view.apps.transport;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
@@ -15,9 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 
 public class TransportPage extends ContentPage {
-
+	protected TabHost tabHost;
 	protected LocalActivityManager mlam;
-	
+	public final static DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
@@ -29,21 +31,21 @@ public class TransportPage extends ContentPage {
         contentLayout.addView(tabHostLayout);
         //setContentView(tabHostLayout);
         mlam.dispatchCreate(savedInstanceState);
-        TabHost tabHost = (TabHost) tabHostLayout.findViewById(R.id.tabHost);
+        tabHost = (TabHost) tabHostLayout.findViewById(R.id.tabHost);
         tabHost.setup(mlam);
         TabHost.TabSpec spec;
         Intent myIntent;
         Resources res = getResources();
         
         myIntent = new Intent().setClass(this, BusPage.class);
-	    spec = tabHost.newTabSpec("Items")
-	    	.setIndicator("Items", res.getDrawable(R.drawable.android_button)).setContent(myIntent);
+	    spec = tabHost.newTabSpec("Bus")
+	    	.setIndicator("Bus", res.getDrawable(R.drawable.android_button)).setContent(myIntent);
 	    tabHost.addTab(spec);
-	    
-	    /*intent = new Intent().setClass(this, Show2.class);
-	    spec = tabHost.newTabSpec("Users")
-	    	.setIndicator("Users",res.getDrawable(R.drawable.user32_ldpi)).setContent(intent);
-	    tabHost.addTab(spec);*/
+
+	    myIntent = new Intent().setClass(this, TrainPage.class);
+	    spec = tabHost.newTabSpec("Train")
+	    	.setIndicator("Train", res.getDrawable(R.drawable.android_button)).setContent(myIntent);
+	    tabHost.addTab(spec);
 	}
 	
 	public LocalActivityManager getLAM()
@@ -54,40 +56,39 @@ public class TransportPage extends ContentPage {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		myApp.setLastTransportTab(tabHost.getCurrentTab());
 		mlam.dispatchPause(isFinishing());
 	}
 	
 	@Override
 	public void onResume() {
-		loaded = false;
-		jsonProcessed = false;
-		jsonDownloaded = false;
 		super.onResume();
-		new TransportPageTask(this, false, true).execute();
+		tabHost.setCurrentTab(myApp.getLastTransportTab());
+		//The first page loaded is always the transport:public-transport page
+		if (!jsonProcessed)
+		{
+			new TransportPageTask(this, false, true).execute();
+		}
 	}
 	
 	@Override
 	public String getQuery() throws UnsupportedEncodingException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
-		return null;
+		return "&arg=bus";
 	}
 
 	@Override
 	public Page getInstance() {
-		// TODO Auto-generated method stub
 		return this;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return MollyModule.TRANSPORT_PAGE;
+		return MollyModule.PUBLIC_TRANSPORT;
 	}
 
 }

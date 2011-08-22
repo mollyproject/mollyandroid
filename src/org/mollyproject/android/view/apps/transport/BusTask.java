@@ -1,6 +1,9 @@
 package org.mollyproject.android.view.apps.transport;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -9,17 +12,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
-import org.mollyproject.android.view.apps.ContentPage;
+import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
 public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
-	public final static DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
 	public BusTask(BusPage busPage, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(busPage, toDestroyPageAfterFailure, dialogEnabled);
@@ -32,27 +33,12 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 
 			//Update the page title every time the page is refreshed
 			TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
-			String title = hourFormat.format(new Date());
-			String board = jsonContent.getString("board");
-			if (board.equals("departures"))
-			{
-				title = "Departures from nearby bus stops " + title; 
-			}
-			else if (board.equals("arrivals"))
-			{
-				title = "Arrivals from nearby bus stops " + title;
-			}
-			else
-			{
-				title = "Nearby bus stops " + title;
-			}
+			pageTitle.setText("Nearby bus stops " + TransportPage.hourFormat.format(new Date()));
 			
-			pageTitle.setText(title);
 			LinearLayout busLayout = (LinearLayout) transportLayout.findViewById(R.id.transportDetailsLayout);
 			busLayout.removeAllViews();
 			
-			JSONObject nearbyStops = jsonContent.getJSONObject("nearby");
-			JSONArray stops = nearbyStops.getJSONObject("bus").getJSONArray("entities");
+			JSONArray stops = jsonContent.getJSONArray("entities");
 			
 			LayoutInflater layoutInflater = page.getLayoutInflater();
 			
@@ -128,6 +114,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 					nextBus.setText(next);
 				}
 			}
+			((BusPage) page).firstReqDone();
 		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;
@@ -135,7 +122,51 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 	}
 
 	@Override
-	protected JSONObject doInBackground(JSONObject... jsonContents) {
-		return jsonContents[0];
+	protected JSONObject doInBackground(JSONObject... params) {
+		try {
+			if (params.length > 0)
+			{
+				return params[0];
+			}
+			else 
+			{
+				return page.getRouter().onRequestSent(page.getName(), page.getAdditionalParams(), 
+						Router.OutputFormat.JSON, null);
+			}
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			unknownHostException = true;
+		} catch (JSONException e) {
+			e.printStackTrace();
+			jsonException = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			ioException = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			parseException = true;
+		}
+		
+		return null;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

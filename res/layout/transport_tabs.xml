@@ -13,7 +13,8 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:padding="5dp">
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
 	    <TabWidget
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"

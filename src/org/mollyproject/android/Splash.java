@@ -1,6 +1,8 @@
 package org.mollyproject.android;
 
 
+import java.io.UnsupportedEncodingException;
+
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.Page;
@@ -61,5 +63,17 @@ public class Splash extends Page {
 	@Override
 	public String getName() {
 		return MollyModule.SPLASH;
+	}
+
+	@Override
+	public String getQuery() throws UnsupportedEncodingException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getAdditionalParams() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
