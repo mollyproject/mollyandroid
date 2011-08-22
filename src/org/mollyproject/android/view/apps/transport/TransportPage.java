@@ -27,6 +27,7 @@ public class TransportPage extends ContentPage {
         LinearLayout tabHostLayout = (LinearLayout) layoutInflater.inflate
         				(R.layout.transport_tabs, contentLayout, false);
         contentLayout.addView(tabHostLayout);
+        //setContentView(tabHostLayout);
         mlam.dispatchCreate(savedInstanceState);
         TabHost tabHost = (TabHost) tabHostLayout.findViewById(R.id.tabHost);
         tabHost.setup(mlam);
@@ -34,27 +35,35 @@ public class TransportPage extends ContentPage {
         Intent myIntent;
         Resources res = getResources();
         
-        /*myIntent = new Intent().setClass(this, BusPage.class);
+        myIntent = new Intent().setClass(this, BusPage.class);
 	    spec = tabHost.newTabSpec("Items")
 	    	.setIndicator("Items", res.getDrawable(R.drawable.android_button)).setContent(myIntent);
 	    tabHost.addTab(spec);
-	
-	    intent = new Intent().setClass(this, Show2.class);
+	    
+	    /*intent = new Intent().setClass(this, Show2.class);
 	    spec = tabHost.newTabSpec("Users")
 	    	.setIndicator("Users",res.getDrawable(R.drawable.user32_ldpi)).setContent(intent);
 	    tabHost.addTab(spec);*/
 	}
 	
+	public LocalActivityManager getLAM()
+	{
+		return mlam;
+	}
+	
 	@Override
 	protected void onPause() {
 		super.onPause();
-		mlam.dispatchPause(true);
+		mlam.dispatchPause(isFinishing());
 	}
 	
 	@Override
 	public void onResume() {
+		loaded = false;
+		jsonProcessed = false;
+		jsonDownloaded = false;
 		super.onResume();
-		mlam.dispatchResume(); 
+		new TransportPageTask(this, false, true).execute();
 	}
 	
 	@Override

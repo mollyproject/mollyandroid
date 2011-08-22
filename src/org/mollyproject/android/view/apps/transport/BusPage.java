@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.view.apps.Page;
@@ -17,26 +18,31 @@ import android.widget.TextView;
 
 public class BusPage extends Page{
 	
-	@InjectView (R.id.transportTitle) TextView pageTitle; 
-	@InjectView (R.id.transportDetailsLayout) LinearLayout transportDetailsLayout;
+	//@InjectView (R.id.transportTitle) TextView pageTitle; 
+	@InjectView (R.id.transportLayout) LinearLayout transportLayout;
 	protected JSONObject jsonContent;
-	DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.transport_layout);
 		//TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
-		pageTitle.setText("Nearby bus stops " + hourFormat.format(new Date()));
+		//pageTitle.setText("Nearby bus stops " + hourFormat.format(new Date()));
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		//pageTitle.setText("Nearby bus stops " + hourFormat.format(new Date()));
+		jsonContent = myApp.getTransportCache();
+		System.out.println("Bus Page onresume");
+		new BusTask(this, false, false).execute(jsonContent);
+		
 	}
 	
 	public LinearLayout getContentLayout()
 	{
-		return transportDetailsLayout;
-	}
-	
-	public JSONObject getJSONContent()
-	{
-		return jsonContent;
+		return transportLayout;
 	}
 	
 	@Override

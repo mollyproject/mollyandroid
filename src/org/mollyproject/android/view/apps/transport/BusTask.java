@@ -10,26 +10,50 @@ import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.view.apps.ContentPage;
+import org.mollyproject.android.view.apps.Page;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 
-public class BusTask extends BackgroundTask<Void,Void,JSONObject>{
-	protected TransportPage transportPage;
-	public BusTask(TransportPage transportPage, BusPage busPage, boolean toDestroyPageAfterFailure,
+public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
+	public final static DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+	public BusTask(BusPage busPage, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(busPage, toDestroyPageAfterFailure, dialogEnabled);
-		this.transportPage = transportPage;
 	}
 
 	@Override
 	public void updateView(JSONObject jsonContent) {
 		try {
-			LinearLayout busLayout = ((BusPage) page).getContentLayout();
+			LinearLayout transportLayout = ((BusPage) page).getContentLayout(); //this is the transportLayout in transport_layout.xml
+
+			//Update the page title every time the page is refreshed
+			TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
+			String title = hourFormat.format(new Date());
+			String board = jsonContent.getString("board");
+			if (board.equals("departures"))
+			{
+				title = "Departures from nearby bus stops " + title; 
+			}
+			else if (board.equals("arrivals"))
+			{
+				title = "Arrivals from nearby bus stops " + title;
+			}
+			else
+			{
+				title = "Nearby bus stops " + title;
+			}
+			
+			pageTitle.setText(title);
+			LinearLayout busLayout = (LinearLayout) transportLayout.findViewById(R.id.transportDetailsLayout);
+			busLayout.removeAllViews();
 			
 			JSONObject nearbyStops = jsonContent.getJSONObject("nearby");
-			JSONArray stops = nearbyStops.getJSONArray("entities");
+			JSONArray stops = nearbyStops.getJSONObject("bus").getJSONArray("entities");
+			
 			LayoutInflater layoutInflater = page.getLayoutInflater();
 			
 			// + hourFormat.format(new Date())
@@ -38,9 +62,9 @@ public class BusTask extends BackgroundTask<Void,Void,JSONObject>{
 				//process each stop
 				LinearLayout stopLayout = (LinearLayout) inflater.inflate
 						(R.layout.transport_bus_stop_layout, busLayout, false);
-				
 				busLayout.addView(stopLayout);
-				TextView nearbyStop = (TextView) busLayout.findViewById(R.id.nearbyStop);
+				
+				TextView nearbyStop = (TextView) stopLayout.findViewById(R.id.nearbyStop);
 				JSONObject stop = stops.getJSONObject(i);
 				String stopTitle = stop.getString("title");
 				if (!stop.isNull("distance") & !stop.isNull("bearing"))
@@ -51,16 +75,32 @@ public class BusTask extends BackgroundTask<Void,Void,JSONObject>{
 				nearbyStop.setText(stopTitle);
 				
 				//process each bus that passes through this stop
-				JSONObject metadata = jsonContent.getJSONObject("metadata");
+				JSONObject metadata = stop.getJSONObject("metadata");
 				JSONObject info = metadata.getJSONObject("real_time_information");
 				JSONArray services = info.getJSONArray("services");
+				
+				LinearLayout stopDetailsLayout = (LinearLayout) stopLayout.findViewById(R.id.stopDetailsLayout);
+				
+				if (services.length() == 0)
+				{
+					TextView noServiceText = new TextView(page.getApplicationContext());
+					noServiceText.setText("Sorry, there is no real time information available for this service");
+					noServiceText.setLayoutParams(Page.paramsWithLine);
+					noServiceText.setBackgroundResource(R.drawable.bg_white);
+					noServiceText.setPadding(5, 5, 5, 5);
+					noServiceText.setTextSize(16);
+					noServiceText.setTextColor(Color.BLACK);
+					stopDetailsLayout.addView(noServiceText);
+				}
 				
 				for (int j = 0; j < services.length(); j++)
 				{
 					//this is for one bus
 					LinearLayout serviceLayout = (LinearLayout) layoutInflater.inflate
 							(R.layout.transport_bus_result, stopLayout, false);
-					stopLayout.addView(serviceLayout);
+					stopDetailsLayout.addView(serviceLayout);
+					
+					serviceLayout.setLayoutParams(Page.paramsWithLine);
 					
 					JSONObject bus = services.getJSONObject(j);
 					
@@ -80,10 +120,12 @@ public class BusTask extends BackgroundTask<Void,Void,JSONObject>{
 						{
 							next = next + ", " + following.getString(k);
 						}
+						if (following.length() > 0)
+						{
+							next = next + "...";
+						}
 					}
 					nextBus.setText(next);
-					
-					stopLayout.addView(serviceLayout);
 				}
 			}
 		} catch (JSONException e) {
@@ -93,15 +135,7 @@ public class BusTask extends BackgroundTask<Void,Void,JSONObject>{
 	}
 
 	@Override
-	protected JSONObject doInBackground(Void... arg0) {
-		while (!((ContentPage) transportPage).downloadedJSON())
-		{
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		return ((ContentPage) transportPage).getJSONContent();
+	protected JSONObject doInBackground(JSONObject... jsonContents) {
+		return jsonContents[0];
 	}
 }

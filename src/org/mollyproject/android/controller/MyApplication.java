@@ -39,7 +39,8 @@ public class MyApplication extends RoboApplication {
 	protected boolean destroyed = true;
 	protected Injector injector;
 	//protected LocationTracker locTracker = new LocationTracker(this);
-	Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
+	protected Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
+	protected JSONObject transportCache;
 	
 	public static DateFormat defaultDateFormat = new SimpleDateFormat
 			("EEE, d MMM yyyy HH:mm:ss Z");
@@ -56,6 +57,10 @@ public class MyApplication extends RoboApplication {
 		 return ((ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE))
 				 				.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
+	
+	public void setTransportCache(JSONObject transportCache) { this.transportCache = transportCache; }
+	
+	public JSONObject getTransportCache() { return transportCache; }
 	
 	public String getBookNumber() { return bookControlNumber; }
 	
