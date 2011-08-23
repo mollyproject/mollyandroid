@@ -16,6 +16,7 @@ import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
 import android.graphics.Color;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -114,7 +115,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 					nextBus.setText(next);
 				}
 			}
-			((BusPage) page).firstReqDone();
+			((BusPage) page).toBeRefreshed(true);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;

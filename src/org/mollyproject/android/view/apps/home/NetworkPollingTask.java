@@ -18,18 +18,18 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 {
 	//check for connection everytime the app is started and also spawn the location thread
 	//if necessary
-	protected boolean loaded;
+	protected boolean appsLoaded;
 	
 	public NetworkPollingTask(HomePage homePage, boolean toDestroy, boolean dialog) {
 		super(homePage,toDestroy, dialog);
-		loaded = false;
+		appsLoaded = false;
 	}
 
 	@Override
 	protected ImageAdapter doInBackground(Void... arg0) {
 		try {
 			//Establish a connection
-			if (!loaded)
+			if (!appsLoaded)
 			{
 				System.out.println("Router called");
 	    		JSONObject output = page.getRouter().onRequestSent(
@@ -74,6 +74,7 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 	@Override
 	public void updateView(ImageAdapter newAdapter) {
 		((HomePage) page).updateGrid(newAdapter);
-		loaded = true;
+		appsLoaded = true;
+		((HomePage) page).firstLoad = false;
 	}
 }

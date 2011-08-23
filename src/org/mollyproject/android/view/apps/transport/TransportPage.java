@@ -65,9 +65,13 @@ public class TransportPage extends ContentPage {
 		super.onResume();
 		tabHost.setCurrentTab(myApp.getLastTransportTab());
 		//The first page loaded is always the transport:public-transport page
-		if (!jsonProcessed)
+		if (!jsonProcessed & myApp.getTransportCache() == null)
 		{
 			new TransportPageTask(this, false, true).execute();
+		}
+		else if (myApp.getTransportCache() != null)
+		{
+			mlam.dispatchResume();
 		}
 	}
 	

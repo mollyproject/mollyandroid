@@ -22,7 +22,6 @@ public class HomePage extends Page {
 	protected ImageAdapter gridIconsAdapter;
 	protected ArrayList<Button> breadCrumbs;
 	protected LinearLayout bcLayout;
-	protected boolean loaded = false;
 	protected boolean firstLoad = true;
 	/** Called when the activity is first created. */
     @Override
@@ -52,12 +51,7 @@ public class HomePage extends Page {
     public void onResume()
     {
     	super.onResume();
-    	if (firstLoad)
-    	{
-    		new NetworkPollingTask(this, true, true).execute();
-    		firstLoad = false;
-    	}
-    	else
+    	if (firstLoad || myApp.isDestroyed())
     	{
     		new NetworkPollingTask(this, false, true).execute();
     	}

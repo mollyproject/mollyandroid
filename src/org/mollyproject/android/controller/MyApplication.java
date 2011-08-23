@@ -41,7 +41,7 @@ public class MyApplication extends RoboApplication {
 	protected int lastTransportTab;
 	//protected LocationTracker locTracker = new LocationTracker(this);
 	protected Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
-	protected JSONObject transportCache;
+	protected JSONObject transportCache = null;
 	
 	public static DateFormat defaultDateFormat = new SimpleDateFormat
 			("EEE, d MMM yyyy HH:mm:ss Z");
