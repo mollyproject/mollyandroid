@@ -19,7 +19,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class TrainTask extends BackgroundTask<Void, Void, JSONObject> {
+public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 
 	public TrainTask(TrainPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
@@ -103,10 +103,19 @@ public class TrainTask extends BackgroundTask<Void, Void, JSONObject> {
 	}
 
 	@Override
-	protected JSONObject doInBackground(Void... params) {
+	protected JSONObject doInBackground(JSONObject... params) {
 		try {
-			return page.getRouter().onRequestSent(page.getName(), page.getAdditionalParams(), 
+			if (params.length > 0)
+			{
+				return params[0];
+			}
+			else 
+			{
+				JSONObject jsonContent = page.getRouter().onRequestSent(page.getName(), page.getAdditionalParams(), 
 						Router.OutputFormat.JSON, null);
+				myApp.setTransportCache(jsonContent);
+				return jsonContent;
+			}
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			unknownHostException = true;

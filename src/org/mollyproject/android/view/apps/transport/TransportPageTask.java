@@ -32,7 +32,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
     		TabHost.TabSpec spec;
     		Resources res = page.getResources();
     		String tabTag = new String();
-			if (jsonContent.getJSONObject("public_transport").getBoolean("bus") == true)
+			if (jsonContent.getJSONObject("public_transport").getBoolean("bus") == true & ((TransportPage)page).firstLoad)
 			{
 				tabTag = "Bus";
 				myIntent = new Intent().setClass(page.getApplicationContext(), BusPage.class);
@@ -40,7 +40,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 			    	.setIndicator("Bus", res.getDrawable(R.drawable.android_button)).setContent(myIntent);
 			    ((TransportPage) page).tabHost.addTab(spec);
 			}
-			if (jsonContent.getBoolean("train_station") == true)
+			if (jsonContent.getBoolean("train_station") == true & ((TransportPage)page).firstLoad)
 			{
 				tabTag = "Train";
 			    myIntent = new Intent().setClass(page.getApplicationContext(), TrainPage.class);
@@ -48,6 +48,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 			    	.setIndicator("Train", res.getDrawable(R.drawable.android_button)).setContent(myIntent);
 			    ((TransportPage) page).tabHost.addTab(spec);
 			}
+			((ContentPage) page).doneProcessingJSON();
 			/*SharedPreferences settings = page.getSharedPreferences(MyApplication.PREFS_NAME, 0);
 			if (settings.contains("lastTab"))
 			{

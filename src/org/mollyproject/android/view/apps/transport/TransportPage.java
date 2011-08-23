@@ -20,6 +20,7 @@ import android.widget.TabHost;
 
 public class TransportPage extends ContentPage {
 	public TabHost tabHost;
+	public boolean firstLoad = true;
 	protected LocalActivityManager mlam;
 	public final static DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
 	
@@ -36,7 +37,7 @@ public class TransportPage extends ContentPage {
         mlam.dispatchCreate(savedInstanceState);
         tabHost = (TabHost) tabHostLayout.findViewById(R.id.tabHost);
         tabHost.setup(mlam);
-        
+        firstLoad = false;
 	}
 	
 	public LocalActivityManager getLAM()

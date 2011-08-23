@@ -10,8 +10,8 @@ import roboguice.inject.InjectView;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
-public class TrainPage extends Page {
-
+public class TrainPage extends AutoRefreshPage {
+	
 	@InjectView (R.id.transportLayout) LinearLayout transportLayout;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

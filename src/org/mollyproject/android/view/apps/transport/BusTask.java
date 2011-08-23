@@ -118,15 +118,11 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;
-		} 
+		} finally {
+			((BusPage) page).toBeRefreshed(true);
+		}
 	}
 	
-	@Override
-	protected void onPostExecute(JSONObject outputs) {
-		super.onPostExecute(outputs);
-		((BusPage) page).toBeRefreshed(true);
-	}
-
 	@Override
 	protected JSONObject doInBackground(JSONObject... params) {
 		try {

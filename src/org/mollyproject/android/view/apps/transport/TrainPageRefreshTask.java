@@ -4,9 +4,9 @@ import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 
-public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
+public class TrainPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 
-	public BusPageRefreshTask(BusPage page, boolean toDestroyPageAfterFailure,
+	public TrainPageRefreshTask(TrainPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
 	}
@@ -18,15 +18,15 @@ public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 
 	@Override
 	protected Void doInBackground(Void... arg0) {
-		if (((BusPage) page).firstReq)
+		if (((TrainPage) page).firstReq)
 		{
-			new BusTask((BusPage) page,false,false).execute
+			new TrainTask((TrainPage) page,false,false).execute
 				(((MyApplication) page.getApplication()).getTransportCache());
-			((BusPage) page).firstReq = false;
+			((TrainPage) page).firstReq = false;
 		}
 		while (!isCancelled())
 		{
-			while (!((BusPage) page).needsRefreshing())
+			while (!((TrainPage) page).needsRefreshing())
 			{
 				try {
 					Thread.sleep(100);
@@ -44,10 +44,10 @@ public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 			{
 				//check again, in case the task is cancelled already
 				((AutoRefreshPage) page).toBeRefreshed(false);
-				new BusTask((BusPage) page,false,false).execute();
+				new TrainTask((TrainPage) page,false,false).execute();
 			}
 		}
-		System.out.println("Bus refresh ending");
+		System.out.println("Train refresh ending");
 		return null;
 	}
 

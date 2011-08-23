@@ -66,11 +66,6 @@ public class Router {
         String getURL = urlStr;
         System.out.println("Getting from: " + urlStr);
         HttpGet get = new HttpGet(getURL);
-        client = new DefaultHttpClient();
-        if (!firstReq)
-		{
-			((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
-		}
         HttpResponse responseGet = client.execute(get);  
         HttpEntity resEntityGet = responseGet.getEntity();  
         if (resEntityGet != null) {  
@@ -112,6 +107,15 @@ public class Router {
 		  this method is also to be included in AsyncTask subclasses where no UI is allowed
 		  in the doInBackground method
 		*/
+		if (!firstReq)
+		{
+			client = new DefaultHttpClient();
+			client.getParams().setParameter("http.connection-manager.timeout", 20000);
+			((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
+			System.out.println("Cookie set");
+			updateCurrentLocation(locTracker.getCurrentLoc());
+		}
+		
 		System.out.println("GET Request");
 		String urlStr = reverse(locator,arg);
 		String outputStr = new String();
@@ -127,12 +131,6 @@ public class Router {
 			urlStr = urlStr+query;
 		}
 		
-		if (!firstReq)
-		{
-			//((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
-			System.out.println("Cookie set");
-			updateCurrentLocation(locTracker.getCurrentLoc());
-		}
 		outputStr = getFrom(urlStr);
 		
 		//Check for cookies here, after the first "proper" request, not the reverse request
@@ -167,11 +165,6 @@ public class Router {
         
         UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params,HTTP.UTF_8);
         post.setEntity(ent);
-        client = new DefaultHttpClient();
-        if (!firstReq)
-		{
-			((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
-		}
         HttpResponse responsePOST = client.execute(post);
         //System.out.println("Location update cookies: " + ((DefaultHttpClient) client).getCookieStore().getCookies());
         

@@ -12,13 +12,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.LinearLayout;
 
-public class BusPage extends Page{
+public class BusPage extends AutoRefreshPage{
 	
 	//TimerBusTask timerBusTask = new TimerBusTask(this);
 	protected BusPageRefreshTask busRefreshTask;
-	protected boolean needsRefreshing = false; //for the first request, json data already downloaded, no need to refresh
+	
 	private Handler mHandler = new Handler();
-	public boolean firstReq = true;
+	
 	@InjectView (R.id.transportLayout) LinearLayout transportLayout;
 	protected JSONObject jsonContent;
 	
@@ -34,15 +34,6 @@ public class BusPage extends Page{
 		return mHandler;
 	}
 	
-	public boolean needsRefreshing()
-	{
-		return needsRefreshing;
-	}
-	
-	public void toBeRefreshed(boolean b)
-	{
-		needsRefreshing = b;
-	}
 	
 	@Override
 	public void onResume() {

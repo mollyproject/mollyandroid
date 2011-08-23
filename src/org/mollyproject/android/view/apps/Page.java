@@ -49,21 +49,6 @@ public abstract class Page extends RoboActivity {
 		myApp = (MyApplication) getApplication();
 		myApp.setDestroyed(false);
 		router = myApp.getRouter();
-		if (router == null)
-		{
-			try {
-				router = new Router(myApp);
-				myApp.setRouter(router);
-			} catch (Exception e) {
-				e.printStackTrace();
-				Toast.makeText(this.getApplicationContext(), "Network Connection cannot be set up. " + 
-						"Please try again later", Toast.LENGTH_SHORT).show();
-			}
-		}
-		else
-		{
-			router.setApp(myApp);
-		}
 		layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
@@ -235,11 +220,23 @@ public abstract class Page extends RoboActivity {
 	public void onResume()
 	{
 		super.onResume();
-		if (myApp.isDestroyed())
+		if (router == null)
+		{
+			try {
+				router = new Router(myApp);
+				myApp.setRouter(router);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Toast.makeText(this.getApplicationContext(), "Network Connection cannot be set up. " + 
+						"Please try again later", Toast.LENGTH_SHORT).show();
+			}
+		}
+		else if (myApp.isDestroyed())
 		{
 			//myApp has been claimed by garbage collector/killed to save memory for other apps
 			router.setApp(myApp);
 		}
+		
 	}
 	
 	public abstract String getQuery() throws UnsupportedEncodingException;
