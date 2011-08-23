@@ -12,22 +12,27 @@ import android.widget.LinearLayout;
 
 public class TrainPage extends AutoRefreshPage {
 	
-	@InjectView (R.id.transportLayout) LinearLayout transportLayout;
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.transport_layout);
-	}
-	
-	public LinearLayout getContentLayout()
-	{
-		return transportLayout;
-	}
+	public static TrainPageRefreshTask trainPageRefreshTask;
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		new TrainTask(this, false, true).execute();
+		if (TransportPage.tabHost.getCurrentTabTag().equals("train"))
+		{
+			System.out.println("Train Page resumed");
+			trainPageRefreshTask = new TrainPageRefreshTask(this, false, false);
+			trainPageRefreshTask.execute();
+		}
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (!TransportPage.tabHost.getCurrentTabTag().equals("train"))
+		{
+			System.out.println("Train Page paused");
+			trainPageRefreshTask.cancel(true);
+		}
 	}
 	
 	@Override
@@ -45,10 +50,4 @@ public class TrainPage extends AutoRefreshPage {
 	public String getAdditionalParams() {
 		return "&arg=rail";
 	}
-
-	@Override
-	public String getName() {
-		return MollyModule.PUBLIC_TRANSPORT;
-	}
-
 }

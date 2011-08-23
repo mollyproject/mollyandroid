@@ -99,6 +99,8 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 		{
 			e.printStackTrace();
 			jsonException = true;
+		}finally {
+			TrainPageRefreshTask.trainNeedsRefresh = true;
 		}
 	}
 

@@ -32,22 +32,23 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
     		TabHost.TabSpec spec;
     		Resources res = page.getResources();
     		String tabTag = new String();
-			if (jsonContent.getJSONObject("public_transport").getBoolean("bus") == true & ((TransportPage)page).firstLoad)
+			if (jsonContent.getJSONObject("public_transport").getBoolean("bus") == true & TransportPage.firstLoad == true)
 			{
-				tabTag = "Bus";
+				tabTag = "bus";
 				myIntent = new Intent().setClass(page.getApplicationContext(), BusPage.class);
-			    spec = ((TransportPage) page).tabHost.newTabSpec("Bus")
-			    	.setIndicator("Bus", res.getDrawable(R.drawable.android_button)).setContent(myIntent);
-			    ((TransportPage) page).tabHost.addTab(spec);
+			    spec = TransportPage.tabHost.newTabSpec(tabTag)
+			    	.setIndicator(tabTag, res.getDrawable(R.drawable.android_button)).setContent(myIntent);
+			    TransportPage.tabHost.addTab(spec);
 			}
-			if (jsonContent.getBoolean("train_station") == true & ((TransportPage)page).firstLoad)
+			if (jsonContent.getBoolean("train_station") == true & TransportPage.firstLoad == true)
 			{
-				tabTag = "Train";
+				tabTag = "train";
 			    myIntent = new Intent().setClass(page.getApplicationContext(), TrainPage.class);
-			    spec = ((TransportPage) page).tabHost.newTabSpec("Train")
-			    	.setIndicator("Train", res.getDrawable(R.drawable.android_button)).setContent(myIntent);
-			    ((TransportPage) page).tabHost.addTab(spec);
+			    spec = TransportPage.tabHost.newTabSpec(tabTag)
+			    	.setIndicator(tabTag, res.getDrawable(R.drawable.android_button)).setContent(myIntent);
+			    TransportPage.tabHost.addTab(spec);
 			}
+			//TransportPage.firstLoad = false;
 			((ContentPage) page).doneProcessingJSON();
 			/*SharedPreferences settings = page.getSharedPreferences(MyApplication.PREFS_NAME, 0);
 			if (settings.contains("lastTab"))
@@ -58,7 +59,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 			e.printStackTrace();
 			jsonException = true;
 		}
-		((TransportPage) page).getLAM().dispatchResume();
+		TransportPage.mlam.dispatchResume();
 	}
 	@Override
 	protected String doInBackground(Void... arg0) {

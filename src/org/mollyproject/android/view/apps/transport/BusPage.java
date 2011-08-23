@@ -14,43 +14,27 @@ import android.widget.LinearLayout;
 
 public class BusPage extends AutoRefreshPage{
 	
-	//TimerBusTask timerBusTask = new TimerBusTask(this);
-	protected BusPageRefreshTask busRefreshTask;
-	
-	private Handler mHandler = new Handler();
-	
-	@InjectView (R.id.transportLayout) LinearLayout transportLayout;
-	protected JSONObject jsonContent;
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.transport_layout);
-	}
-	
-	public Handler getHandler()
-	{
-		System.out.println("Got handler");
-		return mHandler;
-	}
-	
+	public static BusPageRefreshTask busPageRefreshTask;
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		busRefreshTask = new BusPageRefreshTask(this, false, false);
-		busRefreshTask.execute();
+		if (TransportPage.tabHost.getCurrentTabTag().equals("bus"))
+		{
+			System.out.println("Bus Page resumed");
+			busPageRefreshTask = new BusPageRefreshTask(this, false, false);
+			busPageRefreshTask.execute();
+		}
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
-		busRefreshTask.cancel(true);
-	}
-	
-	public LinearLayout getContentLayout()
-	{
-		return transportLayout;
+		if (!TransportPage.tabHost.getCurrentTabTag().equals("bus"))
+		{
+			System.out.println("Bus Page paused");
+			busPageRefreshTask.cancel(true);
+		}
 	}
 	
 	@Override
@@ -58,11 +42,6 @@ public class BusPage extends AutoRefreshPage{
 		return this;
 	}
 	
-	@Override
-	public String getName() {
-		return MollyModule.PUBLIC_TRANSPORT;
-	}
-
 	@Override
 	public String getQuery() throws UnsupportedEncodingException {
 		// TODO Auto-generated method stub

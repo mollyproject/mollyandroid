@@ -52,14 +52,11 @@ public class CookieManager {
     private static final String NULL = "/";
     private static final String EXPIRES = "expires";
     private static final String DATE_FORMAT_WITHOUT_TIMEZONE = "EEE MMM dd hh:mm:ss yyyy";
-    private static final String DATE_FORMAT_WITH_TIMEZONE = "EEE MMM dd hh:mm:ss zzz yyyy";
     private DateFormat dateFormatWithoutTimeZone;
-    private DateFormat dateFormatWithTimeZone;
 
     public CookieManager(MyApplication myApp) throws IOException, JSONException, ParseException {
     	this.myApp = myApp;
     	dateFormatWithoutTimeZone = new SimpleDateFormat(DATE_FORMAT_WITHOUT_TIMEZONE);
-    	dateFormatWithTimeZone = new SimpleDateFormat(DATE_FORMAT_WITH_TIMEZONE);
     	jsonCookies = new JSONObject();
     	basicCookies = new BasicCookieStore();
     	cookiesFile = myApp.getFileStreamPath(COOKIESFILE);

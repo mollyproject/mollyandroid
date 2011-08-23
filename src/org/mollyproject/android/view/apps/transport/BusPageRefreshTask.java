@@ -5,7 +5,7 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 
 public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
-
+	public static boolean busNeedsRefresh; 
 	public BusPageRefreshTask(BusPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
@@ -18,15 +18,26 @@ public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 
 	@Override
 	protected Void doInBackground(Void... arg0) {
-		if (((BusPage) page).firstReq)
+		System.out.println("Bus refresh starting");
+		if (TransportPage.firstLoad == true)
 		{
+			TransportPage.firstLoad = false;
+			//for the first request, json data already downloaded, no need to refresh
+			//((AutoRefreshPage) page).toBeRefreshed(false);
+			BusPageRefreshTask.busNeedsRefresh = false;
 			new BusTask((BusPage) page,false,false).execute
 				(((MyApplication) page.getApplication()).getTransportCache());
-			((BusPage) page).firstReq = false;
+		}
+		else if (!isCancelled())
+		{
+			//check again, in case the task is cancelled already
+			BusPageRefreshTask.busNeedsRefresh = false;
+			//dialog enabled
+			new BusTask((BusPage) page,false,false).execute();
 		}
 		while (!isCancelled())
 		{
-			while (!((BusPage) page).needsRefreshing())
+			while (!BusPageRefreshTask.busNeedsRefresh)
 			{
 				try {
 					Thread.sleep(100);
@@ -43,7 +54,7 @@ public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 			if (!isCancelled())
 			{
 				//check again, in case the task is cancelled already
-				((AutoRefreshPage) page).toBeRefreshed(false);
+				BusPageRefreshTask.busNeedsRefresh = false;
 				new BusTask((BusPage) page,false,false).execute();
 			}
 		}

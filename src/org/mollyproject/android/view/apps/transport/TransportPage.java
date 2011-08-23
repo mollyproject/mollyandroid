@@ -17,11 +17,12 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 
 public class TransportPage extends ContentPage {
-	public TabHost tabHost;
-	public boolean firstLoad = true;
-	protected LocalActivityManager mlam;
+	public static TabHost tabHost;
+	public static boolean firstLoad;
+	public static LocalActivityManager mlam;
 	public final static DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
 	
 	@Override
@@ -37,12 +38,26 @@ public class TransportPage extends ContentPage {
         mlam.dispatchCreate(savedInstanceState);
         tabHost = (TabHost) tabHostLayout.findViewById(R.id.tabHost);
         tabHost.setup(mlam);
-        firstLoad = false;
-	}
-	
-	public LocalActivityManager getLAM()
-	{
-		return mlam;
+        tabHost.setOnTabChangedListener(new OnTabChangeListener() {
+			@Override
+			public void onTabChanged(String tabId) {
+				if (!firstLoad)
+				{
+					mlam.dispatchPause(false);
+					if (tabId.equals("bus"))
+					{
+						parentBreadcrumb.setText("Bus stops");
+					}
+					else if (tabId.equals("train"))
+					{
+						parentBreadcrumb.setText("Train services");
+					}
+					mlam.dispatchResume();
+				}
+			}
+		});
+        
+        TransportPage.firstLoad = true;
 	}
 	
 	@Override
@@ -67,7 +82,7 @@ public class TransportPage extends ContentPage {
 		//{
 		new TransportPageTask(this, false, true).execute();
 		//}
-		mlam.dispatchResume();
+		//mlam.dispatchResume();
 	}
 	
 	@Override

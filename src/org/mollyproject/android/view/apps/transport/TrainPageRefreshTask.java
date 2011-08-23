@@ -5,7 +5,7 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 
 public class TrainPageRefreshTask extends BackgroundTask<Void,Void,Void>{
-
+	public static boolean trainNeedsRefresh;
 	public TrainPageRefreshTask(TrainPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
@@ -18,15 +18,25 @@ public class TrainPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 
 	@Override
 	protected Void doInBackground(Void... arg0) {
-		if (((TrainPage) page).firstReq)
+		System.out.println("Train refresh starting");
+		if (TransportPage.firstLoad == true)
 		{
+			TransportPage.firstLoad = false;
+			//for the first request, json data already downloaded, no need to refresh
+			TrainPageRefreshTask.trainNeedsRefresh = false;
 			new TrainTask((TrainPage) page,false,false).execute
 				(((MyApplication) page.getApplication()).getTransportCache());
-			((TrainPage) page).firstReq = false;
+		}
+		else if (!isCancelled())
+		{
+			//check again, in case the task is cancelled already
+			TrainPageRefreshTask.trainNeedsRefresh = false;
+			//dialog enabled
+			new TrainTask((TrainPage) page,false,false).execute();
 		}
 		while (!isCancelled())
 		{
-			while (!((TrainPage) page).needsRefreshing())
+			while (!TrainPageRefreshTask.trainNeedsRefresh)
 			{
 				try {
 					Thread.sleep(100);
@@ -43,7 +53,7 @@ public class TrainPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 			if (!isCancelled())
 			{
 				//check again, in case the task is cancelled already
-				((AutoRefreshPage) page).toBeRefreshed(false);
+				TrainPageRefreshTask.trainNeedsRefresh = false;
 				new TrainTask((TrainPage) page,false,false).execute();
 			}
 		}

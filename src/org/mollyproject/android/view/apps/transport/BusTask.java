@@ -119,7 +119,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			e.printStackTrace();
 			jsonException = true;
 		} finally {
-			((BusPage) page).toBeRefreshed(true);
+			BusPageRefreshTask.busNeedsRefresh = true;
 		}
 	}
 	
