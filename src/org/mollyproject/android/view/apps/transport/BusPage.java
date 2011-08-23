@@ -26,8 +26,6 @@ public class BusPage extends Page{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.transport_layout);
-		//TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
-		//pageTitle.setText("Nearby bus stops " + hourFormat.format(new Date()));
 	}
 	
 	public Handler getHandler()
@@ -58,11 +56,6 @@ public class BusPage extends Page{
 		super.onPause();
 		busRefreshTask.cancel(true);
 	}
-	
-	/*public void firstReqDone()
-	{
-		firstReq = false;
-	}*/
 	
 	public LinearLayout getContentLayout()
 	{

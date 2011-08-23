@@ -66,15 +66,18 @@ public class Router {
         String getURL = urlStr;
         System.out.println("Getting from: " + urlStr);
         HttpGet get = new HttpGet(getURL);
+        client = new DefaultHttpClient();
+        if (!firstReq)
+		{
+			((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
+		}
         HttpResponse responseGet = client.execute(get);  
         HttpEntity resEntityGet = responseGet.getEntity();  
         if (resEntityGet != null) {  
             //do something with the response
         	return EntityUtils.toString(resEntityGet);
         }
-        
 		return null;
-		
 	}
 	
 	public String reverse(String locator, String arg) throws SocketTimeoutException, 
@@ -94,7 +97,7 @@ public class Router {
 		return getFrom(reverseReq);
 	}
 	
-	public JSONObject onRequestSent(String locator, String arg, OutputFormat format, String query) 
+	public synchronized JSONObject onRequestSent(String locator, String arg, OutputFormat format, String query) 
 							throws JSONException, UnknownHostException, IOException, ParseException {
 		/*basic method for all requests for json response, it sets up a url to be sent
 		  to the server as follow:
@@ -126,7 +129,7 @@ public class Router {
 		
 		if (!firstReq)
 		{
-			((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
+			//((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
 			System.out.println("Cookie set");
 			updateCurrentLocation(locTracker.getCurrentLoc());
 		}
@@ -164,6 +167,11 @@ public class Router {
         
         UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params,HTTP.UTF_8);
         post.setEntity(ent);
+        client = new DefaultHttpClient();
+        if (!firstReq)
+		{
+			((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
+		}
         HttpResponse responsePOST = client.execute(post);
         //System.out.println("Location update cookies: " + ((DefaultHttpClient) client).getCookieStore().getCookies());
         

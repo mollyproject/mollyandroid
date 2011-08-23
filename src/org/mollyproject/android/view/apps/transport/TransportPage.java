@@ -6,20 +6,23 @@ import java.text.SimpleDateFormat;
 
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.LocalActivityManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
 public class TransportPage extends ContentPage {
-	protected TabHost tabHost;
+	public TabHost tabHost;
 	protected LocalActivityManager mlam;
 	public final static DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
@@ -33,19 +36,7 @@ public class TransportPage extends ContentPage {
         mlam.dispatchCreate(savedInstanceState);
         tabHost = (TabHost) tabHostLayout.findViewById(R.id.tabHost);
         tabHost.setup(mlam);
-        TabHost.TabSpec spec;
-        Intent myIntent;
-        Resources res = getResources();
         
-        myIntent = new Intent().setClass(this, BusPage.class);
-	    spec = tabHost.newTabSpec("Bus")
-	    	.setIndicator("Bus", res.getDrawable(R.drawable.android_button)).setContent(myIntent);
-	    tabHost.addTab(spec);
-
-	    myIntent = new Intent().setClass(this, TrainPage.class);
-	    spec = tabHost.newTabSpec("Train")
-	    	.setIndicator("Train", res.getDrawable(R.drawable.android_button)).setContent(myIntent);
-	    tabHost.addTab(spec);
 	}
 	
 	public LocalActivityManager getLAM()
@@ -57,6 +48,12 @@ public class TransportPage extends ContentPage {
 	protected void onPause() {
 		super.onPause();
 		myApp.setLastTransportTab(tabHost.getCurrentTab());
+		
+		/*SharedPreferences settings = getSharedPreferences(MyApplication.PREFS_NAME, 0);
+	    SharedPreferences.Editor editor = settings.edit();
+	    editor.putString("lastTab", tabHost.getCurrentTabTag());
+	    editor.commit();*/
+	    
 		mlam.dispatchPause(isFinishing());
 	}
 	
@@ -65,14 +62,11 @@ public class TransportPage extends ContentPage {
 		super.onResume();
 		tabHost.setCurrentTab(myApp.getLastTransportTab());
 		//The first page loaded is always the transport:public-transport page
-		if (!jsonProcessed & myApp.getTransportCache() == null)
-		{
-			new TransportPageTask(this, false, true).execute();
-		}
-		else if (myApp.getTransportCache() != null)
-		{
-			mlam.dispatchResume();
-		}
+		//if (!jsonProcessed || myApp.getTransportCache() == null)
+		//{
+		new TransportPageTask(this, false, true).execute();
+		//}
+		mlam.dispatchResume();
 	}
 	
 	@Override

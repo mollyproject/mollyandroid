@@ -115,11 +115,16 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 					nextBus.setText(next);
 				}
 			}
-			((BusPage) page).toBeRefreshed(true);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;
 		} 
+	}
+	
+	@Override
+	protected void onPostExecute(JSONObject outputs) {
+		super.onPostExecute(outputs);
+		((BusPage) page).toBeRefreshed(true);
 	}
 
 	@Override
@@ -131,21 +136,23 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			}
 			else 
 			{
-				return page.getRouter().onRequestSent(page.getName(), page.getAdditionalParams(), 
+				JSONObject jsonContent = page.getRouter().onRequestSent(page.getName(), page.getAdditionalParams(), 
 						Router.OutputFormat.JSON, null);
+				myApp.setTransportCache(jsonContent);
+				return jsonContent;
 			}
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
-			unknownHostException = true;
+			//unknownHostException = true;
 		} catch (JSONException e) {
 			e.printStackTrace();
-			jsonException = true;
+			//jsonException = true;
 		} catch (IOException e) {
 			e.printStackTrace();
-			ioException = true;
+			//ioException = true;
 		} catch (ParseException e) {
 			e.printStackTrace();
-			parseException = true;
+			//parseException = true;
 		}
 		
 		return null;

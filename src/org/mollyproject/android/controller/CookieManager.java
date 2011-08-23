@@ -51,7 +51,7 @@ public class CookieManager {
     private static final String NAME = "name";
     private static final String NULL = "/";
     private static final String EXPIRES = "expires";
-    private static final String DATE_FORMAT = "EEE MMM dd hh:mm:ss z yyyy";
+    private static final String DATE_FORMAT = "EEE MMM dd hh:mm:ss yyyy";
     private DateFormat dateFormat;
 
     public CookieManager(MyApplication myApp) throws IOException, JSONException, ParseException {
@@ -141,7 +141,7 @@ public class CookieManager {
 			System.out.println(dateFormat);
 			System.out.println(cookie.getString(EXPIRES));
 			//System.out.println(dateFormat.parse(cookie.getString(EXPIRES)));
-			basicCookie.setExpiryDate(dateFormat.parse(cookie.getString(EXPIRES)));
+			basicCookie.setExpiryDate(new Date(cookie.getString(EXPIRES)));
 			basicCookie.setDomain("dev.m.ox.ac.uk");
 			basicCookie.setPath("/");
 			

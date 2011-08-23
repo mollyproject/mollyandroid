@@ -23,6 +23,7 @@ public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 		{
 			new BusTask((BusPage) page,false,false).execute
 				(((MyApplication) page.getApplication()).getTransportCache());
+			((BusPage) page).firstReq = false;
 		}
 		while (!isCancelled())
 		{
@@ -35,7 +36,7 @@ public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 				}
 			}
 			try {
-				Thread.sleep(30000);
+				Thread.sleep(60000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
