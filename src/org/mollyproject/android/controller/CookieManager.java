@@ -51,12 +51,15 @@ public class CookieManager {
     private static final String NAME = "name";
     private static final String NULL = "/";
     private static final String EXPIRES = "expires";
-    private static final String DATE_FORMAT = "EEE MMM dd hh:mm:ss yyyy";
-    private DateFormat dateFormat;
+    private static final String DATE_FORMAT_WITHOUT_TIMEZONE = "EEE MMM dd hh:mm:ss yyyy";
+    private static final String DATE_FORMAT_WITH_TIMEZONE = "EEE MMM dd hh:mm:ss zzz yyyy";
+    private DateFormat dateFormatWithoutTimeZone;
+    private DateFormat dateFormatWithTimeZone;
 
     public CookieManager(MyApplication myApp) throws IOException, JSONException, ParseException {
     	this.myApp = myApp;
-    	dateFormat = new SimpleDateFormat(DATE_FORMAT);
+    	dateFormatWithoutTimeZone = new SimpleDateFormat(DATE_FORMAT_WITHOUT_TIMEZONE);
+    	dateFormatWithTimeZone = new SimpleDateFormat(DATE_FORMAT_WITH_TIMEZONE);
     	jsonCookies = new JSONObject();
     	basicCookies = new BasicCookieStore();
     	cookiesFile = myApp.getFileStreamPath(COOKIESFILE);
@@ -104,7 +107,7 @@ public class CookieManager {
 				Cookie cookie = cookieList.get(i);
 		    	JSONObject jsonCookie = new JSONObject();    	
 		    	//put the cookie found in the JSON mappings
-		    	jsonCookie.put(EXPIRES, cookie.getExpiryDate());
+		    	jsonCookie.put(EXPIRES, dateFormatWithoutTimeZone.format(cookie.getExpiryDate()));
 		    	jsonCookie.put(PATH,NULL);
 		    	jsonCookie.put(DOMAIN, Router.mOX);
 		    	jsonCookie.put(VALUE,cookie.getValue());
@@ -138,10 +141,9 @@ public class CookieManager {
 	    	
 	    	//construct a BasicClientCookie from the json data 
 			BasicClientCookie basicCookie = new BasicClientCookie(cookieName,cookie.getString(VALUE));
-			System.out.println(dateFormat);
 			System.out.println(cookie.getString(EXPIRES));
 			//System.out.println(dateFormat.parse(cookie.getString(EXPIRES)));
-			basicCookie.setExpiryDate(new Date(cookie.getString(EXPIRES)));
+			basicCookie.setExpiryDate(dateFormatWithoutTimeZone.parse(cookie.getString(EXPIRES)));
 			basicCookie.setDomain("dev.m.ox.ac.uk");
 			basicCookie.setPath("/");
 			
@@ -149,29 +151,6 @@ public class CookieManager {
 			basicCookieStore.addCookie(basicCookie);
 		}
 		return basicCookieStore;
-    }
-    
-    private boolean isNotExpired(String cookieExpires) {
-		if (cookieExpires == null) return true;
-		Date now = new Date();
-		try {
-		    return (now.compareTo(dateFormat.parse(cookieExpires))) <= 0;
-		} catch (java.text.ParseException pe) {
-		    pe.printStackTrace();
-		    return false;
-		}
-    }
-
-    private boolean comparePaths(String cookiePath, String targetPath) {
-		if (cookiePath == null) {
-		    return true;
-		} else if (cookiePath.equals("/")) {
-		    return true;
-		} else if (targetPath.regionMatches(0, cookiePath, 0, cookiePath.length())) {
-		    return true;
-		} else {
-		    return false;
-		}
     }
     
     public String getCSRFToken() throws JSONException
