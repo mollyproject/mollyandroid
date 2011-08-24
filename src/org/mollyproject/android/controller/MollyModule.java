@@ -17,6 +17,7 @@ import org.mollyproject.android.view.apps.podcasts.PodcastsCategoryPage;
 import org.mollyproject.android.view.apps.podcasts.PodcastsPage;
 import org.mollyproject.android.view.apps.results_release.ResultsReleasePage;
 import org.mollyproject.android.view.apps.search.SearchPage;
+import org.mollyproject.android.view.apps.status.ServiceStatusPage;
 import org.mollyproject.android.view.apps.transport.TransportPage;
 import org.mollyproject.android.view.apps.weather.WeatherPage;
 
@@ -44,6 +45,7 @@ public class MollyModule extends AbstractModule {
 	public static String PODCAST_CATEGORY_PAGE = "podcasts:category";
 	public static String INDIVIDUAL_PODCAST_PAGE = "podcasts:podcast";
 	public static String TRANSPORT_PAGE = "transport:index";
+	public static String STATUS_PAGE = "service-status:index";
 	public static String PUBLIC_TRANSPORT = "transport:public-transport";
 	public static String SPLASH = "splash";
 	
@@ -78,7 +80,7 @@ public class MollyModule extends AbstractModule {
 		//search page
 		bind(Page.class).annotatedWith(Names.named(SEARCH_PAGE)).to(SearchPage.class);
 		
-		//podcasts page
+		//podcasts pages
 		bind(Page.class).annotatedWith(Names.named(PODCAST_PAGE)).to(PodcastsPage.class);
 		bind(Integer.class).annotatedWith(Names.named(PODCAST_PAGE+"_img"))
 															.toInstance(R.drawable.podcasts);
@@ -89,13 +91,28 @@ public class MollyModule extends AbstractModule {
 		
 		bind(Page.class).annotatedWith(Names.named(INDIVIDUAL_PODCAST_PAGE)).to(IndividualPodcastPage.class);
 		
+		//transport pages
 		bind(Page.class).annotatedWith(Names.named(TRANSPORT_PAGE)).to(TransportPage.class);
 		bind(Integer.class).annotatedWith(Names.named(TRANSPORT_PAGE+"_img")).toInstance(R.drawable.transport);
 		
+		//results release page
 		bind(Page.class).annotatedWith(Names.named(RESULTS_PAGE)).to(ResultsReleasePage.class);
 		bind(Integer.class).annotatedWith(Names.named(RESULTS_PAGE+"_img")).toInstance(R.drawable.results);
 		bind(Integer.class).annotatedWith(Names.named(RESULTS_PAGE+"_bc")).toInstance(R.drawable.results_bc);
 		
+		//service status page and images
+		bind(Page.class).annotatedWith(Names.named(STATUS_PAGE)).to(ServiceStatusPage.class);
+		bind(Integer.class).annotatedWith(Names.named(STATUS_PAGE+"_img")).toInstance(R.drawable.service_status);
+		bind(Integer.class).annotatedWith(Names.named(STATUS_PAGE+"_bc")).toInstance(R.drawable.service_status_bc);
+		//temporary patch to display breadcrumbs:
+		bind(Integer.class).annotatedWith(Names.named("service_status:index"+"_bc")).toInstance(R.drawable.service_status_bc);
+		
+		bind(Integer.class).annotatedWith(Names.named("up")).toInstance(R.drawable.service_up);
+		bind(Integer.class).annotatedWith(Names.named("partial")).toInstance(R.drawable.service_partial);
+		bind(Integer.class).annotatedWith(Names.named("unknown")).toInstance(R.drawable.service_unknown);
+		bind(Integer.class).annotatedWith(Names.named("down")).toInstance(R.drawable.service_down);
+		
+		//Other non-content pages
 		bind(Page.class).annotatedWith(Names.named("splash")).to(Splash.class);
 		bind(Page.class).annotatedWith(Names.named(HOME_PAGE)).to(HomePage.class);
 

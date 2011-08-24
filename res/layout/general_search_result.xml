@@ -2,14 +2,17 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="horizontal"
+  android:paddingTop="5dp"
+  android:paddingBottom="5dp"
   android:layout_width="fill_parent"
   android:background="@drawable/bg_blue"
   android:layout_height="wrap_content">
     <ImageView android:layout_height="wrap_content" 
 	    android:id="@+id/generalSearchIcon" 
-	    android:src="@drawable/places" 
+	    android:src="@drawable/unavail_w_2" 
 	    android:layout_width="wrap_content" 
-	    android:layout_gravity="center_vertical">
+	    android:layout_gravity="center_vertical" 
+	    android:layout_marginLeft="10dp">
     </ImageView>
     
     <TextView android:text="Search Result" 
@@ -18,7 +21,11 @@
 	    android:textSize="16sp"
 	    android:layout_height="wrap_content" 
 	    android:layout_gravity="center_vertical"
-	    android:textColor="@color/white" android:layout_marginLeft="10dp" android:layout_marginTop="5dp" android:layout_marginBottom="5dp">
+	    android:textColor="@color/white" 
+	    android:layout_marginLeft="10dp" 
+	    android:layout_marginRight="5dp" 
+	    android:layout_marginTop="5dp" 
+	    android:layout_marginBottom="5dp">
 	</TextView>
     
 </LinearLayout>

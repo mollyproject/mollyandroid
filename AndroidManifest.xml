@@ -23,24 +23,36 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.apps.home.HomePage"></activity>
+        
         <activity android:name=".view.apps.UnimplementedPage"></activity>
+        
 		<activity android:name=".view.apps.results_release.ResultsReleasePage"></activity>
+		
 		<activity android:name=".view.apps.features.FeatureVotePage"></activity>
+		
 		<activity android:name=".view.apps.library.LibraryPage"></activity>
 		<activity android:name=".view.apps.library.LibraryResultsPage"></activity>
 		<activity android:name=".view.apps.library.LibraryBookResultPage"></activity>
+		
 		<activity android:name=".view.apps.map.PlacesPage"></activity>
 		<activity android:name=".view.apps.map.PlacesNearbyPage"></activity>
 		<activity android:name=".view.apps.map.PlacesResultsPage"></activity>
+		
 		<activity android:name=".view.apps.contact.ContactPage"></activity>
 		<activity android:name=".view.apps.contact.ContactResultsPage"></activity>
+		
 		<activity android:name=".view.apps.weather.WeatherPage"></activity>
+		
 		<activity android:name=".view.apps.search.SearchPage"></activity>
+		
 		<activity android:name=".view.apps.transport.TransportPage"></activity>
 		<activity android:name=".view.apps.transport.BusPage"></activity>
 		<activity android:name=".view.apps.transport.TrainPage"></activity>
+		
 		<activity android:name=".view.apps.podcasts.PodcastsPage"></activity>
 		<activity android:name=".view.apps.podcasts.PodcastsCategoryPage"></activity>
 		<activity android:name=".view.apps.podcasts.IndividualPodcastPage"></activity>
+		
+		<activity android:name=".view.apps.status.ServiceStatusPage"></activity>
     </application>
 </manifest>
