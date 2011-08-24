@@ -39,6 +39,7 @@ public class ServiceStatusTask extends BackgroundTask<Void,Void,JSONObject> {
 			{
 				LinearLayout serviceLayout = (LinearLayout) layoutInflater.inflate
 							(R.layout.service_status, contentLayout, false);
+				contentLayout.removeAllViews();
 				contentLayout.addView(serviceLayout);
 				
 				JSONObject service = services.getJSONObject(i);
@@ -51,7 +52,7 @@ public class ServiceStatusTask extends BackgroundTask<Void,Void,JSONObject> {
 				
 				//String name = service.getString("name");
 				((TextView) serviceLayout.findViewById(R.id.serviceTitle)).setText(service.getString("name") 
-						+ "last updated at " + MyApplication.hourFormat.format
+						+ " last updated at " + MyApplication.hourFormat.format
 						(MyApplication.updateDateFormat.parse(lastUpdated)));
 				((TextView) serviceLayout.findViewById(R.id.serviceTitle)).setTextSize(18);
 				
