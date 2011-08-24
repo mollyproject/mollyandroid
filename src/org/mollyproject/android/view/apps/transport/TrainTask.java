@@ -15,6 +15,7 @@ import org.mollyproject.android.view.apps.Page;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -64,6 +65,7 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 			
 			for (int i = 0; i < services.length(); i++)
 			{
+				//show the info for each service
 				JSONObject service = services.getJSONObject(i);
 				
 				LinearLayout trainResultLayout = (LinearLayout) layoutInflater.inflate(R.layout.transport_train_result, 
@@ -84,22 +86,50 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 				}
 					
 				TextView scheduledTime = (TextView) trainResultLayout.findViewById(R.id.trainScheduledTime);
-				scheduledTime.setText(service.getString("std"));
 				
 				TextView expectedTime = (TextView) trainResultLayout.findViewById(R.id.trainExpectedTime);
-				expectedTime.setText(service.getString("etd"));
 				
-				if (service.getBoolean("problems"))
+				if (TrainPage.board.equals(TrainPage.DEPARTURES))
 				{
-					destination.setTextColor(Color.RED);
-					destination.setText(destination.getText() + "(!)");
-					platform.setTextColor(Color.RED);
-					scheduledTime.setTextColor(Color.RED);
-					expectedTime.setTextColor(Color.RED);
+					scheduledTime.setText(service.getString("std"));
+					expectedTime.setText(service.getString("etd"));
+				}
+				else if (TrainPage.board.equals(TrainPage.ARRIVALS))
+				{
+					scheduledTime.setText(service.getString("sta"));
+					expectedTime.setText(service.getString("eta"));
 				}
 				
+				if (service.has("problems"))
+				{
+					if (service.getBoolean("problems"))
+					{
+						//Delayed or cancelled trains are painted in red
+						destination.setTextColor(Color.RED);
+						destination.setText(destination.getText() + "(!)");
+						platform.setTextColor(Color.RED);
+						scheduledTime.setTextColor(Color.RED);
+						expectedTime.setTextColor(Color.RED);
+					}
+				}
 				trainResultLayout.setLayoutParams(Page.paramsWithLine);
 				trainLayout.addView(trainResultLayout);
+			}
+			//National Rail Enquiries logo
+			ImageView nreLogo = new ImageView(page);
+			nreLogo.setBackgroundResource(R.drawable.bg_white);
+			nreLogo.setImageResource(R.drawable.powered_by_nre);
+			nreLogo.setLayoutParams(Page.paramsWithLine);
+			trainLayout.addView(nreLogo);
+			
+			//Change page title if needed
+			if (TrainPage.board.equals(TrainPage.DEPARTURES))
+			{
+				TransportPage.transportPageTitle.setText("Rail Departures");
+			}
+			else if (TrainPage.board.equals(TrainPage.ARRIVALS))
+			{
+				TransportPage.transportPageTitle.setText("Rail Arrivals");
 			}
 		} catch (JSONException e)
 		{
@@ -108,7 +138,7 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 		} catch (ParseException e) {
 			e.printStackTrace();
 			parseException = true;
-		}finally {
+		} finally {
 			TrainPageRefreshTask.trainNeedsRefresh = true;
 		}
 	}
@@ -122,8 +152,8 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 			}
 			else 
 			{
-				JSONObject jsonContent = MyApplication.router.onRequestSent(page.getName(), page.getAdditionalParams(), 
-						Router.OutputFormat.JSON, null);
+				JSONObject jsonContent = MyApplication.router.onRequestSent(page.getName(), 
+						page.getAdditionalParams(), Router.OutputFormat.JSON, page.getQuery());
 				MyApplication.transportCache = jsonContent;
 				return jsonContent;
 			}

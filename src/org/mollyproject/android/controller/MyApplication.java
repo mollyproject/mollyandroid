@@ -74,69 +74,6 @@ public class MyApplication extends RoboApplication {
 		return podcastIconsCache.get(logoURL);
 	}
 	
-	/*
-	public void setDestroyed(boolean b) { destroyed = b; }
-	
-	public boolean isDestroyed() { return destroyed; }
-	
-	public Router getRouter() {	return router; }
-	
-	public void setRouter(Router router) { this.router = router; }
-
-	public void setLastTransportTab(int i) { lastTransportTab = i; }
-	
-	public int getLastTransportTab() { return lastTransportTab; }
-	
-	public void setTransportCache(JSONObject transportCache) { this.transportCache = transportCache; }
-	
-	public JSONObject getTransportCache() { return transportCache; }
-	
-	public String getBookNumber() { return bookControlNumber; }
-	
-	public void setBookNumber(String controlNumber) { bookControlNumber = controlNumber; }
-	
-	public void setPlacesArgs(String[] args) { placesArgs = args; }
-	
-	public String[] getPlacesArgs() { return placesArgs; }
-	
-	
-	
-	public void setPodcastsOutput(List<Map<String,String>> podcastsOutput) { this.podcastsOutput = podcastsOutput; }
-	
-	public List<Map<String,String>> getPodcastsOutput() { return podcastsOutput; }
-	
-	public void setIndPodcastSlug(String slug) { indPodcastSlug = slug; }
-	
-	public String getIndPodcastSlug() { return indPodcastSlug; }
-	
-	public void setPodcastsSlug(String slug) { podcastsSlug = slug; }
-	
-	public String getPodcastsSlug() { return podcastsSlug; }
-	
-	public void setGeneralQuery(String[] query) { this.generalQuery = query; }
-	
-	public String[] getGeneralQuery() { return generalQuery; }
-	
-	public void updateLibCache(String key, JSONObject object) { libraryCache.put(key, object);	}
-	
-	public ArrayListMultimap<String, JSONObject> getLibCache() { return libraryCache; }
-	
-	public void setContactOutput(String... contactQuery) { this.contactQuery = contactQuery; }
-	
-	public String[] getContactQuery() { return contactQuery; }
-	
-	public void setMapQuery(String mapQuery) { this.mapQuery = mapQuery; }
-	
-	public String getMapQuery() { return mapQuery; }
-	
-	public void setLibraryArgs(Map<String,String> query) { libraryQuery = query; }
-	
-	public Map<String,String> getLibraryArgs() { return libraryQuery; }
-	
-	public String getLocator() { return locator; }
-	
-	public void setNextLocator(String locator) { this.locator = locator; } */
-	
 	public static Class <? extends Page> getPageClass(String s)
 	{
 		return (injector.getInstance(Key.get(Page.class, Names.named(s))).getClass());

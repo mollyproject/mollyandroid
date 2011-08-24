@@ -48,12 +48,14 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 			    	.setIndicator(tabTag, res.getDrawable(R.drawable.android_button)).setContent(myIntent);
 			    TransportPage.transportTabHost.addTab(spec);
 			}
+			
 			//TransportPage.firstLoad = false;
 			((ContentPage) page).doneProcessingJSON();
 			SharedPreferences settings = page.getSharedPreferences(MyApplication.PREFS_NAME, 0);
 			if (settings.contains("lastTab"))
 			{
-				TransportPage.transportTabHost.setCurrentTabByTag(settings.getString("lastTab",tabTag));
+				System.out.println("Transport task " + settings.getString("lastTab",tabTag));
+				TransportPage.transportTabHost.setCurrentTabByTag(settings.getString("lastTab",TransportPage.defaultTransport));
 			}
         } catch (JSONException e) {
 			e.printStackTrace();
@@ -71,8 +73,6 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 				e.printStackTrace();
 			}
 		}
-		System.out.println("HERE");
-		
 		return "Do not return null here";
 	}
 
