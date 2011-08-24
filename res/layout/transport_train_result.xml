@@ -26,19 +26,19 @@
 	    android:id="@+id/platformNumber" 
 	    android:textColor="@color/blue"
 	    android:gravity="center" 
-	    android:paddingLeft="5dp" 
+	    android:paddingLeft="2dp" 
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
 	    android:layout_gravity="center_vertical" 
-	    android:layout_weight="1.6" 
+	    android:layout_weight="1.5" 
 	    android:text="Plat.">
     </TextView>
     
     <TextView android:text="Scheduled" 
 	    android:id="@+id/trainScheduledTime" 
 	    android:layout_width="fill_parent"
-	    android:layout_weight="1.4" 
-	    android:paddingLeft="5dp"
+	    android:layout_weight="1.3" 
+	    android:paddingLeft="3dp"
 	    android:textSize="16dp"
 	    android:gravity="center"
 	    android:layout_gravity="center_vertical"
