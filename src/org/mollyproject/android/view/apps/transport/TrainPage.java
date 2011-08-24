@@ -20,6 +20,11 @@ public class TrainPage extends AutoRefreshPage {
 		if (TransportPage.tabHost.getCurrentTabTag().equals("train"))
 		{
 			System.out.println("Train Page resumed");
+			if (trainPageRefreshTask != null) 
+			{
+				trainPageRefreshTask.cancel(true);
+			}
+
 			trainPageRefreshTask = new TrainPageRefreshTask(this, false, false);
 			trainPageRefreshTask.execute();
 		}

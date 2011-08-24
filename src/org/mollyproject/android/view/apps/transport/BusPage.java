@@ -21,7 +21,10 @@ public class BusPage extends AutoRefreshPage{
 		super.onResume();
 		if (TransportPage.tabHost.getCurrentTabTag().equals("bus"))
 		{
-			System.out.println("Bus Page resumed");
+			if (busPageRefreshTask != null) 
+			{
+				busPageRefreshTask.cancel(true);
+			}
 			busPageRefreshTask = new BusPageRefreshTask(this, false, false);
 			busPageRefreshTask.execute();
 		}
