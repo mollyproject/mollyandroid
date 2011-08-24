@@ -42,6 +42,11 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 			pDialog = ProgressDialog.show(page, "", "Loading...", true, true);
 		}
 	}
+	@Override
+	protected void onCancelled() {
+		super.onCancelled();
+		page = null;
+	}
 	
 	@Override
 	protected void onPostExecute(C outputs)
