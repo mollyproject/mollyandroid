@@ -22,6 +22,7 @@ import android.widget.TabHost.OnTabChangeListener;
 public class TransportPage extends ContentPage {
 	public static TabHost tabHost;
 	public static boolean firstLoad;
+	public static boolean transportPaused;
 	public static LocalActivityManager mlam;
 	public final static DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
 	
@@ -56,26 +57,31 @@ public class TransportPage extends ContentPage {
 				}
 			}
 		});
-        
-        TransportPage.firstLoad = true;
+        transportPaused = false;
+        firstLoad = true;
 	}
 	
 	@Override
+	protected void onStop() {
+		super.onStop();
+		mlam.dispatchStop();
+	}
+	@Override
 	protected void onPause() {
 		super.onPause();
-		myApp.setLastTransportTab(tabHost.getCurrentTab());
 		
 		/*SharedPreferences settings = getSharedPreferences(MyApplication.PREFS_NAME, 0);
 	    SharedPreferences.Editor editor = settings.edit();
 	    editor.putString("lastTab", tabHost.getCurrentTabTag());
 	    editor.commit();*/
-	    
+		transportPaused = true;
 		mlam.dispatchPause(isFinishing());
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
+		transportPaused = true;
 		tabHost.setCurrentTab(myApp.getLastTransportTab());
 		//The first page loaded is always the transport:public-transport page
 		//if (!jsonProcessed || myApp.getTransportCache() == null)

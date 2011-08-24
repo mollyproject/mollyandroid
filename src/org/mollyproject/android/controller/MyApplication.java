@@ -52,6 +52,9 @@ public class MyApplication extends RoboApplication {
 	public static DateFormat podcastDateFormat = new SimpleDateFormat
 			("yyyy-MM-d HH:mm:ss");
 	
+	public static DateFormat trainDateFormat = new SimpleDateFormat
+			("yyyy-MM-d HH:mm:ss Z");
+	
 	public void setDestroyed(boolean b) { destroyed = b; }
 	
 	public boolean isDestroyed() { return destroyed; }

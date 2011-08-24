@@ -33,7 +33,7 @@ public class TrainPage extends AutoRefreshPage {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (!TransportPage.tabHost.getCurrentTabTag().equals("train"))
+		if (!TransportPage.tabHost.getCurrentTabTag().equals("train") || TransportPage.transportPaused)
 		{
 			System.out.println("Train Page paused");
 			trainPageRefreshTask.cancel(true);

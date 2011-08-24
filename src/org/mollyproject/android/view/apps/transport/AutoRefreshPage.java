@@ -26,20 +26,8 @@ public abstract class AutoRefreshPage extends Page {
 		return transportLayout;
 	}
 	
-	/*public boolean needsRefreshing()
-	{
-		return needsRefreshing;
-	}
-	
-	public void toBeRefreshed(boolean b)
-	{
-		needsRefreshing = b;
-	}*/
-	
 	@Override
 	public String getName() {
 		return MollyModule.PUBLIC_TRANSPORT;
 	}
-
-	
 }

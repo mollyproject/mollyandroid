@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
@@ -20,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
-
 	public TrainTask(TrainPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
@@ -43,16 +44,24 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 			
 			//Update the page title every time the page is refreshed
 			TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
-			pageTitle.setText(entity.getString("title") + " " + TransportPage.hourFormat.format(new Date()));
+			String nrTime = entity.getJSONObject("metadata").getJSONObject("ldb")
+					.getString("generatedAt").substring(0, 19) + " GMT";
+			
+			pageTitle.setText(entity.getString("title") + " " + TransportPage.hourFormat.format
+					(MyApplication.trainDateFormat.parse(nrTime)));
 			
 			//Header
 			LinearLayout header = (LinearLayout) layoutInflater.inflate(R.layout.transport_train_result, 
 					((TrainPage) page).getContentLayout(),false);
 			header.setLayoutParams(Page.paramsWithLine);
 			((TextView) header.findViewById(R.id.trainDestination)).setTypeface(Typeface.DEFAULT_BOLD);
+			((TextView) header.findViewById(R.id.trainDestination)).setTextSize(14);
 			((TextView) header.findViewById(R.id.platformNumber)).setTypeface(Typeface.DEFAULT_BOLD);
+			((TextView) header.findViewById(R.id.platformNumber)).setTextSize(14);
 			((TextView) header.findViewById(R.id.trainScheduledTime)).setTypeface(Typeface.DEFAULT_BOLD);
+			((TextView) header.findViewById(R.id.trainScheduledTime)).setTextSize(14);
 			((TextView) header.findViewById(R.id.trainExpectedTime)).setTypeface(Typeface.DEFAULT_BOLD);
+			((TextView) header.findViewById(R.id.trainExpectedTime)).setTextSize(14);
 			
 			trainLayout.addView(header);
 			
@@ -99,6 +108,9 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 		{
 			e.printStackTrace();
 			jsonException = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			parseException = true;
 		}finally {
 			TrainPageRefreshTask.trainNeedsRefresh = true;
 		}
