@@ -31,6 +31,7 @@ public class ServiceStatusTask extends BackgroundTask<Void,Void,JSONObject> {
 	public void updateView(JSONObject jsonContent) {
 		try {
 			LinearLayout contentLayout = ((ContentPage) page).getContentLayout();
+			contentLayout.removeAllViews();
 			LayoutInflater layoutInflater = page.getLayoutInflater();
 			//get all the services in json
 			JSONArray services = jsonContent.getJSONArray("services");
@@ -39,7 +40,6 @@ public class ServiceStatusTask extends BackgroundTask<Void,Void,JSONObject> {
 			{
 				LinearLayout serviceLayout = (LinearLayout) layoutInflater.inflate
 							(R.layout.service_status, contentLayout, false);
-				contentLayout.removeAllViews();
 				contentLayout.addView(serviceLayout);
 				
 				JSONObject service = services.getJSONObject(i);
