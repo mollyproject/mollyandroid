@@ -6,10 +6,12 @@ import java.text.SimpleDateFormat;
 
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.LocalActivityManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -20,7 +22,10 @@ public class TransportPage extends ContentPage {
 	public static boolean firstLoad;
 	public static boolean transportPaused;
 	public static LocalActivityManager mlam;
+	protected SharedPreferences settings;
 	public final static DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+	public final static String RAIL = "rail";
+	public final static String BUS = "bus";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -31,6 +36,7 @@ public class TransportPage extends ContentPage {
         				(R.layout.transport_tabs, contentLayout, false);
         contentLayout.addView(tabHostLayout);
         mlam.dispatchCreate(savedInstanceState);
+        settings = getSharedPreferences(MyApplication.PREFS_NAME, 0);
         transportTabHost = (TabHost) tabHostLayout.findViewById(R.id.tabHost);
         transportTabHost.setup(mlam);
         transportTabHost.setOnTabChangedListener(new OnTabChangeListener() {
@@ -39,11 +45,11 @@ public class TransportPage extends ContentPage {
 				if (!firstLoad)
 				{
 					mlam.dispatchPause(false);
-					if (tabId.equals("bus"))
+					if (tabId.equals(BUS))
 					{
 						parentBreadcrumb.setText("Bus stops");
 					}
-					else if (tabId.equals("train"))
+					else if (tabId.equals(RAIL))
 					{
 						parentBreadcrumb.setText("Train services");
 					}
@@ -64,10 +70,10 @@ public class TransportPage extends ContentPage {
 	protected void onPause() {
 		super.onPause();
 		
-		/*SharedPreferences settings = getSharedPreferences(MyApplication.PREFS_NAME, 0);
 	    SharedPreferences.Editor editor = settings.edit();
-	    editor.putString("lastTab", tabHost.getCurrentTabTag());
-	    editor.commit();*/
+	    editor.putString("lastTab", transportTabHost.getCurrentTabTag());
+	    editor.commit();
+	    
 		transportPaused = true;
 		mlam.dispatchPause(isFinishing());
 	}
@@ -86,7 +92,7 @@ public class TransportPage extends ContentPage {
 
 	@Override
 	public String getAdditionalParams() {
-		return "&arg=bus";
+		return "&arg=" + settings.getString("lastTab", BUS);
 	}
 
 	@Override

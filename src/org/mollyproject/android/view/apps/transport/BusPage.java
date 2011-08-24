@@ -10,7 +10,7 @@ public class BusPage extends AutoRefreshPage{
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (TransportPage.transportTabHost.getCurrentTabTag().equals("bus"))
+		if (TransportPage.transportTabHost.getCurrentTabTag().equals(TransportPage.BUS))
 		{
 			if (busPageRefreshTask != null) 
 			{
@@ -24,7 +24,7 @@ public class BusPage extends AutoRefreshPage{
 	@Override
 	public void onPause() {
 		super.onPause();
-		if (!TransportPage.transportTabHost.getCurrentTabTag().equals("bus")  || TransportPage.transportPaused)
+		if (!TransportPage.transportTabHost.getCurrentTabTag().equals(TransportPage.BUS) || TransportPage.transportPaused)
 		{
 			System.out.println("Bus Page paused");
 			busPageRefreshTask.cancel(true);

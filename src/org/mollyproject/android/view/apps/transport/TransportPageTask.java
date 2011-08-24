@@ -9,6 +9,7 @@ import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.widget.TabHost;
 
@@ -33,7 +34,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
     		String tabTag = new String();
 			if (jsonContent.getJSONObject("public_transport").getBoolean("bus") == true & TransportPage.firstLoad == true)
 			{
-				tabTag = "bus";
+				tabTag = TransportPage.BUS;
 				myIntent = new Intent().setClass(page.getApplicationContext(), BusPage.class);
 			    spec = TransportPage.transportTabHost.newTabSpec(tabTag)
 			    	.setIndicator(tabTag, res.getDrawable(R.drawable.android_button)).setContent(myIntent);
@@ -41,7 +42,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 			}
 			if (jsonContent.getBoolean("train_station") == true & TransportPage.firstLoad == true)
 			{
-				tabTag = "train";
+				tabTag = TransportPage.RAIL;
 			    myIntent = new Intent().setClass(page.getApplicationContext(), TrainPage.class);
 			    spec = TransportPage.transportTabHost.newTabSpec(tabTag)
 			    	.setIndicator(tabTag, res.getDrawable(R.drawable.android_button)).setContent(myIntent);
@@ -49,11 +50,11 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 			}
 			//TransportPage.firstLoad = false;
 			((ContentPage) page).doneProcessingJSON();
-			/*SharedPreferences settings = page.getSharedPreferences(MyApplication.PREFS_NAME, 0);
+			SharedPreferences settings = page.getSharedPreferences(MyApplication.PREFS_NAME, 0);
 			if (settings.contains("lastTab"))
 			{
-				((TransportPage) page).tabHost.setCurrentTabByTag(settings.getString("lastTab",tabTag));
-			}*/
+				TransportPage.transportTabHost.setCurrentTabByTag(settings.getString("lastTab",tabTag));
+			}
         } catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;

@@ -11,7 +11,7 @@ public class TrainPage extends AutoRefreshPage {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (TransportPage.transportTabHost.getCurrentTabTag().equals("train"))
+		if (TransportPage.transportTabHost.getCurrentTabTag().equals(TransportPage.RAIL))
 		{
 			System.out.println("Train Page resumed");
 			if (trainPageRefreshTask != null) 
@@ -27,7 +27,7 @@ public class TrainPage extends AutoRefreshPage {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (!TransportPage.transportTabHost.getCurrentTabTag().equals("train") || TransportPage.transportPaused)
+		if (!TransportPage.transportTabHost.getCurrentTabTag().equals(TransportPage.RAIL) || TransportPage.transportPaused)
 		{
 			System.out.println("Train Page paused");
 			trainPageRefreshTask.cancel(true);
