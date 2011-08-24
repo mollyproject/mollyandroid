@@ -19,29 +19,27 @@ import com.google.inject.Module;
 import com.google.inject.name.Names;
 
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.net.ConnectivityManager;
 
 public class MyApplication extends RoboApplication {
 	//Intermediate stage for caching data in a session
-	protected Router router = null; //make router null at first and check for it every time to avoid null pointers
-	protected String mapQuery;
-	protected String[] contactQuery; //arbitrary array of contact query, should expect the actual query and the required medium
-	protected String[] generalQuery;
-	protected String[] placesArgs;
-	protected String bookControlNumber;
-	protected List<Map<String,String>> podcastsOutput;
-	protected Map<String,String> libraryQuery = null;
-	protected String locator;
-	protected String podcastsSlug = null;
-	protected String indPodcastSlug = null;
-	protected ArrayListMultimap<String,JSONObject> libraryCache = ArrayListMultimap.create();
-	protected boolean destroyed = true;
-	protected Injector injector;
-	protected int lastTransportTab;
-	//protected LocationTracker locTracker = new LocationTracker(this);
-	protected Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
-	protected JSONObject transportCache = null;
+	public static Router router = null; //make router null at first and check for it every time to avoid null pointers
+	public static String mapQuery;
+	public static String[] contactQuery = new String[2]; //arbitrary array of contact query, should expect the actual query and the required medium
+	public static String[] generalQuery;
+	public static String[] placesArgs;
+	public static String bookControlNumber;
+	public static List<Map<String,String>> podcastsOutput;
+	public static Map<String,String> libraryQuery = null;
+	public static String locator;
+	public static String podcastsSlug = new String();
+	public static String indPodcastSlug = new String();
+	public static ArrayListMultimap<String,JSONObject> libraryCache = ArrayListMultimap.create();
+	public static boolean destroyed = true;
+	public static Injector injector;
+	public static int lastTransportTab;
+	public static Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
+	public static JSONObject transportCache = null;
 	
 	public static final String PREFS_NAME = "MyPrefsFile";
 	
@@ -55,30 +53,10 @@ public class MyApplication extends RoboApplication {
 	public static DateFormat trainDateFormat = new SimpleDateFormat
 			("yyyy-MM-d HH:mm:ss Z");
 	
-	public void setDestroyed(boolean b) { destroyed = b; }
-	
-	public boolean isDestroyed() { return destroyed; }
-	
 	public boolean isOnline() {
 		 return ((ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE))
 				 				.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
-	
-	public void setLastTransportTab(int i) { lastTransportTab = i; }
-	
-	public int getLastTransportTab() { return lastTransportTab; }
-	
-	public void setTransportCache(JSONObject transportCache) { this.transportCache = transportCache; }
-	
-	public JSONObject getTransportCache() { return transportCache; }
-	
-	public String getBookNumber() { return bookControlNumber; }
-	
-	public void setBookNumber(String controlNumber) { bookControlNumber = controlNumber; }
-	
-	public void setPlacesArgs(String[] args) { placesArgs = args; }
-	
-	public String[] getPlacesArgs() { return placesArgs; }
 	
 	public synchronized void updatePodcastIconsCache(String logoURL, Bitmap bitmap)
 	{
@@ -95,6 +73,33 @@ public class MyApplication extends RoboApplication {
 		System.out.println("podcast image cache");
 		return podcastIconsCache.get(logoURL);
 	}
+	
+	/*
+	public void setDestroyed(boolean b) { destroyed = b; }
+	
+	public boolean isDestroyed() { return destroyed; }
+	
+	public Router getRouter() {	return router; }
+	
+	public void setRouter(Router router) { this.router = router; }
+
+	public void setLastTransportTab(int i) { lastTransportTab = i; }
+	
+	public int getLastTransportTab() { return lastTransportTab; }
+	
+	public void setTransportCache(JSONObject transportCache) { this.transportCache = transportCache; }
+	
+	public JSONObject getTransportCache() { return transportCache; }
+	
+	public String getBookNumber() { return bookControlNumber; }
+	
+	public void setBookNumber(String controlNumber) { bookControlNumber = controlNumber; }
+	
+	public void setPlacesArgs(String[] args) { placesArgs = args; }
+	
+	public String[] getPlacesArgs() { return placesArgs; }
+	
+	
 	
 	public void setPodcastsOutput(List<Map<String,String>> podcastsOutput) { this.podcastsOutput = podcastsOutput; }
 	
@@ -124,24 +129,20 @@ public class MyApplication extends RoboApplication {
 	
 	public String getMapQuery() { return mapQuery; }
 	
-	public Router getRouter() {	return router; }
-	
-	public void setRouter(Router router) { this.router = router; }
-
 	public void setLibraryArgs(Map<String,String> query) { libraryQuery = query; }
 	
 	public Map<String,String> getLibraryArgs() { return libraryQuery; }
 	
 	public String getLocator() { return locator; }
 	
-	public void setNextLocator(String locator) { this.locator = locator; } 
+	public void setNextLocator(String locator) { this.locator = locator; } */
 	
-	public Class <? extends Page> getPageClass(String s)
+	public static Class <? extends Page> getPageClass(String s)
 	{
 		return (injector.getInstance(Key.get(Page.class, Names.named(s))).getClass());
 	}
 	
-	public int getImgResourceId(String viewName)
+	public static int getImgResourceId(String viewName)
 	{
 		return (injector.getInstance(Key.get(Integer.class, Names.named(viewName))));
 	}

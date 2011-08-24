@@ -2,7 +2,6 @@ package org.mollyproject.android.view.apps.transport;
 
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
-import org.mollyproject.android.view.apps.Page;
 
 public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 	public static boolean busNeedsRefresh; 
@@ -25,8 +24,7 @@ public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 			//for the first request, json data already downloaded, no need to refresh
 			//((AutoRefreshPage) page).toBeRefreshed(false);
 			BusPageRefreshTask.busNeedsRefresh = false;
-			new BusTask((BusPage) page,false,false).execute
-				(((MyApplication) page.getApplication()).getTransportCache());
+			new BusTask((BusPage) page,false,false).execute(MyApplication.transportCache);
 		}
 		else if (!isCancelled())
 		{

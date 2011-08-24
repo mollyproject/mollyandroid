@@ -6,21 +6,17 @@ import java.text.SimpleDateFormat;
 
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
-import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.LocalActivityManager;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 
 public class TransportPage extends ContentPage {
-	public static TabHost tabHost;
+	public static TabHost transportTabHost;
 	public static boolean firstLoad;
 	public static boolean transportPaused;
 	public static LocalActivityManager mlam;
@@ -31,15 +27,13 @@ public class TransportPage extends ContentPage {
 	{
         super.onCreate(savedInstanceState);
         mlam = new LocalActivityManager(this, false);
-        //TabHost tabHost = (TabHost) layoutInflater.inflate(R.layout.transport_tabs, contentLayout, false);
         LinearLayout tabHostLayout = (LinearLayout) layoutInflater.inflate
         				(R.layout.transport_tabs, contentLayout, false);
         contentLayout.addView(tabHostLayout);
-        //setContentView(tabHostLayout);
         mlam.dispatchCreate(savedInstanceState);
-        tabHost = (TabHost) tabHostLayout.findViewById(R.id.tabHost);
-        tabHost.setup(mlam);
-        tabHost.setOnTabChangedListener(new OnTabChangeListener() {
+        transportTabHost = (TabHost) tabHostLayout.findViewById(R.id.tabHost);
+        transportTabHost.setup(mlam);
+        transportTabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			@Override
 			public void onTabChanged(String tabId) {
 				if (!firstLoad)
@@ -82,13 +76,7 @@ public class TransportPage extends ContentPage {
 	public void onResume() {
 		super.onResume();
 		transportPaused = true;
-		tabHost.setCurrentTab(myApp.getLastTransportTab());
-		//The first page loaded is always the transport:public-transport page
-		//if (!jsonProcessed || myApp.getTransportCache() == null)
-		//{
 		new TransportPageTask(this, false, true).execute();
-		//}
-		//mlam.dispatchResume();
 	}
 	
 	@Override

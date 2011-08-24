@@ -113,7 +113,7 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		{
 			page.finish();
 		}
-		page = null;
+		//page = null;
 	}
 	public abstract void updateView(C outputs);
 }

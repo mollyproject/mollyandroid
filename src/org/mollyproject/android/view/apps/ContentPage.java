@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 
 import roboguice.inject.InjectView;
@@ -42,7 +43,7 @@ public abstract class ContentPage extends Page {
 		homeBreadcrumb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent myIntent = new Intent(v.getContext(), myApp.getPageClass("home:index"));
+				Intent myIntent = new Intent(v.getContext(), MyApplication.getPageClass("home:index"));
 				startActivityForResult(myIntent,0);
 			}
 		});
@@ -51,11 +52,12 @@ public abstract class ContentPage extends Page {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (myApp.isDestroyed())
+		if (MyApplication.destroyed)
 		{
 			//in case the app is resumed after sleeping for a while and its cache is claimed
 			loaded = false;
 			jsonProcessed = false;
+			MyApplication.destroyed = false;
 		}
 		if (!loaded)
 		{
@@ -95,7 +97,7 @@ public abstract class ContentPage extends Page {
 		protected JSONObject doInBackground(Void... arg0) {
 			//Download the breadcrumbs
 			try {
-				jsonContent = router.onRequestSent(getName(), 
+				jsonContent = MyApplication.router.onRequestSent(getName(), 
 						getAdditionalParams(), Router.OutputFormat.JSON, getQuery());
 				jsonDownloaded = true;
 				JSONObject breadcrumbs = jsonContent.getJSONObject("breadcrumbs");
@@ -123,17 +125,16 @@ public abstract class ContentPage extends Page {
 		}
 		@Override
 		public void updateView(JSONObject breadcrumbs) {
-			// TODO Auto-generated method stub
 			try {
 				//app/index breadcrumb
 				final String app = breadcrumbs.getString("application");
 				JSONObject index = breadcrumbs.getJSONObject("index");
 				appBreadcrumb.setBackgroundResource
-						(myApp.getImgResourceId(index.getString("view_name")+"_bc"));
+						(MyApplication.getImgResourceId(index.getString("view_name")+"_bc"));
 				appBreadcrumb.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Intent myIntent = new Intent(v.getContext(), myApp.getPageClass(app+":index"));
+						Intent myIntent = new Intent(v.getContext(), MyApplication.getPageClass(app+":index"));
 						startActivityForResult(myIntent, 0);
 					}
 				});
@@ -157,7 +158,7 @@ public abstract class ContentPage extends Page {
 							@Override
 							public void onClick(View v) {
 								Intent myIntent = new Intent(v.getContext(), 
-										myApp.getPageClass(parentName));
+										MyApplication.getPageClass(parentName));
 								startActivityForResult(myIntent, 0);
 							}
 						});

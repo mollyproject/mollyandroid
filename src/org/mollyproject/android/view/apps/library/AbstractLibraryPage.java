@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 import android.content.Intent;
@@ -50,13 +51,13 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		isbnField = (EditText) librarySearchBar.findViewById(R.id.isbnField);
 		searchOnEnterKey(isbnField, ISBN);
 		
-		if (myApp.getLibraryArgs() != null)
+		if (MyApplication.libraryQuery != null)
 		{
 			//put the most recent search term into current search args
-			Set<String> cachedArgs = myApp.getLibraryArgs().keySet();
+			Set<String> cachedArgs = MyApplication.libraryQuery.keySet();
 			for (String key: cachedArgs)
 			{
-				currentSearchArgs.put(key, myApp.getLibraryArgs().get(key));
+				currentSearchArgs.put(key, MyApplication.libraryQuery.get(key));
 			}
 		}
 		
@@ -180,8 +181,8 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		}
 		if (!empty)
 		{
-			myApp.setLibraryArgs(bookArgs);
-			Intent myIntent = new Intent (this, myApp.getPageClass(MollyModule.LIBRARY_RESULTS_PAGE));
+			MyApplication.libraryQuery = bookArgs;
+			Intent myIntent = new Intent (this, MyApplication.getPageClass(MollyModule.LIBRARY_RESULTS_PAGE));
 			startActivityForResult(myIntent,0);
 		}
 		else

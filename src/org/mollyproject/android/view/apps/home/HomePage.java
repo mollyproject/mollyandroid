@@ -3,6 +3,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 import roboguice.inject.InjectView;
 
@@ -22,7 +23,7 @@ public class HomePage extends Page {
 	protected ImageAdapter gridIconsAdapter;
 	protected ArrayList<Button> breadCrumbs;
 	protected LinearLayout bcLayout;
-	protected boolean firstLoad = true;
+	public static boolean firstHomeLoad = true;
 	/** Called when the activity is first created. */
     @Override
     
@@ -51,7 +52,7 @@ public class HomePage extends Page {
     public void onResume()
     {
     	super.onResume();
-    	if (firstLoad || myApp.isDestroyed())
+    	if (firstHomeLoad || MyApplication.destroyed)
     	{
     		new NetworkPollingTask(this, false, true).execute();
     	}

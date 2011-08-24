@@ -2,6 +2,7 @@ package org.mollyproject.android.view.apps.contact;
 
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 
 import android.content.Intent;
@@ -83,8 +84,11 @@ public abstract class AbstractContactPage extends ContentPage {
 		else
 		{
 			//send query to myApp
-			myApp.setContactOutput(query,medium);
-			Intent myIntent = new Intent(this,myApp.getPageClass(MollyModule.CONTACT_RESULTS_PAGE));
+			//MyApplication.contactQuery = new String[2];
+			MyApplication.contactQuery[0] = query;
+			MyApplication.contactQuery[1] = medium;
+			//myApp.setContactOutput(query,medium);
+			Intent myIntent = new Intent(this,MyApplication.getPageClass(MollyModule.CONTACT_RESULTS_PAGE));
 			startActivityForResult(myIntent, 0);
 		}
 	}

@@ -31,7 +31,7 @@ public class IndividualPodcastTask extends BackgroundTask<Void,Void,JSONObject>
 		try
 		{
 			String parentSlug = jsonContent.getJSONObject("category").getString("slug");
-			myApp.setPodcastsSlug(parentSlug);
+			MyApplication.podcastsSlug = parentSlug;
 			
 			JSONObject jsonInfo = jsonContent.getJSONObject("podcast");
 			
@@ -80,7 +80,7 @@ public class IndividualPodcastTask extends BackgroundTask<Void,Void,JSONObject>
 				
 				//medium icon
 				ImageView mediumIcon = (ImageView) itemLayout.findViewById(R.id.mediumIcon);
-				mediumIcon.setImageResource(myApp.getImgResourceId(jsonInfo.getString("medium")));
+				mediumIcon.setImageResource(MyApplication.getImgResourceId(jsonInfo.getString("medium")));
 				
 				//podcast url and details
 				JSONObject details = item.getJSONArray("enclosures").getJSONObject(0);

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,8 +36,7 @@ public abstract class AbstractLibraryResultsTask<A,B,C> extends BackgroundTask<A
 	public AbstractLibraryResultsTask(LibraryResultsPage libraryResultsPage, boolean toDestroy, boolean dialog)
 	{
 		super(libraryResultsPage, toDestroy, dialog);
-		cache = (ArrayListMultimap<String, JSONObject>) 
-			((MyApplication) page.getApplication()).getLibCache();
+		cache = (ArrayListMultimap<String, JSONObject>) MyApplication.libraryCache;
 		//get the query from page
 		query = ((LibraryResultsPage) page).getQuery();
 	}
@@ -52,11 +50,11 @@ public abstract class AbstractLibraryResultsTask<A,B,C> extends BackgroundTask<A
 		if (!cache.containsKey(query) || 
 				(cache.containsKey(query) & cache.get(query).size()<=curPageNum))
 		{
-			JSONObject nextResults = page.getRouter().onRequestSent(
+			JSONObject nextResults = MyApplication.router.onRequestSent(
 					page.getName(), null,
 					Router.OutputFormat.JSON, ((LibraryResultsPage) page).getQuery()+"&page="+curPageNum);
 			nextJSONPage = nextResults.getJSONObject("page");
-			((MyApplication) page.getApplication()).updateLibCache(query, nextJSONPage);
+			MyApplication.libraryCache.put(query, nextJSONPage);
 		}
 		else 
 		{
@@ -129,8 +127,8 @@ public abstract class AbstractLibraryResultsTask<A,B,C> extends BackgroundTask<A
 				@Override
 				public void onClick(View v) {
 					try {
-						myApp.setBookNumber(thisResult.getString("control_number"));
-						Intent myIntent = new Intent(page,myApp.getPageClass(MollyModule.LIBRARY_BOOK_RESULT_PAGE));
+						MyApplication.bookControlNumber = thisResult.getString("control_number");
+						Intent myIntent = new Intent(page,MyApplication.getPageClass(MollyModule.LIBRARY_BOOK_RESULT_PAGE));
 						page.startActivityForResult(myIntent, 0);
 					} catch (JSONException e) {
 						e.printStackTrace();

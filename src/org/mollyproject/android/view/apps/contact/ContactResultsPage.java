@@ -2,9 +2,9 @@ package org.mollyproject.android.view.apps.contact;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.List;
 
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 
 import android.os.Bundle;
@@ -14,7 +14,7 @@ public class ContactResultsPage extends AbstractContactPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		args = myApp.getContactQuery();
+		args = MyApplication.contactQuery;
 		System.out.println(args[0]);
 	}
 	

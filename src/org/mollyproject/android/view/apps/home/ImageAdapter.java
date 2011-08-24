@@ -2,7 +2,6 @@ package org.mollyproject.android.view.apps.home;
 
 import java.util.List;
 
-import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 
@@ -42,12 +41,12 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
         
-        imageView.setImageResource(myApp.getImgResourceId(apps.get(position)+"_img"));
+        imageView.setImageResource(MyApplication.getImgResourceId(apps.get(position)+"_img"));
         imageView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				myApp.setNextLocator(apps.get(position));
-				Intent myIntent = new Intent(v.getContext(), myApp.getPageClass(apps.get(position)));
+				MyApplication.locator = apps.get(position);
+				Intent myIntent = new Intent(v.getContext(), MyApplication.getPageClass(apps.get(position)));
                 page.startActivityForResult(myIntent, 0);
 			}
 		});

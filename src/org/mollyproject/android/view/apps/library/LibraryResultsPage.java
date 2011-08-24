@@ -1,8 +1,7 @@
 package org.mollyproject.android.view.apps.library;
 
-import java.util.List;
-
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 
 import android.os.Bundle;
@@ -13,7 +12,7 @@ public class LibraryResultsPage extends AbstractLibraryPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		bookArgs = myApp.getLibraryArgs();
+		bookArgs = MyApplication.libraryQuery;
 		curPageNum = 1;
 	}
 	

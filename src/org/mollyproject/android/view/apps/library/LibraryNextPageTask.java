@@ -6,8 +6,6 @@ import java.text.ParseException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.mollyproject.android.view.apps.Page;
-
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;

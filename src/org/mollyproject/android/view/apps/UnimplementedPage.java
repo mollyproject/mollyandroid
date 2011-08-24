@@ -1,7 +1,6 @@
 package org.mollyproject.android.view.apps;
 
-import java.util.List;
-
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 
 import android.os.Bundle;
@@ -15,7 +14,7 @@ public class UnimplementedPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		locator = myApp.getLocator();
+		locator = MyApplication.locator; //myApp.getLocator();
 		webView = new WebView(this);
 		try {
 			String temp = getActualURL(locator);
@@ -33,7 +32,7 @@ public class UnimplementedPage extends ContentPage {
 	
 	public String getActualURL(String string) throws Exception
 	{
-		return router.getFrom((Router.mOX +"reverse/?name="+ string));
+		return MyApplication.router.getFrom((Router.mOX +"reverse/?name="+ string));
 	}
 
 	@Override

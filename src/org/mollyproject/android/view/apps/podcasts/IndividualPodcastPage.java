@@ -1,29 +1,16 @@
 package org.mollyproject.android.view.apps.podcasts;
 
-import java.text.ParseException;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.mollyproject.android.R;
-import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
-
-import android.text.Html;
-import android.view.LayoutInflater;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class IndividualPodcastPage extends ContentPage {
 	protected String slug; 
 	@Override
 	public void onCreate(android.os.Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		slug = myApp.getIndPodcastSlug();
+		slug = MyApplication.indPodcastSlug;
 	};
 	
 	@Override

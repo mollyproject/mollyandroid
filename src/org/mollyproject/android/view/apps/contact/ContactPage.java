@@ -1,7 +1,5 @@
 package org.mollyproject.android.view.apps.contact;
 
-import java.util.List;
-
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.Page;
 

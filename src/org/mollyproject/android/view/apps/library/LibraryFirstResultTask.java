@@ -9,10 +9,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
-import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
-import org.mollyproject.android.view.apps.Page;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;

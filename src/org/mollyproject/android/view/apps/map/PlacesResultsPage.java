@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.apps.map;
 
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.PageWithMap;
 import android.os.Bundle;
@@ -12,7 +13,7 @@ public class PlacesResultsPage extends PageWithMap {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		args = myApp.getPlacesArgs();
+		args = MyApplication.placesArgs;
 	}
 
 	@Override

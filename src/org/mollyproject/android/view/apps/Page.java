@@ -31,7 +31,7 @@ import android.widget.Toast;
 public abstract class Page extends RoboActivity {
 	//protected ImprovedBreadCrumbBar bcBar;
 	protected MyApplication myApp;
-	protected Router router;
+	//protected Router router;
 	protected LayoutInflater layoutInflater; //a layout inflater helps bringing a pre-designed xml layout into the UI
 	
 	//use someLayout.setLayoutParams() with this paramsWithLine as a parameter makes
@@ -47,8 +47,8 @@ public abstract class Page extends RoboActivity {
 		super.onCreate(savedInstanceState);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		myApp = (MyApplication) getApplication();
-		myApp.setDestroyed(false);
-		router = myApp.getRouter();
+		MyApplication.destroyed = false;
+		//router = MyApplication.router;
 		layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
@@ -112,7 +112,7 @@ public abstract class Page extends RoboActivity {
 		                		{
 		                			String[] argsToPass = new String[1];
 		                			argsToPass[0] = searchField.getText().toString();
-		                			myApp.setGeneralQuery(argsToPass);
+		                			MyApplication.generalQuery = argsToPass;
 		                		}
 		                		else
 		                		{
@@ -120,10 +120,10 @@ public abstract class Page extends RoboActivity {
 		                			argsToPass[0] = searchField.getText()
 		                						.toString();
 		                			argsToPass[1] = application;
-		                			myApp.setGeneralQuery(argsToPass);
+		                			MyApplication.generalQuery = argsToPass;
 		                		}
 		                		Intent myIntent = new Intent(page, 
-		                					myApp.getPageClass(MollyModule.SEARCH_PAGE));
+		                					MyApplication.getPageClass(MollyModule.SEARCH_PAGE));
 		                		page.startActivityForResult(myIntent, 0);
 		                	}
 		                	else
@@ -206,10 +206,10 @@ public abstract class Page extends RoboActivity {
 	    return true;
 	}
 	
-	public Router getRouter()
+	/*public Router getRouter()
 	{
 		return router;
-	}
+	}*/
 	
 	public LayoutInflater getLayoutInflater()
 	{
@@ -220,21 +220,23 @@ public abstract class Page extends RoboActivity {
 	public void onResume()
 	{
 		super.onResume();
-		if (router == null)
+		if (MyApplication.router == null)
 		{
 			try {
-				router = new Router(myApp);
-				myApp.setRouter(router);
+				//router = 
+				MyApplication.router = new Router(myApp);;
 			} catch (Exception e) {
 				e.printStackTrace();
 				Toast.makeText(this.getApplicationContext(), "Network Connection cannot be set up. " + 
 						"Please try again later", Toast.LENGTH_SHORT).show();
 			}
 		}
-		else if (myApp.isDestroyed())
+		else if (MyApplication.destroyed)
 		{
 			//myApp has been claimed by garbage collector/killed to save memory for other apps
-			router.setApp(myApp);
+			//don't set destroyed back to false right here because the onResume() methods of the 
+			//subclasses will also check for it to take appropriate actions
+			MyApplication.router.setApp(myApp);
 		}
 		
 	}

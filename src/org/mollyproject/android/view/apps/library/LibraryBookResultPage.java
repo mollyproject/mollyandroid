@@ -3,7 +3,7 @@ package org.mollyproject.android.view.apps.library;
 import java.io.UnsupportedEncodingException;
 
 import org.mollyproject.android.controller.MollyModule;
-import org.mollyproject.android.view.apps.ComplexMapResultTask;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.PageWithMap;
 
@@ -15,7 +15,7 @@ public class LibraryBookResultPage extends PageWithMap{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		controlNumber = myApp.getBookNumber();
+		controlNumber = MyApplication.bookControlNumber;
 	}
 	
 	@Override

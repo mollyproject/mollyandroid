@@ -11,7 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.controller.BackgroundTask;
-import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 
 public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
@@ -32,7 +32,7 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 			if (!appsLoaded)
 			{
 				System.out.println("Router called");
-	    		JSONObject output = page.getRouter().onRequestSent(
+	    		JSONObject output = MyApplication.router.onRequestSent(
 						page.getName(), null,
 						Router.OutputFormat.JSON,null);
 				
@@ -75,6 +75,6 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 	public void updateView(ImageAdapter newAdapter) {
 		((HomePage) page).updateGrid(newAdapter);
 		appsLoaded = true;
-		((HomePage) page).firstLoad = false;
+		HomePage.firstHomeLoad = false;
 	}
 }

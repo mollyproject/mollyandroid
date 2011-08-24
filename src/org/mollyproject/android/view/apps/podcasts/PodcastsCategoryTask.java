@@ -1,11 +1,9 @@
 package org.mollyproject.android.view.apps.podcasts;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.json.JSONArray;
@@ -13,9 +11,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
+import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -104,7 +104,7 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 					
 					@Override
 					public void onClick(View v) {
-						myApp.setIndPodcastSlug(slug);
+						MyApplication.indPodcastSlug = slug;
 						Intent myIntent = new Intent(page, IndividualPodcastPage.class);
 						page.startActivityForResult(myIntent, 0);
 					}
@@ -114,9 +114,9 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 				
 				String medium = result.getString("medium");
 				ImageView mediumIcon = (ImageView) thisResult.findViewById(R.id.mediaIcon);
-				mediumIcon.setImageResource(myApp.getImgResourceId(medium));
+				mediumIcon.setImageResource(MyApplication.getImgResourceId(medium));
 				
-				//medium text
+				//podcast logo
 				ImageView podcastIcon = (ImageView) thisResult.findViewById(R.id.podcastIcon); 
 				String urlStr = result.getString("logo");
 				

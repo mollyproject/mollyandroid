@@ -42,7 +42,7 @@ public class DownloadImageTask extends AsyncTask<Void, Void, Void>
 	protected void onPostExecute(Void result) {
 		if (defaultIcon)
 		{
-			imView.setImageResource(myApp.getImgResourceId("default_white"));
+			imView.setImageResource(MyApplication.getImgResourceId("default_white"));
 		}
 		else
 		{

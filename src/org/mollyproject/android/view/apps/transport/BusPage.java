@@ -1,16 +1,7 @@
 package org.mollyproject.android.view.apps.transport;
 
 import java.io.UnsupportedEncodingException;
-import org.json.JSONObject;
-import org.mollyproject.android.R;
-import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.Page;
-
-import roboguice.inject.InjectView;
-
-import android.os.Bundle;
-import android.os.Handler;
-import android.widget.LinearLayout;
 
 public class BusPage extends AutoRefreshPage{
 	
@@ -19,7 +10,7 @@ public class BusPage extends AutoRefreshPage{
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (TransportPage.tabHost.getCurrentTabTag().equals("bus"))
+		if (TransportPage.transportTabHost.getCurrentTabTag().equals("bus"))
 		{
 			if (busPageRefreshTask != null) 
 			{
@@ -33,7 +24,7 @@ public class BusPage extends AutoRefreshPage{
 	@Override
 	public void onPause() {
 		super.onPause();
-		if (!TransportPage.tabHost.getCurrentTabTag().equals("bus")  || TransportPage.transportPaused)
+		if (!TransportPage.transportTabHost.getCurrentTabTag().equals("bus")  || TransportPage.transportPaused)
 		{
 			System.out.println("Bus Page paused");
 			busPageRefreshTask.cancel(true);

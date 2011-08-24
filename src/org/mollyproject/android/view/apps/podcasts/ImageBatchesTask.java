@@ -48,9 +48,12 @@ public class ImageBatchesTask extends BackgroundTask<Void,Void,Void>{
 			}
 			Map<ImageView,String> imageCache = downloadQueue.poll();
 			//each cache contains one view only
-			for (ImageView imView : imageCache.keySet())
+			if (!isCancelled())
 			{
-				new DownloadImageTask(page, imView, imageCache.get(imView)).execute();
+				for (ImageView imView : imageCache.keySet())
+				{
+					new DownloadImageTask(page, imView, imageCache.get(imView)).execute();
+				}
 			}
 		}
 		System.out.println("Is cancelled "+ isCancelled());

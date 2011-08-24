@@ -56,7 +56,7 @@ public class SearchTask extends BackgroundTask<Void, Void, JSONObject> {
 					resultsLayout.addView(thisResult);
 					thisResult.setLayoutParams(Page.paramsWithLine);
 					ImageView appIcon = (ImageView) thisResult.findViewById(R.id.generalSearchIcon);
-					appIcon.setImageResource(((MyApplication) page.getApplication())
+					appIcon.setImageResource(MyApplication
 							.getImgResourceId(result.get("application") + ":index_img"));
 					
 					String text = new String();
@@ -82,7 +82,6 @@ public class SearchTask extends BackgroundTask<Void, Void, JSONObject> {
 						
 						@Override
 						public void onClick(View v) {
-							// TODO Auto-generated method stub
 							try {
 								String app = result.getString("application");
 								if (app.equals("places"))
@@ -92,17 +91,17 @@ public class SearchTask extends BackgroundTask<Void, Void, JSONObject> {
 									JSONObject entity = result.getJSONObject("entity");
 									placesArgs[0] = entity.getString("identifier_scheme");
 									placesArgs[1] = entity.getString("identifier_value");
-									myApp.setPlacesArgs(placesArgs);
+									MyApplication.placesArgs = placesArgs;
 									Intent myIntent = new Intent
-												(page, myApp.getPageClass(MollyModule.PLACES_ENTITY));
+												(page, MyApplication.getPageClass(MollyModule.PLACES_ENTITY));
 									page.startActivityForResult(myIntent, 0);
 								}
 								else if (app.equals("podcasts"))
 								{
 									String indSlug = result.getString("url").replace("/podcasts/", "");
-									myApp.setIndPodcastSlug(indSlug);
+									MyApplication.indPodcastSlug = indSlug;
 									Intent myIntent = new Intent
-										(page, myApp.getPageClass(MollyModule.INDIVIDUAL_PODCAST_PAGE));
+										(page, MyApplication.getPageClass(MollyModule.INDIVIDUAL_PODCAST_PAGE));
 									page.startActivityForResult(myIntent, 0);
 								}
 							

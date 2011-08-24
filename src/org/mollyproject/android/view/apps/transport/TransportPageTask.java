@@ -9,7 +9,6 @@ import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.widget.TabHost;
 
@@ -25,7 +24,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 	public void updateView(String outputs) {
 		System.out.println(outputs);
 		JSONObject jsonContent = ((ContentPage) page).getJSONContent();
-		((MyApplication) page.getApplication()).setTransportCache(jsonContent);
+		MyApplication.transportCache = jsonContent;
 		((ContentPage) page).doneProcessingJSON();
         try {
         	Intent myIntent;
@@ -36,17 +35,17 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 			{
 				tabTag = "bus";
 				myIntent = new Intent().setClass(page.getApplicationContext(), BusPage.class);
-			    spec = TransportPage.tabHost.newTabSpec(tabTag)
+			    spec = TransportPage.transportTabHost.newTabSpec(tabTag)
 			    	.setIndicator(tabTag, res.getDrawable(R.drawable.android_button)).setContent(myIntent);
-			    TransportPage.tabHost.addTab(spec);
+			    TransportPage.transportTabHost.addTab(spec);
 			}
 			if (jsonContent.getBoolean("train_station") == true & TransportPage.firstLoad == true)
 			{
 				tabTag = "train";
 			    myIntent = new Intent().setClass(page.getApplicationContext(), TrainPage.class);
-			    spec = TransportPage.tabHost.newTabSpec(tabTag)
+			    spec = TransportPage.transportTabHost.newTabSpec(tabTag)
 			    	.setIndicator(tabTag, res.getDrawable(R.drawable.android_button)).setContent(myIntent);
-			    TransportPage.tabHost.addTab(spec);
+			    TransportPage.transportTabHost.addTab(spec);
 			}
 			//TransportPage.firstLoad = false;
 			((ContentPage) page).doneProcessingJSON();

@@ -2,9 +2,7 @@ package org.mollyproject.android.view.apps.transport;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -12,11 +10,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
 import android.graphics.Color;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -132,9 +130,9 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			}
 			else 
 			{
-				JSONObject jsonContent = page.getRouter().onRequestSent(page.getName(), page.getAdditionalParams(), 
+				JSONObject jsonContent = MyApplication.router.onRequestSent(page.getName(), page.getAdditionalParams(), 
 						Router.OutputFormat.JSON, null);
-				myApp.setTransportCache(jsonContent);
+				MyApplication.transportCache = jsonContent;
 				return jsonContent;
 			}
 		} catch (UnknownHostException e) {

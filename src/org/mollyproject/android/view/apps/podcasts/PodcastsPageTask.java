@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
@@ -56,11 +57,12 @@ public class PodcastsPageTask extends BackgroundTask<Void, Void, JSONObject>
 				thisResult.setLayoutParams(Page.paramsWithLine);
 				((TextView) thisResult.getChildAt(0)).setText(category.getString("name"));
 				final String slug = category.getString("slug");
+				System.out.println(slug);
 				thisResult.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						myApp.setPodcastsSlug(slug);
-						Intent myIntent = new Intent(page, myApp.getPageClass
+						MyApplication.podcastsSlug = slug;
+						Intent myIntent = new Intent(page, MyApplication.getPageClass
 								(MollyModule.PODCAST_CATEGORY_PAGE));
 						page.startActivityForResult(myIntent, 0);
 					}

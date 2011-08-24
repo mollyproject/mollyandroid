@@ -24,8 +24,7 @@ public class TrainPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 			TransportPage.firstLoad = false;
 			//for the first request, json data already downloaded, no need to refresh
 			TrainPageRefreshTask.trainNeedsRefresh = false;
-			new TrainTask((TrainPage) page,false,false).execute
-				(((MyApplication) page.getApplication()).getTransportCache());
+			new TrainTask((TrainPage) page,false,false).execute(MyApplication.transportCache);
 		}
 		else if (!isCancelled())
 		{

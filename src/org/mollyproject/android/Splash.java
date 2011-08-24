@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 
 import android.content.Intent;
@@ -36,7 +37,7 @@ public class Splash extends Page {
 				{
 					//go to home page
 					Intent myIntent = new Intent(getApplicationContext(), 
-							myApp.getPageClass(MollyModule.HOME_PAGE));
+							MyApplication.getPageClass(MollyModule.HOME_PAGE));
 					startActivityForResult(myIntent, 0);
 				}
 			};

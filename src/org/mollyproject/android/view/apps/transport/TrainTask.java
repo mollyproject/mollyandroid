@@ -3,9 +3,6 @@ package org.mollyproject.android.view.apps.transport;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.TimeZone;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -125,9 +122,9 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 			}
 			else 
 			{
-				JSONObject jsonContent = page.getRouter().onRequestSent(page.getName(), page.getAdditionalParams(), 
+				JSONObject jsonContent = MyApplication.router.onRequestSent(page.getName(), page.getAdditionalParams(), 
 						Router.OutputFormat.JSON, null);
-				myApp.setTransportCache(jsonContent);
+				MyApplication.transportCache = jsonContent;
 				return jsonContent;
 			}
 		} catch (UnknownHostException e) {
