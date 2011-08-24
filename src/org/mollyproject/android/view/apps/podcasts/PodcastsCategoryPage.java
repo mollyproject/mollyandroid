@@ -159,7 +159,7 @@ public class PodcastsCategoryPage extends ContentPage {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.audio_video, menu);
+	    inflater.inflate(R.menu.audio_video_menu, menu);
 	    return true;
 	}
 
