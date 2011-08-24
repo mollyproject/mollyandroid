@@ -186,6 +186,11 @@ public abstract class ContentPage extends Page {
 		}
 	}
 	
+	public LinearLayout getBreadcrumbs()
+	{
+		return breadcrumbs;
+	}
+	
 	public LinearLayout getContentLayout()
 	{
 		return contentLayout;

@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -29,10 +30,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public abstract class Page extends RoboActivity {
-	//protected ImprovedBreadCrumbBar bcBar;
 	protected MyApplication myApp;
-	//protected Router router;
 	protected LayoutInflater layoutInflater; //a layout inflater helps bringing a pre-designed xml layout into the UI
+	protected SharedPreferences.Editor editor;
+	protected SharedPreferences settings;
 	
 	//use someLayout.setLayoutParams() with this paramsWithLine as a parameter makes
 	//a gap of 5px below the LinearLayout, this is used here to make gaps between views
@@ -48,7 +49,8 @@ public abstract class Page extends RoboActivity {
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		myApp = (MyApplication) getApplication();
 		MyApplication.destroyed = false;
-		//router = MyApplication.router;
+		settings = getSharedPreferences(MyApplication.PREFS_NAME, 0);
+		editor = settings.edit();
 		layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
@@ -193,12 +195,6 @@ public abstract class Page extends RoboActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
-	        case R.id.icon:     
-	        	Toast.makeText(this, "You pressed the icon!", Toast.LENGTH_LONG).show();
-	        	break;
-	        case R.id.text:     
-	        	Toast.makeText(this, "You pressed the text!", Toast.LENGTH_LONG).show();
-	            break;
 	        case R.id.reload:
 	        	onResume();
 	            break;
