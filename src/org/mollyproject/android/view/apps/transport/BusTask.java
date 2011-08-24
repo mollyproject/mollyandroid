@@ -32,7 +32,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 
 			//Update the page title every time the page is refreshed
 			TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
-			pageTitle.setText("Nearby bus stops " + TransportPage.hourFormat.format(new Date()));
+			pageTitle.setText("Nearby bus stops " + MyApplication.hourFormat.format(new Date()));
 			
 			LinearLayout busLayout = (LinearLayout) transportLayout.findViewById(R.id.transportDetailsLayout);
 			busLayout.removeAllViews();

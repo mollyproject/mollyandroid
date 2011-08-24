@@ -14,6 +14,7 @@ import org.mollyproject.android.view.apps.Page;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,17 +37,29 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 			trainLayout.removeAllViews();
 			
 			//get the train info
-			JSONObject entity = jsonContent.getJSONObject("entity");
-			JSONArray services = entity.getJSONObject("metadata").getJSONObject("ldb")
-					.getJSONObject("trainServices").getJSONArray("service");
+			JSONObject ldb = jsonContent.getJSONObject("entity").getJSONObject("metadata").getJSONObject("ldb");
+			JSONArray services = ldb.getJSONObject("trainServices").getJSONArray("service");
 			
 			//Update the page title every time the page is refreshed
 			TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
-			String nrTime = entity.getJSONObject("metadata").getJSONObject("ldb")
-					.getString("generatedAt").substring(0, 19) + " GMT";
+			String nrTime = ldb.getString("generatedAt").substring(0, 19) + " GMT";
 			
-			pageTitle.setText(entity.getString("title") + " " + TransportPage.hourFormat.format
+			pageTitle.setText(jsonContent.getJSONObject("entity").getString("title") + " " + MyApplication.hourFormat.format
 					(MyApplication.trainDateFormat.parse(nrTime)));
+			
+			//Announcements:
+			JSONArray announcements = ldb.getJSONObject("nrccMessages").getJSONArray("message");
+			TextView announcementsText = (TextView) transportLayout.findViewById(R.id.transportAnnouncements);
+			String announcementMessage = new String();
+			if (announcements.length() > 0)
+			{
+				announcementMessage = announcementMessage + "Announcements:" + "<br/>";
+			}
+			for (int i = 0; i < announcements.length(); i++)
+			{
+				announcementMessage = announcementMessage + "- " + announcements.getString(i) + "<br/>";
+			}
+			announcementsText.setText(Html.fromHtml(announcementMessage));
 			
 			//Header
 			LinearLayout header = (LinearLayout) layoutInflater.inflate(R.layout.transport_train_result, 
@@ -119,6 +132,7 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 			ImageView nreLogo = new ImageView(page);
 			nreLogo.setBackgroundResource(R.drawable.bg_white);
 			nreLogo.setImageResource(R.drawable.powered_by_nre);
+			nreLogo.setPadding(0, 5, 0, 5);
 			nreLogo.setLayoutParams(Page.paramsWithLine);
 			trainLayout.addView(nreLogo);
 			

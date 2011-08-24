@@ -26,7 +26,6 @@ public class TransportPage extends ContentPage {
 	
 	public static Button transportPageTitle;
 	
-	public final static DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
 	public final static String RAIL = "rail";
 	public final static String BUS = "bus";
 	public static String defaultTransport = BUS; //Assume bus exists, there is no way round

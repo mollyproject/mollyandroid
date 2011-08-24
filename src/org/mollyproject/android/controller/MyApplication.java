@@ -53,6 +53,11 @@ public class MyApplication extends RoboApplication {
 	public static DateFormat trainDateFormat = new SimpleDateFormat
 			("yyyy-MM-d HH:mm:ss Z");
 	
+	public static DateFormat updateDateFormat = new SimpleDateFormat
+			("yyyy-MM-d HH:mm:ss Z");
+	
+	public final static DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+	
 	public boolean isOnline() {
 		 return ((ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE))
 				 				.getActiveNetworkInfo().isConnectedOrConnecting();
