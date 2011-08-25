@@ -1,5 +1,7 @@
 package org.mollyproject.android.view.apps.podcasts;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.widget.ImageView;
 
 public class DownloadImageTask extends AsyncTask<Void, Void, Void>
@@ -54,7 +57,7 @@ public class DownloadImageTask extends AsyncTask<Void, Void, Void>
 	@Override
 	protected Void doInBackground(Void... arg0) {
 		//first the thread waits for an amount of time, this is to avoid "deadlocks" when all 
-		//20+ image download thread starts all to gether 
+		//20+ image download thread starts all together 
 		if (!myApp.hasPodcastIcon(urlStr))
 		{
 			try {
@@ -66,7 +69,8 @@ public class DownloadImageTask extends AsyncTask<Void, Void, Void>
 		}
 		if (!myApp.hasPodcastIcon(urlStr))
 		{
-			//now check again and start download the image if necessary
+			//now check again in case the image has already been downloaded 
+			//and start download the image if necessary
 			try {
 				URL url = new URL(urlStr);
 				System.out.println(urlStr);
@@ -99,6 +103,7 @@ public class DownloadImageTask extends AsyncTask<Void, Void, Void>
 		else
 		{
 			bitmap = myApp.getIcon(urlStr);
+			if (bitmap == null) { defaultIcon = true; }
 		}
 		return null;
 	}

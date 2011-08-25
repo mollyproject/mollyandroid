@@ -22,7 +22,6 @@ public class PodcastsPage extends ContentPage {
 		EditText searchField = (EditText) findViewById(R.id.searchField);
 		searchField.setWidth(LayoutParams.FILL_PARENT);
 		setEnterKeySearch(searchField, this, "podcasts");
-		System.out.println("jsonContent "+jsonContent);
 	}
 	
 	@Override

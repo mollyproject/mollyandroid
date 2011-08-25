@@ -1,5 +1,11 @@
 package org.mollyproject.android.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -18,8 +24,11 @@ import com.google.inject.Key;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
+import android.os.Environment;
 
 public class MyApplication extends RoboApplication {
 	//Intermediate stage for caching data in a session
@@ -63,20 +72,46 @@ public class MyApplication extends RoboApplication {
 				 				.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
 	
+	private String getLogoFileName(String logoURL)
+	{
+		return logoURL.replace("/", "-");
+	}
+	
 	public synchronized void updatePodcastIconsCache(String logoURL, Bitmap bitmap)
 	{
-		podcastIconsCache.put(logoURL, bitmap);
+		//bitmap file not stored
+		try {
+	    	FileOutputStream fos = openFileOutput(getLogoFileName(logoURL), 
+					Context.MODE_PRIVATE);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 	
 	public synchronized boolean hasPodcastIcon(String logoURL)
 	{
-		return podcastIconsCache.containsKey(logoURL);
+		File file = getFileStreamPath(getLogoFileName(logoURL));
+		if (file.exists())
+		{
+			Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+			podcastIconsCache.put(logoURL, bitmap);
+		}
+		return file.exists();
 	}
 	
 	public synchronized Bitmap getIcon(String logoURL)
 	{
 		System.out.println("podcast image cache");
-		return podcastIconsCache.get(logoURL);
+		try {
+			FileInputStream fIn = openFileInput(getLogoFileName(logoURL));
+			Bitmap bitmap = BitmapFactory.decodeStream(fIn);
+			return bitmap;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null; //should not reach here
 	}
 	
 	public static Class <? extends Page> getPageClass(String s)
