@@ -3,5 +3,5 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/reload"
         android:title="Refresh"
-        android:icon="@drawable/icon" />
+        android:icon="@drawable/menu_refresh" />
 </menu>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/refreshTrainInfo"
+	    android:title="Refresh"
+	    android:icon="@drawable/menu_refresh" />
     <item android:id="@+id/departures"
         android:title="View Departures Board"
         android:icon="@drawable/icon" />
     <item android:id="@+id/arrivals"
 	    android:title="View Arrivals Board"
-	    android:icon="@drawable/icon" />
-    <item android:id="@+id/refreshTrainInfo"
-	    android:title="Refresh"
 	    android:icon="@drawable/icon" />
 </menu>
