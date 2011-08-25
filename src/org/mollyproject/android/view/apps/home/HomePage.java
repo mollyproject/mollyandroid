@@ -88,6 +88,12 @@ public class HomePage extends Page {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public LinearLayout getContentLayout() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 
 

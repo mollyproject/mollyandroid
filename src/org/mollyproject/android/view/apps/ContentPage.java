@@ -130,7 +130,7 @@ public abstract class ContentPage extends Page {
 				final String app = breadcrumbs.getString("application");
 				JSONObject index = breadcrumbs.getJSONObject("index");
 				appBreadcrumb.setBackgroundResource
-						(MyApplication.getImgResourceId(index.getString("view_name")+"_bc"));
+						(MyApplication.getImgResourceId(index.getString("page_name")+"_bc"));
 				appBreadcrumb.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -151,7 +151,7 @@ public abstract class ContentPage extends Page {
 						//parent is not index, all breadcrumbs visible
 						appBreadcrumb.setEnabled(true);
 						
-						final String parentName = parent.getString("view_name");
+						final String parentName = parent.getString("page_name");
 						parentBreadcrumb.setBackgroundResource(R.drawable.bg_blue);
 						parentBreadcrumb.setText("....");
 						parentBreadcrumb.setOnClickListener(new OnClickListener() {

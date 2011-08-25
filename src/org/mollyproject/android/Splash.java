@@ -11,6 +11,7 @@ import org.mollyproject.android.view.apps.Page;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
+import android.widget.LinearLayout;
 
 public class Splash extends Page {
 	protected boolean splashed = false; //this records whether the splash page has been shown in the session
@@ -74,6 +75,12 @@ public class Splash extends Page {
 
 	@Override
 	public String getAdditionalParams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LinearLayout getContentLayout() {
 		// TODO Auto-generated method stub
 		return null;
 	}
