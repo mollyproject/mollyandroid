@@ -8,11 +8,12 @@ import android.os.Bundle;
 
 
 public class PlacesResultsPage extends PageWithMap {
-	
+	public static boolean firstLoad;
 	protected String[] args;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		firstLoad = true;
 		args = MyApplication.placesArgs;
 	}
 
@@ -21,13 +22,20 @@ public class PlacesResultsPage extends PageWithMap {
 		super.onResume();
 		if (!jsonProcessed)
 		{
-			new PlacesResultsTask(this, true, true).execute();
+			if (!args[0].equals("atco"))
+			{
+				new PlacesResultsTask(this, true, true).execute();
+			}
+			else if (args[0].equals("atco"))
+			{
+				new TransportMapTask(this, true, true).execute();
+			}
 		}
 	}
 
 	@Override
 	public String getAdditionalParams() {
-		//to distinguish between osm and oxpoints
+		//to distinguish between different identifiers (osm, oxpoints, atco)
 		//placesArgs[0] = entity.getString("identifier_scheme");
 		//placesArgs[1] = entity.getString("identifier_value");
 		String argsText = new String();

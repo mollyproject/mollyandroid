@@ -2,10 +2,12 @@ package org.mollyproject.android.view.apps.transport;
 
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
+import org.mollyproject.android.view.apps.Page;
+import org.mollyproject.android.view.apps.map.PlacesResultsPage;
 
 public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 	public static boolean busNeedsRefresh; 
-	public BusPageRefreshTask(BusPage page, boolean toDestroyPageAfterFailure,
+	public BusPageRefreshTask(Page page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
 	}
@@ -18,13 +20,13 @@ public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 	@Override
 	protected Void doInBackground(Void... arg0) {
 		System.out.println("Bus refresh starting");
-		if (TransportPage.firstLoad == true)
+		if (TransportPage.firstLoad == true || PlacesResultsPage.firstLoad == true)
 		{
 			TransportPage.firstLoad = false;
+			PlacesResultsPage.firstLoad = false;
 			//for the first request, json data already downloaded, no need to refresh
-			//((AutoRefreshPage) page).toBeRefreshed(false);
 			BusPageRefreshTask.busNeedsRefresh = false;
-			new BusTask((BusPage) page,false,false).execute(MyApplication.transportCache);
+			new BusTask(page,false,false).execute(MyApplication.transportCache);
 		}
 		else if (!isCancelled())
 		{

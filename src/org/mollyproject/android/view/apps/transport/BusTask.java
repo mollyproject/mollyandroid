@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
-	public BusTask(BusPage busPage, boolean toDestroyPageAfterFailure,
+	public BusTask(Page busPage, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(busPage, toDestroyPageAfterFailure, dialogEnabled);
 	}
@@ -28,7 +28,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 	@Override
 	public void updateView(JSONObject jsonContent) {
 		try {
-			LinearLayout transportLayout = ((BusPage) page).getContentLayout(); //this is the transportLayout in transport_layout.xml
+			LinearLayout transportLayout = page.getContentLayout(); //this is the transportLayout in transport_layout.xml
 
 			//Update the page title every time the page is refreshed
 			TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
@@ -41,7 +41,6 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			
 			LayoutInflater layoutInflater = page.getLayoutInflater();
 			
-			// + hourFormat.format(new Date())
 			for (int i = 0; i < stops.length(); i++)
 			{
 				//process each stop
@@ -55,7 +54,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 				if (!stop.isNull("distance") & !stop.isNull("bearing"))
 				{
 					stopTitle = stopTitle + " (about " + stop.getString("distance") 
-							+ " " + stop.getString("bearing"); 
+							+ " " + stop.getString("bearing") + ")"; 
 				}
 				nearbyStop.setText(stopTitle);
 				
@@ -119,6 +118,11 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 		} finally {
 			BusPageRefreshTask.busNeedsRefresh = true;
 		}
+	}
+	
+	public LinearLayout parseBusEntity(JSONObject entity)
+	{
+		return null;
 	}
 	
 	@Override
