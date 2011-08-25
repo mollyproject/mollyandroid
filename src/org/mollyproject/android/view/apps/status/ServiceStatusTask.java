@@ -1,5 +1,8 @@
 package org.mollyproject.android.view.apps.status;
 
+import java.io.IOException;
+import java.math.RoundingMode;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 
 import org.json.JSONArray;
@@ -8,6 +11,7 @@ import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
+import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.transport.TransportPage;
@@ -17,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ServiceStatusTask extends BackgroundTask<Void,Void,JSONObject> {
+public class ServiceStatusTask extends BackgroundTask<JSONObject,Void,JSONObject> {
 	public final static String UP = "up";
 	public final static String DOWN = "down";
 	public final static String UNKNOWN = "unknown";
@@ -71,7 +75,6 @@ public class ServiceStatusTask extends BackgroundTask<Void,Void,JSONObject> {
 							(R.layout.general_search_result, serviceLayout, false);
 					subServicesLayout.addView(subServiceLayout);
 					subServiceLayout.setLayoutParams(Page.paramsWithLine);
-					//String subName = subService.getString("name");
 					((TextView) subServiceLayout.findViewById(R.id.generalSearchText))
 									.setText(subService.getString("name"));
 					
@@ -92,7 +95,7 @@ public class ServiceStatusTask extends BackgroundTask<Void,Void,JSONObject> {
 	}
 
 	@Override
-	protected JSONObject doInBackground(Void... params) {
+	protected JSONObject doInBackground(JSONObject... params) {
 		while (!((ContentPage) page).downloadedJSON())
 		{
 			try {
@@ -101,7 +104,33 @@ public class ServiceStatusTask extends BackgroundTask<Void,Void,JSONObject> {
 				e.printStackTrace();
 			}
 		}
-		return ((ContentPage) page).getJSONContent();
+		
+		try {
+			if (!((ContentPage) page).jsonProcessed())
+			{
+				//this is the first run
+				return ((ContentPage) page).getJSONContent();
+			}
+			else 
+			{
+				JSONObject jsonContent = MyApplication.router.onRequestSent(page.getName(), 
+						page.getAdditionalParams(),Router.OutputFormat.JSON, null);
+				return jsonContent;
+			}
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			unknownHostException = true;
+		} catch (JSONException e) {
+			e.printStackTrace();
+			jsonException = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			ioException = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			parseException = true;
+		}
+		return null; //should only reach here if there's an error in network connection
 	}
 	
 }
