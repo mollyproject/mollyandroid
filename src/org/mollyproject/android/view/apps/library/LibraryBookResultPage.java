@@ -21,8 +21,9 @@ public class LibraryBookResultPage extends PageWithMap{
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!jsonProcessed)
+		if (!jsonProcessed|| manualRefresh)
 		{
+			manualRefresh = false;
 			new LibraryBookResultTask(this, true, true).execute();
 		}
 	}

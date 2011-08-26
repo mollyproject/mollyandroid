@@ -19,8 +19,9 @@ public class LibraryResultsPage extends AbstractLibraryPage {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!jsonProcessed)
+		if (!jsonProcessed|| manualRefresh)
 		{
+			manualRefresh = false;
 			new LibraryFirstResultTask(this,false, true).execute();
 		}
 	}

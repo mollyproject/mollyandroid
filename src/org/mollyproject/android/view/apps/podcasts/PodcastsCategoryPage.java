@@ -79,8 +79,9 @@ public class PodcastsCategoryPage extends ContentPage {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!jsonProcessed)
+		if (!jsonProcessed|| manualRefresh)
 		{
+			manualRefresh = false;
 			new PodcastsCategoryTask(this,true, true).execute();
 		}
 		imageTask = new ImageBatchesTask(this, false, false);

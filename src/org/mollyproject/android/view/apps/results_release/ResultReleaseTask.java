@@ -72,6 +72,7 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMult
 				resultsLayout.addView(thisResult);
 			}
 		}
+		((ContentPage) page).doneProcessingJSON();
 	}
 
 	@Override

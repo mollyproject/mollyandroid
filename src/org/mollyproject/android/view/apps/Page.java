@@ -35,7 +35,7 @@ public abstract class Page extends RoboActivity {
 	//public static LayoutInflater layoutInflater; //a layout inflater helps bringing a pre-designed xml layout into the UI
 	protected SharedPreferences.Editor editor;
 	protected SharedPreferences settings;
-	
+	protected boolean manualRefresh;
 	//use someLayout.setLayoutParams() with this paramsWithLine as a parameter makes
 	//a gap of 5px below the LinearLayout, this is used here to make gaps between views
 	public static LinearLayout.LayoutParams paramsWithLine = new LinearLayout.LayoutParams
@@ -54,6 +54,7 @@ public abstract class Page extends RoboActivity {
 		MyApplication.destroyed = false;
 		settings = getSharedPreferences(MyApplication.PREFS_NAME, 0);
 		editor = settings.edit();
+		manualRefresh = false;
 		//layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
@@ -199,6 +200,7 @@ public abstract class Page extends RoboActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case R.id.reload:
+	        	manualRefresh = true;
 	        	onResume();
 	            break;
 	    }

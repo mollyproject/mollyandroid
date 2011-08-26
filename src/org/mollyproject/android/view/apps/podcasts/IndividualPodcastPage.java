@@ -16,8 +16,9 @@ public class IndividualPodcastPage extends ContentPage {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!jsonProcessed)
+		if (!jsonProcessed|| manualRefresh)
 		{
+			manualRefresh = false;
 			new IndividualPodcastTask(this, true, true).execute();
 		}
 	}

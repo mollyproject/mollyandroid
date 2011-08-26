@@ -38,7 +38,6 @@ public class HomePage extends Page {
     	searchField.invalidate();
     	setEnterKeySearch(searchField, this, null);
     }
-    
     public LinearLayout getHomeLayout()
     {
     	return homeLayout;

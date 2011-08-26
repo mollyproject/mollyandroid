@@ -20,8 +20,9 @@ public class PlacesResultsPage extends PageWithMap {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!jsonProcessed)
+		if (!jsonProcessed|| manualRefresh)
 		{
+			manualRefresh = false;
 			if (!args[0].equals("atco"))
 			{
 				new PlacesResultsTask(this, true, true).execute();

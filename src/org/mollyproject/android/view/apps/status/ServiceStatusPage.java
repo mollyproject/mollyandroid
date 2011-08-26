@@ -12,13 +12,10 @@ public class ServiceStatusPage extends ContentPage {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!jsonProcessed)
+		if (!jsonProcessed|| manualRefresh)
 		{
+			manualRefresh = false;
 			new ServiceStatusTask(this,true,true).execute();
-		}
-		else 
-		{
-			new ServiceStatusTask(this,false,true).execute();
 		}
 	}
 	
