@@ -44,10 +44,10 @@ public class TransportMapTask extends BackgroundTask<Void,Void,JSONObject>{
 			if (metadata.has("real_time_information"))
 			{
 				//parse entity of bus
-				new BusPageRefreshTask(page, false, false).execute();
+				//new BusPageRefreshTask(page, false, false).execute();
 			}
 			else if (metadata.has("ldb"))
-			{
+			{ 
 				//parse entity of rail
 			}
 			

@@ -35,7 +35,7 @@ public class TransportPage extends ContentPage {
 	{
         super.onCreate(savedInstanceState);
         mlam = new LocalActivityManager(this, false);
-        LinearLayout tabHostLayout = (LinearLayout) layoutInflater.inflate
+        LinearLayout tabHostLayout = (LinearLayout) getLayoutInflater().inflate
         				(R.layout.transport_tabs, contentLayout, false);
         contentLayout.addView(tabHostLayout);
         mlam.dispatchCreate(savedInstanceState);

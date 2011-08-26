@@ -31,7 +31,7 @@ public abstract class PageWithMap extends ContentPage {
 		originalLayout.removeAllViews();
 		scr.removeAllViews();
 
-		mapLayout = (LinearLayout) layoutInflater.inflate(R.layout.map_view, contentLayout, false);
+		mapLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.map_view, contentLayout, false);
 		setContentView(mapLayout);
 
 		mapLayout.addView(breadcrumbs,0);

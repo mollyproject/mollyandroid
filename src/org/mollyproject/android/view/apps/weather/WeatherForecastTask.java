@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
@@ -127,11 +128,11 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 			cityName.setText(city);
 			
 			ImageView currentWeatherIcon = (ImageView) observationBar.findViewById(R.id.currentWeatherIcon);
-			currentWeatherIcon.setImageResource(myApp.getImgResourceId(observation.getString("icon")));
+			currentWeatherIcon.setImageResource(MyApplication.getImgResourceId(observation.getString("icon")));
 			
 			//Forecast
 			JSONArray forecasts = jsonContent.getJSONArray("forecasts"); 
-			LinearLayout forecastLayout = (LinearLayout) inflater.inflate(R.layout.weather_forecast, 
+			LinearLayout forecastLayout = (LinearLayout) page.getLayoutInflater().inflate(R.layout.weather_forecast, 
 					((ContentPage) page).getContentLayout(),false);
 			((WeatherPage) page).getContentLayout().addView(forecastLayout);
 			String dayNames[] = new DateFormatSymbols().getWeekdays();
@@ -147,7 +148,14 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 				forecastLayout.addView(forecastDayLayout);
 				
 				TextView dateText = (TextView) forecastDayLayout.findViewById(R.id.weatherDate);
-				dateText.setText(dayNames[cal.get(Calendar.DAY_OF_WEEK) + i]);
+				if (cal.get(Calendar.DAY_OF_WEEK) + i == 7)
+				{
+					dateText.setText(dayNames[(cal.get(Calendar.DAY_OF_WEEK) + i)]);
+				}
+				else
+				{
+					dateText.setText(dayNames[(cal.get(Calendar.DAY_OF_WEEK) + i)%7]);
+				}
 				
 				TextView lowTemp = (TextView) forecastDayLayout.findViewById(R.id.lowestTemp);
 				lowTemp.setText(forecast.getString("min_temperature")+"°C");
@@ -156,7 +164,7 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 				highTemp.setText(forecast.getString("max_temperature")+"°C");
 				
 				ImageView weatherForecastIcon = (ImageView) forecastDayLayout.findViewById(R.id.weatherForecastIcon);
-				weatherForecastIcon.setImageResource(myApp.getImgResourceId(forecast.getString("icon")+"_small"));
+				weatherForecastIcon.setImageResource(MyApplication.getImgResourceId(forecast.getString("icon")+"_small"));
 			}
 			
 			

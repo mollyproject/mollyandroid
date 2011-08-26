@@ -27,7 +27,7 @@ public abstract class AbstractContactPage extends ContentPage {
 		super.onCreate(savedInstanceState);
 
 		//inflate the search bar and put it right on top
-		contactSearchBar = (LinearLayout) layoutInflater
+		contactSearchBar = (LinearLayout) getLayoutInflater()
 					.inflate(R.layout.contact_search_bar,contentLayout, false);
 		contentLayout.addView(contactSearchBar);
 		

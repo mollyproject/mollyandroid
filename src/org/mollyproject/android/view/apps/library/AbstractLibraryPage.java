@@ -38,7 +38,7 @@ public abstract class AbstractLibraryPage extends ContentPage {
 	{
 		super.onCreate(savedInstanceState);
 		//inflate the searchbar
-		LinearLayout librarySearchBar = (LinearLayout) layoutInflater
+		LinearLayout librarySearchBar = (LinearLayout) getLayoutInflater()
 					.inflate(R.layout.library_search_bar,contentLayout, false);
 		contentLayout.addView(librarySearchBar);
 		

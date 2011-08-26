@@ -32,7 +32,7 @@ import android.widget.Toast;
 
 public abstract class Page extends RoboActivity {
 	protected MyApplication myApp;
-	protected LayoutInflater layoutInflater; //a layout inflater helps bringing a pre-designed xml layout into the UI
+	//public static LayoutInflater layoutInflater; //a layout inflater helps bringing a pre-designed xml layout into the UI
 	protected SharedPreferences.Editor editor;
 	protected SharedPreferences settings;
 	
@@ -54,7 +54,7 @@ public abstract class Page extends RoboActivity {
 		MyApplication.destroyed = false;
 		settings = getSharedPreferences(MyApplication.PREFS_NAME, 0);
 		editor = settings.edit();
-		layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		//layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
 	public abstract Page getInstance();
@@ -203,16 +203,6 @@ public abstract class Page extends RoboActivity {
 	            break;
 	    }
 	    return true;
-	}
-	
-	/*public Router getRouter()
-	{
-		return router;
-	}*/
-	
-	public LayoutInflater getLayoutInflater()
-	{
-		return layoutInflater;
 	}
 	
 	@Override

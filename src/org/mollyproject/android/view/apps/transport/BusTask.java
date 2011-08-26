@@ -44,7 +44,10 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			for (int i = 0; i < stops.length(); i++)
 			{
 				//process each stop
-				LinearLayout stopLayout = (LinearLayout) inflater.inflate
+				
+				LinearLayout stopLayout = parseBusEntity(stops.getJSONObject(i), page, busLayout, layoutInflater);
+				busLayout.addView(stopLayout);
+				/*LinearLayout stopLayout = (LinearLayout) inflater.inflate
 						(R.layout.transport_bus_stop_layout, busLayout, false);
 				busLayout.addView(stopLayout);
 				
@@ -110,7 +113,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 						}
 					}
 					nextBus.setText(next);
-				}
+				}*/
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -120,9 +123,80 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 		}
 	}
 	
-	public LinearLayout parseBusEntity(JSONObject entity)
+	public static LinearLayout parseBusEntity(JSONObject entity, Page page, LinearLayout busLayout, LayoutInflater layoutInflater) throws JSONException
 	{
-		return null;
+		//parse a bus stop entity, return the linear layout
+		LinearLayout stopLayout = (LinearLayout) layoutInflater.inflate
+				(R.layout.transport_bus_stop_layout, busLayout, false);
+		
+		TextView nearbyStop = (TextView) stopLayout.findViewById(R.id.nearbyStop);
+		//JSONObject stop = stops.getJSONObject(i);
+		String stopTitle = entity.getString("title");
+		if (entity.has("distance"))
+		{
+			if (!entity.isNull("distance") & !entity.isNull("bearing"))
+			{
+				stopTitle = stopTitle + " (about " + entity.getString("distance") 
+						+ " " + entity.getString("bearing") + ")"; 
+			}
+		}
+		nearbyStop.setText(stopTitle);
+		
+		//process each bus that passes through this stop
+		JSONObject metadata = entity.getJSONObject("metadata");
+		JSONObject info = metadata.getJSONObject("real_time_information");
+		JSONArray services = info.getJSONArray("services");
+		
+		LinearLayout stopDetailsLayout = (LinearLayout) stopLayout.findViewById(R.id.stopDetailsLayout);
+		
+		if (services.length() == 0)
+		{
+			TextView noServiceText = new TextView(page);
+			noServiceText.setText("Sorry, there is no real time information available for this service");
+			noServiceText.setLayoutParams(Page.paramsWithLine);
+			noServiceText.setBackgroundResource(R.drawable.bg_white);
+			noServiceText.setPadding(5, 5, 5, 5);
+			noServiceText.setTextSize(16);
+			noServiceText.setTextColor(Color.BLACK);
+			stopDetailsLayout.addView(noServiceText);
+		}
+		
+		for (int j = 0; j < services.length(); j++)
+		{
+			//this is for one bus
+			LinearLayout serviceLayout = (LinearLayout) layoutInflater.inflate
+					(R.layout.transport_bus_result, stopLayout, false);
+			stopDetailsLayout.addView(serviceLayout);
+			
+			serviceLayout.setLayoutParams(Page.paramsWithLine);
+			
+			JSONObject bus = services.getJSONObject(j);
+			
+			TextView service = (TextView) serviceLayout.findViewById(R.id.serviceNumber);
+			service.setText(bus.getString("service"));
+			
+			TextView busDestination = (TextView) serviceLayout.findViewById(R.id.busDestination);
+			busDestination.setText(bus.getString("destination"));
+			
+			TextView nextBus = (TextView) serviceLayout.findViewById(R.id.busDueTime);
+			String next = bus.getString("next");
+			//times for the next bus on this route
+			if (!next.equals("DUE"))
+			{
+				JSONArray following = bus.getJSONArray("following");
+				for (int k = 0; k < following.length(); k++)
+				{
+					next = next + ", " + following.getString(k);
+				}
+				if (following.length() > 0)
+				{
+					next = next + "...";
+				}
+			}
+			nextBus.setText(next);
+		}
+		
+		return stopLayout;
 	}
 	
 	@Override

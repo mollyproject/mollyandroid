@@ -15,7 +15,7 @@ public class PlacesPage extends ContentPage {
 	{
 		super.onCreate(savedInstanceState);
 		
-		RelativeLayout placesSearchLayout = (RelativeLayout) layoutInflater
+		RelativeLayout placesSearchLayout = (RelativeLayout) getLayoutInflater()
 							.inflate(R.layout.search_bar, contentLayout, false);
 		contentLayout.addView(placesSearchLayout);
 		

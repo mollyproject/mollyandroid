@@ -30,7 +30,7 @@ public class HomePage extends Page {
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.grid_viewer);
-    	RelativeLayout searchBar = (RelativeLayout) layoutInflater.inflate
+    	RelativeLayout searchBar = (RelativeLayout) getLayoutInflater().inflate
     											(R.layout.search_bar,homeLayout, false);
     	homeLayout.addView(searchBar,0);
     	final EditText searchField = (EditText) findViewById(R.id.searchField);

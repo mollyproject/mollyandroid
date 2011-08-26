@@ -20,7 +20,6 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 	protected Page page;
 	protected ProgressDialog pDialog;
 	protected boolean dialogEnabled;
-	protected LayoutInflater inflater;
 	protected MyApplication myApp;
 	
 	public BackgroundTask(Page page, boolean toDestroyPageAfterFailure, boolean dialogEnabled)
@@ -30,7 +29,6 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		this.toDestroyPageAfterFailure = toDestroyPageAfterFailure;
 		destroyPlease = false;
 		this.dialogEnabled = dialogEnabled;
-		inflater = page.getLayoutInflater();
 		myApp = (MyApplication) page.getApplication();
 	}
 	
