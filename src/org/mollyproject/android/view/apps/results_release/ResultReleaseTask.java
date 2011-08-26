@@ -42,6 +42,8 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMult
 			Iterator<Date> dates = sortedDates.iterator();
 			
 			LayoutInflater inflater = page.getLayoutInflater();
+			((ResultsReleasePage) page).getContentLayout().removeAllViews();
+			
 			LinearLayout releasesLayout = (LinearLayout) inflater.inflate(R.layout.general_search_results_page, 
 					((ResultsReleasePage) page).getContentLayout(), false);
 			((ResultsReleasePage) page).getContentLayout().addView(releasesLayout);

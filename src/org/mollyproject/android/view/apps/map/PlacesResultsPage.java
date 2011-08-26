@@ -4,10 +4,15 @@ import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.PageWithMap;
+import org.mollyproject.android.view.apps.transport.BusPageRefreshTask;
+import org.mollyproject.android.view.apps.transport.TransportPage;
+
 import android.os.Bundle;
 
 
 public class PlacesResultsPage extends PageWithMap {
+	
+	public static TransportMapPageRefreshTask transportMapPageRefreshTask;
 	public static boolean firstLoad;
 	protected String[] args;
 	@Override
@@ -29,8 +34,24 @@ public class PlacesResultsPage extends PageWithMap {
 			}
 			else if (args[0].equals("atco"))
 			{
-				new TransportMapTask(this, true, true).execute();
+				if (transportMapPageRefreshTask != null) 
+				{
+					transportMapPageRefreshTask.cancel(true);
+				}
+				transportMapPageRefreshTask = new TransportMapPageRefreshTask(this, false, false);
+				transportMapPageRefreshTask.execute();
+				//new TransportMapTask(this, true, true).execute();
 			}
+		}
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		System.out.println("Transport Map Page paused");
+		if (transportMapPageRefreshTask != null) 
+		{
+			transportMapPageRefreshTask.cancel(true);
 		}
 	}
 

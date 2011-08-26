@@ -1,17 +1,10 @@
 package org.mollyproject.android.view.apps.transport;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-import java.text.ParseException;
-import java.util.Date;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
-import org.mollyproject.android.controller.MyApplication;
-import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
 import android.graphics.Color;
@@ -19,46 +12,17 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
-	public BusTask(Page busPage, boolean toDestroyPageAfterFailure,
+public abstract class PublicTransportTask extends BackgroundTask<JSONObject,Void,JSONObject> {
+
+	public PublicTransportTask(Page page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
-		super(busPage, toDestroyPageAfterFailure, dialogEnabled);
-	}
-
-	@Override
-	public void updateView(JSONObject jsonContent) {
-		try {
-			LinearLayout transportLayout = page.getContentLayout(); //this is the transportLayout in transport_layout.xml
-
-			//Update the page title every time the page is refreshed
-			TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
-			pageTitle.setText("Nearby bus stops " + MyApplication.hourFormat.format(new Date()));
-			
-			LinearLayout busLayout = (LinearLayout) transportLayout.findViewById(R.id.transportDetailsLayout);
-			busLayout.removeAllViews();
-			
-			JSONArray stops = jsonContent.getJSONArray("entities");
-			
-			LayoutInflater layoutInflater = page.getLayoutInflater();
-			
-			for (int i = 0; i < stops.length(); i++)
-			{
-				//process each stop
-				
-				LinearLayout stopLayout = parseBusEntity(stops.getJSONObject(i), page, busLayout, layoutInflater);
-				busLayout.addView(stopLayout);
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-			jsonException = true;
-		} finally {
-			BusPageRefreshTask.busNeedsRefresh = true;
-		}
+		super(page, toDestroyPageAfterFailure, dialogEnabled);
 	}
 	
-	public static LinearLayout parseBusEntity(JSONObject entity, Page page, LinearLayout busLayout, LayoutInflater layoutInflater) throws JSONException
+	public LinearLayout parseBusEntity(JSONObject entity, Page page, LinearLayout busLayout, LayoutInflater layoutInflater) throws JSONException
 	{
-		//parse a bus stop entity, return the linear layout
+		//parse a bus stop entity, return the linear layout, it has to be here and cannot be simply
+		//accessed as a static method to avoid wrong thread exception
 		
 		//Structure of the layout:
 		//stopLayout
@@ -143,55 +107,4 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 		
 		return stopLayout;
 	}
-	
-	@Override
-	protected JSONObject doInBackground(JSONObject... params) {
-		try {
-			if (params.length > 0)
-			{
-				return params[0];
-			}
-			else 
-			{
-				JSONObject jsonContent = MyApplication.router.onRequestSent(page.getName(), page.getAdditionalParams(), 
-						Router.OutputFormat.JSON, null);
-				MyApplication.transportCache = jsonContent;
-				return jsonContent;
-			}
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			//unknownHostException = true;
-		} catch (JSONException e) {
-			e.printStackTrace();
-			//jsonException = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			//ioException = true;
-		} catch (ParseException e) {
-			e.printStackTrace();
-			//parseException = true;
-		}
-		
-		return null;
-	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -41,7 +41,6 @@ public class PlacesResultsTask extends BackgroundTask<Void,Void,JSONObject>
 			{
 				JSONObject attrs = metadata.getJSONObject("osm").getJSONObject("attrs");
 				point = new GeoPoint(attrs.getDouble("lat"), attrs.getDouble("lon"));
-
 			}
 
 	        MapView mapView = ((PlacesResultsPage) page).getMapView();
