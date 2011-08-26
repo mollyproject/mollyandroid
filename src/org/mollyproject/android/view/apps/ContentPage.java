@@ -11,6 +11,7 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.home.HomePage;
 
 import roboguice.inject.InjectView;
 
@@ -44,6 +45,7 @@ public abstract class ContentPage extends Page {
 			@Override
 			public void onClick(View v) {
 				Intent myIntent = new Intent(v.getContext(), MyApplication.getPageClass("home:index"));
+				HomePage.firstHomeLoad = true;
 				startActivityForResult(myIntent,0);
 			}
 		});
