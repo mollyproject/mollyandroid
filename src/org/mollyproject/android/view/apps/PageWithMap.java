@@ -29,13 +29,13 @@ public abstract class PageWithMap extends ContentPage {
 		LinearLayout originalLayout = (LinearLayout) breadcrumbs.getParent();
 		ScrollView scr = (ScrollView) contentLayout.getParent();
 		originalLayout.removeAllViews();
-		scr.removeAllViews();
+		//scr.removeAllViews();
 
 		mapLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.map_view, contentLayout, false);
 		setContentView(mapLayout);
 
 		mapLayout.addView(breadcrumbs,0);
-		mapLayout.addView(contentLayout);
+		mapLayout.addView(scr);
 		mapView = (MapView) mapLayout.findViewById(R.id.mapview);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setBuiltInZoomControls(true);
@@ -43,6 +43,7 @@ public abstract class PageWithMap extends ContentPage {
         MapController mapController = mapView.getController();
         mapController.setZoom(16);
         mapController.setCenter(new GeoPoint(LocationTracker.DEFAULT_LAT,LocationTracker.DEFAULT_LON));
+        
 	}
 	
 	public LinearLayout getMapLayout()

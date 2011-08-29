@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content">
+    <RelativeLayout android:id="@+id/frameLayout1" 
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/bg_white"
+	    android:layout_width="fill_parent">
+        <LinearLayout android:background="@drawable/bg_blue" 
+	        android:id="@+id/linearLayout1" 
+	        android:layout_margin="3dp" 
+	        android:layout_width="fill_parent" 
+	        android:layout_height="100dp" 
+	        android:layout_centerInParent="true"></LinearLayout>
+    </RelativeLayout>
+    
+</LinearLayout>

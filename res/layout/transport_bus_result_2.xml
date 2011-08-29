@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    <RelativeLayout 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="fill_parent" 
+	    android:gravity="center"
+	    android:background="@drawable/bg_blue"
+	    android:id="@+id/linearLayout1">
+        <LinearLayout android:layout_height="wrap_content" 
+	        android:orientation="vertical" 
+	        android:id="@+id/linearLayout2" 
+	        android:layout_width="wrap_content" 
+	        android:layout_alignParentTop="true" 
+	        android:layout_toRightOf="@+id/newServiceNumber">
+        
+            <TextView android:layout_height="wrap_content" 
+	            android:id="@+id/newBusDestination" 
+	            android:layout_width="wrap_content"
+	            android:textColor="@color/white" 
+	            android:text="Destination">
+            </TextView>
+            
+            <TextView android:layout_height="wrap_content" 
+	            android:id="@+id/newBusDueTime" 
+	            android:layout_width="wrap_content"
+	            android:textColor="@color/white"
+	            android:text="Next">
+	        </TextView>
+        </LinearLayout>
+        
+        <TextView android:id="@+id/newServiceNumber" 
+	        android:layout_height="wrap_content" 
+	        android:layout_width="wrap_content" 
+	        android:text="Service"
+	        android:textSize="20dp"
+	        android:textColor="@color/white"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginRight="50dp"
+	        android:layout_centerVertical="true">
+        </TextView>
+    </RelativeLayout>
+    
+</LinearLayout>

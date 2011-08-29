@@ -23,7 +23,9 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 import android.graphics.Color;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class TransportMapTask extends BackgroundTask<Void,Void,JSONObject>{
@@ -49,7 +51,7 @@ public class TransportMapTask extends BackgroundTask<Void,Void,JSONObject>{
 				//parse entity of bus
 				LinearLayout originalBusLayout = BusTask.parseBusEntity(entity, page, 
 						page.getContentLayout(), page.getLayoutInflater());
-				
+				originalBusLayout.setLayoutParams(Page.paramsWithLine);
 				//Structure of the original bus layout:
 				//stopLayout
 				//- child 0: nearbyStop (TextView)
@@ -60,6 +62,30 @@ public class TransportMapTask extends BackgroundTask<Void,Void,JSONObject>{
 				//--- child 2: Time (TextView)
 				
 				//Now: extract information from this layout
+				LinearLayout stopDetailsLayout = (LinearLayout) originalBusLayout.getChildAt(1);
+				
+				for (int i = 0; i < stopDetailsLayout.getChildCount(); i++)
+				{
+					LinearLayout newBusResult = (LinearLayout) page.getLayoutInflater().inflate
+							(R.layout.transport_bus_result_2,stopDetailsLayout, false);
+					
+					TextView newServiceNumber = (TextView) newBusResult.findViewById(R.id.newServiceNumber);
+					newServiceNumber.setText(((TextView) stopDetailsLayout.findViewById(R.id.serviceNumber))
+							.getText());
+					
+					TextView newBusDestination = (TextView) newBusResult.findViewById(R.id.newBusDestination);
+					newBusDestination.setText(((TextView) stopDetailsLayout.findViewById(R.id.busDestination))
+							.getText());
+					
+					TextView newBusDueTime = (TextView) newBusResult.findViewById(R.id.newBusDueTime);
+					newBusDueTime.setText(((TextView) stopDetailsLayout.findViewById(R.id.busDueTime))
+							.getText());
+					
+					//Now replace the layout with the new one:
+					stopDetailsLayout.removeViewAt(i);
+					stopDetailsLayout.addView(newBusResult,i);
+				}
+				
 				//New page now looks like:
 				//0 - breadcrumbs
 				//1 - map
@@ -68,19 +94,11 @@ public class TransportMapTask extends BackgroundTask<Void,Void,JSONObject>{
 				stopText.setText("Real time information at " + MyApplication.hourFormat.format(new Date()));
 				stopText.setTextColor(Color.BLACK);
 				stopText.setBackgroundResource(R.drawable.bg_white);
-				LinearLayout contentLayout = (LinearLayout) ((PageWithMap) page).getMapLayout().getChildAt(2);
-				/*if (!TransportMapPageRefreshTask.overlayRendered)
-				{
-					//Neat way to check if this is the first time the page is rendered
-					contentLayout.addView(originalBusLayout);
-				}
-				else
-				{
-					contentLayout.removeAllViews();
-					((PageWithMap) page).getMapLayout().addView(originalBusLayout,1);
-				}*/
+				ScrollView scr = (ScrollView) ((PageWithMap) page).getMapLayout().getChildAt(2);
+				scr.setMinimumHeight(page.getWindowManager().getDefaultDisplay().getHeight()/3);
+				LinearLayout contentLayout = page.getContentLayout();
 				contentLayout.removeAllViews();
-				//contentLayout.addView(originalBusLayout);
+				contentLayout.addView(originalBusLayout);
 			}
 			else if (metadata.has("ldb"))
 			{ 
@@ -90,11 +108,14 @@ public class TransportMapTask extends BackgroundTask<Void,Void,JSONObject>{
 			//Show stuff on map (the location of the stop)
 			if (!TransportMapPageRefreshTask.overlayRendered)
 			{
+				System.out.println("Overlay should be added now");
 				List<OverlayItem> overlayItems= new ArrayList<OverlayItem>();
 				String title = entity.getString("title");
 	
 		        MapView mapView = ((PlacesResultsPage) page).getMapView();
-		        // 0- long
+		        mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+		        		page.getWindowManager().getDefaultDisplay().getHeight()*2/5));
+		        // 0 - long
 		        // 1 - lat
 		        GeoPoint point = new GeoPoint(entity.getJSONArray("location").getDouble(1), 
 		        		entity.getJSONArray("location").getDouble(0));
