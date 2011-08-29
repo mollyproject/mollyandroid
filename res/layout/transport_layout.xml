@@ -25,7 +25,7 @@
 		    android:layout_height="wrap_content" 
 		    android:id="@+id/transportAnnouncements" 
 		    android:background="@drawable/bg_white"
-		    android:textSize="16dp"
+		    android:textSize="0dp"
 		    android:layout_width="fill_parent" 
 		    android:paddingLeft="10dp"
 		    android:paddingRight="10dp">

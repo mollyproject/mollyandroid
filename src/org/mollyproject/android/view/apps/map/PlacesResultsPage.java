@@ -4,9 +4,6 @@ import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.PageWithMap;
-import org.mollyproject.android.view.apps.transport.BusPageRefreshTask;
-import org.mollyproject.android.view.apps.transport.TransportPage;
-
 import android.os.Bundle;
 
 

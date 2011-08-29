@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.apps.map;
 
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 public class TransportMapPageRefreshTask extends BackgroundTask<Void,Void,Void>{
@@ -26,22 +27,24 @@ public class TransportMapPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 	@Override
 	protected Void doInBackground(Void... arg0) {
 		System.out.println("Transport Map refresh starting");
-		/*if (TransportPage.firstLoad == true || PlacesResultsPage.firstLoad == true)
-		{
-			TransportPage.firstLoad = false;
-			PlacesResultsPage.firstLoad = false;
-			//for the first request, json data already downloaded, no need to refresh
-			TransportMapPageRefreshTask.transportMapNeedsRefresh = false;
-			new TransportMapTask((PlacesResultsPage) page,false,false).execute(MyApplication.transportCache);
-		}
-		else*/
 		if (!isCancelled())
 		{
+			//task's first run
 			//check again, in case the task is cancelled already
+			
+			while (!((ContentPage) page).downloadedJSON())
+			{
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			TransportMapPageRefreshTask.transportMapNeedsRefresh = false;
-			//dialog enabled
-			new TransportMapTask((PlacesResultsPage) page,false,false).execute();
+			new TransportMapTask((PlacesResultsPage) page,false,false).execute
+						(((ContentPage) page).getJSONContent());
 		}
+		
 		while (!isCancelled())
 		{
 			while (!TransportMapPageRefreshTask.transportMapNeedsRefresh)
@@ -65,7 +68,7 @@ public class TransportMapPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 				new TransportMapTask((PlacesResultsPage) page,false,false).execute();
 			}
 		}
-		System.out.println("Bus refresh ending");
+		System.out.println("Transport Map refresh ending");
 		return null;
 	}
 

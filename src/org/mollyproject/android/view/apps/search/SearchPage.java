@@ -11,6 +11,7 @@ import org.mollyproject.android.view.apps.Page;
 
 import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
@@ -28,6 +29,9 @@ public class SearchPage extends ContentPage {
     	EditText searchField = (EditText) findViewById(R.id.searchField);
     	searchField.setWidth(LayoutParams.FILL_PARENT);
     	setEnterKeySearch(searchField, this, null);
+    	
+    	Button searchButton = (Button) findViewById(R.id.searchButton);
+    	setClickSearch(searchButton, searchField, this, null);
 	}
 	
 	@Override

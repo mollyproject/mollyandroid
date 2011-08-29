@@ -91,7 +91,6 @@ public class TransportPage extends ContentPage {
 	@Override
 	public void onResume() {
 		super.onResume();
-		System.out.println(settings.getString("lastTab", "bus"));
 		transportPaused = true;
 		new TransportPageTask(this, false, true).execute();
 	}

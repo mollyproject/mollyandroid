@@ -46,7 +46,7 @@ public class Router {
 		locTracker = new LocationTracker(myApp);
 		locTracker.startLocUpdate();
 		client = new DefaultHttpClient();
-		client.getParams().setParameter("http.connection-manager.timeout", 20000);
+		client.getParams().setParameter("http.connection-manager.timeout",10000);
 	}
     
 	public void setApp(MyApplication myApp)

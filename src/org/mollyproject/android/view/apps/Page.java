@@ -147,6 +147,41 @@ public abstract class Page extends RoboActivity {
 		});
 	}
 	
+	public void setClickSearch(View view, final EditText searchField, final Page page, final String application)
+	{
+		view.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				if (searchField.getText().length() > 0)
+            	{
+            		
+            		if (application == null)
+            		{
+            			String[] argsToPass = new String[1];
+            			argsToPass[0] = searchField.getText().toString();
+            			MyApplication.generalQuery = argsToPass;
+            		}
+            		else
+            		{
+            			String[] argsToPass = new String[2];
+            			argsToPass[0] = searchField.getText()
+            						.toString();
+            			argsToPass[1] = application;
+            			MyApplication.generalQuery = argsToPass;
+            		}
+            		Intent myIntent = new Intent(page, 
+            					MyApplication.getPageClass(MollyModule.SEARCH_PAGE));
+            		page.startActivityForResult(myIntent, 0);
+            	}
+            	else
+            	{
+            		Toast.makeText(getApplicationContext(), "No query found. " + 
+            				"Please enter some search criteria", Toast.LENGTH_SHORT).show();
+            	}
+			}
+		});
+	}
+	
 	public void setEmailClick(View view, final String finalAdd)
 	{
 		view.setOnClickListener(new OnClickListener(){

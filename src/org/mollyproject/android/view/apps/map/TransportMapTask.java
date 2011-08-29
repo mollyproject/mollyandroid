@@ -1,5 +1,9 @@
 package org.mollyproject.android.view.apps.map;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.UnknownHostException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,12 +13,14 @@ import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
+import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.PageWithMap;
 import org.mollyproject.android.view.apps.transport.BusPageRefreshTask;
 import org.mollyproject.android.view.apps.transport.BusTask;
 import org.mollyproject.android.view.apps.transport.TrainPageRefreshTask;
+import org.mollyproject.android.view.apps.transport.TrainTask;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
@@ -28,7 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class TransportMapTask extends BackgroundTask<Void,Void,JSONObject>{
+public class TransportMapTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 	protected BusPageRefreshTask busPageRefreshTask;
 	protected TrainPageRefreshTask trainPageRefreshTask;
 	
@@ -41,9 +47,9 @@ public class TransportMapTask extends BackgroundTask<Void,Void,JSONObject>{
 	@Override
 	public void updateView(JSONObject jsonContent) {
 		try {
+			LinearLayout contentLayout = page.getContentLayout();
 			MyApplication.transportCache = jsonContent;
 			JSONObject entity = jsonContent.getJSONObject("entity");
-			
 			JSONObject metadata = entity.getJSONObject("metadata");
 			//Must distinguish between bus stops and train stations
 			if (metadata.has("real_time_information"))
@@ -61,29 +67,53 @@ public class TransportMapTask extends BackgroundTask<Void,Void,JSONObject>{
 				//--- child 1: Destination (TextView)
 				//--- child 2: Time (TextView)
 				
-				//Now: extract information from this layout
+				//Now: extract information from this layout and restructure it
 				LinearLayout stopDetailsLayout = (LinearLayout) originalBusLayout.getChildAt(1);
-				
-				for (int i = 0; i < stopDetailsLayout.getChildCount(); i++)
+				try
 				{
-					LinearLayout newBusResult = (LinearLayout) page.getLayoutInflater().inflate
-							(R.layout.transport_bus_result_2,stopDetailsLayout, false);
-					
-					TextView newServiceNumber = (TextView) newBusResult.findViewById(R.id.newServiceNumber);
-					newServiceNumber.setText(((TextView) stopDetailsLayout.findViewById(R.id.serviceNumber))
-							.getText());
-					
-					TextView newBusDestination = (TextView) newBusResult.findViewById(R.id.newBusDestination);
-					newBusDestination.setText(((TextView) stopDetailsLayout.findViewById(R.id.busDestination))
-							.getText());
-					
-					TextView newBusDueTime = (TextView) newBusResult.findViewById(R.id.newBusDueTime);
-					newBusDueTime.setText(((TextView) stopDetailsLayout.findViewById(R.id.busDueTime))
-							.getText());
-					
-					//Now replace the layout with the new one:
-					stopDetailsLayout.removeViewAt(i);
-					stopDetailsLayout.addView(newBusResult,i);
+					for (int i = 0; i < stopDetailsLayout.getChildCount(); i++)
+					{
+						LinearLayout newBusResult = (LinearLayout) page.getLayoutInflater().inflate
+								(R.layout.transport_bus_result_2,stopDetailsLayout, false);
+						System.out.println(stopDetailsLayout.getChildCount());
+						LinearLayout oldResult = (LinearLayout) stopDetailsLayout.getChildAt(i);
+						
+						TextView newServiceNumber = (TextView) newBusResult.findViewById(R.id.newServiceNumber);
+						newServiceNumber.setText(((TextView) oldResult.getChildAt(0)).getText());
+						
+						TextView newBusDestination = (TextView) newBusResult.findViewById(R.id.newBusDestination);
+						newBusDestination.setText(((TextView) oldResult.getChildAt(1)).getText());
+						
+						TextView newBusDueTime = (TextView) newBusResult.findViewById(R.id.newBusDueTime);
+						TextView newClosestBus = (TextView) newBusResult.findViewById(R.id.newClosestBus);
+						String times = ((TextView) oldResult.getChildAt(2)).getText().toString();
+						int firstCommaIndex = times.indexOf(',');
+						
+						if (firstCommaIndex == -1)
+						{
+							//Only 1 result visible
+							newBusDueTime.setText("Next: N/A");
+							if (times.equals("DUE"))
+							{
+								newClosestBus.setText(times);
+							}
+						}
+						else
+						{
+							//More than 1 results visible
+							newClosestBus.setText(times.substring(0, firstCommaIndex));
+							newBusDueTime.setText("Next: " + times.substring(firstCommaIndex+1, 
+									times.length()));
+						}
+						
+						//Now replace the layout with the new one:
+						stopDetailsLayout.removeViewAt(i);
+						stopDetailsLayout.addView(newBusResult,i);
+					}
+				} catch (ClassCastException e)
+				{
+					//No info is available
+					//Do nothing
 				}
 				
 				//New page now looks like:
@@ -96,13 +126,16 @@ public class TransportMapTask extends BackgroundTask<Void,Void,JSONObject>{
 				stopText.setBackgroundResource(R.drawable.bg_white);
 				ScrollView scr = (ScrollView) ((PageWithMap) page).getMapLayout().getChildAt(2);
 				scr.setMinimumHeight(page.getWindowManager().getDefaultDisplay().getHeight()/3);
-				LinearLayout contentLayout = page.getContentLayout();
 				contentLayout.removeAllViews();
 				contentLayout.addView(originalBusLayout);
 			}
 			else if (metadata.has("ldb"))
 			{ 
 				//parse entity of rail
+				LinearLayout originalTrainStationLayout = TrainTask.parseTrainEntity(entity, page, 
+						contentLayout, page.getLayoutInflater()); 
+				
+				contentLayout.addView(originalTrainStationLayout);
 			}
 			
 			//Show stuff on map (the location of the stop)
@@ -125,7 +158,8 @@ public class TransportMapTask extends BackgroundTask<Void,Void,JSONObject>{
 	
 		        OverlayItem markerOverlay = new OverlayItem(title, "", point);
 		        overlayItems.add(markerOverlay);
-		        ItemizedIconOverlay<OverlayItem> overlay = new ItemizedIconOverlay<OverlayItem>(page,overlayItems, null);
+		        ItemizedIconOverlay<OverlayItem> overlay = new ItemizedIconOverlay<OverlayItem>
+		        									(page,overlayItems, null);
 		        mapView.getOverlays().add(overlay);
 		        TransportMapPageRefreshTask.overlayRendered = true;
 			}
@@ -134,22 +168,41 @@ public class TransportMapTask extends BackgroundTask<Void,Void,JSONObject>{
 			e.printStackTrace();
 			jsonException = true;
 		} finally {
+			PlacesResultsPage.firstLoad = false;
 			TransportMapPageRefreshTask.transportMapNeedsRefresh = true;
 		}
 	}
 
 	@Override
-	protected JSONObject doInBackground(Void... params) {
-		while (!((ContentPage) page).downloadedJSON())
+	protected JSONObject doInBackground(JSONObject... params) {
+		try
 		{
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			if (params.length > 0)
+			{
+				//first run, fed JSON data
+				return params[0];
 			}
+			else
+			{
+				JSONObject jsonContent = MyApplication.router.onRequestSent(page.getName(), page.getAdditionalParams(), 
+						Router.OutputFormat.JSON, page.getQuery());
+				MyApplication.transportCache = jsonContent;
+				return jsonContent;
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			jsonException = true;
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			unknownHostException = true;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
-		
-		return ((ContentPage) page).getJSONContent();
+		return null; //if anything wrong happens, go here
 	}
 
 }

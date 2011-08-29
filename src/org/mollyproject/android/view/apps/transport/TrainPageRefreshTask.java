@@ -6,6 +6,7 @@ import org.mollyproject.android.view.apps.Page;
 
 public class TrainPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 	public static boolean trainNeedsRefresh;
+	public static final int TRAIN_REFRESH_RATE = 60000;
 	public TrainPageRefreshTask(TrainPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
@@ -44,7 +45,7 @@ public class TrainPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 				}
 			}
 			try {
-				Thread.sleep(60000);
+				Thread.sleep(TRAIN_REFRESH_RATE);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

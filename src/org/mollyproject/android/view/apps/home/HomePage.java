@@ -33,10 +33,13 @@ public class HomePage extends Page {
     	RelativeLayout searchBar = (RelativeLayout) getLayoutInflater().inflate
     											(R.layout.search_bar,homeLayout, false);
     	homeLayout.addView(searchBar,0);
-    	final EditText searchField = (EditText) findViewById(R.id.searchField);
+    	EditText searchField = (EditText) findViewById(R.id.searchField);
     	searchField.setWidth(200);
     	searchField.invalidate();
     	setEnterKeySearch(searchField, this, null);
+    	
+    	Button searchButton = (Button) findViewById(R.id.searchButton);
+    	setClickSearch(searchButton, searchField, this, null);
     }
     public LinearLayout getHomeLayout()
     {
