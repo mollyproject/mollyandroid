@@ -115,10 +115,8 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMult
 											(entry.getString("updated"));
 						Date myDate = new Date(MyApplication.myDateFormat.format(updatedDate));
 						examsByDate.put(myDate, title);
-						//System.out.println(myDate+" "+title);
 					}
 				}
-				System.out.println(output.toString(2));
 				return examsByDate;
 			}
 		} catch (JSONException e) {
