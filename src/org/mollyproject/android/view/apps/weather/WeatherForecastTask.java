@@ -1,30 +1,20 @@
 package org.mollyproject.android.view.apps.weather;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.text.DateFormatSymbols;
-import java.text.ParseException;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
-import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
-
-import roboguice.inject.InjectView;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
@@ -43,7 +33,7 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 			
 			String city = "Today in " + observation.getString("name");
 			
-			String temperature = observation.getString("temperature")+"°C";
+			String temperature = observation.getString("temperature")+"ï¿½C";
 			
 			String others = new String();
 			//min and max temperature
@@ -158,10 +148,10 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 				}
 				
 				TextView lowTemp = (TextView) forecastDayLayout.findViewById(R.id.lowestTemp);
-				lowTemp.setText(forecast.getString("min_temperature")+"°C");
+				lowTemp.setText(forecast.getString("min_temperature")+"ï¿½C");
 				
 				TextView highTemp = (TextView) forecastDayLayout.findViewById(R.id.highestTemp);
-				highTemp.setText(forecast.getString("max_temperature")+"°C");
+				highTemp.setText(forecast.getString("max_temperature")+"ï¿½C");
 				
 				ImageView weatherForecastIcon = (ImageView) forecastDayLayout.findViewById(R.id.weatherForecastIcon);
 				weatherForecastIcon.setImageResource(MyApplication.getImgResourceId(forecast.getString("icon")+"_small"));
