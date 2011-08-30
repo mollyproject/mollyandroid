@@ -38,13 +38,14 @@ public class TransportPage extends ContentPage {
         LinearLayout tabHostLayout = (LinearLayout) getLayoutInflater().inflate
         				(R.layout.transport_tabs, contentLayout, false);
         contentLayout.addView(tabHostLayout);
-        mlam.dispatchCreate(savedInstanceState);
+        //set up the tab host, it has no content yet
         transportTabHost = (TabHost) tabHostLayout.findViewById(R.id.tabHost);
         transportTabHost.setup(mlam);
         transportPageTitle = parentBreadcrumb;
         transportTabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			@Override
 			public void onTabChanged(String tabId) {
+				//stop the current thread (
 				if (!firstLoad)
 				{
 					mlam.dispatchPause(false);
@@ -70,17 +71,20 @@ public class TransportPage extends ContentPage {
 		});
         transportPaused = false;
         firstLoad = true;
+        
+        //create sub pages in the tab
+        mlam.dispatchCreate(savedInstanceState);
 	}
 	
 	@Override
 	protected void onStop() {
 		super.onStop();
-		mlam.dispatchStop();
+		mlam.dispatchStop(); //stop the sub pages in tab
 	}
 	@Override
 	protected void onPause() {
 		super.onPause();
-		
+		//once the page is paused, remember the last tab left open
 	    editor.putString("lastTab", transportTabHost.getCurrentTabTag());
 	    editor.commit();
 	    

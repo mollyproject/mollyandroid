@@ -37,7 +37,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 				tabTag = TransportPage.BUS;
 				myIntent = new Intent().setClass(page.getApplicationContext(), BusPage.class);
 			    spec = TransportPage.transportTabHost.newTabSpec(tabTag)
-			    	.setIndicator(tabTag, res.getDrawable(R.drawable.android_button)).setContent(myIntent);
+			    	.setIndicator("", res.getDrawable(R.drawable.bus)).setContent(myIntent);
 			    TransportPage.transportTabHost.addTab(spec);
 			}
 			if (jsonContent.getBoolean("train_station") == true & TransportPage.firstLoad == true)
@@ -45,7 +45,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 				tabTag = TransportPage.RAIL;
 			    myIntent = new Intent().setClass(page.getApplicationContext(), TrainPage.class);
 			    spec = TransportPage.transportTabHost.newTabSpec(tabTag)
-			    	.setIndicator(tabTag, res.getDrawable(R.drawable.android_button)).setContent(myIntent);
+			    	.setIndicator("", res.getDrawable(R.drawable.train)).setContent(myIntent);
 			    TransportPage.transportTabHost.addTab(spec);
 			}
 			
@@ -55,7 +55,8 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 			if (settings.contains("lastTab"))
 			{
 				System.out.println("Transport task " + settings.getString("lastTab",tabTag));
-				TransportPage.transportTabHost.setCurrentTabByTag(settings.getString("lastTab",TransportPage.defaultTransport));
+				TransportPage.transportTabHost.setCurrentTabByTag
+								(settings.getString("lastTab",TransportPage.defaultTransport));
 			}
         } catch (JSONException e) {
 			e.printStackTrace();
