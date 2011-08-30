@@ -34,7 +34,6 @@ public class ImageAdapter extends BaseAdapter {
         //		((HomePage) page).getHomeLayout());       
         ImageView imageView;
 
-        final MyApplication myApp = (MyApplication) page.getApplication();
         if (convertView == null) {  // if it's not recycled, initialize some attributes
             imageView = new ImageView(page);
         } else {
