@@ -100,6 +100,44 @@ public abstract class Page extends RoboActivity {
 		alertDialog.show();
 	}
 	
+	public void searchFromField(EditText searchField, String application)
+	{
+		if (searchField.getText().length() > 0)
+    	{
+    		if (searchField.getText().toString().toLowerCase().trim().equals("nyan cat")
+    				|| searchField.getText().toString().trim().toLowerCase().equals("nyan"))
+    		{
+    			//Easter Egg 1
+    			String url = "http://www.youtube.com/watch?v=QH2-TGUlwu4";
+    			Intent procrastinateIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    			startActivity(Intent.createChooser(procrastinateIntent, "U r not advized 2 " +
+    					"proc33d unless u haz good connection"));
+    		}
+    		else if (application == null)
+    		{
+    			String[] argsToPass = new String[1];
+    			argsToPass[0] = searchField.getText().toString();
+    			MyApplication.generalQuery = argsToPass;
+    		}
+    		else
+    		{
+    			String[] argsToPass = new String[2];
+    			argsToPass[0] = searchField.getText()
+    						.toString();
+    			argsToPass[1] = application;
+    			MyApplication.generalQuery = argsToPass;
+    		}
+    		Intent myIntent = new Intent(getInstance(), 
+    					MyApplication.getPageClass(MollyModule.SEARCH_PAGE));
+    		startActivityForResult(myIntent, 0);
+    	}
+    	else
+    	{
+    		Toast.makeText(getApplicationContext(), "No query found. " + 
+    				"Please enter some search criteria", Toast.LENGTH_SHORT).show();
+    	}
+	}
+	
 	public void setEnterKeySearch(final EditText searchField, final Page page, final String application)
 	{
 		searchField.setOnKeyListener(new OnKeyListener() {
@@ -111,32 +149,7 @@ public abstract class Page extends RoboActivity {
 		            {
 		                case KeyEvent.KEYCODE_DPAD_CENTER:
 		                case KeyEvent.KEYCODE_ENTER:
-		                	if (searchField.getText().length() > 0)
-		                	{
-		                		
-		                		if (application == null)
-		                		{
-		                			String[] argsToPass = new String[1];
-		                			argsToPass[0] = searchField.getText().toString();
-		                			MyApplication.generalQuery = argsToPass;
-		                		}
-		                		else
-		                		{
-		                			String[] argsToPass = new String[2];
-		                			argsToPass[0] = searchField.getText()
-		                						.toString();
-		                			argsToPass[1] = application;
-		                			MyApplication.generalQuery = argsToPass;
-		                		}
-		                		Intent myIntent = new Intent(page, 
-		                					MyApplication.getPageClass(MollyModule.SEARCH_PAGE));
-		                		page.startActivityForResult(myIntent, 0);
-		                	}
-		                	else
-		                	{
-		                		Toast.makeText(getApplicationContext(), "No query found. " + 
-		                				"Please enter some search criteria", Toast.LENGTH_SHORT).show();
-		                	}
+		                	searchFromField(searchField, application);
 		                	return true;
 		                default:
 		                    break;
@@ -152,32 +165,7 @@ public abstract class Page extends RoboActivity {
 		view.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				if (searchField.getText().length() > 0)
-            	{
-            		
-            		if (application == null)
-            		{
-            			String[] argsToPass = new String[1];
-            			argsToPass[0] = searchField.getText().toString();
-            			MyApplication.generalQuery = argsToPass;
-            		}
-            		else
-            		{
-            			String[] argsToPass = new String[2];
-            			argsToPass[0] = searchField.getText()
-            						.toString();
-            			argsToPass[1] = application;
-            			MyApplication.generalQuery = argsToPass;
-            		}
-            		Intent myIntent = new Intent(page, 
-            					MyApplication.getPageClass(MollyModule.SEARCH_PAGE));
-            		page.startActivityForResult(myIntent, 0);
-            	}
-            	else
-            	{
-            		Toast.makeText(getApplicationContext(), "No query found. " + 
-            				"Please enter some search criteria", Toast.LENGTH_SHORT).show();
-            	}
+				searchFromField(searchField, application);
 			}
 		});
 	}
