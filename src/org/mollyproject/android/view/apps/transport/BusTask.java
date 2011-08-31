@@ -1,6 +1,8 @@
 package org.mollyproject.android.view.apps.transport;
 
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.Date;
@@ -37,8 +39,19 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 
 			//Update the page title every time the page is refreshed
 			TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
-			pageTitle.setText("Nearby bus stops " + MyApplication.hourFormat.format(new Date()));
+			String pageTitleText = new String();
 			
+			pageTitleText = MyApplication.hourFormat.format(new Date()) 
+						+ " - Nearby bus stops from your current location";
+			
+			if (MyApplication.currentLocation != null)
+			{
+				pageTitleText = pageTitleText + " (" + MyApplication.currentLocation.getString("name")
+						+ " within approx. " + MyApplication.currentLocation.getString("accuracy") + ")";
+			}
+			pageTitleText = pageTitleText + ":";
+			
+			pageTitle.setText(pageTitleText);
 			LinearLayout busLayout = (LinearLayout) transportLayout.findViewById(R.id.transportDetailsLayout);
 			busLayout.removeAllViews();
 			
@@ -184,18 +197,22 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 				MyApplication.transportCache = jsonContent;
 				return jsonContent;
 			}
+		} catch (SocketException e){
+			e.printStackTrace();
+			cancel(true);
+			new BusTask(page,toDestroyPageAfterFailure,dialogEnabled).execute();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
-			//unknownHostException = true;
+			unknownHostException = true;
 		} catch (JSONException e) {
 			e.printStackTrace();
-			//jsonException = true;
+			jsonException = true;
 		} catch (IOException e) {
 			e.printStackTrace();
-			//ioException = true;
+			ioException = true;
 		} catch (ParseException e) {
 			e.printStackTrace();
-			//parseException = true;
+			parseException = true;
 		}
 		
 		return null;

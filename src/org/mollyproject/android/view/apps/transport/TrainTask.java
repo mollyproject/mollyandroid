@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.apps.transport;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import org.json.JSONArray;
@@ -188,7 +189,11 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 				MyApplication.transportCache = jsonContent;
 				return jsonContent;
 			}
-		} catch (UnknownHostException e) {
+		} catch (SocketException e){
+			e.printStackTrace();
+			cancel(true);
+			new TrainTask(page,toDestroyPageAfterFailure,dialogEnabled).execute();
+		}catch (UnknownHostException e) {
 			e.printStackTrace();
 			unknownHostException = true;
 		} catch (JSONException e) {
