@@ -21,10 +21,10 @@ public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 	@Override
 	protected Void doInBackground(Void... arg0) {
 		System.out.println("Bus refresh starting");
-		if (TransportPage.firstLoad == true)
+		if (TransportPage.firstLoad == true & MyApplication.transportCache != null)
 		{
 			TransportPage.firstLoad = false;
-			//for the first request, json data already downloaded, no need to refresh
+			//for the first request and with json data already downloaded, no need to refresh
 			BusPageRefreshTask.busNeedsRefresh = false;
 			new BusTask(page,false,false).execute(MyApplication.transportCache);
 		}
@@ -35,6 +35,7 @@ public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 			//dialog enabled
 			new BusTask((BusPage) page,false,false).execute();
 		}
+		//auto-refresh actually starts from the second request
 		while (!isCancelled())
 		{
 			while (!BusPageRefreshTask.busNeedsRefresh)

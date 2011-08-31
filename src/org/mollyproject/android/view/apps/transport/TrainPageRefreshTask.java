@@ -20,7 +20,7 @@ public class TrainPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 	@Override
 	protected Void doInBackground(Void... arg0) {
 		System.out.println("Train refresh starting");
-		if (TransportPage.firstLoad == true)
+		if (TransportPage.firstLoad == true & MyApplication.transportCache != null)
 		{
 			TransportPage.firstLoad = false;
 			//for the first request, json data already downloaded, no need to refresh
