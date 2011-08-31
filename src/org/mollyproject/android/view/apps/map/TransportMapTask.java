@@ -2,6 +2,7 @@ package org.mollyproject.android.view.apps.map;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -187,7 +188,11 @@ public class TransportMapTask extends BackgroundTask<JSONObject,Void,JSONObject>
 				MyApplication.transportCache = jsonContent;
 				return jsonContent;
 			}
-		} catch (JSONException e) {
+		} catch (SocketException e){
+			e.printStackTrace();
+			cancel(true);
+			new TransportMapTask((PlacesResultsPage) page,toDestroyPageAfterFailure,dialogEnabled).execute();
+		}catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;
 		} catch (UnknownHostException e) {
