@@ -5,7 +5,14 @@
 	    android:orientation="vertical"
 	    android:background="@drawable/bg_blue"
 	    xmlns:android="http://schemas.android.com/apk/res/android">
-
+	    
+		<ToggleButton android:textOn="Map is showing - Click here to hide."
+    		android:textOff="Map is hidden - Click here to show." 
+	    	android:id="@+id/toggleMapButton" 
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content">
+    	</ToggleButton>
+    	
     	<org.osmdroid.views.MapView
 		    xmlns:android="http://schemas.android.com/apk/res/android"
 		    android:id="@+id/mapview"

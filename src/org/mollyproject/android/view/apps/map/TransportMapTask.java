@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
@@ -21,6 +22,7 @@ import org.mollyproject.android.view.apps.transport.BusPageRefreshTask;
 import org.mollyproject.android.view.apps.transport.BusTask;
 import org.mollyproject.android.view.apps.transport.TrainPageRefreshTask;
 import org.mollyproject.android.view.apps.transport.TrainTask;
+import org.mollyproject.android.view.apps.transport.TransportPage;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
@@ -28,6 +30,7 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
@@ -54,88 +57,83 @@ public class TransportMapTask extends BackgroundTask<JSONObject,Void,JSONObject>
 			//Must distinguish between bus stops and train stations
 			if (metadata.has("real_time_information"))
 			{
+				TransportMapPageRefreshTask.transportType = TransportPage.BUS;
 				//parse entity of bus
 				LinearLayout originalBusLayout = BusTask.parseBusEntity(entity, page, 
-						page.getContentLayout(), page.getLayoutInflater());
-				originalBusLayout.setLayoutParams(Page.paramsWithLine);
-				//Structure of the original bus layout:
-				//stopLayout
-				//- child 0: nearbyStop (TextView)
-				//- child 1: stopDetailsLayout (LinearLayout)
-				//-- child 0 - rest: transport_bus_result (LinearLayout)
-				//--- child 0: Service (TextView)
-				//--- child 1: Destination (TextView)
-				//--- child 2: Time (TextView)
-				
-				//Now: extract information from this layout and restructure it
-				LinearLayout stopDetailsLayout = (LinearLayout) originalBusLayout.getChildAt(1);
-				try
-				{
-					for (int i = 0; i < stopDetailsLayout.getChildCount(); i++)
-					{
-						LinearLayout newBusResult = (LinearLayout) page.getLayoutInflater().inflate
-								(R.layout.transport_bus_result_2,stopDetailsLayout, false);
-						System.out.println(stopDetailsLayout.getChildCount());
-						LinearLayout oldResult = (LinearLayout) stopDetailsLayout.getChildAt(i);
-						
-						TextView newServiceNumber = (TextView) newBusResult.findViewById(R.id.newServiceNumber);
-						newServiceNumber.setText(((TextView) oldResult.getChildAt(0)).getText());
-						
-						TextView newBusDestination = (TextView) newBusResult.findViewById(R.id.newBusDestination);
-						newBusDestination.setText(((TextView) oldResult.getChildAt(1)).getText());
-						
-						TextView newBusDueTime = (TextView) newBusResult.findViewById(R.id.newBusDueTime);
-						TextView newClosestBus = (TextView) newBusResult.findViewById(R.id.newClosestBus);
-						String times = ((TextView) oldResult.getChildAt(2)).getText().toString();
-						int firstCommaIndex = times.indexOf(',');
-						
-						if (firstCommaIndex == -1)
-						{
-							//Only 1 result visible
-							newBusDueTime.setText("Next: N/A");
-							if (times.equals("DUE"))
-							{
-								newClosestBus.setText(times);
-							}
-						}
-						else
-						{
-							//More than 1 results visible
-							newClosestBus.setText(times.substring(0, firstCommaIndex));
-							newBusDueTime.setText("Next: " + times.substring(firstCommaIndex+1, 
-									times.length()));
-						}
-						
-						//Now replace the layout with the new one:
-						stopDetailsLayout.removeViewAt(i);
-						stopDetailsLayout.addView(newBusResult,i);
-					}
-				} catch (ClassCastException e)
-				{
-					//No info is available
-					//Do nothing
-				}
-				
+						page.getContentLayout(), page.getLayoutInflater(), 
+						R.layout.transport_bus_stop_layout, R.layout.transport_bus_result_bg_blue);
+				//Customise the background:
+				LinearLayout originalStopDetailsLayout = (LinearLayout) originalBusLayout.findViewById(R.id.stopDetailsLayout);
+				originalStopDetailsLayout.setBackgroundResource(R.drawable.bg_white);
 				//New page now looks like:
 				//0 - breadcrumbs
 				//1 - map
 				//2 - contentLayout
 				TextView stopText = (TextView) originalBusLayout.getChildAt(0);
-				stopText.setText("Real time information at " + MyApplication.hourFormat.format(new Date()));
+				stopText.setClickable(false);
+				stopText.setText(MyApplication.hourFormat.format(new Date()) 
+						+ " - Real time information from this stop:");
 				stopText.setTextColor(Color.BLACK);
 				stopText.setBackgroundResource(R.drawable.bg_white);
-				ScrollView scr = (ScrollView) ((PageWithMap) page).getMapLayout().getChildAt(2);
-				scr.setMinimumHeight(page.getWindowManager().getDefaultDisplay().getHeight()/3);
+				
 				contentLayout.removeAllViews();
 				contentLayout.addView(originalBusLayout);
 			}
 			else if (metadata.has("ldb"))
 			{ 
+				TransportMapPageRefreshTask.transportType = TransportPage.RAIL;
 				//parse entity of rail
 				LinearLayout originalTrainStationLayout = TrainTask.parseTrainEntity(entity, page, 
 						contentLayout, page.getLayoutInflater()); 
 				
 				contentLayout.addView(originalTrainStationLayout);
+			}
+			
+			//Associations
+			/*TextView associationHeader = new TextView(page);
+			associationHeader.setTextSize(16);
+			associationHeader.setBackgroundResource(R.drawable.)*/
+			//Parse associations, each association is a group of entities
+			JSONArray associations = jsonContent.getJSONArray("associations");
+			for (int i = 0; i < associations.length(); i++)
+			{
+				JSONObject association = associations.getJSONObject(i);
+				
+				//the title, stored as "type" in the JSONObject
+				TextView assocTitle = new TextView(page);
+				assocTitle.setText("Other information available from " + association.getString("type") + " nearby:");
+				assocTitle.setTextSize(16);
+				assocTitle.setPadding(5, 5, 5, 5);
+				assocTitle.setTypeface(null, Typeface.BOLD);
+				assocTitle.setTextColor(Color.BLACK);
+				assocTitle.setBackgroundColor(Color.WHITE);
+				contentLayout.addView(assocTitle);
+				
+				JSONArray assocEntities = association.getJSONArray("entities");
+				for (int j = 0; j < assocEntities.length(); j++)
+				{
+					JSONObject assocEntity = assocEntities.getJSONObject(j);
+					JSONObject assocMetadata = assocEntity.getJSONObject("metadata");
+					//Must distinguish between bus stops and train stations before parsing the entity
+					if (assocMetadata.has("real_time_information"))
+					{
+						//Bus
+						//parse entity of bus
+						LinearLayout assocOriginalBusLayout = BusTask.parseBusEntity(assocEntity, page, 
+								page.getContentLayout(), page.getLayoutInflater(),
+								R.layout.transport_bus_stop_layout, R.layout.transport_bus_result_bg_white);
+						contentLayout.addView(assocOriginalBusLayout);
+					}
+					else if (assocMetadata.has("ldb"))
+					{
+						//Train
+						//parse entity of bus
+						LinearLayout assocOriginalTrainLayout = TrainTask.parseTrainEntity(entity, page, 
+								page.getContentLayout(), page.getLayoutInflater());
+						assocOriginalTrainLayout.setLayoutParams(Page.paramsWithLine);
+						contentLayout.addView(assocOriginalTrainLayout);
+					}
+				}
 			}
 			
 			//Show stuff on map (the location of the stop)
@@ -147,7 +145,7 @@ public class TransportMapTask extends BackgroundTask<JSONObject,Void,JSONObject>
 	
 		        MapView mapView = ((PlacesResultsPage) page).getMapView();
 		        mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
-		        		page.getWindowManager().getDefaultDisplay().getHeight()*2/5));
+		        		page.getWindowManager().getDefaultDisplay().getHeight()/3));
 		        // 0 - long
 		        // 1 - lat
 		        GeoPoint point = new GeoPoint(entity.getJSONArray("location").getDouble(1), 

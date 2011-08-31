@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout 
+	    android:layout_height="wrap_content" 
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent" 
+	    android:background="@drawable/bg_white"
+	    android:id="@+id/newBusResultLayout">
+	    
+	    <TextView android:id="@+id/newServiceNumber" 
+	        android:layout_height="wrap_content" 
+	        android:text="SV"
+	        android:textSize="40dp"
+	        android:textColor="@color/blue"
+	        android:layout_toLeftOf="@+id/newBusDetailsLayout"
+	        android:layout_width="fill_parent"
+	        android:layout_weight="2.5"
+	        android:gravity="center"
+	        android:layout_centerVertical="true" 
+	        android:layout_gravity="center_vertical">
+        </TextView>
+        
+        <RelativeLayout android:id="@+id/relativeLayout1" 
+	         android:layout_height="wrap_content"
+	         android:layout_width="fill_parent" 
+		     android:layout_weight="1"
+		     android:layout_centerVertical="true" 
+		     android:layout_centerHorizontal="true" 
+		     android:layout_marginTop="10dp" 
+		     android:layout_marginBottom="10dp">
+         
+        <TextView android:layout_height="wrap_content" 
+	         android:id="@+id/newBusDestination" 
+	         android:layout_width="wrap_content"
+	         android:textColor="@color/blue" 
+	         android:text="Destination"
+	         android:textSize="18dp"
+	         android:layout_marginRight="5dp">
+	    </TextView>
+         
+        <TextView android:layout_height="wrap_content" 
+	         android:id="@+id/newBusDueTime" 
+	         android:layout_width="wrap_content"
+	         android:textColor="@color/blue"
+	         android:layout_below="@+id/newBusDestination" 
+	         android:text="Next">
+     	</TextView>
+    </RelativeLayout>
+</LinearLayout>

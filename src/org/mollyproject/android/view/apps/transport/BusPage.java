@@ -24,7 +24,8 @@ public class BusPage extends AutoRefreshPage{
 	@Override
 	public void onPause() {
 		super.onPause();
-		if (!TransportPage.transportTabHost.getCurrentTabTag().equals(TransportPage.BUS) || TransportPage.transportPaused)
+		if (!TransportPage.transportTabHost.getCurrentTabTag().equals(TransportPage.BUS) 
+				|| TransportPage.transportPaused)
 		{
 			System.out.println("Bus Page paused");
 			if (busPageRefreshTask != null) 

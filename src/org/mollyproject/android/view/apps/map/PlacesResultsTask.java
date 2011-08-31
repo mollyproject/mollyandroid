@@ -56,7 +56,13 @@ public class PlacesResultsTask extends BackgroundTask<Void,Void,JSONObject>
 	        ((ContentPage) page).doneProcessingJSON();
         } catch (JSONException e) {
 			e.printStackTrace();
+			jsonException = true;
+		} catch (NullPointerException e)
+		{
+			e.printStackTrace();
+			nullPointerException = true;
 		}
+		
 	}
 
 	@Override

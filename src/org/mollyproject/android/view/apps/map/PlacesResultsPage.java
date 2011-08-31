@@ -22,23 +22,23 @@ public class PlacesResultsPage extends PageWithMap {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!jsonProcessed|| manualRefresh)
+		if (!args[0].equals("atco"))
 		{
-			manualRefresh = false;
-			if (!args[0].equals("atco"))
+			if (!jsonProcessed|| manualRefresh)
 			{
+				manualRefresh = false;
 				new PlacesResultsTask(this, true, true).execute();
 			}
-			else if (args[0].equals("atco"))
+		}
+		else if (args[0].equals("atco"))
+		{
+			if (transportMapPageRefreshTask != null) 
 			{
-				if (transportMapPageRefreshTask != null) 
-				{
-					transportMapPageRefreshTask.cancel(true);
-				}
-				transportMapPageRefreshTask = new TransportMapPageRefreshTask(this, false, false);
-				transportMapPageRefreshTask.execute();
-				//new TransportMapTask(this, true, true).execute();
+				transportMapPageRefreshTask.cancel(true);
 			}
+			transportMapPageRefreshTask = new TransportMapPageRefreshTask(this, false, false);
+			transportMapPageRefreshTask.execute();
+			//new TransportMapTask(this, true, true).execute();
 		}
 	}
 	

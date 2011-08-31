@@ -18,7 +18,7 @@
 		    android:textSize="18dp"
 		    android:textStyle="bold" 
 		    android:layout_width="fill_parent" 
-		    android:padding="10dp">
+		    android:padding="5dp">
 	    </TextView>
 	    
 	    <TextView android:textColor="@color/blue"

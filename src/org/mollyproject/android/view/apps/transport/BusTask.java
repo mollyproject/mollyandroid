@@ -10,14 +10,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 	public BusTask(Page busPage, boolean toDestroyPageAfterFailure,
@@ -44,8 +49,8 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			for (int i = 0; i < stops.length(); i++)
 			{
 				//process each stop
-				
-				LinearLayout stopLayout = parseBusEntity(stops.getJSONObject(i), page, busLayout, layoutInflater);
+				LinearLayout stopLayout = parseBusEntity(stops.getJSONObject(i), page, busLayout, layoutInflater, 
+						R.layout.transport_bus_stop_layout, R.layout.transport_bus_result_bg_white);
 				busLayout.addView(stopLayout);
 			}
 		} catch (JSONException e) {
@@ -56,26 +61,33 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 		}
 	}
 	
-	public static LinearLayout parseBusEntity(JSONObject entity, Page page, LinearLayout busLayout, LayoutInflater layoutInflater) throws JSONException
+	public static LinearLayout parseBusEntity(final JSONObject entity, final Page page, LinearLayout busLayout, 
+			LayoutInflater layoutInflater, int stopTemplate, int resultTemplate) throws JSONException
 	{
 		//parse a bus stop entity, return the linear layout
-		
-		//Structure of the layout:
-		//stopLayout
-		//- child 0: nearbyStop (TextView)
-		//- child 1: stopDetailsLayout (LinearLayout)
-		//-- child 0 - rest: transport_bus_result (LinearLayout)
-		//--- child 0: Service (TextView)
-		//--- child 1: Destination (TextView)
-		//--- child 2: Time (TextView)
-		
-		//Any other tasks that needs the entity parsed using this method can extract all the info it needs from
-		//the layout
 		LinearLayout stopLayout = (LinearLayout) layoutInflater.inflate
-				(R.layout.transport_bus_stop_layout, busLayout, false);
+				(stopTemplate, busLayout, false);
 		
 		TextView nearbyStop = (TextView) stopLayout.findViewById(R.id.nearbyStop);
-		//JSONObject stop = stops.getJSONObject(i);
+		nearbyStop.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				try {
+					Intent myIntent = new Intent(page, MyApplication.getPageClass(MollyModule.PLACES_ENTITY));
+					String[] placesArgs = new String[2];
+					placesArgs[0] = "atco";//identifier_scheme, should be atco
+					
+					placesArgs[1] = entity.getJSONObject("identifiers").getString("atco"); //identifier_value
+					MyApplication.placesArgs = placesArgs;
+					page.startActivityForResult(myIntent, 0);
+				} catch (JSONException e) {
+					Toast.makeText(page, "There has been an error, please try again later", Toast.LENGTH_SHORT);
+					e.printStackTrace();
+				}
+			}
+		});
+		
 		String stopTitle = entity.getString("title");
 		if (entity.has("distance"))
 		{
@@ -85,7 +97,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 						+ " " + entity.getString("bearing") + ")"; 
 			}
 		}
-		nearbyStop.setText(stopTitle);
+		nearbyStop.setText(stopTitle + ":");
 		
 		//process each bus that passes through this stop
 		JSONObject metadata = entity.getJSONObject("metadata");
@@ -97,8 +109,8 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 		if (services.length() == 0)
 		{
 			TextView noServiceText = new TextView(page);
-			noServiceText.setText("Sorry, there is no real time information available for this service");
-			noServiceText.setLayoutParams(Page.paramsWithLine);
+			noServiceText.setText("Sorry, there is no real time information available for this stop");
+			//noServiceText.setLayoutParams(Page.paramsWithLine);
 			noServiceText.setBackgroundResource(R.drawable.bg_white);
 			noServiceText.setPadding(5, 5, 5, 5);
 			noServiceText.setTextSize(16);
@@ -110,37 +122,51 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 		{
 			//this is for one bus
 			LinearLayout serviceLayout = (LinearLayout) layoutInflater.inflate
-					(R.layout.transport_bus_result, stopLayout, false);
+					(resultTemplate, stopLayout, false);
 			stopDetailsLayout.addView(serviceLayout);
 			
-			serviceLayout.setLayoutParams(Page.paramsWithLine);
+			//serviceLayout.setLayoutParams(Page.paramsWithLine);
 			
 			JSONObject bus = services.getJSONObject(j);
 			
-			TextView service = (TextView) serviceLayout.findViewById(R.id.serviceNumber);
+			TextView service = (TextView) serviceLayout.findViewById(R.id.newServiceNumber);
+			if (bus.getString("service").length() > 3)
+			{
+				service.setTextSize(36);
+			}
 			service.setText(bus.getString("service"));
 			
-			TextView busDestination = (TextView) serviceLayout.findViewById(R.id.busDestination);
-			busDestination.setText(bus.getString("destination"));
-			
-			TextView nextBus = (TextView) serviceLayout.findViewById(R.id.busDueTime);
 			String next = bus.getString("next");
+			TextView busDestination = (TextView) serviceLayout.findViewById(R.id.newBusDestination);
+			busDestination.setText(bus.getString("destination")  + " " + next); //destination and closest bus time
+			
+			TextView newBusDueTime = (TextView) serviceLayout.findViewById(R.id.newBusDueTime);
+			
 			//times for the next bus on this route
-			if (!next.equals("DUE"))
+			JSONArray following = bus.getJSONArray("following");
+			if (!next.equals("DUE") & following.length() > 0)
 			{
-				JSONArray following = bus.getJSONArray("following");
+				String followingText = new String();
 				for (int k = 0; k < following.length(); k++)
 				{
-					next = next + ", " + following.getString(k);
+					if (k == 0)
+					{
+						followingText = following.getString(k);
+					}
+					else
+					{
+						followingText =  followingText + ", " +  following.getString(k);
+					}
 				}
-				if (following.length() > 0)
-				{
-					next = next + "...";
-				}
+				followingText = followingText + "...";
+				newBusDueTime.setText("Next: "+followingText);
 			}
-			nextBus.setText(next);
+			else
+			{
+				newBusDueTime.setText("Next: N/A");
+			}
 		}
-		
+		stopLayout.setLayoutParams(Page.paramsWithLine);
 		return stopLayout;
 	}
 	

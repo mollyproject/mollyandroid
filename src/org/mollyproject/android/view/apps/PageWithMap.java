@@ -8,8 +8,11 @@ import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.ToggleButton;
 
 public abstract class PageWithMap extends ContentPage {
 	protected MapView mapView;
@@ -44,6 +47,23 @@ public abstract class PageWithMap extends ContentPage {
         mapController.setZoom(16);
         mapController.setCenter(new GeoPoint(LocationTracker.DEFAULT_LAT,LocationTracker.DEFAULT_LON));
         
+        final ToggleButton toggleMapButton = (ToggleButton) mapLayout.findViewById(R.id.toggleMapButton);
+		toggleMapButton.setChecked(true);
+		toggleMapButton.setOnClickListener(new OnClickListener() {
+		    public void onClick(View v) {
+		        // Perform action on clicks
+		        if (toggleMapButton.isChecked()) 
+		        {
+		        	mapLayout.addView(mapView, 2);
+		        	System.out.println("Checked");
+		        } 
+		        else 
+		        {
+		        	System.out.println("Unchecked");
+		        	mapLayout.removeView(mapView);
+		        }
+		    }
+		});
 	}
 	
 	public LinearLayout getMapLayout()

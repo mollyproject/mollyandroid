@@ -3,9 +3,13 @@ package org.mollyproject.android.view.apps.map;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
+import org.mollyproject.android.view.apps.transport.BusPageRefreshTask;
+import org.mollyproject.android.view.apps.transport.TrainPageRefreshTask;
+import org.mollyproject.android.view.apps.transport.TransportPage;
 
 public class TransportMapPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 	public static boolean transportMapNeedsRefresh; 
+	public static String transportType;
 	public static boolean overlayRendered;
 	public TransportMapPageRefreshTask(Page page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
@@ -56,7 +60,14 @@ public class TransportMapPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 				}
 			}
 			try {
-				Thread.sleep(60000);
+				if (transportType.equals(TransportPage.BUS))
+				{
+					Thread.sleep(BusPageRefreshTask.BUS_REFRESH_RATE);
+				}
+				else if (transportType.equals(TransportPage.RAIL))
+				{
+					Thread.sleep(TrainPageRefreshTask.TRAIN_REFRESH_RATE);
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
