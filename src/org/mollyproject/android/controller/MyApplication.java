@@ -49,6 +49,7 @@ public class MyApplication extends RoboApplication {
 	public static int lastTransportTab;
 	public static Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
 	public static JSONObject transportCache = null;
+	public static JSONObject currentLocation = null;
 	
 	public static final String PREFS_NAME = "MyPrefsFile";
 	

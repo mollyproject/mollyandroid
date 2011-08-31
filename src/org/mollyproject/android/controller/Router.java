@@ -242,7 +242,9 @@ public class Router {
 	    System.out.println("Updating current location");
 	    
 	    while ((line = rd.readLine()) != null) {
-	        System.out.println(line);
+	    	JSONObject curLocJSON = new JSONObject(line);
+	    	MyApplication.currentLocation = curLocJSON;
+	    	//System.out.println(line);
 	    }
 	    rd.close();
 	    
