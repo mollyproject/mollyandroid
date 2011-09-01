@@ -107,6 +107,10 @@ public class HomePage extends Page {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public void setContentLayout(LinearLayout contentLayout) {
+		//Do nothing
+	}
 }
 
 

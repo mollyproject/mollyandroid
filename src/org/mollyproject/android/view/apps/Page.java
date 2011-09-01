@@ -276,4 +276,6 @@ public abstract class Page extends RoboActivity {
     public abstract String getName();
     
     public abstract LinearLayout getContentLayout();
+    
+    public abstract void setContentLayout(LinearLayout contentLayout);
 }

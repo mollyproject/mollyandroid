@@ -8,7 +8,6 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
-import android.app.LocalActivityManager;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -22,29 +21,21 @@ public class NewSearchPage extends ContentPage {
 		super.onCreate(savedInstanceState);
 		this.generalQuery = MyApplication.generalQuery;
 		
-		//mlam = new LocalActivityManager(this, false);
-		
 		LinearLayout tabHostLayout = (LinearLayout) getLayoutInflater().inflate
 				(R.layout.app_browser_tab, contentLayout, false);
 		contentLayout.addView(tabHostLayout);
 		
 		System.out.println(tabHostLayout.getChildAt(0));
 		searchTabHost = (TabHost) tabHostLayout.getChildAt(0);
-		//searchTabHost.setup(mlam);
-		
-		//create sub pages in the tab
-        //mlam.dispatchCreate(savedInstanceState);
 	}
 	
 	@Override
 	protected void onStop() {
 		super.onStop();
-		//mlam.dispatchStop(); //stop the sub pages in tab
 	}
 	@Override
 	protected void onPause() {
 		super.onPause();
-		//mlam.dispatchPause(isFinishing());
 	}
 	
 	@Override

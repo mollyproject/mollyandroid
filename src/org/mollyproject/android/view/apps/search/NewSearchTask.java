@@ -27,10 +27,8 @@ public class NewSearchTask extends BackgroundTask<Void, Void, String>{
 		try {
 			//Set up the tabs
 			JSONArray availableApps = MyApplication.availableApps;
-			Intent myIntent;
 			TabHost.TabSpec spec;
 			Resources res = page.getResources();
-			String tabTag = new String();
 			NewSearchPage.searchTabHost.setup();
 			
 			for (int i = 0; i < availableApps.length(); i++)
@@ -46,20 +44,20 @@ public class NewSearchTask extends BackgroundTask<Void, Void, String>{
 				    NewSearchPage.searchTabHost.addTab(spec);
 				}
 			}
+			final LinearLayout searchTabLayout = (LinearLayout) NewSearchPage.searchTabHost
+								.findViewById(R.id.searchTabLayout);
+			page.setContentLayout(searchTabLayout);
 			NewSearchPage.searchTabHost.setOnTabChangedListener(new OnTabChangeListener() {
-
 				@Override
 				public void onTabChanged(String tabId) {
 					String tag = NewSearchPage.searchTabHost.getCurrentTabTag();
-					populatePage(tag, (LinearLayout) NewSearchPage.searchTabHost.findViewById(R.id.searchTabLayout));
+					populatePage(tag, searchTabLayout);
 				}
-				
 			});
 			
 			//A small bug: onTabChanged not triggered
 			NewSearchPage.searchTabHost.setCurrentTab(1);
 			NewSearchPage.searchTabHost.setCurrentTab(0);
-			//NewSearchPage.searchTabHost.getcont;
 		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;
@@ -82,6 +80,10 @@ public class NewSearchTask extends BackgroundTask<Void, Void, String>{
 		{
 			setTexts("Search for a place", "Type the street, name or post code of the place you want to " +
 					"search for into the search bar", searchTabLayout);
+		}
+		else
+		{
+			setTexts("Search unavailable", "Sorry this search function has not been available yet", searchTabLayout);
 		}
 	}
 	

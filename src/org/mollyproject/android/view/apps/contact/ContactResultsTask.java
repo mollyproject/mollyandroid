@@ -23,10 +23,10 @@ public class ContactResultsTask extends BackgroundTask<JSONObject, Void, LinearL
 {
 	protected LinearLayout contentLayout;
 	protected LinearLayout contactSearchBar;
-	public ContactResultsTask(AbstractContactPage contactPage, LinearLayout contactSearchBar,
+	public ContactResultsTask(Page page, LinearLayout contactSearchBar,
 			boolean toDestroy, boolean dialog) {
-		super(contactPage,toDestroy,dialog);
-		contentLayout = ((AbstractContactPage) page).getContentLayout();
+		super(page,toDestroy,dialog);
+		contentLayout = page.getContentLayout();
 		this.contactSearchBar = contactSearchBar;
 	}
 

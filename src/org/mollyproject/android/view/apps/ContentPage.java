@@ -198,6 +198,12 @@ public abstract class ContentPage extends Page {
 		return contentLayout;
 	}
 	
+	public void setContentLayout(LinearLayout contentLayout)
+	{
+		//this is called when another layout is needed to be populated rather than the original contentLayout
+		this.contentLayout = contentLayout;
+	}
+	
 }
 	
 	

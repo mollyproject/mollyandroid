@@ -40,7 +40,7 @@ public class SearchPage extends ContentPage {
 		if(!jsonProcessed|| manualRefresh)
 		{
 			manualRefresh = false;
-			new SearchTask(this, true, true).execute();
+			new SearchTask(this, false, true).execute();
 		}
 	}
 	@Override
@@ -58,18 +58,18 @@ public class SearchPage extends ContentPage {
 
 	@Override
 	public String getQuery() throws UnsupportedEncodingException {
-		if (generalQuery.length == 1)
+		if (generalQuery != null)
 		{
-			return ("&query=" + URLEncoder.encode(generalQuery[0],"UTF-8"));
+			if (generalQuery.length == 1)
+			{
+				return ("&query=" + URLEncoder.encode(generalQuery[0],"UTF-8"));
+			}
+			else if (generalQuery.length == 2)
+			{
+				return ("&query=" + URLEncoder.encode(generalQuery[0],"UTF-8")
+					+"&application=" + URLEncoder.encode(generalQuery[1], "UTF-8"));
+			}
 		}
-		else if (generalQuery.length == 2)
-		{
-			return ("&query=" + URLEncoder.encode(generalQuery[0],"UTF-8")
-				+"&application=" + URLEncoder.encode(generalQuery[1], "UTF-8"));
-		}
-		else 
-		{
-			return null;
-		}
+		return null;
 	}
 }
