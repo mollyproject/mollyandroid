@@ -3,6 +3,8 @@ package org.mollyproject.android.view.apps.transport;
 import java.io.UnsupportedEncodingException;
 import org.mollyproject.android.view.apps.Page;
 
+import android.widget.Toast;
+
 public class BusPage extends AutoRefreshPage{
 	
 	public static BusPageRefreshTask busPageRefreshTask;
@@ -16,6 +18,15 @@ public class BusPage extends AutoRefreshPage{
 			{
 				busPageRefreshTask.cancel(true);
 			}
+
+			if (manualRefresh)
+			{
+				manualRefresh = false;
+				Toast toast = Toast.makeText(this, "Please wait. This page might take a moment or two to refresh...", 
+						Toast.LENGTH_SHORT);
+				toast.show();
+			}
+			
 			busPageRefreshTask = new BusPageRefreshTask(this, false, false);
 			busPageRefreshTask.execute();
 		}

@@ -40,7 +40,6 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			//Update the page title every time the page is refreshed
 			TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
 			String pageTitleText = new String();
-			
 			pageTitleText = MyApplication.hourFormat.format(new Date()) 
 						+ " - Nearby bus stops from your current location";
 			
@@ -53,6 +52,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			
 			pageTitle.setText(pageTitleText);
 			LinearLayout busLayout = (LinearLayout) transportLayout.findViewById(R.id.transportDetailsLayout);
+			busLayout.setBackgroundResource(R.drawable.shape_yellow);
 			busLayout.removeAllViews();
 			
 			JSONArray stops = jsonContent.getJSONArray("entities");
@@ -62,8 +62,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			for (int i = 0; i < stops.length(); i++)
 			{
 				//process each stop
-				LinearLayout stopLayout = parseBusEntity(stops.getJSONObject(i), page, busLayout, layoutInflater, 
-						R.layout.transport_bus_stop_layout, R.layout.transport_bus_result_bg_white);
+				LinearLayout stopLayout = parseBusEntity(stops.getJSONObject(i), page, busLayout, layoutInflater);
 				busLayout.addView(stopLayout);
 			}
 		} catch (JSONException e) {
@@ -75,11 +74,11 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 	}
 	
 	public static LinearLayout parseBusEntity(final JSONObject entity, final Page page, LinearLayout busLayout, 
-			LayoutInflater layoutInflater, int stopTemplate, int resultTemplate) throws JSONException
+			LayoutInflater layoutInflater) throws JSONException
 	{
 		//parse a bus stop entity, return the linear layout
 		LinearLayout stopLayout = (LinearLayout) layoutInflater.inflate
-				(stopTemplate, busLayout, false);
+				(R.layout.transport_bus_stop_layout, busLayout, false);
 		
 		TextView nearbyStop = (TextView) stopLayout.findViewById(R.id.nearbyStop);
 		nearbyStop.setOnClickListener(new OnClickListener() {
@@ -124,10 +123,10 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			TextView noServiceText = new TextView(page);
 			noServiceText.setText("Sorry, there is no real time information available for this stop");
 			//noServiceText.setLayoutParams(Page.paramsWithLine);
-			noServiceText.setBackgroundResource(R.drawable.bg_white);
+			noServiceText.setBackgroundResource(R.drawable.shape_black);
 			noServiceText.setPadding(5, 5, 5, 5);
 			noServiceText.setTextSize(16);
-			noServiceText.setTextColor(Color.BLACK);
+			noServiceText.setTextColor(page.getResources().getColor(R.color.yellow));
 			stopDetailsLayout.addView(noServiceText);
 		}
 		
@@ -135,10 +134,8 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 		{
 			//this is for one bus
 			LinearLayout serviceLayout = (LinearLayout) layoutInflater.inflate
-					(resultTemplate, stopLayout, false);
+					(R.layout.transport_bus_result, stopLayout, false);
 			stopDetailsLayout.addView(serviceLayout);
-			
-			//serviceLayout.setLayoutParams(Page.paramsWithLine);
 			
 			JSONObject bus = services.getJSONObject(j);
 			
@@ -151,7 +148,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			
 			String next = bus.getString("next");
 			TextView busDestination = (TextView) serviceLayout.findViewById(R.id.newBusDestination);
-			busDestination.setText(bus.getString("destination")  + " " + next); //destination and closest bus time
+			busDestination.setText(bus.getString("destination")  + '\n' + next); //destination and closest bus time
 			
 			TextView newBusDueTime = (TextView) serviceLayout.findViewById(R.id.newBusDueTime);
 			
@@ -160,7 +157,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			if (!next.equals("DUE") & following.length() > 0)
 			{
 				String followingText = new String();
-				for (int k = 0; k < following.length(); k++)
+				for (int k = 0; k < following.length() & k < 2; k++)
 				{
 					if (k == 0)
 					{
@@ -179,7 +176,6 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 				newBusDueTime.setText("Next: N/A");
 			}
 		}
-		stopLayout.setLayoutParams(Page.paramsWithLine);
 		return stopLayout;
 	}
 	

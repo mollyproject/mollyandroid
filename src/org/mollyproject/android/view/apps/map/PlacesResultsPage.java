@@ -5,6 +5,8 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.PageWithMap;
 import android.os.Bundle;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 
 public class PlacesResultsPage extends PageWithMap {
@@ -36,9 +38,21 @@ public class PlacesResultsPage extends PageWithMap {
 			{
 				transportMapPageRefreshTask.cancel(true);
 			}
+			if (manualRefresh)
+			{
+				manualRefresh = false;
+				Toast toast = Toast.makeText(this, "Please wait. This page might take a moment or two to refresh...", 
+						Toast.LENGTH_SHORT);
+				toast.show();
+			}
+			if (firstLoad)
+			{
+				mapLayout.removeView(mapView);
+				toggleMapButton.setChecked(false);
+			}
+			
 			transportMapPageRefreshTask = new TransportMapPageRefreshTask(this, false, false);
 			transportMapPageRefreshTask.execute();
-			//new TransportMapTask(this, true, true).execute();
 		}
 	}
 	

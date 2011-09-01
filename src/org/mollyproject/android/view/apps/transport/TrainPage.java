@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class TrainPage extends AutoRefreshPage {
 	
@@ -37,6 +38,14 @@ public class TrainPage extends AutoRefreshPage {
 				trainPageRefreshTask.cancel(true);
 			}
 
+			if (manualRefresh)
+			{
+				manualRefresh = false;
+				Toast toast = Toast.makeText(this, "Please wait. This page might take a moment or two to refresh...", 
+						Toast.LENGTH_SHORT);
+				toast.show();
+			}
+			
 			trainPageRefreshTask = new TrainPageRefreshTask(this, false, false);
 			trainPageRefreshTask.execute();
 		}

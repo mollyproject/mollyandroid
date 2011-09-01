@@ -17,6 +17,8 @@ import android.widget.ToggleButton;
 public abstract class PageWithMap extends ContentPage {
 	protected MapView mapView;
 	protected LinearLayout mapLayout;
+	protected ScrollView scr;
+	protected ToggleButton toggleMapButton;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,15 +32,15 @@ public abstract class PageWithMap extends ContentPage {
 		//Anything that needs to be added should now be added to mapLayout
 		
 		LinearLayout originalLayout = (LinearLayout) breadcrumbs.getParent();
-		ScrollView scr = (ScrollView) contentLayout.getParent();
+		scr = (ScrollView) contentLayout.getParent();
 		originalLayout.removeAllViews();
-		//scr.removeAllViews();
 
 		mapLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.map_view, contentLayout, false);
 		setContentView(mapLayout);
 
 		mapLayout.addView(breadcrumbs,0);
 		mapLayout.addView(scr);
+		
 		mapView = (MapView) mapLayout.findViewById(R.id.mapview);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setBuiltInZoomControls(true);
@@ -47,7 +49,7 @@ public abstract class PageWithMap extends ContentPage {
         mapController.setZoom(16);
         mapController.setCenter(new GeoPoint(LocationTracker.DEFAULT_LAT,LocationTracker.DEFAULT_LON));
         
-        final ToggleButton toggleMapButton = (ToggleButton) mapLayout.findViewById(R.id.toggleMapButton);
+        toggleMapButton = (ToggleButton) mapLayout.findViewById(R.id.toggleMapButton);
 		toggleMapButton.setChecked(true);
 		toggleMapButton.setOnClickListener(new OnClickListener() {
 		    public void onClick(View v) {

@@ -27,7 +27,8 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
 	}
 
-	public static LinearLayout parseTrainEntity(JSONObject entity, Page page, LinearLayout trainLayout, LayoutInflater layoutInflater) throws JSONException
+	public static LinearLayout parseTrainEntity(JSONObject entity, Page page, 
+				LinearLayout trainLayout, LayoutInflater layoutInflater) throws JSONException
 	{
 		LinearLayout stationLayout = (LinearLayout) layoutInflater.inflate
 				(R.layout.transport_train_station_layout, trainLayout, false);
@@ -143,6 +144,7 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 			
 			//Update the page title every time the page is refreshed
 			TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
+			pageTitle.setPadding(0, 10, 0, 10);
 			String nrTime = ldb.getString("generatedAt").substring(0, 19) + " GMT";
 			
 			pageTitle.setText(jsonContent.getJSONObject("entity").getString("title") + " " + MyApplication.hourFormat.format

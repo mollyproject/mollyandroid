@@ -3,12 +3,12 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
   android:layout_width="fill_parent"
-  android:background="@drawable/bg_white"
   android:layout_height="wrap_content">
-    <TextView android:textColor="@color/blue"
+    <TextView android:textColor="@color/yellow"
 	    android:layout_height="wrap_content" 
 	    android:id="@+id/nearbyStop" 
 	    android:text="Stop" 
+	    android:background="@drawable/bg_gray_gradient"
 	    android:textSize="16dp"
 	    android:textStyle="bold"
 	    android:layout_width="fill_parent" 
@@ -19,6 +19,6 @@
      android:layout_width="fill_parent" 
      android:orientation="vertical"
      android:layout_height="wrap_content"
-     android:background="@drawable/bg_blue">
+     android:background="@drawable/shape_yellow">
     </LinearLayout>
 </LinearLayout>

@@ -16,19 +16,10 @@
 		    android:id="@+id/transportTitle" 
 		    android:background="@drawable/bg_white"
 		    android:textSize="18dp"
+		    android:clickable="false"
 		    android:textStyle="bold" 
 		    android:layout_width="fill_parent" 
 		    android:padding="5dp">
-	    </TextView>
-	    
-	    <TextView android:textColor="@color/blue"
-		    android:layout_height="wrap_content" 
-		    android:id="@+id/transportAnnouncements" 
-		    android:background="@drawable/bg_white"
-		    android:textSize="0dp"
-		    android:layout_width="fill_parent" 
-		    android:paddingLeft="10dp"
-		    android:paddingRight="10dp">
 	    </TextView>
 	    
 	    <ScrollView android:layout_height="wrap_content" 

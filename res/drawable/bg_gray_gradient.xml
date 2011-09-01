@@ -3,5 +3,5 @@
 		android:drawable="@drawable/shape_yellow"/>
 	<item android:state_focused="true" 
 		android:drawable="@drawable/shape_yellow"/>
-    <item android:drawable="@drawable/shape_white" /> <!-- default -->
+    <item android:drawable="@drawable/shape_gray_gradient" /> <!-- default -->
 </selector>

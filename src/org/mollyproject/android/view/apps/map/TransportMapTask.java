@@ -61,8 +61,7 @@ public class TransportMapTask extends BackgroundTask<JSONObject,Void,JSONObject>
 				TransportMapPageRefreshTask.transportType = TransportPage.BUS;
 				//parse entity of bus
 				LinearLayout originalBusLayout = BusTask.parseBusEntity(entity, page, 
-						page.getContentLayout(), page.getLayoutInflater(), 
-						R.layout.transport_bus_stop_layout, R.layout.transport_bus_result_bg_blue);
+						contentLayout, page.getLayoutInflater());
 				//Customise the background:
 				LinearLayout originalStopDetailsLayout = (LinearLayout) originalBusLayout.findViewById(R.id.stopDetailsLayout);
 				originalStopDetailsLayout.setBackgroundResource(R.drawable.bg_white);
@@ -74,8 +73,6 @@ public class TransportMapTask extends BackgroundTask<JSONObject,Void,JSONObject>
 				stopText.setClickable(false);
 				stopText.setText(MyApplication.hourFormat.format(new Date()) 
 						+ " - Real time information from this stop:");
-				stopText.setTextColor(Color.BLACK);
-				stopText.setBackgroundResource(R.drawable.bg_white);
 				
 				contentLayout.removeAllViews();
 				contentLayout.addView(originalBusLayout);
@@ -121,8 +118,7 @@ public class TransportMapTask extends BackgroundTask<JSONObject,Void,JSONObject>
 						//Bus
 						//parse entity of bus
 						LinearLayout assocOriginalBusLayout = BusTask.parseBusEntity(assocEntity, page, 
-								page.getContentLayout(), page.getLayoutInflater(),
-								R.layout.transport_bus_stop_layout, R.layout.transport_bus_result_bg_white);
+								page.getContentLayout(), page.getLayoutInflater());
 						contentLayout.addView(assocOriginalBusLayout);
 					}
 					else if (assocMetadata.has("ldb"))

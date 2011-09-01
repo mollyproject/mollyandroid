@@ -10,7 +10,7 @@
 	    android:layout_height="wrap_content" 
 	    android:id="@+id/stationMessage" 
 	    android:text="" 
-	    android:textSize="16dp"
+	    android:textSize="0dp"
 	    android:textStyle="bold"
 	    android:layout_width="fill_parent" 
 	    android:padding="5dp">

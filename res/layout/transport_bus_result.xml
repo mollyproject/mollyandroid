@@ -3,17 +3,18 @@
 	    android:layout_height="wrap_content" 
 	    xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="fill_parent" 
-	    android:background="@drawable/bg_white"
+	    android:background="@drawable/bg_black"
+	    android:clickable="true"
 	    android:id="@+id/newBusResultLayout">
 	    
 	    <TextView android:id="@+id/newServiceNumber" 
 	        android:layout_height="wrap_content" 
 	        android:text="SV"
 	        android:textSize="40dp"
-	        android:textColor="@color/blue"
+	        android:textColor="@color/yellow"
 	        android:layout_toLeftOf="@+id/newBusDetailsLayout"
 	        android:layout_width="fill_parent"
-	        android:layout_weight="2.5"
+	        android:layout_weight="2"
 	        android:gravity="center"
 	        android:layout_centerVertical="true" 
 	        android:layout_gravity="center_vertical">
@@ -21,18 +22,19 @@
         
         <RelativeLayout android:id="@+id/relativeLayout1" 
 	         android:layout_height="wrap_content"
-	         android:layout_width="fill_parent" 
-		     android:layout_weight="1"
-		     android:layout_centerVertical="true" 
+	         android:layout_centerVertical="true" 
 		     android:layout_centerHorizontal="true" 
+		     android:layout_marginLeft="2dp" 
 		     android:layout_marginTop="10dp" 
-		     android:layout_marginBottom="10dp">
+		     android:layout_marginBottom="10dp" 
+		     android:layout_width="fill_parent"
+		     android:layout_weight="1">
          
         <TextView android:layout_height="wrap_content" 
 	         android:id="@+id/newBusDestination" 
 	         android:layout_width="wrap_content"
-	         android:textColor="@color/blue" 
-	         android:text="Destination"
+	         android:textColor="@color/yellow" 
+	         android:text="Very long bus destination name"
 	         android:textSize="18dp"
 	         android:layout_marginRight="5dp">
 	    </TextView>
@@ -40,9 +42,19 @@
         <TextView android:layout_height="wrap_content" 
 	         android:id="@+id/newBusDueTime" 
 	         android:layout_width="wrap_content"
-	         android:textColor="@color/blue"
+	         android:textColor="@color/yellow"
 	         android:layout_below="@+id/newBusDestination" 
 	         android:text="Next">
      	</TextView>
     </RelativeLayout>
+    <TextView android:id="@+id/simpleArrow" 
+	    android:text=">" 
+	    android:textColor="@color/yellow"
+	    android:textSize="40dp"
+	    android:layout_height="wrap_content" 
+	    android:layout_centerVertical="true" 
+	    android:layout_alignParentRight="true" 
+	    android:layout_gravity="center_vertical" 
+	    android:layout_marginLeft="2dp" 
+	    android:layout_marginRight="5dp" android:layout_width="40dp"></TextView>
 </LinearLayout>
