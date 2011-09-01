@@ -33,7 +33,7 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 			
 			String city = "Today in " + observation.getString("name");
 			
-			String temperature = observation.getString("temperature")+"�C";
+			String temperature = observation.getString("temperature")+"°C";
 			
 			String others = new String();
 			//min and max temperature
@@ -148,10 +148,10 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 				}
 				
 				TextView lowTemp = (TextView) forecastDayLayout.findViewById(R.id.lowestTemp);
-				lowTemp.setText(forecast.getString("min_temperature")+"�C");
+				lowTemp.setText(forecast.getString("min_temperature")+"°C");
 				
 				TextView highTemp = (TextView) forecastDayLayout.findViewById(R.id.highestTemp);
-				highTemp.setText(forecast.getString("max_temperature")+"�C");
+				highTemp.setText(forecast.getString("max_temperature")+"°C");
 				
 				ImageView weatherForecastIcon = (ImageView) forecastDayLayout.findViewById(R.id.weatherForecastIcon);
 				weatherForecastIcon.setImageResource(MyApplication.getImgResourceId(forecast.getString("icon")+"_small"));
