@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mollyproject.android.view.apps.Page;
 
@@ -51,6 +52,7 @@ public class MyApplication extends RoboApplication {
 	public static JSONObject transportCache = null;
 	public static JSONObject currentLocation = null;
 	public static String csrfToken = null; //should be set once per session in CookieManager.storeCookies()
+	public static JSONArray availableApps = null; //all available apps for the current session
 	public static final String PREFS_NAME = "MyPrefsFile";
 	
 	public static DateFormat defaultDateFormat = new SimpleDateFormat

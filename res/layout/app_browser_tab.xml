@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="fill_parent"
+   	android:layout_height="wrap_content"
+   	android:id="@+id/tabhostLayout"
+   	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
+	<TabHost 
+		android:id="@android:id/tabhost"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<LinearLayout android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			
+			<HorizontalScrollView android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:fillViewport="true"
+				android:scrollbars="none">
+				<TabWidget android:id="@android:id/tabs"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"/>
+			</HorizontalScrollView>
+			
+			<FrameLayout android:id="@android:id/tabcontent"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent" >
+				<LinearLayout
+					  android:orientation="vertical"
+					  android:layout_width="fill_parent"
+					  android:id="@+id/searchTabLayout"
+					  android:background="@drawable/shape_blue"
+					  android:clickable="false" 
+					  android:layout_height="fill_parent">
+					    <TextView android:layout_height="wrap_content" 
+						    android:id="@+id/searchTabTitle" 
+						    android:layout_width="wrap_content" 
+						    android:text="Search" 
+						    android:textSize="20dp"
+						    android:textColor="@color/white" 
+						    android:layout_marginLeft="5dp" 
+						    android:layout_marginRight="5dp" 
+						    android:layout_marginTop="5dp">
+					    </TextView>
+					    
+					    <TextView android:layout_height="wrap_content" 
+						    android:id="@+id/searchTabHelp" 
+						    android:layout_width="fill_parent"
+						    android:textColor="@color/blue"
+						    android:padding="5dp"
+						    android:text="Help" 
+						    android:textSize="16dp"
+						    android:background="@color/white"
+						    android:layout_margin="5dp">
+					    </TextView>
+					    
+					    <LinearLayout android:id="@+id/searchResultsLayout" 
+						    android:layout_height="wrap_content" 
+						    android:layout_width="fill_parent" 
+						    android:orientation="vertical">
+					    </LinearLayout>
+				</LinearLayout>
+			</FrameLayout>
+				
+				
+		</LinearLayout>
+	</TabHost>
+</LinearLayout>

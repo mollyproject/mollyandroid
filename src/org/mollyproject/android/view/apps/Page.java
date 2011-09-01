@@ -7,6 +7,9 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.search.NewSearchPage;
+import org.mollyproject.android.view.apps.search.SearchPage;
+
 import roboguice.activity.RoboActivity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -254,6 +257,17 @@ public abstract class Page extends RoboActivity {
 		}
 		
 	}
+	
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_SEARCH & !getName().equals(MollyModule.SEARCH_PAGE))
+        {
+        	Intent myIntent = new Intent (getApplicationContext(), NewSearchPage.class);
+        	startActivityForResult(myIntent, 0);
+        	return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 	
 	public abstract String getQuery() throws UnsupportedEncodingException;
 	

@@ -37,6 +37,7 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 						Router.OutputFormat.JSON,null);
 				
 				JSONArray availableApps = output.getJSONArray("applications");
+				MyApplication.availableApps = availableApps;
 				List<String> appsList = new ArrayList<String>(); 
 				for (int i = 0; i < availableApps.length(); i++)
 				{
