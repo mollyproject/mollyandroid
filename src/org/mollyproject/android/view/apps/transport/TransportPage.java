@@ -34,6 +34,9 @@ public class TransportPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState) 
 	{
         super.onCreate(savedInstanceState);
+        
+        transportPageTitle = parentBreadcrumb;
+        
         mlam = new LocalActivityManager(this, false);
         LinearLayout tabHostLayout = (LinearLayout) getLayoutInflater().inflate
         				(R.layout.transport_tabs, contentLayout, false);
@@ -41,7 +44,6 @@ public class TransportPage extends ContentPage {
         //set up the tab host, it has no content yet
         transportTabHost = (TabHost) tabHostLayout.findViewById(R.id.tabHost);
         transportTabHost.setup(mlam);
-        transportPageTitle = parentBreadcrumb;
         transportTabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			@Override
 			public void onTabChanged(String tabId) {

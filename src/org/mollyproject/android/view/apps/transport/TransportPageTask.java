@@ -49,7 +49,6 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 			    TransportPage.transportTabHost.addTab(spec);
 			}
 			
-			//TransportPage.firstLoad = false;
 			((ContentPage) page).doneProcessingJSON();
 			SharedPreferences settings = page.getSharedPreferences(MyApplication.PREFS_NAME, 0);
 			if (settings.contains("lastTab"))
