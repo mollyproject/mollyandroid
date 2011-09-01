@@ -112,6 +112,7 @@ public class CookieManager {
 			System.out.println("Stored Cookies from client: "+jsonCookies);
 			writeCookiesToFile();
     	}
+    	MyApplication.csrfToken = getCSRFToken();
     }
     
     public BasicCookieStore getCookieStore()

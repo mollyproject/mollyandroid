@@ -3,8 +3,9 @@ package org.mollyproject.android.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -42,9 +43,8 @@ import org.apache.http.protocol.HttpContext;
 
 public class Router {
 	protected CookieManager cookieMgr;
-	//protected LocationThread currentLocThread;
 	protected LocationTracker locTracker;
-	protected String csrfToken;
+	//protected String csrfToken;
 	protected boolean firstReq;
 	protected MyApplication myApp;
 	protected HttpClient client;
@@ -128,7 +128,7 @@ public class Router {
 	//Take an URL String, convert to URL, open connection then process 
 	//and return the response
 	public synchronized String getFrom (String urlStr) throws MalformedURLException,
-					IOException, UnknownHostException, SocketTimeoutException, JSONException, ParseException
+					IOException, UnknownHostException, SocketException, JSONException, ParseException
 	{
         String getURL = urlStr;
         System.out.println("Getting from: " + urlStr);
@@ -142,7 +142,7 @@ public class Router {
 		return null;
 	}
 	
-	public String reverse(String locator, String arg) throws SocketTimeoutException, 
+	public String reverse(String locator, String arg) throws SocketException, 
 			MalformedURLException, UnknownHostException, IOException, JSONException, ParseException
 	{
 		//Geting the actual URL from the server using the locator (view name)
@@ -216,12 +216,34 @@ public class Router {
         return new JSONObject(outputStr);
 	}
 	
-	public void updateCurrentLocation(Location loc) throws JSONException, ParseException, ClientProtocolException, IOException
+	public List<String> post(List<NameValuePair> arguments, String url) throws ClientProtocolException, IOException
 	{
-        HttpPost post = new HttpPost(reverse("geolocation:index",null));
+		//take in arguments as a list of name-value pairs and a target url, encode all the arguments,
+		//then do a POST request to the target url, return the output as a list of strings
+		
+		HttpPost post = new HttpPost(url);
+		 
+		UrlEncodedFormEntity ent = new UrlEncodedFormEntity(arguments,HTTP.UTF_8);
+		post.setEntity(ent);
+		HttpResponse responsePOST = client.execute(post);
+		//System.out.println("Location update cookies: " + ((DefaultHttpClient) client).getCookieStore().getCookies());
+        BufferedReader rd = new BufferedReader
+    		(new InputStreamReader(responsePOST.getEntity().getContent()));
+		List<String> output = new ArrayList<String>();
+		String line;
+		System.out.println("Updating current location");
+	    
+		while ((line = rd.readLine()) != null) {
+			output.add(line);
+		}
+		rd.close();
+		return output;
+	}
+	
+	public void updateCurrentLocation(Location loc) throws JSONException, ParseException, 
+				ClientProtocolException, IOException
+	{
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        
-        System.out.println("Cookies before loc test" + ((DefaultHttpClient) client).getCookieStore().getCookies());
         
         params.add(new BasicNameValuePair("csrfmiddlewaretoken", cookieMgr.getCSRFToken()));
         params.add(new BasicNameValuePair("longitude", new Double(loc.getLongitude()).toString()));
@@ -231,31 +253,14 @@ public class Router {
         params.add(new BasicNameValuePair("format", "json"));
         params.add(new BasicNameValuePair("force", "True"));
         
-        UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params,HTTP.UTF_8);
-        post.setEntity(ent);
-        HttpResponse responsePOST = client.execute(post);
-        //System.out.println("Location update cookies: " + ((DefaultHttpClient) client).getCookieStore().getCookies());
-        
-        BufferedReader rd = new BufferedReader
-    			(new InputStreamReader(responsePOST.getEntity().getContent()));
-	    String line;
-	    System.out.println("Updating current location");
-	    
-	    while ((line = rd.readLine()) != null) {
-	    	JSONObject curLocJSON = new JSONObject(line);
-	    	MyApplication.currentLocation = curLocJSON;
-	    	//System.out.println(line);
-	    }
-	    rd.close();
-	    
-	    //System.out.println("Loc Test: " + getFrom("http://dev.m.ox.ac.uk/geolocation/"));
-	    System.out.println("Cookies after loc test" + ((DefaultHttpClient) client).getCookieStore().getCookies());
+        List<String> output = post(params,reverse("geolocation:index", null));
+        //in this case the result is only one line of text, i.e just the first element of the list is fine
+        MyApplication.currentLocation = new JSONObject(output.get(0));
 	}
 	
 	public void updateLocationManually(String locationName) throws JSONException, 
 				ClientProtocolException, IOException, ParseException
 	{
-        HttpPost post = new HttpPost(reverse("geolocation:index",null));
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         
         params.add(new BasicNameValuePair("csrfmiddlewaretoken", cookieMgr.getCSRFToken()));
@@ -263,18 +268,8 @@ public class Router {
         params.add(new BasicNameValuePair("method", "geocoded"));
         params.add(new BasicNameValuePair("name", locationName));
         
-        UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params,HTTP.UTF_8);
-        post.setEntity(ent);
-        HttpResponse responsePOST = client.execute(post);
-        
-        BufferedReader rd = new BufferedReader
-    			(new InputStreamReader(responsePOST.getEntity().getContent()));
-	    String line;
-	    System.out.println("Testing manual Loc update");
-	    
-	    while ((line = rd.readLine()) != null) {
-	        System.out.println(line);
-	    }
-	    rd.close();
+        List<String> output = post(params,reverse("geolocation:index", null));
+        //in this case the result is only one line of text, i.e just the first element of the list is fine
+        MyApplication.currentLocation = new JSONObject(output.get(0));
 	}
 }
