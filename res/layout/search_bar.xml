@@ -15,7 +15,7 @@
 		    android:singleLine="True" 
 		    android:id="@+id/searchField" 
 		    android:layout_height="wrap_content" 
-		    android:layout_toLeftOf="@+id/searchButton" 
-		    android:layout_alignTop="@+id/searchButton">
+		    android:layout_toLeftOf="@+id/searchButton"
+		    android:layout_alignTop="@+id/searchButton" android:layout_marginLeft="5dp">
 	    </EditText>
 </RelativeLayout>
