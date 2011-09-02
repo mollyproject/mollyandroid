@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.view.apps.ContentPage;
+import org.mollyproject.android.view.apps.PageWithMap;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
@@ -43,15 +44,15 @@ public class PlacesResultsTask extends BackgroundTask<Void,Void,JSONObject>
 				point = new GeoPoint(attrs.getDouble("lat"), attrs.getDouble("lon"));
 			}
 
-	        MapView mapView = ((PlacesResultsPage) page).getMapView();
+	        MapView mapView = ((PageWithMap) page).getMapView();
 	        
 	        MapController mapController = mapView.getController();
 	        mapController.setCenter(point);
 
 	        OverlayItem markerOverlay = new OverlayItem(title, "", point);
 	        overlayItems.add(markerOverlay);
-	        ItemizedIconOverlay<OverlayItem> overlay = new ItemizedIconOverlay<OverlayItem>(page,overlayItems, null);
-	        mapView.getOverlays().add(overlay);
+	        
+	        populateMarkers((PageWithMap) page, overlayItems);
 	        
 	        ((ContentPage) page).doneProcessingJSON();
         } catch (JSONException e) {
@@ -62,9 +63,14 @@ public class PlacesResultsTask extends BackgroundTask<Void,Void,JSONObject>
 			e.printStackTrace();
 			nullPointerException = true;
 		}
-		
 	}
-
+	
+	public static void populateMarkers(PageWithMap page, List<OverlayItem> overlayItems)
+	{
+		ItemizedIconOverlay<OverlayItem> overlay = new ItemizedIconOverlay<OverlayItem>(page,overlayItems, null);
+        page.getMapView().getOverlays().add(overlay);
+	}
+	
 	@Override
 	protected JSONObject doInBackground(Void... params) {
 		while (!((ContentPage) page).downloadedJSON())
