@@ -84,4 +84,10 @@ public class Splash extends Page {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void setContentLayout(LinearLayout contentLayout) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -31,7 +31,8 @@ public class FeedbackPage extends ContentPage {
 			
 			@Override
 			public void onClick(View v) {
-				new FeedbackTask(FeedbackPage.this, false, true).execute(feedbackBody.getText().toString());
+				new FeedbackTask(FeedbackPage.this, false, true).execute(feedbackBody.getText().toString(),
+						feedbackEmail.getText().toString());
 			}
 		});
 	}

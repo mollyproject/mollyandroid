@@ -260,8 +260,9 @@ public abstract class Page extends RoboActivity {
 	
 	@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_SEARCH & !getName().equals(MollyModule.SEARCH_PAGE))
+        if (keyCode == KeyEvent.KEYCODE_SEARCH & !this.getName().equals(MollyModule.SEARCH_PAGE))
         {
+   			MyApplication.currentApp = this.getName();
         	Intent myIntent = new Intent (getApplicationContext(), NewSearchPage.class);
         	startActivityForResult(myIntent, 0);
         	return true;

@@ -54,6 +54,7 @@ public class MyApplication extends RoboApplication {
 	public static String csrfToken = null; //should be set once per session in CookieManager.storeCookies()
 	public static JSONArray availableApps = null; //all available apps for the current session
 	public static final String PREFS_NAME = "MyPrefsFile";
+	public static String currentApp;
 	
 	public static DateFormat defaultDateFormat = new SimpleDateFormat
 			("EEE, d MMM yyyy HH:mm:ss Z");

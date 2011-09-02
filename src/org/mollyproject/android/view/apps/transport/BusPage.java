@@ -3,6 +3,7 @@ package org.mollyproject.android.view.apps.transport;
 import java.io.UnsupportedEncodingException;
 import org.mollyproject.android.view.apps.Page;
 
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class BusPage extends AutoRefreshPage{
@@ -60,6 +61,12 @@ public class BusPage extends AutoRefreshPage{
 	@Override
 	public String getAdditionalParams() {
 		return "&arg=bus";
+	}
+
+	@Override
+	public void setContentLayout(LinearLayout contentLayout) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

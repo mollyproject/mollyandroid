@@ -27,7 +27,7 @@ public class FeedbackTask extends BackgroundTask<String, Void, List<String>>{
 	@Override
 	public void updateView(List<String> outputs) {
 		// TODO Auto-generated method stub
-		
+		System.out.println(outputs.get(0));
 	}
 
 	@Override
@@ -47,6 +47,10 @@ public class FeedbackTask extends BackgroundTask<String, Void, List<String>>{
 		        pairsList.add(new BasicNameValuePair("body", params[0]));
 		        pairsList.add(new BasicNameValuePair("format", "json"));
 		        pairsList.add(new BasicNameValuePair("language_code", "en"));
+		        if (params[1].length() > 0)
+		        {
+		        	pairsList.add(new BasicNameValuePair("email", params[1]));
+		        }
 	        }
 	        else
 	        {

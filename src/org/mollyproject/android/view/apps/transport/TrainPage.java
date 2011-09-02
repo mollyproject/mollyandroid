@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class TrainPage extends AutoRefreshPage {
@@ -104,6 +105,12 @@ public class TrainPage extends AutoRefreshPage {
 		MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.train_boards_menu, menu);
 	    return true;
+	}
+
+	@Override
+	public void setContentLayout(LinearLayout contentLayout) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
