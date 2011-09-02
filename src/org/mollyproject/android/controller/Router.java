@@ -25,6 +25,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
@@ -52,7 +54,7 @@ public class Router {
 
 	public static enum OutputFormat { JSON, FRAGMENT, JS, YAML, XML, HTML };
 
-	public Router (MyApplication myApp) throws IOException, JSONException, ParseException 
+	public Router (MyApplication myApp) throws SocketException, IOException, JSONException, ParseException 
 	{
 		this.myApp = myApp;
 		cookieMgr = new CookieManager(myApp);
@@ -60,7 +62,10 @@ public class Router {
 		locTracker = new LocationTracker(myApp);
 		locTracker.startLocUpdate();
 		client = new DefaultHttpClient();
-		client.getParams().setParameter("http.connection-manager.timeout",10000);
+
+		HttpParams httpParams = client.getParams();
+		HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
+		HttpConnectionParams.setSoTimeout(httpParams, 10000);
 		
 		((DefaultHttpClient) client).addRequestInterceptor(new HttpRequestInterceptor() {
 
@@ -160,7 +165,7 @@ public class Router {
 	}
 	
 	public synchronized JSONObject onRequestSent(String locator, String arg, OutputFormat format, String query) 
-				throws JSONException, UnknownHostException, IOException, ParseException, IllegalArgumentException 
+				throws JSONException, ParseException, IllegalArgumentException, MalformedURLException, SocketException, IOException 
 	{
 		/*basic method for all requests for json response, it sets up a url to be sent
 		  to the server as follow:
