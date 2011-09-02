@@ -54,16 +54,17 @@ public abstract class ContentPage extends Page {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (MyApplication.destroyed)
+		if (!loaded || MyApplication.destroyed || manualRefresh)
 		{
-			//in case the app is resumed after sleeping for a while and its cache is claimed
-			loaded = false;
-			jsonProcessed = false;
-			MyApplication.destroyed = false;
-		}
-		if (!loaded)
-		{
+			//The page is either not loaded or all its data has been erased 
+			//after sleeping for a while and its cache is claimed or manual refresh in effect
 			loaded = true;
+			jsonDownloaded = false;
+			jsonProcessed = false;
+			if (MyApplication.destroyed)
+			{
+				MyApplication.destroyed = false;
+			}
 			new PageSetupTask(this).execute();
 		}
 	}

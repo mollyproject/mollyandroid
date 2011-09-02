@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    <RelativeLayout
+	android:id="@+id/searchLayout" 
+	android:layout_width="wrap_content" 
+	android:background="@drawable/bg_blue" android:layout_height="wrap_content" android:layout_marginTop="20dp" android:layout_marginBottom="5dp">
+	    <Button android:background="@drawable/search_button" 
+		    android:id="@+id/searchButton" 
+		    android:layout_width="wrap_content" 
+		    android:layout_height="wrap_content" 
+		    android:layout_centerVertical="true" 
+		    android:layout_alignParentRight="true"></Button>
+	    
+	    <EditText android:layout_width="fill_parent" 
+		    android:singleLine="True" 
+		    android:id="@+id/searchField" 
+		    android:layout_height="wrap_content" 
+		    android:layout_toLeftOf="@+id/searchButton"
+		    android:layout_alignTop="@+id/searchButton" 
+		    android:layout_marginLeft="5dp">
+	    </EditText>
+	</RelativeLayout>
+	
+	<LinearLayout android:id="@+id/currentLocationLayout" 
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:background="@drawable/shape_white"
+	android:orientation="vertical">
+	    <TextView android:id="@+id/currentLocation" 
+	    	android:layout_height="wrap_content"
+		    android:layout_width="fill_parent"
+		    android:textColor="@color/blue" 
+		    android:text="Current Location" 
+		    android:textSize="18dp"
+		    android:padding="5dp"
+		    android:paddingTop="10dp"
+		    android:paddingBottom="10dp">
+		</TextView>
+		
+	    	<RelativeLayout
+			  android:layout_width="fill_parent"
+			  android:id="@+id/nearby"
+			  android:clickable="true"
+			  android:padding="10dp"
+			  android:background="@drawable/bg_blue"
+			  android:layout_height="wrap_content" 
+			  android:layout_margin="5dp" android:gravity="center_vertical">
+  
+		    <TextView android:text="Places nearby" 
+			    android:id="@+id/nearbyText"
+			    android:textColor="@color/white"
+			    android:textSize="18dp"
+			    android:layout_width="wrap_content" 
+			    android:layout_height="wrap_content" 
+			    android:layout_gravity="center_vertical">
+		    </TextView>
+		    <ImageView android:layout_width="wrap_content" 
+			    android:src="@drawable/list_arrow" 
+			    android:layout_height="wrap_content" 
+			    android:id="@+id/arrow" 
+			    android:layout_centerVertical="true" 
+			    android:layout_alignParentRight="true" android:layout_marginLeft="5dp" android:layout_marginRight="5dp">
+			</ImageView>
+		</RelativeLayout>
+	</LinearLayout>
+</LinearLayout>

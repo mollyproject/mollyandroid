@@ -3,6 +3,8 @@ package org.mollyproject.android.controller;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.widget.Toast;
@@ -38,6 +40,12 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		if (dialogEnabled)
 		{
 			pDialog = ProgressDialog.show(page, "", "Loading...", true, true);
+			pDialog.setOnCancelListener(new OnCancelListener() {
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					cancel(true);
+				}
+			});
 		}
 	}
 	@Override

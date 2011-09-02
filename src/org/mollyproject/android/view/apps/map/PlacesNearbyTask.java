@@ -7,13 +7,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PlacesNearbyTask extends BackgroundTask<JSONObject, Void, JSONObject>{
 
@@ -23,38 +28,59 @@ public class PlacesNearbyTask extends BackgroundTask<JSONObject, Void, JSONObjec
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static LinearLayout parsePlaceEntity(JSONObject entity, Page page) throws JSONException
+	public static LinearLayout parsePlaceEntity(final JSONObject entity, final Page page) throws JSONException
 	{
 		LinearLayout resultLayout = (LinearLayout) page.getLayoutInflater().inflate
-				(R.layout.plain_text_search_result, null);
-		TextView result = (TextView) resultLayout.findViewById(R.id.plainTextResultText);
-		String resultText = new String();
+				(R.layout.clickable_search_result, null);
+		TextView result = (TextView) resultLayout.findViewById(R.id.clickableResultText);
+		
+		//apply toUpperCase to the first character in the retrieved string then append it back
+		String verbose = new String();
 		if (entity.getInt("entities_found") > 1)
 		{
-			resultText = resultText + entity.getString("verbose_name_plural");
+			verbose = entity.getString("verbose_name_plural");
 		}
 		else
 		{
-			resultText = resultText + entity.getString("verbose_name_singular");
+			verbose = entity.getString("verbose_name_singular");
 		}
-		
-		resultText = resultText + " (" + entity.getString("entities_found") + " within " 
+		Character c = Character.toUpperCase(verbose.charAt(0));
+		verbose = c.toString() + verbose.subSequence(1, verbose.length());
+
+		verbose = verbose + " (" + entity.getString("entities_found") + " within " 
 						+ entity.getString("max_distance") + ")";
-		result.setText(resultText);
-		result.setOnClickListener(new OnClickListener() {
+		result.setText(verbose);
+		resultLayout.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				try {
+					MyApplication.placesNearbySlug = entity.getString("slug");
+					Intent myIntent = new Intent(page.getApplicationContext(), 
+							MyApplication.getPageClass(MollyModule.PLACES_NEARBY_DETAIL));
+					page.startActivityForResult(myIntent, 0);
+				} catch (JSONException e) {
+					e.printStackTrace();
+					Toast.makeText(page.getApplicationContext(), "This page is currently unavailable", 
+							Toast.LENGTH_SHORT).show();
+				}
 				
 			}
 		});
+		resultLayout.setLayoutParams(Page.paramsWithLine);
 		return resultLayout;
 	}
 
 	@Override
 	public void updateView(JSONObject jsonContent) {
 		try {
+			//set up an underlying white background to show the lines
+			LinearLayout nearbyPlacesLayout = new LinearLayout(page.getApplicationContext());
+			nearbyPlacesLayout.setLayoutParams(Page.paramsWithLine);
+			nearbyPlacesLayout.setOrientation(LinearLayout.VERTICAL);
+			nearbyPlacesLayout.setBackgroundResource(R.drawable.shape_white);
+			page.getContentLayout().addView(nearbyPlacesLayout);
+			
 			JSONObject entityTypes = jsonContent.getJSONObject("entity_types");
 			Iterator<String> entityTypeKeys = entityTypes.keys();
 			
@@ -64,11 +90,21 @@ public class PlacesNearbyTask extends BackgroundTask<JSONObject, Void, JSONObjec
 				JSONArray entityType = entityTypes.getJSONArray(key);
 				if (entityType.length() > 0)
 				{
-					//start parsing entities
+					TextView entityTypeHeader = new TextView(page.getApplicationContext());
+					entityTypeHeader.setText(key);
+					entityTypeHeader.setTextSize(20);
+					entityTypeHeader.setBackgroundResource(R.drawable.shape_white);
+					entityTypeHeader.setPadding(5, 10, 5, 10);
+					entityTypeHeader.setTextColor(page.getResources().getColor(R.color.blue));
+					
+					nearbyPlacesLayout.addView(entityTypeHeader);
+					
+					//start parsing each entities
 					for (int i = 0; i < entityType.length(); i++)
 					{
 						JSONObject entity = entityType.getJSONObject(i);
 						LinearLayout entityLayout = parsePlaceEntity(entity, page);
+						nearbyPlacesLayout.addView(entityLayout);
 					}
 				}
 			}

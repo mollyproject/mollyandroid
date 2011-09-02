@@ -141,8 +141,6 @@ public class TransportMapTask extends BackgroundTask<JSONObject,Void,JSONObject>
 				String title = entity.getString("title");
 	
 		        MapView mapView = ((PlacesResultsPage) page).getMapView();
-		        mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
-		        		page.getWindowManager().getDefaultDisplay().getHeight()/3));
 		        // 0 - long
 		        // 1 - lat
 		        GeoPoint point = new GeoPoint(entity.getJSONArray("location").getDouble(1), 

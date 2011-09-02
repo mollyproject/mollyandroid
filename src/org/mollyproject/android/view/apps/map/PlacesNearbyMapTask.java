@@ -4,10 +4,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
+import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ComplexMapResultTask;
+import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.PageWithMap;
 
+import android.content.Intent;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class PlacesNearbyMapTask extends ComplexMapResultTask {
 
@@ -17,9 +25,39 @@ public class PlacesNearbyMapTask extends ComplexMapResultTask {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public LinearLayout parseNearbyEntity()
+	public LinearLayout parseNearbyEntity(int orderNumber, final JSONObject entity) throws JSONException
 	{
-		return null;
+		LinearLayout nearbyResultLayout = (LinearLayout) page.getLayoutInflater()
+				.inflate(R.layout.clickable_search_result, null);
+		String result = orderNumber + ". " + entity.getString("title");
+		if (entity.has("distance"))
+		{
+			result = result  + '\n' + entity.getString("distance") + " " + entity.getString("bearing"); 
+		}
+		TextView plainResultText = (TextView) nearbyResultLayout.findViewById(R.id.clickableResultText);
+		plainResultText.setText(result);
+		
+		nearbyResultLayout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					//set identifier_scheme and identifier_value
+					String[] placesArgs = new String[2];
+					placesArgs[0] = entity.getString("identifier_scheme");
+					placesArgs[1] = entity.getString("identifier_value");
+					MyApplication.placesArgs = placesArgs;
+					Intent myIntent = new Intent (page.getApplicationContext(), 
+							MyApplication.getPageClass(MollyModule.PLACES_ENTITY));
+					page.startActivityForResult(myIntent, 0);
+				} catch (JSONException e) {
+					e.printStackTrace();
+					Toast.makeText(page.getApplicationContext(), "This page is not available", 
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		nearbyResultLayout.setLayoutParams(Page.paramsWithLine);
+		return nearbyResultLayout;
 	}
 	
 	@Override
@@ -28,17 +66,24 @@ public class PlacesNearbyMapTask extends ComplexMapResultTask {
 		try {
 			if (!exceptionCaught)
 			{
+				//set up an underlying white background to show the lines
+				LinearLayout nearbyPlacesDetailLayout = new LinearLayout(page.getApplicationContext());
+				nearbyPlacesDetailLayout.setLayoutParams(Page.paramsWithLine);
+				nearbyPlacesDetailLayout.setOrientation(LinearLayout.VERTICAL);
+				nearbyPlacesDetailLayout.setBackgroundResource(R.drawable.shape_white);
+				page.getContentLayout().addView(nearbyPlacesDetailLayout);
+				
 				JSONArray entities = jsonContent.getJSONArray("entities");
 				for (int i = 0; i < entities.length(); i++)
 				{
-					JSONObject entity = entities.getJSONArray(i).getJSONObject(0);
-					LinearLayout nearbyResultLayout = (LinearLayout) page.getLayoutInflater()
-								.inflate(R.layout.plain_text_search_result, null);
+					final JSONObject entity = entities.getJSONArray(i).getJSONObject(0);
+					nearbyPlacesDetailLayout.addView(parseNearbyEntity(i, entity));
 				}
 			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Toast.makeText(page.getApplicationContext(), "There is an error with the data. " +
+					"Information cannot be displayed", Toast.LENGTH_SHORT).show();
 		} 
 	}
 }

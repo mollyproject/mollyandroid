@@ -36,6 +36,7 @@
 		
 		<activity android:name=".view.apps.map.PlacesPage"></activity>
 		<activity android:name=".view.apps.map.PlacesNearbyPage"></activity>
+		<activity android:name=".view.apps.map.PlacesNearbyDetailPage"></activity>
 		<activity android:name=".view.apps.map.PlacesResultsPage"></activity>
 		
 		<activity android:name=".view.apps.contact.ContactPage"></activity>

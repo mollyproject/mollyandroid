@@ -52,10 +52,10 @@ public class PodcastsPageTask extends BackgroundTask<Void, Void, JSONObject>
 				final JSONObject category = jsonCategories.getJSONObject(i);
 				
 				LinearLayout thisResult = (LinearLayout) layoutInflater.inflate
-						(R.layout.plain_text_search_result, contentLayout,false);
+						(R.layout.clickable_search_result, null);
 				resultsLayout.addView(thisResult);
 				thisResult.setLayoutParams(Page.paramsWithLine);
-				((TextView) thisResult.getChildAt(0)).setText(category.getString("name"));
+				((TextView) thisResult.findViewById(R.id.clickableResultText)).setText(category.getString("name"));
 				final String slug = category.getString("slug");
 				System.out.println(slug);
 				thisResult.setOnClickListener(new OnClickListener() {

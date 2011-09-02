@@ -38,6 +38,7 @@ public class MyApplication extends RoboApplication {
 	public static String[] contactQuery = new String[2]; //arbitrary array of contact query, should expect the actual query and the required medium
 	public static String[] generalQuery;
 	public static String[] placesArgs;
+	public static String placesNearbySlug = new String();
 	public static String bookControlNumber;
 	public static List<Map<String,String>> podcastsOutput;
 	public static Map<String,String> libraryQuery = null;
@@ -50,7 +51,7 @@ public class MyApplication extends RoboApplication {
 	public static int lastTransportTab;
 	public static Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
 	public static JSONObject transportCache = null;
-	public static JSONObject currentLocation = null;
+	public static JSONObject currentLocation = null; //the fields of interest are: String name, String accuracy and JSONArray history 
 	public static String csrfToken = null; //should be set once per session in CookieManager.storeCookies()
 	public static JSONArray availableApps = null; //all available apps for the current session
 	public static final String PREFS_NAME = "MyPrefsFile";

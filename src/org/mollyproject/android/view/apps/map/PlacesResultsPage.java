@@ -5,6 +5,7 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.PageWithMap;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -50,6 +51,9 @@ public class PlacesResultsPage extends PageWithMap {
 				mapLayout.removeView(mapView);
 				toggleMapButton.setChecked(false);
 			}
+			
+			mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+	        		getWindowManager().getDefaultDisplay().getHeight()/3));
 			
 			transportMapPageRefreshTask = new TransportMapPageRefreshTask(this, false, false);
 			transportMapPageRefreshTask.execute();
