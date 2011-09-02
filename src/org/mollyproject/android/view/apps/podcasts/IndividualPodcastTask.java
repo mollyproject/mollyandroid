@@ -38,8 +38,7 @@ public class IndividualPodcastTask extends BackgroundTask<Void,Void,JSONObject>
 			LinearLayout contentLayout = ((ContentPage) page).getContentLayout();
 			
 			LayoutInflater layoutInflater = page.getLayoutInflater();
-			LinearLayout indPodcastLayout = (LinearLayout) layoutInflater.inflate(R.layout.individual_podcast_page, 
-					contentLayout, true);
+			LinearLayout indPodcastLayout = (LinearLayout) layoutInflater.inflate(R.layout.individual_podcast_page,null);
 			
 			ImageView podcastLogo = (ImageView) indPodcastLayout.findViewById(R.id.indPodcastIcon);
 			String logoUrl = jsonInfo.getString("logo");
@@ -67,8 +66,7 @@ public class IndividualPodcastTask extends BackgroundTask<Void,Void,JSONObject>
 			{
 				//HashMap<String,String> itemMap = (HashMap<String, String>) itemMapsList.get(i);
 				JSONObject item = items.getJSONObject(i);
-				LinearLayout itemLayout = (LinearLayout) layoutInflater.inflate(R.layout.individual_podcast_result, 
-						contentLayout, false);
+				LinearLayout itemLayout = (LinearLayout) layoutInflater.inflate(R.layout.individual_podcast_result,null);
 				
 				//description text
 				TextView itemDescription = (TextView) itemLayout.findViewById(R.id.podcastIndividualText);

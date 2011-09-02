@@ -33,7 +33,7 @@ public class SearchTask extends BackgroundTask<Void, Void, JSONObject> {
 			JSONArray results = jsonContent.getJSONArray("results");
 			LayoutInflater inflater = page.getLayoutInflater();
 			LinearLayout generalResultsLayout = (LinearLayout) inflater.inflate(R.layout.general_search_results_page, 
-					((SearchPage) page).getContentLayout(), false);
+					null);
 			((SearchPage) page).getContentLayout().addView(generalResultsLayout);
 			
 			LinearLayout resultsLayout = (LinearLayout) generalResultsLayout.findViewById(R.id.generalResultsList);
@@ -52,7 +52,7 @@ public class SearchTask extends BackgroundTask<Void, Void, JSONObject> {
 				{
 					final JSONObject result = results.getJSONObject(i);
 					LinearLayout thisResult = (LinearLayout) inflater.inflate(R.layout.general_search_result, 
-								((SearchPage) page).getContentLayout(), false);
+								null);
 					resultsLayout.addView(thisResult);
 					thisResult.setLayoutParams(Page.paramsWithLine);
 					ImageView appIcon = (ImageView) thisResult.findViewById(R.id.generalSearchIcon);

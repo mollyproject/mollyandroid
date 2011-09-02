@@ -45,8 +45,8 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMult
 			((ResultsReleasePage) page).getContentLayout().removeAllViews();
 			
 			LinearLayout releasesLayout = (LinearLayout) inflater.inflate(R.layout.general_search_results_page, 
-					((ResultsReleasePage) page).getContentLayout(), false);
-			((ResultsReleasePage) page).getContentLayout().addView(releasesLayout);
+					null);
+			page.getContentLayout().addView(releasesLayout);
 			
 			TextView headerText = (TextView) releasesLayout.findViewById(R.id.searchResultsHeader);
 			headerText.setText("Sorted by Latest first");

@@ -54,8 +54,7 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 		}
 		
 		//Header
-		LinearLayout header = (LinearLayout) layoutInflater.inflate(R.layout.transport_train_result, 
-				page.getContentLayout(),false);
+		LinearLayout header = (LinearLayout) layoutInflater.inflate(R.layout.transport_train_result, null);
 		header.setLayoutParams(Page.paramsWithLine);
 		((TextView) header.findViewById(R.id.trainDestination)).setTypeface(Typeface.DEFAULT_BOLD);
 		((TextView) header.findViewById(R.id.trainDestination)).setTextSize(14);
@@ -75,7 +74,7 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 			JSONObject service = services.getJSONObject(i);
 			
 			LinearLayout trainResultLayout = (LinearLayout) layoutInflater.inflate(R.layout.transport_train_result, 
-					page.getContentLayout(),false);
+					null);
 			
 			TextView destination = (TextView) trainResultLayout.findViewById(R.id.trainDestination);
 			destination.setText(service.getJSONObject("destination").

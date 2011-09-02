@@ -16,7 +16,7 @@ public class PodcastsPage extends ContentPage {
 	{
 		super.onCreate(savedInstanceState);
 		RelativeLayout searchBar = (RelativeLayout) 
-		getLayoutInflater().inflate(R.layout.search_bar,contentLayout, false);
+		getLayoutInflater().inflate(R.layout.search_bar,null);
 		contentLayout.addView(searchBar);
 		
 		EditText searchField = (EditText) findViewById(R.id.searchField);

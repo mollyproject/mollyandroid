@@ -66,7 +66,7 @@ public class LibraryFirstResultTask extends AbstractLibraryResultsTask<LinearLay
 		
 		LayoutInflater layoutInflater = page.getLayoutInflater();
 		LinearLayout libraryResultsTemplate = (LinearLayout) layoutInflater
-						.inflate(R.layout.library_results_template,page.getContentLayout(), false);
+						.inflate(R.layout.library_results_template,null);
 		page.getContentLayout().addView(libraryResultsTemplate);
 		
 		List<View> outputs = new ArrayList<View>();

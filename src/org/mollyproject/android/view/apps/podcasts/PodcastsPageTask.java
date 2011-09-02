@@ -36,7 +36,7 @@ public class PodcastsPageTask extends BackgroundTask<Void, Void, JSONObject>
 			LayoutInflater layoutInflater = page.getLayoutInflater();
 			
 			LinearLayout podcastsLayout = (LinearLayout) layoutInflater.inflate(R.layout.general_search_results_page, 
-					contentLayout, false);
+					null);
 			contentLayout.addView(podcastsLayout);
 			
 			TextView header = (TextView) podcastsLayout.findViewById(R.id.searchResultsHeader);

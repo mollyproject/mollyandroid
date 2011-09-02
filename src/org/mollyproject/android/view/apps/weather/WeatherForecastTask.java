@@ -102,8 +102,7 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 			LayoutInflater layoutInflater = (LayoutInflater) page.getApplication()
 			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			LinearLayout observationBar = (LinearLayout) layoutInflater
-						.inflate(R.layout.weather_observation,
-						((WeatherPage) page).getContentLayout(), false);
+						.inflate(R.layout.weather_observation, null);
 			((WeatherPage) page).getContentLayout().removeAllViews();
 			((WeatherPage) page).getContentLayout().addView(observationBar);
 			
@@ -123,7 +122,7 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 			//Forecast
 			JSONArray forecasts = jsonContent.getJSONArray("forecasts"); 
 			LinearLayout forecastLayout = (LinearLayout) page.getLayoutInflater().inflate(R.layout.weather_forecast, 
-					((ContentPage) page).getContentLayout(),false);
+					null);
 			((WeatherPage) page).getContentLayout().addView(forecastLayout);
 			String dayNames[] = new DateFormatSymbols().getWeekdays();
 			Calendar cal = Calendar.getInstance();

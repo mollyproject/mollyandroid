@@ -28,8 +28,7 @@ public class LibraryBookResultTask extends ComplexMapResultTask{
 				LayoutInflater inflater = page.getLayoutInflater();
 				LinearLayout mapLayout = ((PageWithMap) page).getMapLayout();
 				
-				LinearLayout bookInfoLayout = (LinearLayout) inflater.inflate(R.layout.book_info_layout, 
-						mapLayout, false);
+				LinearLayout bookInfoLayout = (LinearLayout) inflater.inflate(R.layout.book_info_layout,null);
 				mapLayout.addView(bookInfoLayout,1); //add the info in between breadcrumbs and map
 				
 				JSONObject book = jsonContent.getJSONObject("item");

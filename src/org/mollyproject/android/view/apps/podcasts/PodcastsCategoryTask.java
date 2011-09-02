@@ -81,8 +81,7 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 		
 		LayoutInflater layoutInflater = page.getLayoutInflater();
 		
-		LinearLayout podcastsLayout = (LinearLayout) layoutInflater.inflate(R.layout.general_search_results_page, 
-				contentLayout, false);
+		LinearLayout podcastsLayout = (LinearLayout) layoutInflater.inflate(R.layout.general_search_results_page,null);
 		contentLayout.addView(podcastsLayout);
 		
 		LinearLayout resultsLayout = (LinearLayout) podcastsLayout.findViewById(R.id.generalResultsList);
@@ -92,8 +91,7 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 			{
 				final JSONObject result = podcasts.getJSONObject(i);
 				
-				LinearLayout thisResult = (LinearLayout) layoutInflater.inflate(R.layout.podcast_category_result, 
-						contentLayout,false);
+				LinearLayout thisResult = (LinearLayout) layoutInflater.inflate(R.layout.podcast_category_result,null);
 				resultsLayout.addView(thisResult);
 				
 				TextView mediumText = (TextView) podcastsLayout.findViewById(R.id.searchResultsHeader);

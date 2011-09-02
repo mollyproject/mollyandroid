@@ -23,7 +23,7 @@ public class SearchPage extends ContentPage {
 		super.onCreate(savedInstanceState);
 		this.generalQuery = MyApplication.generalQuery;
 		RelativeLayout searchBar = (RelativeLayout) 
-				getLayoutInflater().inflate(R.layout.search_bar,contentLayout, false);
+				getLayoutInflater().inflate(R.layout.search_bar,null);
     	contentLayout.addView(searchBar);
     	
     	EditText searchField = (EditText) findViewById(R.id.searchField);
