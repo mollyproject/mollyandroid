@@ -6,8 +6,6 @@ import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.search.NewSearchPage;
-import org.mollyproject.android.view.apps.search.SearchPage;
-
 import roboguice.inject.InjectView;
 
 import android.content.Intent;
@@ -15,16 +13,15 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 public class HomePage extends Page {
 	
-	@InjectView (R.id.gridView) GridView gridview;
-	@InjectView (R.id.bottomLayout) LinearLayout bottomLayout;
+	@InjectView (R.id.listView) ListView listview;
+	//@InjectView (R.id.bottomLayout) LinearLayout bottomLayout;
 	@InjectView (R.id.homeLayout) LinearLayout homeLayout;
-	protected ImageAdapter gridIconsAdapter;
 	protected ArrayList<Button> breadCrumbs;
 	protected LinearLayout bcLayout;
 	public static boolean firstHomeLoad = true;
@@ -33,7 +30,7 @@ public class HomePage extends Page {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-    	setContentView(R.layout.grid_viewer);
+    	setContentView(R.layout.home_page_layout);
     	RelativeLayout searchBar = (RelativeLayout) getLayoutInflater().inflate
     											(R.layout.search_bar,homeLayout, false);
     	homeLayout.addView(searchBar,0);
@@ -73,6 +70,7 @@ public class HomePage extends Page {
         }
         else if (keyCode == KeyEvent.KEYCODE_SEARCH)
         {
+        	MyApplication.currentApp = this.getName();
         	Intent myIntent = new Intent (getApplicationContext(), NewSearchPage.class);
         	startActivityForResult(myIntent, 0);
         	return true;
@@ -80,9 +78,9 @@ public class HomePage extends Page {
         return super.onKeyDown(keyCode, event);
     }
     
-    public void updateGrid(ImageAdapter newGridAdapter)
+    public void updateList(ImageAdapter newListAdapter)
     {
-    	gridview.setAdapter(newGridAdapter);
+    	listview.setAdapter(newListAdapter);
     }
 
 	@Override
@@ -104,12 +102,10 @@ public class HomePage extends Page {
 
 	@Override
 	public LinearLayout getContentLayout() {
-		// TODO Auto-generated method stub
-		return null;
+		return homeLayout;
 	}
 	@Override
 	public void setContentLayout(LinearLayout contentLayout) {
-		//Do nothing
 	}
 }
 

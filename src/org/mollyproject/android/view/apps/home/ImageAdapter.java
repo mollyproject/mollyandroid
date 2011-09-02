@@ -2,6 +2,9 @@ package org.mollyproject.android.view.apps.home;
 
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 
@@ -11,11 +14,13 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class ImageAdapter extends BaseAdapter {
-    protected List<String> apps;
+    protected List<JSONObject> apps;
     protected Page page;
-    public ImageAdapter(Page page, List<String> apps) 
+    public ImageAdapter(Page page, List<JSONObject> apps) 
     { 
     	this.apps = apps; 
     	this.page = page;
@@ -29,26 +34,32 @@ public class ImageAdapter extends BaseAdapter {
     
     // create a new ImageView for each item referenced by the Adapter
     public View getView(final int position, View convertView, ViewGroup parent) {
-                
-        //View view = page.getLayoutInflater().inflate(R.layout.grid_icon_layout, 
-        //		((HomePage) page).getHomeLayout());       
-        ImageView imageView;
-
-        if (convertView == null) {  // if it's not recycled, initialize some attributes
-            imageView = new ImageView(page);
-        } else {
-            imageView = (ImageView) convertView;
-        }
-        
-        imageView.setImageResource(MyApplication.getImgResourceId(apps.get(position)+"_img"));
-        imageView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				MyApplication.locator = apps.get(position);
-				Intent myIntent = new Intent(v.getContext(), MyApplication.getPageClass(apps.get(position)));
-                page.startActivityForResult(myIntent, 0);
-			}
-		});
-        return imageView;
+    	try {
+    		View appLayout = convertView;
+    		if (appLayout == null) {
+    			appLayout = page.getLayoutInflater().inflate
+    	    			(R.layout.home_page_app, null);
+    		}
+    		JSONObject app = apps.get(position);
+	    	final String name = app.getString("local_name") + ":index";
+	        ((ImageView) appLayout.findViewById(R.id.appIcon)).setImageResource
+	        				(MyApplication.getImgResourceId(name+"_img"));
+	        
+	        ((TextView) appLayout.findViewById(R.id.appName)).setText(app.getString("title"));
+	        
+	        appLayout.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					MyApplication.locator = name;
+					Intent myIntent = new Intent(v.getContext(), MyApplication.getPageClass(name));
+	                page.startActivityForResult(myIntent, 0);
+				}
+			});
+        return appLayout;
+    	} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return null; //shouldn't be here
     }
 }

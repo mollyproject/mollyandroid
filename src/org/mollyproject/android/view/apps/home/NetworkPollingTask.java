@@ -38,13 +38,13 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 				
 				JSONArray availableApps = output.getJSONArray("applications");
 				MyApplication.availableApps = availableApps;
-				List<String> appsList = new ArrayList<String>(); 
+				List<JSONObject> appsList = new ArrayList<JSONObject>(); 
 				for (int i = 0; i < availableApps.length(); i++)
 				{
 					JSONObject app = availableApps.getJSONObject(i);
 					if (app.getBoolean("display_to_user"))
 					{
-						appsList.add(app.getString("local_name")+":index");
+						appsList.add(app);
 					}
 				}
 				return new ImageAdapter(page, appsList);
@@ -74,7 +74,7 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 	
 	@Override
 	public void updateView(ImageAdapter newAdapter) {
-		((HomePage) page).updateGrid(newAdapter);
+		((HomePage) page).updateList(newAdapter);
 		appsLoaded = true;
 		HomePage.firstHomeLoad = false;
 	}

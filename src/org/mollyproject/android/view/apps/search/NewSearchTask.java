@@ -51,13 +51,21 @@ public class NewSearchTask extends BackgroundTask<Void, Void, String>{
 				@Override
 				public void onTabChanged(String tabId) {
 					String tag = NewSearchPage.searchTabHost.getCurrentTabTag();
+					System.out.println(NewSearchPage.searchTabHost.getCurrentTabTag());
 					populatePage(tag, searchTabLayout);
 				}
 			});
 			
 			//A small bug: onTabChanged not triggered
 			NewSearchPage.searchTabHost.setCurrentTab(1);
-			NewSearchPage.searchTabHost.setCurrentTab(0);
+			if (!MyApplication.currentApp.equals(MollyModule.HOME_PAGE))
+			{
+				NewSearchPage.searchTabHost.setCurrentTabByTag(MyApplication.currentApp);
+			}
+			else
+			{
+				NewSearchPage.searchTabHost.setCurrentTab(0);
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;
