@@ -2,12 +2,13 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
-  android:id="@+id/podcastsResult"
-  android:background="@drawable/shape_blue"
+  android:id="@+id/clickableResult"
+  android:clickable="true"
+  android:background="@drawable/bg_blue"
   android:layout_height="wrap_content">
   
     <TextView android:text="Result" 
-	    android:id="@+id/plainTextResultText"
+	    android:id="@+id/clickableResultText"
 	    android:textColor="@color/white"
 	    android:textSize="18dp"
 	    android:paddingLeft="10dp"
@@ -17,4 +18,12 @@
 	    android:layout_marginTop="15dp" 
 	    android:layout_marginBottom="15dp" android:layout_weight="1">
     </TextView>
+    <ImageView android:src="@drawable/list_arrow" 
+	    android:layout_height="wrap_content" 
+	    android:id="@+id/arrow" 
+	    android:layout_width="fill_parent" 
+	    android:layout_weight="8" 
+	    android:layout_gravity="center_vertical" 
+	    android:layout_marginLeft="5dp" 
+	    android:layout_marginRight="5dp"></ImageView>
 </LinearLayout>
