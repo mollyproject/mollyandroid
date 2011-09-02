@@ -15,6 +15,9 @@ public class PlacesResultsPage extends PageWithMap {
 	public static TransportMapPageRefreshTask transportMapPageRefreshTask;
 	public static boolean firstLoad;
 	protected String[] args;
+	public static final String OXPOINTS = "oxpoints";
+	public static final String OSM = "osm";
+	public static final String TRANSPORT = "atco";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,15 +28,21 @@ public class PlacesResultsPage extends PageWithMap {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!args[0].equals("atco"))
+		if (!args[0].equals(TRANSPORT))
 		{
+			if (args[0].equals(OXPOINTS))
+			{
+				mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+		        		getWindowManager().getDefaultDisplay().getHeight()/3));
+			}
+			
 			if (!jsonProcessed|| manualRefresh)
 			{
 				manualRefresh = false;
 				new PlacesResultsTask(this, true, true).execute();
 			}
 		}
-		else if (args[0].equals("atco"))
+		else if (args[0].equals(TRANSPORT))
 		{
 			if (transportMapPageRefreshTask != null) 
 			{
@@ -55,7 +64,7 @@ public class PlacesResultsPage extends PageWithMap {
 			mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
 	        		getWindowManager().getDefaultDisplay().getHeight()/3));
 			
-			transportMapPageRefreshTask = new TransportMapPageRefreshTask(this, false, false);
+			transportMapPageRefreshTask = new TransportMapPageRefreshTask(this, true, false);
 			transportMapPageRefreshTask.execute();
 		}
 	}

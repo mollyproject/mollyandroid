@@ -14,6 +14,7 @@ import org.mollyproject.android.view.apps.Page;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -74,6 +75,8 @@ public class PlacesNearbyTask extends BackgroundTask<JSONObject, Void, JSONObjec
 	@Override
 	public void updateView(JSONObject jsonContent) {
 		try {
+			page.getContentLayout().removeAllViews();
+			
 			//set up an underlying white background to show the lines
 			LinearLayout nearbyPlacesLayout = new LinearLayout(page.getApplicationContext());
 			nearbyPlacesLayout.setLayoutParams(Page.paramsWithLine);
@@ -92,7 +95,8 @@ public class PlacesNearbyTask extends BackgroundTask<JSONObject, Void, JSONObjec
 				{
 					TextView entityTypeHeader = new TextView(page.getApplicationContext());
 					entityTypeHeader.setText(key);
-					entityTypeHeader.setTextSize(20);
+					entityTypeHeader.setTypeface(Typeface.DEFAULT_BOLD);
+					entityTypeHeader.setTextSize(22);
 					entityTypeHeader.setBackgroundResource(R.drawable.shape_white);
 					entityTypeHeader.setPadding(5, 10, 5, 10);
 					entityTypeHeader.setTextColor(page.getResources().getColor(R.color.blue));
@@ -108,6 +112,7 @@ public class PlacesNearbyTask extends BackgroundTask<JSONObject, Void, JSONObjec
 					}
 				}
 			}
+			((ContentPage) page).doneProcessingJSON();
 		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;

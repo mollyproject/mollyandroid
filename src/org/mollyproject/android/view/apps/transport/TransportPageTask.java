@@ -37,7 +37,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 				tabTag = TransportPage.BUS;
 				myIntent = new Intent().setClass(page.getApplicationContext(), BusPage.class);
 			    spec = TransportPage.transportTabHost.newTabSpec(tabTag)
-			    	.setIndicator("", res.getDrawable(R.drawable.bus)).setContent(myIntent);
+			    	.setIndicator("", res.getDrawable(R.drawable.bus_blue)).setContent(myIntent);
 			    TransportPage.transportTabHost.addTab(spec);
 			}
 			if (jsonContent.getBoolean("train_station") == true & TransportPage.firstLoad == true)
@@ -45,7 +45,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 				tabTag = TransportPage.RAIL;
 			    myIntent = new Intent().setClass(page.getApplicationContext(), TrainPage.class);
 			    spec = TransportPage.transportTabHost.newTabSpec(tabTag)
-			    	.setIndicator("", res.getDrawable(R.drawable.train)).setContent(myIntent);
+			    	.setIndicator("", res.getDrawable(R.drawable.train_blue)).setContent(myIntent);
 			    TransportPage.transportTabHost.addTab(spec);
 			}
 			

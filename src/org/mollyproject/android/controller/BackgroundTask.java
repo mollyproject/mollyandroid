@@ -108,7 +108,7 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		{
 			otherException = false;
 			destroyPlease = true;
-			Toast.makeText(page.getApplicationContext(), "Cannot connect to server. " +
+			Toast.makeText(page.getApplicationContext(), "Error loading page. " +
 					"Please try again later.", Toast.LENGTH_SHORT).show();
 		} 
 		if (dialogEnabled)

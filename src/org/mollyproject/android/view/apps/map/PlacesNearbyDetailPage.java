@@ -2,6 +2,7 @@ package org.mollyproject.android.view.apps.map;
 
 import java.io.UnsupportedEncodingException;
 
+import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
@@ -15,8 +16,8 @@ public class PlacesNearbyDetailPage extends PageWithMap{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		contentLayout.setBackgroundResource(R.drawable.shape_white);
 		slug = MyApplication.placesNearbySlug;
-		
 		mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
         		getWindowManager().getDefaultDisplay().getHeight()/3));
 	}
@@ -26,7 +27,7 @@ public class PlacesNearbyDetailPage extends PageWithMap{
 		if (!jsonProcessed|| manualRefresh)
 		{
 			manualRefresh = false;
-			new PlacesNearbyMapTask(this, false, true).execute();
+			new PlacesNearbyDetailTask(this, false, true).execute();
 		}
 	}
 	@Override

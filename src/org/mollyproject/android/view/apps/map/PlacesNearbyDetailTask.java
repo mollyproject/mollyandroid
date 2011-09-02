@@ -17,9 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PlacesNearbyMapTask extends ComplexMapResultTask {
+public class PlacesNearbyDetailTask extends ComplexMapResultTask {
 
-	public PlacesNearbyMapTask(PageWithMap page, boolean toDestroyPageAfterFailure,
+	public PlacesNearbyDetailTask(PageWithMap page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
 		// TODO Auto-generated constructor stub
@@ -66,18 +66,11 @@ public class PlacesNearbyMapTask extends ComplexMapResultTask {
 		try {
 			if (!exceptionCaught)
 			{
-				//set up an underlying white background to show the lines
-				LinearLayout nearbyPlacesDetailLayout = new LinearLayout(page.getApplicationContext());
-				nearbyPlacesDetailLayout.setLayoutParams(Page.paramsWithLine);
-				nearbyPlacesDetailLayout.setOrientation(LinearLayout.VERTICAL);
-				nearbyPlacesDetailLayout.setBackgroundResource(R.drawable.shape_white);
-				page.getContentLayout().addView(nearbyPlacesDetailLayout);
-				
 				JSONArray entities = jsonContent.getJSONArray("entities");
 				for (int i = 0; i < entities.length(); i++)
 				{
 					final JSONObject entity = entities.getJSONArray(i).getJSONObject(0);
-					nearbyPlacesDetailLayout.addView(parseNearbyEntity(i, entity));
+					page.getContentLayout().addView(parseNearbyEntity(i+1, entity));
 				}
 			}
 		} catch (JSONException e) {

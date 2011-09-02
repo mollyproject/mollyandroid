@@ -69,6 +69,7 @@ public class ComplexMapResultTask extends BackgroundTask<Void,Void,JSONObject>{
 	        	//3: title
 	        	GeoPoint markerPosition = new GeoPoint(marker.getDouble(0),marker.getDouble(1));
 	        	OverlayItem markerOverlay = new OverlayItem(marker.getString(3), "", markerPosition);
+	        	//TODO: get the new set of icons (non-numbered marker & green star)
 	        	if (!marker.getString(2).equals("green_star"))
 	        	{
 	        		System.out.println("marker icon: " + marker.getString(2));

@@ -30,7 +30,6 @@ public class PlacesTask extends BackgroundTask<JSONObject, Void, JSONObject>{
 				
 				@Override
 				public void onClick(View v) {
-					System.out.println("NEARBY");
 					Intent myIntent = new Intent(page.getApplicationContext(), 
 							MyApplication.getPageClass(MollyModule.PLACES_NEARBY));
 					page.startActivityForResult(myIntent, 0);

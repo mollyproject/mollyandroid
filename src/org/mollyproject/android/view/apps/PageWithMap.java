@@ -68,6 +68,11 @@ public abstract class PageWithMap extends ContentPage {
 		});
 	}
 	
+	public boolean hideMap()
+	{
+		return toggleMapButton.performClick();
+	}
+	
 	public LinearLayout getMapLayout()
 	{
 		return mapLayout;
