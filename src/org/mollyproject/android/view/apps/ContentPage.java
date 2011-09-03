@@ -30,6 +30,7 @@ public abstract class ContentPage extends Page {
 	@InjectView (R.id.breadcrumbs) protected LinearLayout breadcrumbs;
 	@InjectView (R.id.extraTextView) protected TextView extraTextView;
 	@InjectView (R.id.contentLayout) protected LinearLayout contentLayout;
+	protected boolean dialogOnSetup = false; //set this to true if a progress dialog is needed when calling PageSetupTask
 	protected boolean loaded = false;
 	protected boolean jsonDownloaded = false;
 	protected boolean jsonProcessed = false;
@@ -93,7 +94,7 @@ public abstract class ContentPage extends Page {
 	{
 		//new breadcrumb parser
 		public PageSetupTask(Page page) {
-			super(page, true, false);
+			super(page, true, dialogOnSetup);
 		}
 		
 		@Override

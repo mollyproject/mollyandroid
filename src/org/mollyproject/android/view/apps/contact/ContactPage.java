@@ -9,6 +9,7 @@ public class ContactPage extends AbstractContactPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		dialogOnSetup = true;
 	}
 	
 	@Override
