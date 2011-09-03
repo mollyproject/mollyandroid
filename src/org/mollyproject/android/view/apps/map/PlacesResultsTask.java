@@ -49,10 +49,8 @@ public class PlacesResultsTask extends BackgroundTask<Void,Void,JSONObject>
 		unitLayout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String[] placesArgs = new String[2];
-				placesArgs[0] = PlacesResultsPage.OXPOINTS;
-				placesArgs[1] = oxpointValue;
-				MyApplication.placesArgs = placesArgs;
+				MyApplication.placesArgs[0] = PlacesResultsPage.OXPOINTS;
+				MyApplication.placesArgs[1] = oxpointValue;
 				System.out.println(oxpointValue);
 				Intent myIntent = new Intent(page.getApplicationContext(), 
 						MyApplication.getPageClass(MollyModule.PLACES_ENTITY));

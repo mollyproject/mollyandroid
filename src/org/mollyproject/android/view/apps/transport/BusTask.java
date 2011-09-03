@@ -88,11 +88,8 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			public void onClick(View v) {
 				try {
 					Intent myIntent = new Intent(page, MyApplication.getPageClass(MollyModule.PLACES_ENTITY));
-					String[] placesArgs = new String[2];
-					placesArgs[0] = PlacesResultsPage.TRANSPORT;//identifier_scheme, should be atco
-					
-					placesArgs[1] = entity.getJSONObject("identifiers").getString(PlacesResultsPage.TRANSPORT); //identifier_value
-					MyApplication.placesArgs = placesArgs;
+					MyApplication.placesArgs[0] = PlacesResultsPage.TRANSPORT;//identifier_scheme, should be atco
+					MyApplication.placesArgs[1] = entity.getJSONObject("identifiers").getString(PlacesResultsPage.TRANSPORT); //identifier_value
 					page.startActivityForResult(myIntent, 0);
 				} catch (JSONException e) {
 					Toast.makeText(page, "There has been an error, please try again later", Toast.LENGTH_SHORT);

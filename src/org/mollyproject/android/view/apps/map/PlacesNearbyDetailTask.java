@@ -42,10 +42,8 @@ public class PlacesNearbyDetailTask extends ComplexMapResultTask {
 			public void onClick(View v) {
 				try {
 					//set identifier_scheme and identifier_value
-					String[] placesArgs = new String[2];
-					placesArgs[0] = entity.getString("identifier_scheme");
-					placesArgs[1] = entity.getString("identifier_value");
-					MyApplication.placesArgs = placesArgs;
+					MyApplication.placesArgs[0] = entity.getString("identifier_scheme");
+					MyApplication.placesArgs[1] = entity.getString("identifier_value");
 					Intent myIntent = new Intent (page.getApplicationContext(), 
 							MyApplication.getPageClass(MollyModule.PLACES_ENTITY));
 					page.startActivityForResult(myIntent, 0);

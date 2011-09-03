@@ -36,8 +36,8 @@ public class MyApplication extends RoboApplication {
 	public static Router router = null; //make router null at first and check for it every time to avoid null pointers
 	public static String mapQuery;
 	public static String[] contactQuery = new String[2]; //arbitrary array of contact query, should expect the actual query and the required medium
-	public static String[] generalQuery;
-	public static String[] placesArgs;
+	public static String[] generalQuery = new String[2];
+	public static String[] placesArgs = new String[2];
 	public static String placesNearbySlug = new String();
 	public static String bookControlNumber;
 	public static List<Map<String,String>> podcastsOutput;

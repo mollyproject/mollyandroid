@@ -86,12 +86,9 @@ public class SearchTask extends BackgroundTask<Void, Void, JSONObject> {
 								String app = result.getString("application");
 								if (app.equals("places"))
 								{
-									System.out.println("SEARCH RESULT PRESSED");
-									String[] placesArgs = new String[2];
 									JSONObject entity = result.getJSONObject("entity");
-									placesArgs[0] = entity.getString("identifier_scheme");
-									placesArgs[1] = entity.getString("identifier_value");
-									MyApplication.placesArgs = placesArgs;
+									MyApplication.placesArgs[0] = entity.getString("identifier_scheme");
+									MyApplication.placesArgs[1] = entity.getString("identifier_value");
 									Intent myIntent = new Intent
 												(page, MyApplication.getPageClass(MollyModule.PLACES_ENTITY));
 									page.startActivityForResult(myIntent, 0);
