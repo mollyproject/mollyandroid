@@ -51,6 +51,11 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 	@Override
 	protected void onCancelled() {
 		super.onCancelled();
+		if (toDestroyPageAfterFailure)
+		{
+			page.finish();
+		}
+		MyApplication.router.releaseConnection();
 		page = null;
 	}
 	

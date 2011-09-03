@@ -50,6 +50,8 @@ public class Router {
 	protected boolean firstReq;
 	protected MyApplication myApp;
 	protected HttpClient client;
+	protected HttpGet get;
+	protected HttpPost post;
 	public final static String mOX =  "http://dev.m.ox.ac.uk/";
 
 	public static enum OutputFormat { JSON, FRAGMENT, JS, YAML, XML, HTML };
@@ -137,7 +139,7 @@ public class Router {
 	{
         String getURL = urlStr;
         System.out.println("Getting from: " + urlStr);
-        HttpGet get = new HttpGet(getURL);
+        get = new HttpGet(getURL);
         HttpResponse responseGet = client.execute(get);  
         HttpEntity resEntityGet = responseGet.getEntity();  
         if (resEntityGet != null) {  
@@ -226,8 +228,7 @@ public class Router {
 		//take in arguments as a list of name-value pairs and a target url, encode all the arguments,
 		//then do a POST request to the target url, return the output as a list of strings
 		
-		HttpPost post = new HttpPost(url);
-		 
+		post = new HttpPost(url);
 		UrlEncodedFormEntity ent = new UrlEncodedFormEntity(arguments,HTTP.UTF_8);
 		post.setEntity(ent);
 		HttpResponse responsePOST = client.execute(post);
@@ -276,5 +277,11 @@ public class Router {
         List<String> output = post(params,reverse("geolocation:index", null));
         //in this case the result is only one line of text, i.e just the first element of the list is fine
         MyApplication.currentLocation = new JSONObject(output.get(0));
+	}
+	
+	public void releaseConnection()
+	{
+		if (get != null) { get.abort(); }
+		if (post != null) { post.abort(); }
 	}
 }
