@@ -70,39 +70,6 @@ public abstract class Page extends RoboActivity {
 	    return true;
 	}
 	
-	public static void popupErrorDialog(String title, String message, final Context context)
-	{
-		final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-		alertDialog.setTitle(title);
-		alertDialog.setMessage(message);
-		alertDialog.setButton("Ok", new DialogInterface.OnClickListener(){
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-		alertDialog.show();
-	}
-	
-	public static void popupErrorDialog(String title, String message, final Page page, 
-			final boolean toFinish)
-	{
-		final AlertDialog alertDialog = new AlertDialog.Builder(page).create();
-		alertDialog.setTitle(title);
-		alertDialog.setMessage(message);
-		alertDialog.setButton("Ok", new DialogInterface.OnClickListener(){
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				if (toFinish)
-				{
-					page.finish();
-				}
-			}
-		});
-		alertDialog.show();
-	}
-	
 	public void searchFromField(EditText searchField, String application)
 	{
 		if (searchField.getText().length() > 0)

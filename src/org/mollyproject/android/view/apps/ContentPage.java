@@ -93,7 +93,7 @@ public abstract class ContentPage extends Page {
 	{
 		//new breadcrumb parser
 		public PageSetupTask(Page page) {
-			super(page, true, true);
+			super(page, true, false);
 		}
 		
 		@Override
@@ -182,9 +182,6 @@ public abstract class ContentPage extends Page {
 				contentLayout.invalidate();
 			} catch (JSONException e) {
 				e.printStackTrace();
-				Page.popupErrorDialog("JSON Exception", 
-						"There might be a problem with JSON output " +
-						"from server. Please try again.", page, true);
 			} 
 		}
 	}
