@@ -24,8 +24,7 @@ public class ContactResultsPage extends AbstractContactPage {
 		//query from myApp is extracted here and processed in the background
 		if (!jsonProcessed)
 		{
-			new ContactResultsTask((AbstractContactPage) getInstance(),
-				contactSearchBar,false,true).execute(jsonContent);
+			new ContactResultsTask(this,contactSearchBar,false,true).execute(jsonContent);
 		}
 	}
 	
