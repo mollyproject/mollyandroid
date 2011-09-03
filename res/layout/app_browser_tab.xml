@@ -54,11 +54,6 @@
 						    android:layout_margin="5dp">
 					    </TextView>
 					    
-					    <LinearLayout android:id="@+id/searchResultsLayout" 
-						    android:layout_height="wrap_content" 
-						    android:layout_width="fill_parent" 
-						    android:orientation="vertical">
-					    </LinearLayout>
 				</LinearLayout>
 			</FrameLayout>
 				
