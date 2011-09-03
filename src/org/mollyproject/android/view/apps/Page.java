@@ -70,7 +70,7 @@ public abstract class Page extends RoboActivity {
 	    return true;
 	}
 	
-	public void searchFromField(EditText searchField, String application)
+	public static void searchFromField(Page page, EditText searchField, String application)
 	{
 		if (searchField.getText().length() > 0)
     	{
@@ -80,7 +80,7 @@ public abstract class Page extends RoboActivity {
     			//Easter Egg 1
     			String url = "http://www.youtube.com/watch?v=QH2-TGUlwu4";
     			Intent procrastinateIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-    			startActivity(Intent.createChooser(procrastinateIntent, "U r not advized 2 " +
+    			page.startActivity(Intent.createChooser(procrastinateIntent, "U r not advized 2 " +
     					"proc33d unless u haz good connection"));
     		}
     		else if (application == null)
@@ -97,18 +97,18 @@ public abstract class Page extends RoboActivity {
     			argsToPass[1] = application;
     			MyApplication.generalQuery = argsToPass;
     		}
-    		Intent myIntent = new Intent(getInstance(), 
+    		Intent myIntent = new Intent(page.getApplicationContext(),
     					MyApplication.getPageClass(MollyModule.SEARCH_PAGE));
-    		startActivityForResult(myIntent, 0);
+    		page.startActivityForResult(myIntent, 0);
     	}
     	else
     	{
-    		Toast.makeText(getApplicationContext(), "No query found. " + 
+    		Toast.makeText(page.getApplicationContext(), "No query found. " + 
     				"Please enter some search criteria", Toast.LENGTH_SHORT).show();
     	}
 	}
 	
-	public void setEnterKeySearch(final EditText searchField, final Page page, final String application)
+	public static void setEnterKeySearch(final EditText searchField, final Page page, final String application)
 	{
 		searchField.setOnKeyListener(new OnKeyListener() {
 			@Override
@@ -119,7 +119,7 @@ public abstract class Page extends RoboActivity {
 		            {
 		                case KeyEvent.KEYCODE_DPAD_CENTER:
 		                case KeyEvent.KEYCODE_ENTER:
-		                	searchFromField(searchField, application);
+		                	searchFromField(page, searchField, application);
 		                	return true;
 		                default:
 		                    break;
@@ -130,12 +130,12 @@ public abstract class Page extends RoboActivity {
 		});
 	}
 	
-	public void setClickSearch(View view, final EditText searchField, final Page page, final String application)
+	public static void setClickSearch(View view, final EditText searchField, final Page page, final String application)
 	{
 		view.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				searchFromField(searchField, application);
+				searchFromField(page, searchField, application);
 			}
 		});
 	}
