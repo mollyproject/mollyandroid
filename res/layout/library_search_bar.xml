@@ -18,7 +18,7 @@
 	    
 	    <EditText android:id="@+id/titleField" 
 		    android:layout_height="wrap_content"
-		    android:layout_width="fill_parent">
+		    android:layout_width="fill_parent" android:layout_marginLeft="5dp" android:layout_marginRight="5dp">
 	    </EditText>
 	    
 	    <TextView android:text="Author" 
@@ -31,7 +31,7 @@
 	    
 	    <EditText android:id="@+id/authorField" 
 		    android:layout_height="wrap_content" 
-		    android:layout_width="fill_parent">
+		    android:layout_width="fill_parent" android:layout_marginLeft="5dp" android:layout_marginRight="5dp">
 	    </EditText>
 	    
 	    <TextView android:text="ISBN" 
@@ -44,7 +44,7 @@
 	    
 	    <EditText android:id="@+id/isbnField" 
 		    android:layout_height="wrap_content" 
-		    android:layout_width="fill_parent">
+		    android:layout_width="fill_parent" android:layout_marginLeft="5dp" android:layout_marginRight="5dp">
 	    </EditText>
     </LinearLayout>
     <LinearLayout android:layout_width="fill_parent" 
@@ -54,13 +54,13 @@
 	        android:id="@+id/searchLibraryButton" 
 	        android:layout_width="fill_parent"
 	        android:layout_weight="1" 
-	        android:layout_height="wrap_content">
+	        android:layout_height="wrap_content" android:layout_marginLeft="5dp">
         </Button>
         <Button android:text="Reset" 
 	        android:id="@+id/resetLibraryButton" 
 	        android:layout_width="fill_parent"
 	        android:layout_weight="1" 
-	        android:layout_height="wrap_content">
+	        android:layout_height="wrap_content" android:layout_marginRight="5dp">
         </Button>
     </LinearLayout>
     

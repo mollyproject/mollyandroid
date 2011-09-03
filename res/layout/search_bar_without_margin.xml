@@ -9,13 +9,13 @@
 		    android:layout_width="wrap_content" 
 		    android:layout_height="wrap_content" 
 		    android:layout_centerVertical="true" 
-		    android:layout_alignParentRight="true" android:layout_marginRight="5dp"></Button>
+		    android:layout_alignParentRight="true"></Button>
 	    
 	    <EditText android:layout_width="fill_parent" 
 		    android:singleLine="True" 
 		    android:id="@+id/searchField" 
 		    android:layout_height="wrap_content" 
 		    android:layout_toLeftOf="@+id/searchButton"
-		    android:layout_alignTop="@+id/searchButton" android:layout_marginLeft="5dp">
+		    android:layout_alignTop="@+id/searchButton">
 	    </EditText>
 </RelativeLayout>
