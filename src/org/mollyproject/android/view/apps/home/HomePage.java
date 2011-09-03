@@ -32,7 +32,7 @@ public class HomePage extends Page {
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.home_page_layout);
     	RelativeLayout searchBar = (RelativeLayout) getLayoutInflater().inflate
-    											(R.layout.search_bar,homeLayout, false);
+    			(R.layout.search_bar_without_margin,null);
     	homeLayout.addView(searchBar,0);
     	EditText searchField = (EditText) findViewById(R.id.searchField);
     	searchField.setWidth(200);
