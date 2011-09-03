@@ -4,6 +4,7 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
+import org.mollyproject.android.view.apps.Page;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,14 +26,16 @@ public abstract class AbstractContactPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
-		//inflate the search bar and put it right on top
 		contactSearchBar = (LinearLayout) getLayoutInflater()
-					.inflate(R.layout.contact_search_bar,null);
+				.inflate(R.layout.contact_search_bar,null);
 		contentLayout.addView(contactSearchBar);
-		
+		setUpContactSearchBar(this, contactSearchBar);
+	}
+	
+	public static void setUpContactSearchBar(final Page page, LinearLayout contactSearchBar)
+	{
 		//search bar
-		final EditText searchField = (EditText) findViewById(R.id.contactSearchField);
+		final EditText searchField = (EditText) contactSearchBar.findViewById(R.id.contactSearchField);
 		searchField.setOnKeyListener(new OnKeyListener(){
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -43,7 +46,8 @@ public abstract class AbstractContactPage extends ContentPage {
 		            //search for contact with medium = email by default if enter key is pressed
 		                case KeyEvent.KEYCODE_DPAD_CENTER:
 		                case KeyEvent.KEYCODE_ENTER:
-		                	searchContact(searchField.getText().toString(),EMAIL);
+		                	AbstractContactPage.searchContact(page, 
+		                			searchField.getText().toString(),AbstractContactPage.EMAIL);
 		                    return true;
 		                default:
 		                    break;
@@ -53,43 +57,41 @@ public abstract class AbstractContactPage extends ContentPage {
 			}
 		});
 		
-		Button emailButton = (Button) findViewById(R.id.emailButton);
+		Button emailButton = (Button) contactSearchBar.findViewById(R.id.emailButton);
 		emailButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				//search by email if button clicked
-				searchContact(searchField.getText().toString(),EMAIL);
+				AbstractContactPage.searchContact(page, 
+						searchField.getText().toString(),AbstractContactPage.EMAIL);
 			}
 		});
 		
-		Button phoneButton = (Button) findViewById(R.id.phoneButton);
+		Button phoneButton = (Button) contactSearchBar.findViewById(R.id.phoneButton);
 		phoneButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				//search by phone if button clicked
-				searchContact(searchField.getText().toString(),PHONE);
+				AbstractContactPage.searchContact(page, 
+						searchField.getText().toString(),AbstractContactPage.PHONE);
 			}
 		});
 	}
 	
-	protected void searchContact(String query, String medium)
+	public static void searchContact(Page page, String query, String medium)
 	{
 		if (query.length() == 0)
 		{
-			Toast.makeText(this, "No query found. Search cannot proceed. " +
+			Toast.makeText(page, "No query found. Search cannot proceed. " +
 					"Please enter a name into the search box.", Toast.LENGTH_SHORT).show();
-			/*popupErrorDialog("No query found", "Search cannot proceed. " +
-					"Please enter a name into the search box.", this);*/
 		}
 		else
 		{
 			//send query to myApp
-			//MyApplication.contactQuery = new String[2];
 			MyApplication.contactQuery[0] = query;
 			MyApplication.contactQuery[1] = medium;
-			//myApp.setContactOutput(query,medium);
-			Intent myIntent = new Intent(this,MyApplication.getPageClass(MollyModule.CONTACT_RESULTS_PAGE));
-			startActivityForResult(myIntent, 0);
+			Intent myIntent = new Intent(page ,MyApplication.getPageClass(MollyModule.CONTACT_RESULTS_PAGE));
+			page.startActivityForResult(myIntent, 0);
 		}
 	}
 }

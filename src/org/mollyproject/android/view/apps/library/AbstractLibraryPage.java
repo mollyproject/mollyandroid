@@ -20,6 +20,7 @@ import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public abstract class AbstractLibraryPage extends ContentPage {
@@ -34,22 +35,17 @@ public abstract class AbstractLibraryPage extends ContentPage {
 	
 	protected Map<String,String> bookArgs = new HashMap<String,String>(); //this is used to store the input in each text field
 	protected Map<String,String> currentSearchArgs = new HashMap<String,String>();
+	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		bookArgs.put(TITLE, "");
+		bookArgs.put(AUTHOR, "");
+		bookArgs.put(ISBN, "");
+		
 		//inflate the searchbar
 		LinearLayout librarySearchBar = (LinearLayout) getLayoutInflater()
 					.inflate(R.layout.library_search_bar,null);
-		contentLayout.addView(librarySearchBar);
-		
-		titleField = (EditText) librarySearchBar.findViewById(R.id.titleField);
-		searchOnEnterKey(titleField, TITLE);
-		
-		authorField = (EditText) librarySearchBar.findViewById(R.id.authorField);
-		searchOnEnterKey(authorField, AUTHOR);
-		
-		isbnField = (EditText) librarySearchBar.findViewById(R.id.isbnField);
-		searchOnEnterKey(isbnField, ISBN);
 		
 		if (MyApplication.libraryQuery != null)
 		{
@@ -61,15 +57,39 @@ public abstract class AbstractLibraryPage extends ContentPage {
 			}
 		}
 		
+		//The next 3 lines are the special case for the page needing to change the text of these fields later
+		titleField = (EditText) librarySearchBar.findViewById(R.id.titleField);
+		authorField = (EditText) librarySearchBar.findViewById(R.id.authorField);
+		isbnField = (EditText) librarySearchBar.findViewById(R.id.isbnField);
+		
+		contentLayout.addView(librarySearchBar);
+		
+		setUpLibrarySearchBar(this, bookArgs, librarySearchBar);
+		
+	}
+	
+	public static void setUpLibrarySearchBar(final Page page, final Map<String,String> bookArgs, 
+			final LinearLayout librarySearchBar)
+	{
+		
 		bookArgs.put(TITLE, "");
 		bookArgs.put(AUTHOR, "");
 		bookArgs.put(ISBN, "");
+		
+		final EditText titleField = (EditText) librarySearchBar.findViewById(R.id.titleField);
+		searchLibraryOnEnterKey(page, bookArgs, librarySearchBar, titleField, TITLE);
+		
+		final EditText authorField = (EditText) librarySearchBar.findViewById(R.id.authorField);
+		searchLibraryOnEnterKey(page, bookArgs, librarySearchBar, authorField, AUTHOR);
+		
+		final EditText isbnField = (EditText) librarySearchBar.findViewById(R.id.isbnField);
+		searchLibraryOnEnterKey(page, bookArgs, librarySearchBar, isbnField, ISBN);
 		
 		Button searchButton = (Button) librarySearchBar.findViewById(R.id.searchLibraryButton);
 		searchButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				AbstractLibraryPage.this.searchOnClick();
+				AbstractLibraryPage.searchLibraryOnClick(page, bookArgs, librarySearchBar);
 			}
 		});
 		
@@ -96,32 +116,32 @@ public abstract class AbstractLibraryPage extends ContentPage {
 			isbnField.setText(currentSearchArgs.get(ISBN));
 			authorField.setText(currentSearchArgs.get(AUTHOR));
 		}
+		else
+		{
+			titleField.setText("");
+			isbnField.setText("");
+			authorField.setText("");
+		}
 	}
 	
-	public void searchOnClick()
+	public static void searchLibraryOnClick(final Page page, final Map<String,String> bookArgs, 
+			final LinearLayout librarySearchBar)
 	{
 		try {
 			//record all the search queries available and start the search
-			System.out.println("Title: "+titleField.getText());
-			bookArgs.put(TITLE, titleField.getText().toString().trim());
-			bookArgs.put(AUTHOR, authorField.getText().toString().trim());
-			bookArgs.put(ISBN, isbnField.getText().toString().trim());
-			searchBook();
+			searchBook(page, bookArgs, librarySearchBar);
 		} catch (UnsupportedEncodingException e) {
 			//Something is wrong with the query
 			e.printStackTrace();
 			
-			Toast.makeText(getApplicationContext(), "Unsupported Encoding" +
+			Toast.makeText(page.getApplicationContext(), "Unsupported Encoding" +
 					"There might be a problem with the search terms. " +
 					"Please try again later.", Toast.LENGTH_SHORT).show();
-			
-			/*Page.popupErrorDialog("Unsupported Encoding", 
-					"There might be a problem with the search terms. " +
-					"Please try again later.", AbstractLibraryPage.this.getInstance());*/
 		}
 	}
 	
-	private void searchOnEnterKey(final EditText inputField, final String argID)
+	public static void searchLibraryOnEnterKey(final Page page, final Map<String,String> bookArgs, 
+			final LinearLayout librarySearchBar, final EditText inputField, final String argID)
 	{
 		//because the library results page will be displayed by a series of pages,
 		//it makes it far easier to do the actual searching on the LibraryResultPage:
@@ -144,11 +164,11 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		                	System.out.println("text field content: " + inputField.getText());
 		                	bookArgs.put(argID, inputField.getText().toString().trim());
 						try {
-							searchBook();
+							searchBook(page, bookArgs, librarySearchBar);
 						} catch (UnsupportedEncodingException e) {
 							//Something is wrong with the query
 							e.printStackTrace();
-							Toast.makeText(getApplicationContext(), "Unsupported Encoding" +
+							Toast.makeText(page.getApplicationContext(), "Unsupported Encoding" +
 									"There might be a problem with the search terms. " +
 									"Please try again later.", Toast.LENGTH_SHORT).show();
 						}
@@ -162,11 +182,11 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		});
 	}
 
-	private void searchBook() throws UnsupportedEncodingException
+	public static void searchBook(Page page, Map<String,String> bookArgs, LinearLayout librarySearchBar) throws UnsupportedEncodingException
 	{
-		bookArgs.put(TITLE, titleField.getText().toString());
-		bookArgs.put(AUTHOR, authorField.getText().toString());
-		bookArgs.put(ISBN, isbnField.getText().toString());
+		bookArgs.put(TITLE, ((TextView) librarySearchBar.findViewById(R.id.titleField)).getText().toString().trim());
+		bookArgs.put(AUTHOR, ((TextView) librarySearchBar.findViewById(R.id.authorField)).getText().toString().trim());
+		bookArgs.put(ISBN, ((TextView) librarySearchBar.findViewById(R.id.isbnField)).getText().toString().trim());
 		
 		Set<String> keys = bookArgs.keySet();
 		boolean empty = true;
@@ -182,12 +202,12 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		if (!empty)
 		{
 			MyApplication.libraryQuery = bookArgs;
-			Intent myIntent = new Intent (this, MyApplication.getPageClass(MollyModule.LIBRARY_RESULTS_PAGE));
-			startActivityForResult(myIntent,0);
+			Intent myIntent = new Intent (page.getApplicationContext(), MyApplication.getPageClass(MollyModule.LIBRARY_RESULTS_PAGE));
+			page.startActivityForResult(myIntent,0);
 		}
 		else
 		{
-			Toast.makeText(getApplicationContext(), "Cannot perform search. "
+			Toast.makeText(page.getApplicationContext(), "Cannot perform search. "
 					+"Please enter some search criteria", Toast.LENGTH_SHORT).show();
 		}
 	}
