@@ -15,6 +15,7 @@ import android.widget.TabHost;
 public class NewSearchPage extends ContentPage {
 	protected String[] generalQuery;
 	public static TabHost searchTabHost;
+	protected int currentTabId;
 	//public static LocalActivityManager mlam;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -30,18 +31,22 @@ public class NewSearchPage extends ContentPage {
 	}
 	
 	@Override
-	protected void onStop() {
-		super.onStop();
-	}
-	@Override
 	protected void onPause() {
 		super.onPause();
+		currentTabId = searchTabHost.getCurrentTab();
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		new NewSearchTask(this, false, true).execute();
+		if (!jsonProcessed)
+		{
+			new NewSearchTask(this, false, true).execute();
+		}
+		else
+		{
+			searchTabHost.setCurrentTab(currentTabId);
+		}
 	}
 	
 	@Override
