@@ -87,6 +87,21 @@ public class PlacesNearbyTask extends BackgroundTask<JSONObject, Void, JSONObjec
 			JSONObject entityTypes = jsonContent.getJSONObject("entity_types");
 			Iterator<String> entityTypeKeys = entityTypes.keys();
 			
+			//Check for empty case
+			if (!entityTypeKeys.hasNext())
+			{
+				TextView entityTypeHeader = new TextView(page.getApplicationContext());
+				entityTypeHeader.setText("Sorry, there is no information available. " +
+						"You might want to check your current location");
+				entityTypeHeader.setTypeface(Typeface.DEFAULT_BOLD);
+				entityTypeHeader.setTextSize(22);
+				entityTypeHeader.setBackgroundResource(R.drawable.shape_white);
+				entityTypeHeader.setPadding(5, 10, 5, 10);
+				entityTypeHeader.setTextColor(page.getResources().getColor(R.color.blue));
+				
+				nearbyPlacesLayout.addView(entityTypeHeader);
+			}
+			
 			while (entityTypeKeys.hasNext())
 			{
 				String key = entityTypeKeys.next();
