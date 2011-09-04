@@ -4,4 +4,5 @@
     <item android:id="@+id/reload"
         android:title="Refresh"
         android:icon="@drawable/menu_refresh" />
+    <item android:id="@+id/location" android:title="Your Location" android:visible="true" android:enabled="true"></item>
 </menu>

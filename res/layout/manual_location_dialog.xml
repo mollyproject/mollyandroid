@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:background="@drawable/shape_white"
+  android:padding="5dp"
+  android:layout_height="wrap_content">
+    <TextView android:text="Getting a fix on your location..." 
+	    android:id="@+id/locationText" 
+	    android:layout_width="fill_parent" 
+	    android:padding="5dp"
+	    android:layout_height="wrap_content" 
+	    android:textColor="@color/white"
+	    android:background="@drawable/shape_blue"
+	    android:textSize="18dp"
+	    android:textStyle="bold"
+	    android:layout_margin="5dp">
+    </TextView>
+    
+    <TextView android:text="Set your new location manually:" 
+	    android:id="@+id/locationText" 
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:textColor="@color/blue"
+	    android:textSize="18dp"
+	    android:layout_margin="5dp">
+    </TextView>
+    
+    <RelativeLayout
+		android:id="@+id/searchLayout" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content">
+	    <Button android:text="Set Location"
+		    android:id="@+id/setLocationButton" 
+		    android:layout_width="wrap_content" 
+		    android:layout_height="wrap_content" 
+		    android:layout_centerVertical="true"
+		    android:textColor="@color/blue" 
+		    android:layout_alignParentRight="true" 
+		    android:layout_marginRight="5dp"></Button>
+	    
+	    <EditText android:layout_width="fill_parent" 
+		    android:singleLine="True" 
+		    android:id="@+id/manualLocationField" 
+		    android:layout_height="wrap_content" 
+		    android:layout_alignTop="@+id/searchButton" 
+		    android:layout_marginLeft="5dp" 
+		    android:layout_toLeftOf="@+id/setLocationButton">
+	    </EditText>
+</RelativeLayout>
+    <RelativeLayout android:layout_width="fill_parent" 
+    android:id="@+id/autoLocLayout"
+    android:background="@drawable/bg_blue"
+    android:clickable="true"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_height="wrap_content" android:layout_margin="5dp">
+        <ImageView android:src="@drawable/location_white" 
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/crosshair" 
+	        android:layout_alignParentTop="true" 
+	        android:layout_alignParentLeft="true">
+        </ImageView>
+        <TextView android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content" 
+	        android:text="Get location automatically" 
+	        android:textColor="@color/white"
+	        android:textSize="18dp"
+	        android:id="@+id/autoLocText" 
+	        android:layout_margin="5dp" 
+	        android:layout_centerVertical="true" 
+	        android:layout_toRightOf="@+id/crosshair"></TextView>
+    </RelativeLayout>
+    
+    <RelativeLayout android:layout_width="fill_parent" 
+    android:id="@+id/showHistoryLayout"
+    android:background="@drawable/bg_blue"
+    android:clickable="true"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_height="wrap_content" android:layout_margin="5dp">
+        <ImageView android:src="@drawable/location_white" 
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/historyIcon" 
+	        android:layout_alignParentTop="true" 
+	        android:layout_alignParentLeft="true">
+        </ImageView>
+        <TextView android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content" 
+	        android:text="Or select from history" 
+	        android:textColor="@color/white"
+	        android:textSize="18dp"
+	        android:id="@+id/historyText" 
+	        android:layout_margin="5dp" 
+	        android:layout_centerVertical="true" 
+	        android:layout_toRightOf="@+id/historyIcon"></TextView>
+    </RelativeLayout>
+</LinearLayout>
