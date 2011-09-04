@@ -11,6 +11,7 @@
 	    android:textColor="@color/white"
 	    android:textSize="18dp"
 	    android:paddingLeft="10dp"
+	    android:paddingRight="10dp"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
 	    android:layout_gravity="center_vertical" 
