@@ -46,7 +46,6 @@ import org.apache.http.protocol.HttpContext;
 public class Router {
 	protected CookieManager cookieMgr;
 	protected LocationTracker locTracker;
-	//protected String csrfToken;
 	protected boolean firstReq;
 	protected MyApplication myApp;
 	protected HttpClient client;
@@ -64,7 +63,6 @@ public class Router {
 		locTracker = new LocationTracker(myApp);
 		locTracker.startLocUpdate();
 		client = new DefaultHttpClient();
-
 		HttpParams httpParams = client.getParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
 		HttpConnectionParams.setSoTimeout(httpParams, 10000);
@@ -188,7 +186,7 @@ public class Router {
 			//client.getParams().setParameter("http.connection-manager.timeout", 20000);
 			((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
 			System.out.println("Cookie set");
-			updateCurrentLocation(locTracker.getCurrentLoc());
+			if (LocationTracker.autoLoc) { updateCurrentLocation(); }
 		}
 		
 		System.out.println("GET Request");
@@ -237,18 +235,20 @@ public class Router {
     		(new InputStreamReader(responsePOST.getEntity().getContent()));
 		List<String> output = new ArrayList<String>();
 		String line;
-		System.out.println("Updating current location");
 	    
 		while ((line = rd.readLine()) != null) {
+			System.out.println(line);
 			output.add(line);
 		}
 		rd.close();
 		return output;
 	}
 	
-	public void updateCurrentLocation(Location loc) throws JSONException, ParseException, 
+	public void updateCurrentLocation() throws JSONException, ParseException, 
 				ClientProtocolException, IOException
 	{
+		Location loc = locTracker.getCurrentLoc();
+		
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         
         params.add(new BasicNameValuePair("csrfmiddlewaretoken", cookieMgr.getCSRFToken()));

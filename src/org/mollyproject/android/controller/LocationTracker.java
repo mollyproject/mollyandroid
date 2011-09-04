@@ -14,7 +14,7 @@ public class LocationTracker {
 	public static double DEFAULT_LON = -1.255939;
 	public static double DEFAULT_LAT = 51.752527;
 	protected Location loc;
-	protected boolean autoLoc;
+	public static boolean autoLoc;
 	
 	public LocationTracker(MyApplication myApp)
 	{
