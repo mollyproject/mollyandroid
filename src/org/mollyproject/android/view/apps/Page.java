@@ -265,7 +265,6 @@ public abstract class Page extends RoboActivity {
 			
 			final EditText manualLocationField = (EditText) locationLayout.findViewById(R.id.manualLocationField);
 			manualLocationField.setOnKeyListener(new OnKeyListener() {
-				
 				@Override
 				public boolean onKey(View v, int keyCode, KeyEvent event) {
 					if (event.getAction() == KeyEvent.ACTION_DOWN)
