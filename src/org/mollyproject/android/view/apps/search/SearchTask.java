@@ -41,6 +41,8 @@ public class SearchTask extends BackgroundTask<Void, Void, JSONObject> {
 			if (results.length() == 0)
 			{
 				//No results found
+				((TextView) resultsLayout.findViewById(R.id.searchResultsHeader)).setText("Sorry, your search returns no results. " +
+						"Please try again.");
 			}
 			else if (results.length() == 1)// & results.getJSONObject(0).getBoolean("redirect_if_sole_result"))
 			{
@@ -48,6 +50,8 @@ public class SearchTask extends BackgroundTask<Void, Void, JSONObject> {
 			}
 			else
 			{
+				((TextView) resultsLayout.findViewById(R.id.searchResultsHeader)).setText("Results for \"" 
+							+ MyApplication.generalQuery[0] + "\"");
 				for (int i = 0; i < results.length(); i++)
 				{
 					final JSONObject result = results.getJSONObject(i);
