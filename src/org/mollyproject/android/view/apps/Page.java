@@ -371,7 +371,7 @@ public abstract class Page extends RoboActivity {
 				             params.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
 				             params.add(new BasicNameValuePair("format", "json"));
 				             params.add(new BasicNameValuePair("language_code", "en"));
-				             params.add(new BasicNameValuePair("favourites", ""));
+				             params.add(new BasicNameValuePair("favourite", ""));
 				             params.add(new BasicNameValuePair("URL", MyApplication.favouriteURL));
 				             
 							 List<String> output = MyApplication.router.post(params,
@@ -386,7 +386,7 @@ public abstract class Page extends RoboActivity {
 				             params.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
 				             params.add(new BasicNameValuePair("format", "json"));
 				             params.add(new BasicNameValuePair("language_code", "en"));
-				             params.add(new BasicNameValuePair("Unfavourites", "unfavourites"));
+				             params.add(new BasicNameValuePair("Unfavourite", ""));
 				             params.add(new BasicNameValuePair("URL", MyApplication.favouriteURL));
 				             
 							 List<String> output = MyApplication.router.post(params,
