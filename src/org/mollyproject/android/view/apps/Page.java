@@ -1,16 +1,13 @@
 package org.mollyproject.android.view.apps;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.client.ClientProtocolException;
-import org.json.JSONArray;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.mollyproject.android.R;
-import org.mollyproject.android.R.id;
 import org.mollyproject.android.controller.LocationTracker;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
@@ -23,7 +20,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,7 +41,8 @@ public abstract class Page extends RoboActivity {
 	protected SharedPreferences.Editor editor;
 	protected SharedPreferences settings;
 	protected boolean manualRefresh;
-	
+	protected boolean favouritable;
+	protected boolean isFavourite;
 	protected LinearLayout detachedHistoryLayout;
 	protected LinearLayout locationLayout;
 	public static final int DIALOG_LOCATION = 0;
@@ -63,6 +60,7 @@ public abstract class Page extends RoboActivity {
 	public void onCreate (Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		favouritable = false;
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -74,12 +72,35 @@ public abstract class Page extends RoboActivity {
 		//layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
+	public void setFav(boolean b)
+	{
+		isFavourite = b;
+	}
+	
+	public boolean isFavourite()
+	{
+		return isFavourite;
+	}
+	
 	public abstract Page getInstance();
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.menu, menu);
+	    MenuItem favouriteItem = menu.findItem(R.id.favourite);
+	    favouriteItem.setEnabled(favouritable);
+	    if (favouriteItem.isChecked())
+	    {
+	    	favouriteItem.setTitle("UnFav");
+	    	isFavourite = false;
+	    }
+	    else
+	    {
+	    	favouriteItem.setTitle("Fav");
+	    	isFavourite = true;
+	    }
+	    
 	    return true;
 	}
 	
@@ -335,6 +356,45 @@ public abstract class Page extends RoboActivity {
 	        case R.id.location:
 	        	showDialog(DIALOG_LOCATION);
 	        	break;
+	        case R.id.favourite:
+	        	try {
+		        	if(MyApplication.csrfToken != null)
+		        	{
+		        		if (isFavourite)
+		        		{
+				        	//post the favourite on to the web server
+				        	 List<NameValuePair> params = new ArrayList<NameValuePair>();
+				             
+				             params.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
+				             params.add(new BasicNameValuePair("format", "json"));
+				             params.add(new BasicNameValuePair("language_code", "en"));
+				             params.add(new BasicNameValuePair("favourites", ""));
+				             params.add(new BasicNameValuePair("URL", MyApplication.favouriteURL));
+				             
+							 List<String> output = MyApplication.router.post(params,
+										 MyApplication.router.reverse(MollyModule.FAVOURITES, null));
+		        		}
+		        		else
+		        		{
+		        			//post the favourite on to the web server
+				        	 List<NameValuePair> params = new ArrayList<NameValuePair>();
+				             
+				             params.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
+				             params.add(new BasicNameValuePair("format", "json"));
+				             params.add(new BasicNameValuePair("language_code", "en"));
+				             params.add(new BasicNameValuePair("Unfavourites", "unfavourites"));
+				             params.add(new BasicNameValuePair("URL", MyApplication.favouriteURL));
+				             
+							 List<String> output = MyApplication.router.post(params,
+										 MyApplication.router.reverse(MollyModule.FAVOURITES, null));
+		        		}
+					} 
+	        	}
+	        	catch (Exception e) {
+					e.printStackTrace();
+				}
+	        	break;
+	        	
 	    }
 	    return true;
 	}

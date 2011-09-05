@@ -4,5 +4,21 @@
     <item android:id="@+id/reload"
         android:title="Refresh"
         android:icon="@drawable/menu_refresh" />
-    <item android:id="@+id/location" android:title="Your Location" android:visible="true" android:enabled="true"></item>
+    <item android:id="@+id/location" 
+	    android:title="Your Location" 
+	    android:visible="true" 
+	    android:enabled="true">
+    </item>
+    
+    <item android:enabled="true" 
+	    android:id="@+id/favourite" 
+	    android:visible="true" 
+	    android:title="Favourite" 
+	    android:checkable="true">
+    </item>
+    
+    <item android:enabled="true" 
+	    android:id="@+id/manage_favourites" 
+	    android:visible="true">
+    </item>
 </menu>

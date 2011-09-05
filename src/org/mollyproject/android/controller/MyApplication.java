@@ -56,6 +56,7 @@ public class MyApplication extends RoboApplication {
 	public static JSONArray availableApps = null; //all available apps for the current session
 	public static final String PREFS_NAME = "MyPrefsFile";
 	public static String currentApp;
+	public static String favouriteURL;
 	
 	public static DateFormat defaultDateFormat = new SimpleDateFormat
 			("EEE, d MMM yyyy HH:mm:ss Z");

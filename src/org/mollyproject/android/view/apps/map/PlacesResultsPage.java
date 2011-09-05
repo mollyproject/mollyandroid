@@ -14,7 +14,7 @@ public class PlacesResultsPage extends PageWithMap {
 	
 	public static TransportMapPageRefreshTask transportMapPageRefreshTask;
 	public static boolean firstLoad;
-	protected String[] args;
+	protected String[] args; //identifiers
 	public static final String OXPOINTS = "oxpoints";
 	public static final String OSM = "osm";
 	public static final String TRANSPORT = "atco";

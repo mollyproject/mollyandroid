@@ -49,6 +49,7 @@ public class MollyModule extends AbstractModule {
 	public static String TRANSPORT_PAGE = "transport:index";
 	public static String STATUS_PAGE = "service-status:index";
 	public static String PUBLIC_TRANSPORT = "transport:public-transport";
+	public static String FAVOURITES = "favourites:index";
 	public static String SPLASH = "splash";
 	
 	@Override
