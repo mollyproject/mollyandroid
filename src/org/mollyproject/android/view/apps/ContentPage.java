@@ -183,10 +183,14 @@ public abstract class ContentPage extends Page {
 				contentLayout.invalidate();
 				
 				//set favourite
-				if (jsonContent.has("is_favourite") & page.favouritable)
+				if (jsonContent.has("is_favouritable"))
 				{
-					page.setFav(jsonContent.getBoolean("is_favourite"));
-					MyApplication.favouriteURL = jsonContent.getString("favourite_url");
+					if (jsonContent.getBoolean("is_favouritable"))
+					{
+						page.setFavable(jsonContent.getBoolean("is_favouritable"));
+						page.setFav(jsonContent.getBoolean("is_favourite"));
+						MyApplication.favouriteURL = jsonContent.getString("favourite_url");
+					}
 				}
 				
 			} catch (JSONException e) {

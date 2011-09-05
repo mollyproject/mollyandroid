@@ -60,7 +60,6 @@ public abstract class Page extends RoboActivity {
 	public void onCreate (Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		favouritable = false;
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -69,7 +68,11 @@ public abstract class Page extends RoboActivity {
 		settings = getSharedPreferences(MyApplication.PREFS_NAME, 0);
 		editor = settings.edit();
 		manualRefresh = false;
-		//layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+	
+	public void setFavable(boolean b)
+	{
+		favouritable = b;
 	}
 	
 	public void setFav(boolean b)
@@ -360,7 +363,7 @@ public abstract class Page extends RoboActivity {
 	        	try {
 		        	if(MyApplication.csrfToken != null)
 		        	{
-		        		if (isFavourite)
+		        		if (!isFavourite)
 		        		{
 				        	//post the favourite on to the web server
 				        	 List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -373,6 +376,7 @@ public abstract class Page extends RoboActivity {
 				             
 							 List<String> output = MyApplication.router.post(params,
 										 MyApplication.router.reverse(MollyModule.FAVOURITES, null));
+							 
 		        		}
 		        		else
 		        		{
