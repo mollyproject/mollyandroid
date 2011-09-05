@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.LocationTracker;
 import org.mollyproject.android.controller.MollyModule;
@@ -77,6 +78,7 @@ public abstract class Page extends RoboActivity {
 	
 	public void setFav(boolean b)
 	{
+		System.out.println(b);
 		isFavourite = b;
 	}
 	
@@ -93,15 +95,14 @@ public abstract class Page extends RoboActivity {
 	    inflater.inflate(R.menu.menu, menu);
 	    MenuItem favouriteItem = menu.findItem(R.id.favourite);
 	    favouriteItem.setEnabled(favouritable);
-	    if (favouriteItem.isChecked())
+	    
+	    if (isFavourite)
 	    {
 	    	favouriteItem.setTitle("UnFav");
-	    	isFavourite = false;
 	    }
 	    else
 	    {
 	    	favouriteItem.setTitle("Fav");
-	    	isFavourite = true;
 	    }
 	    
 	    return true;
@@ -365,6 +366,7 @@ public abstract class Page extends RoboActivity {
 		        	{
 		        		if (!isFavourite)
 		        		{
+		        			System.out.println("Fav pressed");
 				        	//post the favourite on to the web server
 				        	 List<NameValuePair> params = new ArrayList<NameValuePair>();
 				             
@@ -372,25 +374,28 @@ public abstract class Page extends RoboActivity {
 				             params.add(new BasicNameValuePair("format", "json"));
 				             params.add(new BasicNameValuePair("language_code", "en"));
 				             params.add(new BasicNameValuePair("favourite", ""));
+				             System.out.println("fav link " + MyApplication.favouriteURL);
 				             params.add(new BasicNameValuePair("URL", MyApplication.favouriteURL));
 				             
 							 List<String> output = MyApplication.router.post(params,
 										 MyApplication.router.reverse(MollyModule.FAVOURITES, null));
-							 
+							 isFavourite = new JSONObject(output.get(0)).getBoolean("is_favourite");
 		        		}
 		        		else
 		        		{
+		        			System.out.println("UnFav pressed");
 		        			//post the favourite on to the web server
 				        	 List<NameValuePair> params = new ArrayList<NameValuePair>();
 				             
 				             params.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
 				             params.add(new BasicNameValuePair("format", "json"));
 				             params.add(new BasicNameValuePair("language_code", "en"));
-				             params.add(new BasicNameValuePair("Unfavourite", ""));
+				             params.add(new BasicNameValuePair("unfavourite", "Unfavourite"));
 				             params.add(new BasicNameValuePair("URL", MyApplication.favouriteURL));
 				             
 							 List<String> output = MyApplication.router.post(params,
 										 MyApplication.router.reverse(MollyModule.FAVOURITES, null));
+							 isFavourite = new JSONObject(output.get(0)).getBoolean("is_favourite");
 		        		}
 					} 
 	        	}
