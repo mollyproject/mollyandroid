@@ -1,8 +1,12 @@
 package org.mollyproject.android.view.apps.results_release;
 
 import java.text.ParseException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.TreeSet;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +23,6 @@ import android.widget.TextView;
 
 public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, JSONObject>{
 
-	//protected ArrayListMultimap<Date,String> examsByDate;
 	public ResultReleaseTask(ResultsReleasePage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
@@ -28,6 +31,7 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, JSONObje
 	@Override
 	public void updateView(JSONObject examsByDate) {
 		try {
+			
 			LayoutInflater inflater = page.getLayoutInflater();
 			((ResultsReleasePage) page).getContentLayout().removeAllViews();
 			
@@ -40,17 +44,24 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, JSONObje
 			
 			LinearLayout resultsLayout = (LinearLayout) releasesLayout.findViewById(R.id.generalResultsList);
 			
-			@SuppressWarnings("unchecked")
+			//sort the keys first
 			Iterator<String> dates = examsByDate.keys();
-			
+			TreeSet<String> sortedDates = new TreeSet<String>(new DateComparator());
 			while(dates.hasNext())
+			{
+				sortedDates.add(dates.next());
+			}
+			//sortedDates should contain all the sorted dates now
+			
+			Iterator<String> newDates = sortedDates.iterator();
+			while(newDates.hasNext())
 			{
 				LinearLayout thisResult = (LinearLayout) inflater.inflate
 						(R.layout.plain_text_search_result, ((ResultsReleasePage) page).getContentLayout(),false);
 				thisResult.setLayoutParams(Page.paramsWithLine);
 				String allText = new String();
 				
-				String myDate = dates.next();
+				String myDate = newDates.next();
 				allText = "<b>"+ myDate + "</b>";
 				
 				//List<String> results = (List<String>) examsByDate.getString(myDate);
@@ -85,6 +96,8 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, JSONObje
 		
 			JSONObject jsonContent = ((ContentPage) page).getJSONContent();
 			//Process the json text received
+			//What this part of the code does is that it groups the titles of the exams into groups by date 
+			//in another JSONObject and passes it to the updateView for later ease 
 			JSONArray entries = (JSONArray) jsonContent.get("entries");
 			JSONObject examsByDate = new JSONObject();
 			if (entries.length() > 0)
@@ -101,13 +114,12 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, JSONObje
 					
 					Date updatedDate = MyApplication.defaultDateFormat.parse
 										(entry.getString("updated"));
-					String myDate = MyApplication.myDateFormat.format(updatedDate);
+					String myDate = MyApplication.myDateFormat.format(updatedDate); // time in hourless format
 					if (!examsByDate.has(myDate))
 					{
 						examsByDate.put(myDate, new JSONArray());
 					}
 					examsByDate.getJSONArray(myDate).put(title);
-					//examsByDate.put(MyApplication.myDateFormat.format(updatedDate), title); // time in hourless format
 				}
 			}
 			return examsByDate;
@@ -122,6 +134,24 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, JSONObje
 			nullPointerException = true;
 		}
 		return null;
+	}
+	
+	private class DateComparator implements Comparator<String> 
+	{
+		@Override
+		public int compare(String object1, String object2) {
+			try {
+				Date date1 = MyApplication.myDateFormat.parse(object1);
+				Date date2 = MyApplication.myDateFormat.parse(object2);
+				
+				return date2.compareTo(date1); // Latest date first
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return 0;
+		}
+		
 	}
 
 }
