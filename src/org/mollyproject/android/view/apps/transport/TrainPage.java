@@ -94,7 +94,7 @@ public class TrainPage extends AutoRefreshPage {
 				board = DEPARTURES;
 				break;
 			default:
-				break;
+	        	return super.onOptionsItemSelected(item);
 	    }
 		onResume();
 	    return true;
@@ -103,7 +103,9 @@ public class TrainPage extends AutoRefreshPage {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.train_boards_menu, menu);
+	    inflater.inflate(R.menu.menu, menu);
+	    menu.findItem(R.id.arrivals).setVisible(true);
+	    menu.findItem(R.id.departures).setVisible(true);
 	    return true;
 	}
 
