@@ -27,8 +27,7 @@ public class TrainPage extends AutoRefreshPage {
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
+	public void refresh() {
 		if (TransportPage.transportTabHost.getCurrentTabTag().equals(TransportPage.RAIL))
 		{
 			System.out.println("Train Page resumed");
@@ -39,13 +38,8 @@ public class TrainPage extends AutoRefreshPage {
 				trainPageRefreshTask.cancel(true);
 			}
 
-			if (manualRefresh)
-			{
-				manualRefresh = false;
-				Toast toast = Toast.makeText(this, "Please wait. This page might take a moment or two to refresh...", 
-						Toast.LENGTH_SHORT);
-				toast.show();
-			}
+			Toast.makeText(this, "Please wait. This page might take a moment or two to refresh...", 
+					Toast.LENGTH_SHORT).show();
 			
 			trainPageRefreshTask = new TrainPageRefreshTask(this, false, false);
 			trainPageRefreshTask.execute();

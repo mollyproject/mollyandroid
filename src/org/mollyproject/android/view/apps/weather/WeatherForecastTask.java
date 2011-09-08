@@ -155,7 +155,7 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 				ImageView weatherForecastIcon = (ImageView) forecastDayLayout.findViewById(R.id.weatherForecastIcon);
 				weatherForecastIcon.setImageResource(MyApplication.getImgResourceId(forecast.getString("icon")+"_small"));
 			}
-			
+			((ContentPage) page).doneProcessingJSON();
 			
 		} catch (JSONException e) {
 			e.printStackTrace();

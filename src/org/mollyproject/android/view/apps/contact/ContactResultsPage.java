@@ -19,13 +19,9 @@ public class ContactResultsPage extends AbstractContactPage {
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
+	public void refresh() {
 		//query from myApp is extracted here and processed in the background
-		if (!jsonProcessed)
-		{
-			new ContactResultsTask(this,contactSearchBar,false,true).execute(jsonContent);
-		}
+		new ContactResultsTask(this,contactSearchBar,false,true).execute(jsonContent);
 	}
 	
 	@Override

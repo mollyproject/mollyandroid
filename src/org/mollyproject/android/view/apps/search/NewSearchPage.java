@@ -39,14 +39,15 @@ public class NewSearchPage extends ContentPage {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!jsonProcessed)
-		{
-			new NewSearchTask(this, false, true).execute();
-		}
-		else
+		if (jsonProcessed)
 		{
 			searchTabHost.setCurrentTab(currentTabId);
 		}
+	}
+	
+	@Override
+	public void refresh() {
+		new NewSearchTask(this, false, true).execute();
 	}
 	
 	@Override

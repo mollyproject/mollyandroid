@@ -56,6 +56,7 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 			page.finish();
 		}
 		MyApplication.router.releaseConnection();
+		Page.manualRefresh = false;
 		page = null;
 	}
 	
@@ -115,7 +116,7 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "Error loading page. " +
 					"Please try again later.", Toast.LENGTH_SHORT).show();
-		} 
+		}
 		if (dialogEnabled)
 		{
 			pDialog.dismiss();
@@ -124,7 +125,7 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		{
 			page.finish();
 		}
-		//page = null;
+		Page.manualRefresh = false;
 	}
 	public abstract void updateView(C outputs);
 }

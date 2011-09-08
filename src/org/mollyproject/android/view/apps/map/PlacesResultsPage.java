@@ -26,8 +26,7 @@ public class PlacesResultsPage extends PageWithMap {
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
+	public void refresh() {
 		if (!args[0].equals(TRANSPORT))
 		{
 			if (args[0].equals(OXPOINTS))
@@ -35,26 +34,18 @@ public class PlacesResultsPage extends PageWithMap {
 				mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
 		        		getWindowManager().getDefaultDisplay().getHeight()/3));
 			}
-			
-			if (!jsonProcessed|| manualRefresh)
-			{
-				manualRefresh = false;
-				new PlacesResultsTask(this, true, true).execute();
-			}
+			new PlacesResultsTask(this, true, true).execute();
 		}
 		else if (args[0].equals(TRANSPORT))
 		{
+			Toast.makeText(this, "Please wait. This page might take a moment or two to refresh...", 
+					Toast.LENGTH_SHORT).show();
+			
 			if (transportMapPageRefreshTask != null) 
 			{
 				transportMapPageRefreshTask.cancel(true);
 			}
-			if (manualRefresh)
-			{
-				manualRefresh = false;
-				Toast toast = Toast.makeText(this, "Please wait. This page might take a moment or two to refresh...", 
-						Toast.LENGTH_SHORT);
-				toast.show();
-			}
+			
 			if (firstLoad)
 			{
 				mapLayout.removeView(mapView);

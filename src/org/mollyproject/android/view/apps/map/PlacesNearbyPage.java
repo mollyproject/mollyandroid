@@ -23,17 +23,15 @@ public class PlacesNearbyPage extends ContentPage {
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
-		currentLocation = new TextView(getApplicationContext());
+	public void refresh() {
 		try {
-			currentLocation.setText("Your current location: " + MyApplication.currentLocation.getString("name"));
+			currentLocation.setText("Your last updated location: " + MyApplication.currentLocation.getString("name"));
 			new PlacesNearbyTask(this, false, true).execute(jsonContent);
 		} catch (Exception e) {
 			//this includes null pointer and json exceptions
 			e.printStackTrace();
-			Toast.makeText(getApplicationContext(), "Cannot get a fix on your location, " +
-					"please check your GPS/network settings or set the location manually" , Toast.LENGTH_SHORT);
+			currentLocation.setText("Cannot get a fix on your location. " +
+					"Please check your GPS/network settings or set the location manually");
 		}
 	}
 	

@@ -25,13 +25,8 @@ public class PodcastsPage extends ContentPage {
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
-		if (!jsonProcessed|| manualRefresh)
-		{
-			manualRefresh = false;
-			new PodcastsPageTask(this,true, true).execute();
-		}
+	public void refresh() {
+		new PodcastsPageTask(this,true, true).execute();
 	}
 	
 	@Override

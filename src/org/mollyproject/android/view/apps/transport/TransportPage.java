@@ -95,8 +95,7 @@ public class TransportPage extends ContentPage {
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
+	public void refresh() {
 		transportPaused = true;
 		new TransportPageTask(this, false, true).execute();
 	}

@@ -17,8 +17,7 @@ public class LibraryResultsPage extends AbstractLibraryPage {
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
+	public void refresh() {
 		if (!jsonProcessed|| manualRefresh)
 		{
 			manualRefresh = false;

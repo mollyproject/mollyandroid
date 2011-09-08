@@ -41,7 +41,7 @@ public abstract class Page extends RoboActivity {
 	protected MyApplication myApp;
 	protected SharedPreferences.Editor editor;
 	protected SharedPreferences settings;
-	protected boolean manualRefresh;
+	public static boolean manualRefresh;
 	protected boolean favouritable;
 	protected boolean isFavourite;
 	protected LinearLayout detachedHistoryLayout;
@@ -118,7 +118,7 @@ public abstract class Page extends RoboActivity {
 	    switch (item.getItemId()) {
 	        case R.id.reload:
 	        	manualRefresh = true;
-	        	onResume();
+	        	refresh();//onResume();
 	            break;
 	        case R.id.location:
 	        	showDialog(DIALOG_LOCATION);
@@ -286,120 +286,119 @@ public abstract class Page extends RoboActivity {
 	protected Dialog onCreateDialog(int id) {
 		// TODO Auto-generated method stub
 		Dialog dialog;
-		switch (id) {
-		case DIALOG_LOCATION_HISTORY:
-			//logically, this cannot appear before the location layout is updated, so there is no 
-			//chance historyLayout can be null, except you are doing something wrong
-			dialog = new Dialog(this);
-			dialog.setTitle("Location History");
-			dialog.setContentView(detachedHistoryLayout);
-			return dialog;
-			
-		case DIALOG_LOCATION:
-			locationLayout = (LinearLayout) getLayoutInflater().inflate
-						(R.layout.manual_location_dialog, null);
-			detachedHistoryLayout = (LinearLayout) getLayoutInflater().inflate
-					(R.layout.manual_location_history_dialog, null);
-			
-			final LinearLayout historyLayout = (LinearLayout) detachedHistoryLayout.findViewById(R.id.historyLayout); 
-			
-			final TextView currentLocation = (TextView) locationLayout.findViewById(R.id.locationText);
-			if (MyApplication.currentLocation != null)
-			{
-				try {
-					currentLocation.setText("Your current location is " + '\n' + 
-							MyApplication.currentLocation.getString("name") + " within approx. " 
-							+ MyApplication.currentLocation.getString("accuracy"));
-				} catch (JSONException e) {
-					e.printStackTrace();
-					currentLocation.setText("Cannot get your current location.");
-				}
-			}
-			
-			final RelativeLayout showHistoryLayout = (RelativeLayout) locationLayout.findViewById(R.id.showHistoryLayout);
-			showHistoryLayout.setOnClickListener(new OnClickListener() {
+ 		switch (id) {
+			case DIALOG_LOCATION_HISTORY:
+				//logically, this cannot appear before the location layout is updated, so there is no 
+				//chance historyLayout can be null, except you are doing something wrong
+				dialog = new Dialog(this);
+				dialog.setTitle("Location History");
+				dialog.setContentView(detachedHistoryLayout);
+				return dialog;
 				
-				@Override
-				public void onClick(View v) {
-					showDialog(Page.DIALOG_LOCATION_HISTORY);
-				}
-			});
-			
-			new LocationListTask(null,Page.this, false, true).execute(historyLayout,currentLocation);
-			
-			RelativeLayout autoLocLayout = (RelativeLayout) locationLayout.findViewById(R.id.autoLocLayout);
-			autoLocLayout.setOnClickListener(new OnClickListener() {
+			case DIALOG_LOCATION:
+				locationLayout = (LinearLayout) getLayoutInflater().inflate
+							(R.layout.manual_location_dialog, null);
+				detachedHistoryLayout = (LinearLayout) getLayoutInflater().inflate
+						(R.layout.manual_location_history_dialog, null);
 				
-				@Override
-				public void onClick(View v) {
+				final LinearLayout historyLayout = (LinearLayout) detachedHistoryLayout.findViewById(R.id.historyLayout); 
+				
+				final TextView currentLocation = (TextView) locationLayout.findViewById(R.id.locationText);
+				if (MyApplication.currentLocation != null)
+				{
 					try {
-						LocationTracker.autoLoc = true;
-						new LocationListTask(null,Page.this, false, true).execute(historyLayout,currentLocation);
-					} catch (Exception e) {
+						currentLocation.setText("Your last updated location is " + '\n' + 
+								MyApplication.currentLocation.getString("name") + " within approx. " 
+								+ MyApplication.currentLocation.getString("accuracy"));
+					} catch (JSONException e) {
 						e.printStackTrace();
-						Toast.makeText(Page.this, "Your new location cannot be updated. Please try again later", 
-								Toast.LENGTH_SHORT).show();
-					} 
+						currentLocation.setText("Cannot get your current location.");
+					}
 				}
-			});
-			
-			final EditText manualLocationField = (EditText) locationLayout.findViewById(R.id.manualLocationField);
-			manualLocationField.setOnKeyListener(new OnKeyListener() {
-				@Override
-				public boolean onKey(View v, int keyCode, KeyEvent event) {
-					if (event.getAction() == KeyEvent.ACTION_DOWN)
-					{
-						switch (keyCode) {
-						case KeyEvent.KEYCODE_ENTER:
-						case KeyEvent.KEYCODE_DPAD_CENTER:
-							LocationTracker.autoLoc = false;
-							try {
-								new LocationListTask(manualLocationField.getText().toString(), Page.this, 
-										false, true).execute(historyLayout,currentLocation);
-							} catch (Exception e) {
-								e.printStackTrace();
-								Toast.makeText(Page.this, "Your new location cannot be updated. Please try " +
-										"again later", Toast.LENGTH_SHORT).show();
+				
+				final RelativeLayout showHistoryLayout = (RelativeLayout) locationLayout.findViewById(R.id.showHistoryLayout);
+				showHistoryLayout.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						showDialog(Page.DIALOG_LOCATION_HISTORY);
+					}
+				});
+				
+				new LocationListTask(null,Page.this, false, true).execute(historyLayout,currentLocation);
+				
+				RelativeLayout autoLocLayout = (RelativeLayout) locationLayout.findViewById(R.id.autoLocLayout);
+				autoLocLayout.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						try {
+							LocationTracker.autoLoc = true;
+							new LocationListTask(null,Page.this, false, true).execute(historyLayout,currentLocation);
+						} catch (Exception e) {
+							e.printStackTrace();
+							Toast.makeText(Page.this, "Your new location cannot be updated. Please try again later", 
+									Toast.LENGTH_SHORT).show();
+						} 
+					}
+				});
+				
+				final EditText manualLocationField = (EditText) locationLayout.findViewById(R.id.manualLocationField);
+				manualLocationField.setOnKeyListener(new OnKeyListener() {
+					@Override
+					public boolean onKey(View v, int keyCode, KeyEvent event) {
+						if (event.getAction() == KeyEvent.ACTION_DOWN)
+						{
+							switch (keyCode) {
+							case KeyEvent.KEYCODE_ENTER:
+							case KeyEvent.KEYCODE_DPAD_CENTER:
+								LocationTracker.autoLoc = false;
+								try {
+									new LocationListTask(manualLocationField.getText().toString(), Page.this, 
+											false, true).execute(historyLayout,currentLocation);
+								} catch (Exception e) {
+									e.printStackTrace();
+									Toast.makeText(Page.this, "Your new location cannot be updated. Please try " +
+											"again later", Toast.LENGTH_SHORT).show();
+								}
+								return true;
+							default:
+								break;
 							}
-							return true;
-						default:
-							break;
+						}
+						return false;
+					}
+				});
+				
+				Button setLocation = (Button) locationLayout.findViewById(R.id.setLocationButton);
+				setLocation.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						LocationTracker.autoLoc = false;
+						try {
+							new LocationListTask(manualLocationField.getText().toString(), Page.this, 
+									false, true).execute(historyLayout,currentLocation);
+						} catch (Exception e) {
+							Toast.makeText(Page.this, "Your new location cannot be updated. Please try " +
+									"again later", Toast.LENGTH_SHORT).show();
 						}
 					}
-					return false;
-				}
-			});
-			
-			Button setLocation = (Button) locationLayout.findViewById(R.id.setLocationButton);
-			setLocation.setOnClickListener(new OnClickListener() {
+				});
 				
-				@Override
-				public void onClick(View v) {
-					LocationTracker.autoLoc = false;
-					try {
-						new LocationListTask(manualLocationField.getText().toString(), Page.this, 
-								false, true).execute(historyLayout,currentLocation);
-					} catch (Exception e) {
-						Toast.makeText(Page.this, "Your new location cannot be updated. Please try " +
-								"again later", Toast.LENGTH_SHORT).show();
-					}
-				}
-			});
-			
-			dialog = new Dialog(this);
-			dialog.setTitle("Update your location");
-			dialog.setContentView(locationLayout);
-			return dialog;
-
-		default:
-			break;
+				dialog = new LocationDialog(this);
+				dialog.setTitle("Update your location");
+				dialog.setContentView(locationLayout);
+				return dialog;
+			default:
+				break;
 		}
 		return super.onCreateDialog(id);
 	}
 	
 	public static void updateLocText(TextView currentLocTextView) throws JSONException
 	{
-		currentLocTextView.setText("Your current location is " + '\n' + 
+		currentLocTextView.setText("Your last updated location is " + '\n' + 
 				MyApplication.currentLocation.getString("name") + " within approx. " 
 				+ MyApplication.currentLocation.getString("accuracy"));
 	}
@@ -450,4 +449,6 @@ public abstract class Page extends RoboActivity {
     public abstract LinearLayout getContentLayout();
     
     public abstract void setContentLayout(LinearLayout contentLayout);
+    
+    public abstract void refresh(); //some thing to update the page separately from onResume
 }

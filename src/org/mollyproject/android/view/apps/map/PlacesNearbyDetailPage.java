@@ -21,15 +21,12 @@ public class PlacesNearbyDetailPage extends PageWithMap{
 		mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
         		getWindowManager().getDefaultDisplay().getHeight()/3));
 	}
+	
 	@Override
-	public void onResume() {
-		super.onResume();
-		if (!jsonProcessed|| manualRefresh)
-		{
-			manualRefresh = false;
-			new PlacesNearbyDetailTask(this, false, true).execute();
-		}
+	public void refresh() {
+		new PlacesNearbyDetailTask(this, false, true).execute();
 	}
+	
 	@Override
 	public Page getInstance() {
 		return this;

@@ -70,6 +70,11 @@ public abstract class ContentPage extends Page {
 			}
 			new PageSetupTask(this).execute();
 		}
+		if (!jsonProcessed || manualRefresh)
+		{
+			//if manual refresh is true it should always be set back to false upon termination of a task
+			refresh();
+		}
 	}
 	
 	public JSONObject getJSONContent()

@@ -14,6 +14,7 @@ import org.mollyproject.android.view.apps.Page;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
@@ -68,6 +69,12 @@ public abstract class AbstractLibraryPage extends ContentPage {
 		
 	}
 	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.reload).setEnabled(false);
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
 	public static void setUpLibrarySearchBar(final Page page, final Map<String,String> bookArgs, 
 			final LinearLayout librarySearchBar)
 	{
@@ -108,7 +115,6 @@ public abstract class AbstractLibraryPage extends ContentPage {
 	
 	@Override
 	public void onResume() {
-		super.onResume();
 		System.out.println("current search args: " + currentSearchArgs);
 		if (!currentSearchArgs.isEmpty())
 		{
@@ -122,6 +128,7 @@ public abstract class AbstractLibraryPage extends ContentPage {
 			isbnField.setText("");
 			authorField.setText("");
 		}
+		super.onResume();
 	}
 	
 	public static void searchLibraryOnClick(final Page page, final Map<String,String> bookArgs, 

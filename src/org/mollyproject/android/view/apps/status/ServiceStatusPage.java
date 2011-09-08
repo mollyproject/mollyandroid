@@ -8,15 +8,10 @@ import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 public class ServiceStatusPage extends ContentPage {
-
+	
 	@Override
-	public void onResume() {
-		super.onResume();
-		if (!jsonProcessed|| manualRefresh)
-		{
-			manualRefresh = false;
-			new ServiceStatusTask(this,true,true).execute();
-		}
+	public void refresh() {
+		new ServiceStatusTask(this,true,true).execute();
 	}
 	
 	@Override

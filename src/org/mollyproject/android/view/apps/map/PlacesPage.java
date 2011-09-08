@@ -49,15 +49,12 @@ public class PlacesPage extends ContentPage {
 	public void onResume() {
 		manualRefresh = true; //always reload this page for the newest location 
 		super.onResume();
-		//if (!jsonProcessed || manualRefresh)
-		//{
-			new PlacesTask(this, false, true).execute(); //update the current location on page
-		//}
 	}
-    protected boolean isRouteDisplayed() {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	
+	@Override
+	public void refresh() {
+		new PlacesTask(this, false, true).execute();
+	}
 	
 	@Override
 	public Page getInstance() {

@@ -90,4 +90,10 @@ public class Splash extends Page {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
+	}
 }

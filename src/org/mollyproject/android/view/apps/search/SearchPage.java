@@ -35,14 +35,10 @@ public class SearchPage extends ContentPage {
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
-		if(!jsonProcessed|| manualRefresh)
-		{
-			manualRefresh = false;
-			new SearchTask(this, false, true).execute();
-		}
+	public void refresh() {
+		new SearchTask(this, false, true).execute();
 	}
+	
 	@Override
 	public Page getInstance() {
 		return this;

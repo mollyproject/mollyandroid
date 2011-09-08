@@ -31,4 +31,9 @@ public class ContactPage extends AbstractContactPage {
 	public String getQuery() {
 		return null;
 	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+	}
 }

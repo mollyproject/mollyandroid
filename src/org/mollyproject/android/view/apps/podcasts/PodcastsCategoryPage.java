@@ -1,6 +1,5 @@
 package org.mollyproject.android.view.apps.podcasts;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import org.json.JSONArray;
@@ -70,8 +69,7 @@ public class PodcastsCategoryPage extends ContentPage {
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
+	public void refresh() {
 		if (!jsonProcessed|| manualRefresh)
 		{
 			manualRefresh = false;
@@ -173,7 +171,6 @@ public class PodcastsCategoryPage extends ContentPage {
 	public String getQuery() {
 		return null;
 	}
-	
 }
 
 

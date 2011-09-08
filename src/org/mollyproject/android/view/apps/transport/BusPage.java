@@ -11,8 +11,7 @@ public class BusPage extends AutoRefreshPage{
 	public static BusPageRefreshTask busPageRefreshTask;
 	
 	@Override
-	public void onResume() {
-		super.onResume();
+	public void refresh() {
 		if (TransportPage.transportTabHost.getCurrentTabTag().equals(TransportPage.BUS))
 		{
 			if (busPageRefreshTask != null) 
@@ -20,14 +19,8 @@ public class BusPage extends AutoRefreshPage{
 				busPageRefreshTask.cancel(true);
 			}
 
-			if (manualRefresh)
-			{
-				manualRefresh = false;
-				Toast toast = Toast.makeText(this, "Please wait. This page might take a moment or two to refresh...", 
-						Toast.LENGTH_SHORT);
-				toast.show();
-			}
-			
+			Toast.makeText(this, "Please wait. This page might take a moment or two to refresh...", 
+					Toast.LENGTH_SHORT).show();
 			busPageRefreshTask = new BusPageRefreshTask(this, false, false);
 			busPageRefreshTask.execute();
 		}

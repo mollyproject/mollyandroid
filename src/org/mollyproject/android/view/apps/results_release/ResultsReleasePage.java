@@ -15,13 +15,8 @@ public class ResultsReleasePage extends ContentPage {
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
-		if (!jsonProcessed || manualRefresh)
-		{
-			manualRefresh = false;
-			new ResultReleaseTask(this, true, true).execute();
-		}
+	public void refresh() {
+		new ResultReleaseTask(this, true, true).execute();
 	}
 	
 	public Page getInstance()

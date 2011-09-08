@@ -58,4 +58,8 @@ public class FeedbackPage extends ContentPage {
 		// TODO Auto-generated method stub
 		return MollyModule.FEEDBACK_PAGE;
 	}
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+	}
 }

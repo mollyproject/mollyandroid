@@ -31,4 +31,9 @@ public class FavouritesPage extends ContentPage {
 		return MollyModule.FAVOURITES;
 	}
 
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+	}
+
 }
