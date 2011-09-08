@@ -90,11 +90,9 @@ public abstract class Page extends RoboActivity {
 	public abstract Page getInstance();
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.menu, menu);
-	    MenuItem favouriteItem = menu.findItem(R.id.favourite);
-	    favouriteItem.setEnabled(favouritable);
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem favouriteItem = menu.findItem(R.id.favourite);
+	    favouriteItem.setVisible(favouritable);
 	    
 	    if (isFavourite)
 	    {
@@ -105,6 +103,63 @@ public abstract class Page extends RoboActivity {
 	    	favouriteItem.setTitle("Fav");
 	    }
 	    
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu, menu);
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	        case R.id.reload:
+	        	manualRefresh = true;
+	        	onResume();
+	            break;
+	        case R.id.location:
+	        	showDialog(DIALOG_LOCATION);
+	        	break;
+	        case R.id.favourite:
+	        	try {
+		        	if(MyApplication.csrfToken != null)
+		        	{
+		        		
+	        			System.out.println("Fav pressed");
+			        	//post the favourite on to the web server
+			        	List<NameValuePair> params = new ArrayList<NameValuePair>();
+			             
+			            params.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
+			            params.add(new BasicNameValuePair("format", "json"));
+			            params.add(new BasicNameValuePair("language_code", "en"));
+			            System.out.println("fav link " + MyApplication.favouriteURL);
+			            params.add(new BasicNameValuePair("URL", MyApplication.favouriteURL));
+			            if (!isFavourite)
+			        	{
+			            	params.add(new BasicNameValuePair("favourite", ""));
+			        	}
+			            else
+			        	{
+			            	params.add(new BasicNameValuePair("unfavourite", "Unfavourite"));
+			        	}
+			             
+						List<String> output = MyApplication.router.post(params,
+								MyApplication.router.reverse(MollyModule.FAVOURITES, null));
+						isFavourite = new JSONObject(output.get(0)).getBoolean("is_favourite");
+					} 
+	        	}
+	        	catch (Exception e) {
+					e.printStackTrace();
+					Toast.makeText(getApplicationContext(), 
+							"This operation cannot be complete, please check your connection and try again.", 
+								Toast.LENGTH_SHORT).show();
+				}
+	        	break;
+	        	
+	    }
 	    return true;
 	}
 	
@@ -347,65 +402,6 @@ public abstract class Page extends RoboActivity {
 		currentLocTextView.setText("Your current location is " + '\n' + 
 				MyApplication.currentLocation.getString("name") + " within approx. " 
 				+ MyApplication.currentLocation.getString("accuracy"));
-	}
-	
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	        case R.id.reload:
-	        	manualRefresh = true;
-	        	onResume();
-	            break;
-	        case R.id.location:
-	        	showDialog(DIALOG_LOCATION);
-	        	break;
-	        case R.id.favourite:
-	        	try {
-		        	if(MyApplication.csrfToken != null)
-		        	{
-		        		if (!isFavourite)
-		        		{
-		        			System.out.println("Fav pressed");
-				        	//post the favourite on to the web server
-				        	 List<NameValuePair> params = new ArrayList<NameValuePair>();
-				             
-				             params.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
-				             params.add(new BasicNameValuePair("format", "json"));
-				             params.add(new BasicNameValuePair("language_code", "en"));
-				             params.add(new BasicNameValuePair("favourite", ""));
-				             System.out.println("fav link " + MyApplication.favouriteURL);
-				             params.add(new BasicNameValuePair("URL", MyApplication.favouriteURL));
-				             
-							 List<String> output = MyApplication.router.post(params,
-										 MyApplication.router.reverse(MollyModule.FAVOURITES, null));
-							 isFavourite = new JSONObject(output.get(0)).getBoolean("is_favourite");
-		        		}
-		        		else
-		        		{
-		        			System.out.println("UnFav pressed");
-		        			//post the favourite on to the web server
-				        	 List<NameValuePair> params = new ArrayList<NameValuePair>();
-				             
-				             params.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
-				             params.add(new BasicNameValuePair("format", "json"));
-				             params.add(new BasicNameValuePair("language_code", "en"));
-				             params.add(new BasicNameValuePair("unfavourite", "Unfavourite"));
-				             params.add(new BasicNameValuePair("URL", MyApplication.favouriteURL));
-				             
-							 List<String> output = MyApplication.router.post(params,
-										 MyApplication.router.reverse(MollyModule.FAVOURITES, null));
-							 isFavourite = new JSONObject(output.get(0)).getBoolean("is_favourite");
-		        		}
-					} 
-	        	}
-	        	catch (Exception e) {
-					e.printStackTrace();
-				}
-	        	break;
-	        	
-	    }
-	    return true;
 	}
 	
 	@Override
