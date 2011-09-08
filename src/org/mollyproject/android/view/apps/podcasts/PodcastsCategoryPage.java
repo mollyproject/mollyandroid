@@ -27,6 +27,7 @@ public class PodcastsCategoryPage extends ContentPage {
 	protected JSONArray videos;
 	protected Queue<Map<ImageView,String>> imageDownloadQueue;
 	protected int runningImageThreads;
+	protected PodcastsCategoryTask podcastsCategoryTask;
 	public static boolean firstLoad;
 	public static ImageBatchesTask imageTask; //this reference should be kept here because it can be easily paused from this page
 	
@@ -70,11 +71,12 @@ public class PodcastsCategoryPage extends ContentPage {
 	
 	@Override
 	public void refresh() {
-		if (!jsonProcessed|| manualRefresh)
+		if (imageTask != null)
 		{
-			manualRefresh = false;
-			new PodcastsCategoryTask(this,true, true).execute();
+			imageTask.cancel(true);
 		}
+		podcastsCategoryTask = new PodcastsCategoryTask(this, false, true);
+		podcastsCategoryTask.execute();
 	}
 	
 	@Override
@@ -83,6 +85,10 @@ public class PodcastsCategoryPage extends ContentPage {
 		if (imageTask != null)
 		{
 			imageTask.cancel(true);
+		}
+		if (podcastsCategoryTask != null)
+		{
+			podcastsCategoryTask.cancel(true);
 		}
 	}
 	
@@ -118,27 +124,31 @@ public class PodcastsCategoryPage extends ContentPage {
 		if (!firstLoad)
 		{
 			imageTask.cancel(true);
+			podcastsCategoryTask.cancel(true);
 			contentScroll.scrollTo(0, 0);
 			switch (item.getItemId()) {
 	    	case ALL:
 	    		if (currentlyShowing != ALL)
 	        	{
 		    		currentlyShowing = ALL;
-		    		new PodcastsCategoryTask(this,false, false).execute(all);
+		    		podcastsCategoryTask = new PodcastsCategoryTask(this,false, false);
+		    		podcastsCategoryTask.execute(all);
 	        	}
 	    		break;
 	        case AUDIO:
 	        	if (currentlyShowing != AUDIO)
 	        	{
 		        	currentlyShowing = AUDIO;
-		        	new PodcastsCategoryTask(this,false, false).execute(audios);
+		        	podcastsCategoryTask = new PodcastsCategoryTask(this,false, false);
+		        	podcastsCategoryTask.execute(audios);
 	        	}
 	        	break;
 	        case VIDEO:
 	        	if (currentlyShowing != VIDEO)
 	        	{
 		        	currentlyShowing = VIDEO;
-		        	new PodcastsCategoryTask(this,false, false).execute(videos);
+		        	podcastsCategoryTask = new PodcastsCategoryTask(this,false, false);
+		        	podcastsCategoryTask.execute(videos);
 	        	}
 	            break;
 	        default:

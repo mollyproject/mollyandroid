@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.JSONProcessingTask;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
@@ -21,7 +22,7 @@ import android.graphics.Paint.Align;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-public class ComplexMapResultTask extends BackgroundTask<Void,Void,JSONObject>{
+public class ComplexMapResultTask extends JSONProcessingTask {
 	protected boolean exceptionCaught = false;
 	public ComplexMapResultTask(PageWithMap page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
@@ -58,7 +59,7 @@ public class ComplexMapResultTask extends BackgroundTask<Void,Void,JSONObject>{
 	        
 	        //process all markers/overlay items
 			JSONArray jsonMarkers = jsonMap.getJSONArray("markers");
-	        //System.out.println(jsonMap.toString(1));
+			mapView.getOverlays().clear();
 	        for (int i = 0; i < jsonMarkers.length(); i++)
 	        {
 	        	System.out.println(jsonMarkers.toString(1));
@@ -91,7 +92,11 @@ public class ComplexMapResultTask extends BackgroundTask<Void,Void,JSONObject>{
 	}
 
 	@Override
-	protected JSONObject doInBackground(Void... arg0) {
+	protected JSONObject doInBackground(JSONObject... params) {
+		if (Page.manualRefresh)
+		{
+			return super.doInBackground();
+		}
 		while (!((ContentPage) page).downloadedJSON())
 		{
 			try {

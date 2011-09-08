@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
@@ -19,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class SearchTask extends BackgroundTask<Void, Void, JSONObject> {
+public class SearchTask extends JSONProcessingTask {
 
 	public SearchTask(Page page, boolean toDestroy, boolean dialog)
 	{
@@ -122,7 +123,12 @@ public class SearchTask extends BackgroundTask<Void, Void, JSONObject> {
 	}
 
 	@Override
-	protected JSONObject doInBackground(Void... args) {
+	protected JSONObject doInBackground(JSONObject... args) {
+		if(Page.manualRefresh)
+		{
+			return super.doInBackground();
+		}
+		
 		while (!((ContentPage) page).downloadedJSON())
 		{
 			try {

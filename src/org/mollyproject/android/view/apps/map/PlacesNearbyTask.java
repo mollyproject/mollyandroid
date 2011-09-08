@@ -7,8 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
+import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
@@ -21,7 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PlacesNearbyTask extends BackgroundTask<JSONObject, Void, JSONObject>{
+public class PlacesNearbyTask extends JSONProcessingTask {
 
 	public PlacesNearbyTask(Page page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
@@ -136,6 +138,10 @@ public class PlacesNearbyTask extends BackgroundTask<JSONObject, Void, JSONObjec
 
 	@Override
 	protected JSONObject doInBackground(JSONObject... params) {
+		if (Page.manualRefresh)
+		{
+			return super.doInBackground();
+		}
 		while (!((ContentPage) page).downloadedJSON())
 		{
 			try {

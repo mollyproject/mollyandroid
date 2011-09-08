@@ -2,6 +2,7 @@ package org.mollyproject.android.view.apps.map;
 
 import org.json.JSONObject;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
@@ -11,7 +12,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class PlacesTask extends BackgroundTask<JSONObject, Void, JSONObject>{
+public class PlacesTask extends JSONProcessingTask {
 
 	public PlacesTask(Page page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
@@ -44,6 +45,11 @@ public class PlacesTask extends BackgroundTask<JSONObject, Void, JSONObject>{
 
 	@Override
 	protected JSONObject doInBackground(JSONObject... params) {
+		if(Page.manualRefresh)
+		{
+			return super.doInBackground();
+		}
+		
 		while (!((ContentPage) page).downloadedJSON())
 		{
 			try {

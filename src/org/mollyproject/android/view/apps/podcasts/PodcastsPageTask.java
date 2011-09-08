@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
@@ -17,7 +18,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class PodcastsPageTask extends BackgroundTask<Void, Void, JSONObject>
+public class PodcastsPageTask extends JSONProcessingTask
 {
 
 	public PodcastsPageTask(PodcastsPage page, boolean toDestroyPageAfterFailure,
@@ -32,11 +33,12 @@ public class PodcastsPageTask extends BackgroundTask<Void, Void, JSONObject>
 		try
 			{
 			LinearLayout contentLayout = ((ContentPage) page).getContentLayout();
+			contentLayout.removeAllViews();
 			
 			LayoutInflater layoutInflater = page.getLayoutInflater();
 			
-			LinearLayout podcastsLayout = (LinearLayout) layoutInflater.inflate(R.layout.general_search_results_page, 
-					null);
+			LinearLayout podcastsLayout = (LinearLayout) layoutInflater.inflate(R.layout.general_search_results_page, null);
+			
 			contentLayout.addView(podcastsLayout);
 			
 			TextView header = (TextView) podcastsLayout.findViewById(R.id.searchResultsHeader);
@@ -48,7 +50,6 @@ public class PodcastsPageTask extends BackgroundTask<Void, Void, JSONObject>
 			JSONArray jsonCategories = outputs.getJSONArray("categories");
 			for (int i = 0; i < jsonCategories.length(); i++)
 			{
-				//final Map<String,String> resultMap = resultMapsList.get(i);
 				final JSONObject category = jsonCategories.getJSONObject(i);
 				
 				LinearLayout thisResult = (LinearLayout) layoutInflater.inflate
@@ -75,8 +76,12 @@ public class PodcastsPageTask extends BackgroundTask<Void, Void, JSONObject>
 	}
 
 	@Override
-	protected JSONObject doInBackground(Void... params) {
-		// TODO Auto-generated method stub
+	protected JSONObject doInBackground(JSONObject... params) {
+		if (Page.manualRefresh)
+		{
+			return super.doInBackground();
+		}
+		
 		while (!((ContentPage) page).downloadedJSON())
 		{
 			try {

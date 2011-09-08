@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
@@ -17,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
+public class WeatherForecastTask extends JSONProcessingTask {
 	public WeatherForecastTask(WeatherPage weatherPage, boolean toDestroy, boolean dialog)
 	{
 		super(weatherPage,toDestroy, dialog);
@@ -27,6 +28,7 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 	public void updateView(JSONObject jsonContent) {
 		try {
 			//There are 2 sections in the weather page, an observation bar and a 3-day forecast layout
+			page.getContentLayout().removeAllViews();
 			
 			//get the observation bar first:
 			JSONObject observation = jsonContent.getJSONObject("observation");
@@ -96,17 +98,11 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 				others = others + "Sunset at " + observation.getString("sunset");
 			}
 			
+			LinearLayout observationBar = (LinearLayout) page.getLayoutInflater()
+					.inflate(R.layout.weather_observation, null);
+			page.getContentLayout().addView(observationBar);
+			
 			//Forecast information
-			
-			
-			LayoutInflater layoutInflater = (LayoutInflater) page.getApplication()
-			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			LinearLayout observationBar = (LinearLayout) layoutInflater
-						.inflate(R.layout.weather_observation, null);
-			((WeatherPage) page).getContentLayout().removeAllViews();
-			((WeatherPage) page).getContentLayout().addView(observationBar);
-			
-			//Cannot do injection by InjectView outside of an Activity, roboguice limitation
 			TextView temperatureText = (TextView) observationBar.findViewById(R.id.temperatureText);
 			temperatureText.setText(temperature);
 			
@@ -131,8 +127,8 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 			{
 				JSONObject forecast = forecasts.getJSONObject(i);
 				
-				LinearLayout forecastDayLayout = (LinearLayout) layoutInflater.inflate
-						(R.layout.weather_forecast_day, ((ContentPage) page).getContentLayout(),false);
+				LinearLayout forecastDayLayout = (LinearLayout) page.getLayoutInflater().inflate
+						(R.layout.weather_forecast_day, null);
 				forecastDayLayout.setLayoutParams(Page.paramsWithLine);
 				forecastLayout.addView(forecastDayLayout);
 				
@@ -164,8 +160,11 @@ public class WeatherForecastTask extends BackgroundTask<Void, Void, JSONObject>{
 	}
 
 	@Override
-	protected JSONObject doInBackground(Void... arg0) {
-		
+	protected JSONObject doInBackground(JSONObject... params) {
+		if (Page.manualRefresh)
+		{
+			return super.doInBackground();
+		}
 		while (!((ContentPage) page).downloadedJSON())
 		{
 			try {

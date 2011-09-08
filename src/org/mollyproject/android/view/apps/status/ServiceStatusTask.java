@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
@@ -21,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ServiceStatusTask extends BackgroundTask<JSONObject,Void,JSONObject> {
+public class ServiceStatusTask extends JSONProcessingTask {
 	public final static String UP = "up";
 	public final static String DOWN = "down";
 	public final static String UNKNOWN = "unknown";
@@ -96,6 +97,10 @@ public class ServiceStatusTask extends BackgroundTask<JSONObject,Void,JSONObject
 
 	@Override
 	protected JSONObject doInBackground(JSONObject... params) {
+		if (Page.manualRefresh)
+		{
+			return super.doInBackground();
+		}
 		while (!((ContentPage) page).downloadedJSON())
 		{
 			try {
@@ -104,33 +109,7 @@ public class ServiceStatusTask extends BackgroundTask<JSONObject,Void,JSONObject
 				e.printStackTrace();
 			}
 		}
-		
-		try {
-			if (!((ContentPage) page).jsonProcessed())
-			{
-				//this is the first run
-				return ((ContentPage) page).getJSONContent();
-			}
-			else 
-			{
-				JSONObject jsonContent = MyApplication.router.onRequestSent(page.getName(), 
-						page.getAdditionalParams(),Router.OutputFormat.JSON, null);
-				return jsonContent;
-			}
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			unknownHostException = true;
-		} catch (JSONException e) {
-			e.printStackTrace();
-			jsonException = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			ioException = true;
-		} catch (ParseException e) {
-			e.printStackTrace();
-			parseException = true;
-		}
-		return null; //should only reach here if there's an error in network connection
+		return ((ContentPage) page).getJSONContent();
 	}
 	
 }

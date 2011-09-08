@@ -148,6 +148,7 @@ public class PlacesResultsTask extends BackgroundTask<Void,Void,JSONObject>
 	
 	public static void populateMarkers(PageWithMap page, List<OverlayItem> overlayItems)
 	{
+		page.getMapView().getOverlays().clear();
 		//populate the markers on the map's overlay
 		ItemizedIconOverlay<OverlayItem> overlay = new ItemizedIconOverlay<OverlayItem>(page,overlayItems, null);
         page.getMapView().getOverlays().add(overlay);

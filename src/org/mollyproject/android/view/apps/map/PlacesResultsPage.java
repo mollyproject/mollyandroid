@@ -24,6 +24,12 @@ public class PlacesResultsPage extends PageWithMap {
 		firstLoad = true;
 		args = MyApplication.placesArgs;
 	}
+	
+	@Override
+	public void onResume() {
+		manualRefresh = true; //always reload this page for the newest location 
+		super.onResume();
+	}
 
 	@Override
 	public void refresh() {
@@ -63,7 +69,6 @@ public class PlacesResultsPage extends PageWithMap {
 	@Override
 	public void onPause() {
 		super.onPause();
-		System.out.println("Transport Map Page paused");
 		if (transportMapPageRefreshTask != null) 
 		{
 			transportMapPageRefreshTask.cancel(true);

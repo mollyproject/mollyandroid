@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
@@ -21,7 +22,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, JSONObject>{
+public class ResultReleaseTask extends JSONProcessingTask{
 
 	public ResultReleaseTask(ResultsReleasePage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
@@ -84,6 +85,10 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, JSONObje
 
 	@Override
 	protected  JSONObject doInBackground(JSONObject... params) {
+		if (Page.manualRefresh)
+		{
+			return super.doInBackground();
+		}
 		try {
 			while (!((ContentPage) page).downloadedJSON())
 			{

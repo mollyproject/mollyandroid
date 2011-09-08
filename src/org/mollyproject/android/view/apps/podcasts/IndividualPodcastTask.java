@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
@@ -17,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class IndividualPodcastTask extends BackgroundTask<Void,Void,JSONObject>
+public class IndividualPodcastTask extends JSONProcessingTask
 {
 
 	public IndividualPodcastTask(Page page,
@@ -36,7 +37,7 @@ public class IndividualPodcastTask extends BackgroundTask<Void,Void,JSONObject>
 			JSONObject jsonInfo = jsonContent.getJSONObject("podcast");
 			
 			LinearLayout contentLayout = ((ContentPage) page).getContentLayout();
-			
+			contentLayout.removeAllViews();
 			LayoutInflater layoutInflater = page.getLayoutInflater();
 			LinearLayout indPodcastLayout = (LinearLayout) layoutInflater.inflate(R.layout.individual_podcast_page,null);
 			
@@ -91,6 +92,7 @@ public class IndividualPodcastTask extends BackgroundTask<Void,Void,JSONObject>
 				
 				scrLayout.addView(itemLayout);
 			}
+			contentLayout.addView(indPodcastLayout);
 			((ContentPage) page).doneProcessingJSON();
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -105,7 +107,11 @@ public class IndividualPodcastTask extends BackgroundTask<Void,Void,JSONObject>
 	}
 
 	@Override
-	protected JSONObject doInBackground(Void... params) {
+	protected JSONObject doInBackground(JSONObject... params) {
+		if (Page.manualRefresh)
+		{
+			return super.doInBackground();
+		}
 		while (!((ContentPage) page).downloadedJSON())
 		{
 			try {
