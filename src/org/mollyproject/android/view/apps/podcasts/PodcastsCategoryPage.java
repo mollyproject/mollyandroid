@@ -21,22 +21,15 @@ public class PodcastsCategoryPage extends ContentPage {
 	public static final int AUDIO = R.id.showAudioItem;
 	public static final int VIDEO = R.id.showVideoItem;
 	public static final int ALL = R.id.showAllItem;
-	protected int currentlyShowing;
+	public static int currentlyShowing;
 	protected String slug;
 	protected JSONArray all;
 	protected JSONArray audios;
 	protected JSONArray videos;
 	protected Queue<Map<ImageView,String>> imageDownloadQueue;
 	protected int runningImageThreads;
-	protected boolean firstLoad;
-	protected ImageBatchesTask imageTask = null;
-	
-	protected static Map<Integer,String> mediumTexts = new HashMap<Integer,String>();
-	static {
-		mediumTexts.put(ALL, "Showing all types of media.");
-		mediumTexts.put(AUDIO, "Showing only audios.");
-		mediumTexts.put(VIDEO, "Showing only videos.");
-	}
+	public static boolean firstLoad;
+	public static ImageBatchesTask imageTask; //this reference should be kept here because it can be easily paused from this page
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -84,14 +77,15 @@ public class PodcastsCategoryPage extends ContentPage {
 			manualRefresh = false;
 			new PodcastsCategoryTask(this,true, true).execute();
 		}
-		imageTask = new ImageBatchesTask(this, false, false);
-		imageTask.execute();
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
-		imageTask.cancel(true);
+		if (imageTask != null)
+		{
+			imageTask.cancel(true);
+		}
 	}
 	
 	@Override
@@ -121,37 +115,36 @@ public class PodcastsCategoryPage extends ContentPage {
 		}
 	}
 	
-	public void firstLoadDone()
-	{
-		firstLoad = false;
-	}
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (!firstLoad)
 		{
+			imageTask.cancel(true);
+			contentScroll.scrollTo(0, 0);
 			switch (item.getItemId()) {
 	    	case ALL:
 	    		if (currentlyShowing != ALL)
 	        	{
 		    		currentlyShowing = ALL;
-		    		new PodcastsCategoryTask(this,true, true).execute(all);
+		    		new PodcastsCategoryTask(this,false, false).execute(all);
 	        	}
 	    		break;
 	        case AUDIO:
 	        	if (currentlyShowing != AUDIO)
 	        	{
 		        	currentlyShowing = AUDIO;
-		        	new PodcastsCategoryTask(this,true, true).execute(audios);
+		        	new PodcastsCategoryTask(this,false, false).execute(audios);
 	        	}
 	        	break;
 	        case VIDEO:
 	        	if (currentlyShowing != VIDEO)
 	        	{
 		        	currentlyShowing = VIDEO;
-		        	new PodcastsCategoryTask(this,true, true).execute(videos);
+		        	new PodcastsCategoryTask(this,false, false).execute(videos);
 	        	}
 	            break;
+	        default:
+	        	return super.onOptionsItemSelected(item);
 		    }
 		}
 	    return true;
@@ -163,7 +156,14 @@ public class PodcastsCategoryPage extends ContentPage {
 	    inflater.inflate(R.menu.audio_video_menu, menu);
 	    return true;
 	}
-
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.setGroupEnabled(R.id.podcastItemsGroup, true); // Enable everything
+	    menu.findItem(currentlyShowing).setEnabled(false); // but cannot select the option currently showing
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
 	@Override
 	public String getName() {
 		return MollyModule.PODCAST_CATEGORY_PAGE;

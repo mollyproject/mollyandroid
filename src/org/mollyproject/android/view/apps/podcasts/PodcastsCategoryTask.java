@@ -29,6 +29,14 @@ import android.widget.Toast;
 public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONArray>
 {
 	protected volatile boolean rejectedDownloadImages;
+	
+	protected static Map<Integer,String> mediumHeaders = new HashMap<Integer,String>();
+	static {
+		mediumHeaders.put(PodcastsCategoryPage.ALL, "Showing all types of media.");
+		mediumHeaders.put(PodcastsCategoryPage.AUDIO, "Showing only audios.");
+		mediumHeaders.put(PodcastsCategoryPage.VIDEO, "Showing only videos.");
+	}
+	
 	//Map<ImageView,String> imagesCache;
 	Queue<Map<ImageView,String>> downloadQueue;
 	protected int spawned;
@@ -95,7 +103,7 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 				resultsLayout.addView(thisResult);
 				
 				TextView mediumText = (TextView) podcastsLayout.findViewById(R.id.searchResultsHeader);
-				//mediumText.setText(mediumTexts.get(currentlyShowing));
+				mediumText.setText(mediumHeaders.get(PodcastsCategoryPage.currentlyShowing));
 				
 				final String slug = result.getString("slug");
 				thisResult.setOnClickListener(new OnClickListener() {
@@ -141,6 +149,11 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 			//new ImageBatchesTask(page, false, false).execute(downloadQueue);
 			((PodcastsCategoryPage) page).setDownloadQueue(downloadQueue);
 			((ContentPage) page).doneProcessingJSON();
+			
+			
+			PodcastsCategoryPage.imageTask = new ImageBatchesTask(page, false, false);
+			PodcastsCategoryPage.imageTask.execute();
+			
 		} catch (RejectedExecutionException e) {
 			e.printStackTrace();
 			if (!rejectedDownloadImages)
@@ -156,7 +169,7 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 			jsonException = true;
 		}
 		
-		((PodcastsCategoryPage) page).firstLoadDone();
+		PodcastsCategoryPage.firstLoad = false;
 	}
 	
 }
