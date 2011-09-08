@@ -22,7 +22,6 @@ public class PlacesTask extends BackgroundTask<JSONObject, Void, JSONObject>{
 	@Override
 	public void updateView(JSONObject outputs) {
 		try {
-			System.out.println(MyApplication.currentLocation.toString(1));
 			PlacesPage.currentLocation.setText("Your current location:" + '\n' 
 					+ MyApplication.currentLocation.getString("name") + " within approx. " + MyApplication.currentLocation.getString("accuracy"));
 			PlacesPage.nearby.setClickable(true);

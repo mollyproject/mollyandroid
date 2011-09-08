@@ -47,11 +47,12 @@ public class PlacesPage extends ContentPage {
 	
 	@Override
 	public void onResume() {
+		manualRefresh = true; //always reload this page for the newest location 
 		super.onResume();
-		if (!jsonProcessed || manualRefresh)
-		{
-			new PlacesTask(this, false, true).execute();
-		}
+		//if (!jsonProcessed || manualRefresh)
+		//{
+			new PlacesTask(this, false, true).execute(); //update the current location on page
+		//}
 	}
     protected boolean isRouteDisplayed() {
         // TODO Auto-generated method stub
