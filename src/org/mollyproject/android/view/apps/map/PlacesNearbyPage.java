@@ -18,7 +18,7 @@ public class PlacesNearbyPage extends ContentPage {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		TextView currentLocation = new TextView(getApplicationContext());
+		currentLocation = new TextView(getApplicationContext());
 		contentLayout.addView(currentLocation);
 	}
 	
