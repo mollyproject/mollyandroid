@@ -19,6 +19,14 @@
     
     <item android:enabled="true" 
 	    android:id="@+id/manage_favourites" 
-	    android:visible="true">
+	    android:visible="true" android:title="Manage Favourites">
     </item>
+    
+    <item android:id="@+id/departures"
+        android:title="View Departures Board"
+        android:icon="@drawable/icon" android:visible="false"/>
+    <item android:id="@+id/arrivals"
+	    android:title="View Arrivals Board"
+	    android:icon="@drawable/icon" android:visible="false"/>
+	    
 </menu>
