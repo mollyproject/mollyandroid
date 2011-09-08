@@ -1,12 +1,8 @@
 package org.mollyproject.android.view.apps.results_release;
 
 import java.text.ParseException;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
-import java.util.TreeSet;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,15 +12,12 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMultimap<Date,String>>{
+public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, JSONObject>{
 
 	//protected ArrayListMultimap<Date,String> examsByDate;
 	public ResultReleaseTask(ResultsReleasePage page, boolean toDestroyPageAfterFailure,
@@ -33,14 +26,8 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMult
 	}
 
 	@Override
-	public void updateView(ListMultimap<Date,String> examsByDate) {
-		// TODO Auto-generated method stub
-		if (examsByDate != null)
-		{
-			TreeSet<Date> sortedDates  = new TreeSet<Date>(Collections.reverseOrder());
-			sortedDates.addAll(examsByDate.keySet());
-			Iterator<Date> dates = sortedDates.iterator();
-			
+	public void updateView(JSONObject examsByDate) {
+		try {
 			LayoutInflater inflater = page.getLayoutInflater();
 			((ResultsReleasePage) page).getContentLayout().removeAllViews();
 			
@@ -53,6 +40,9 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMult
 			
 			LinearLayout resultsLayout = (LinearLayout) releasesLayout.findViewById(R.id.generalResultsList);
 			
+			@SuppressWarnings("unchecked")
+			Iterator<String> dates = examsByDate.keys();
+			
 			while(dates.hasNext())
 			{
 				LinearLayout thisResult = (LinearLayout) inflater.inflate
@@ -60,69 +50,70 @@ public class ResultReleaseTask extends BackgroundTask<JSONObject, Void, ListMult
 				thisResult.setLayoutParams(Page.paramsWithLine);
 				String allText = new String();
 				
-				Date thisDate = (dates.next());
-				allText = "<b>"+ "<font size = 24>" + MyApplication.myDateFormat.format(thisDate) 
-						+ "</font>" + "</b>";
+				String myDate = dates.next();
+				allText = "<b>"+ myDate + "</b>";
 				
-				List<String> results = (List<String>) examsByDate.get(thisDate);
-				for (String result : results)
+				//List<String> results = (List<String>) examsByDate.getString(myDate);
+				JSONArray results = examsByDate.getJSONArray(myDate);
+				for (int i = 0; i < results.length(); i++)
 				{
-					allText = allText + "<br/>" + result;
+					String title = results.getString(i);
+					allText = allText + "<br/>" + title;
 				}
 				TextView resultsText = ((TextView) thisResult.findViewById(R.id.plainTextResultText));
 				resultsText.setText(Html.fromHtml(allText));
 				resultsLayout.addView(thisResult);
 			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			jsonException = true;
 		}
 		((ContentPage) page).doneProcessingJSON();
 	}
 
 	@Override
-	protected  ListMultimap<Date,String> doInBackground(JSONObject... args) {
-		
-		while (!((ContentPage) page).downloadedJSON())
-		{
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		ListMultimap<Date,String> examsByDate = ArrayListMultimap.create();
-		
+	protected  JSONObject doInBackground(JSONObject... params) {
 		try {
-			JSONObject output = ((ContentPage) page).getJSONContent();
-			
-			//Process the json text received
-			if (output != null)
+			while (!((ContentPage) page).downloadedJSON())
 			{
-				JSONArray entries = (JSONArray) output.get("entries");
-				if (entries.length() > 0)
-				{
-
-					for (int i = 0; i < entries.length(); i++)
-					{
-						JSONObject entry = entries.getJSONObject(i);
-						//trim off result
-						String title = entry.getString("course_code") + ": " +
-								entry.getString("title")
-								.replace("OxfordExams: Results for ","")
-								.replace(" now available", "");
-						title = title.substring(0, title.length() - 7);
-						
-						Date updatedDate = MyApplication.defaultDateFormat.parse
-											(entry.getString("updated"));
-						Date myDate = new Date(MyApplication.myDateFormat.format(updatedDate));
-						examsByDate.put(myDate, title);
-					}
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-				return examsByDate;
 			}
+		
+			JSONObject jsonContent = ((ContentPage) page).getJSONContent();
+			//Process the json text received
+			JSONArray entries = (JSONArray) jsonContent.get("entries");
+			JSONObject examsByDate = new JSONObject();
+			if (entries.length() > 0)
+			{
+				for (int i = 0; i < entries.length(); i++)
+				{
+					JSONObject entry = entries.getJSONObject(i);
+					//trim off result
+					String title = entry.getString("course_code") + ": " +
+							entry.getString("title")
+							.replace("OxfordExams: Results for ","")
+							.replace(" now available", "");
+					title = title.substring(0, title.length() - 7);
+					
+					Date updatedDate = MyApplication.defaultDateFormat.parse
+										(entry.getString("updated"));
+					String myDate = MyApplication.myDateFormat.format(updatedDate);
+					if (!examsByDate.has(myDate))
+					{
+						examsByDate.put(myDate, new JSONArray());
+					}
+					examsByDate.getJSONArray(myDate).put(title);
+					//examsByDate.put(MyApplication.myDateFormat.format(updatedDate), title); // time in hourless format
+				}
+			}
+			return examsByDate;
 		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;
-			
 		} catch (ParseException e) {
 			e.printStackTrace();
 			parseException = true;
