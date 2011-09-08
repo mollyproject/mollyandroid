@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public abstract class ContentPage extends Page {
@@ -30,6 +31,7 @@ public abstract class ContentPage extends Page {
 	@InjectView (R.id.breadcrumbs) protected LinearLayout breadcrumbs;
 	@InjectView (R.id.extraTextView) protected TextView extraTextView;
 	@InjectView (R.id.contentLayout) protected LinearLayout contentLayout;
+	@InjectView (R.id.contentScroll) protected ScrollView contentScroll;
 	protected boolean dialogOnSetup = false; //set this to true if a progress dialog is needed when calling PageSetupTask
 	protected boolean loaded = false;
 	protected boolean jsonDownloaded = false;
@@ -185,6 +187,7 @@ public abstract class ContentPage extends Page {
 				//set favourite
 				if (jsonContent.has("is_favouritable"))
 				{
+					//if it is not favouritable then the values stay false 
 					if (jsonContent.getBoolean("is_favouritable"))
 					{
 						page.setFavable(jsonContent.getBoolean("is_favouritable"));
