@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
@@ -18,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FavouritesTask extends BackgroundTask<JSONObject, Void, JSONObject>{
+public class FavouritesTask extends JSONProcessingTask {
 
 	public FavouritesTask(Page page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
@@ -35,7 +36,7 @@ public class FavouritesTask extends BackgroundTask<JSONObject, Void, JSONObject>
 			{
 				
 			}
-			
+			page.getContentLayout().removeAllViews(); //clear the layout
 			for (int i = 0; i < favourites.length(); i ++)
 			{
 				JSONObject favourite = favourites.getJSONObject(i);
@@ -82,6 +83,10 @@ public class FavouritesTask extends BackgroundTask<JSONObject, Void, JSONObject>
 
 	@Override
 	protected JSONObject doInBackground(JSONObject... params) {
+		if (Page.manualRefresh)
+		{
+			return super.doInBackground();
+		}
 		while (!((ContentPage) page).downloadedJSON())
 		{
 			try {
