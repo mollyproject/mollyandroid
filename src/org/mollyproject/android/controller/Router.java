@@ -264,9 +264,32 @@ public class Router {
         MyApplication.currentLocation = new JSONObject(output.get(0));
 	}
 	
-	public void updateLocationManually(String locationName) throws JSONException, 
+	public void updateLocationManually(String locationName, double lon, double lat, double accuracy) 
+			throws JSONException, ClientProtocolException, SocketException, MalformedURLException, 
+				UnknownHostException, IOException, ParseException
+	{
+		//update by coordinates
+		Location loc = locTracker.getCurrentLoc();
+		
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        
+		params.add(new BasicNameValuePair("csrfmiddlewaretoken", cookieMgr.getCSRFToken()));
+        params.add(new BasicNameValuePair("longitude", new Double(loc.getLongitude()).toString()));
+        params.add(new BasicNameValuePair("latitude", new Double(loc.getLatitude()).toString()));
+        params.add(new BasicNameValuePair("accuracy", new Double(loc.getAccuracy()).toString()));
+        params.add(new BasicNameValuePair("name", locationName));
+        params.add(new BasicNameValuePair("method", "manual"));
+        params.add(new BasicNameValuePair("format", "json"));
+        
+        List<String> output = post(params,reverse("geolocation:index", null));
+        //in this case the result is only one line of text, i.e just the first element of the list is fine
+        MyApplication.currentLocation = new JSONObject(output.get(0));
+	}
+	
+	public void updateLocationGeocoded(String locationName) throws JSONException, 
 				ClientProtocolException, IOException, ParseException
 	{
+		//update by geo code
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         
         params.add(new BasicNameValuePair("csrfmiddlewaretoken", cookieMgr.getCSRFToken()));

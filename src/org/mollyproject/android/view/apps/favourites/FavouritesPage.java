@@ -2,12 +2,16 @@ package org.mollyproject.android.view.apps.favourites;
 
 import java.io.UnsupportedEncodingException;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,9 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class FavouritesPage extends ContentPage {
 	protected LinearLayout selectedFav;
+	public static int lastTouchedFav;
 	@Override
 	public Page getInstance() {
 		return this;
@@ -62,6 +68,21 @@ public class FavouritesPage extends ContentPage {
 		{
 			case R.id.linkToFav:
 				//Go to the favourite
+				try
+				{
+					JSONArray favourites = jsonContent.getJSONArray("favourites");
+					JSONObject metadata = favourites.getJSONObject(lastTouchedFav).getJSONObject("metadata");
+					final JSONObject entity = metadata.getJSONObject("entity");
+					
+					MyApplication.placesArgs[0] = entity.getString("identifier_scheme");
+					MyApplication.placesArgs[1] = entity.getString("identifier_value");
+					Intent myIntent = new Intent(getApplicationContext(), 
+							MyApplication.getPageClass(MollyModule.PLACES_ENTITY));
+					startActivityForResult(myIntent, 0);
+				} catch (Exception e) {
+					Toast.makeText(getApplicationContext(), 
+							"Sorry this page is not currently available", Toast.LENGTH_SHORT);
+				}
 				break;
 			case R.id.setLocation:
 				//Set the favourite as current location

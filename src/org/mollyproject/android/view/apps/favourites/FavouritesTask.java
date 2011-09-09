@@ -13,8 +13,10 @@ import org.mollyproject.android.view.apps.Page;
 
 import android.content.Intent;
 import android.text.Html;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,7 +24,7 @@ import android.widget.Toast;
 
 public class FavouritesTask extends JSONProcessingTask {
 
-	public FavouritesTask(Page page, boolean toDestroyPageAfterFailure,
+	public FavouritesTask(ContentPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
 		// TODO Auto-generated constructor stub
@@ -49,6 +51,16 @@ public class FavouritesTask extends JSONProcessingTask {
 				JSONObject metadata = favourite.getJSONObject("metadata");
 				final JSONObject entity = metadata.getJSONObject("entity");
 				//Assumption: this is a place
+				final int id = i;
+				favouriteLayout.setOnTouchListener(new OnTouchListener() {
+					
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						// TODO Auto-generated method stub
+						FavouritesPage.lastTouchedFav = id;
+						return false;
+					}
+				});
 				
 				favouriteLayout.setOnClickListener(new OnClickListener() {
 					@Override

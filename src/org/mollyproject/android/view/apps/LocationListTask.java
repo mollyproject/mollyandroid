@@ -80,7 +80,7 @@ public class LocationListTask extends BackgroundTask<View, Void, View[]>{
 			}
 			else 
 			{
-				MyApplication.router.updateLocationManually(requestedLocation);
+				MyApplication.router.updateLocationGeocoded(requestedLocation);
 			}
 			return params;
 		} catch (Exception e) {
