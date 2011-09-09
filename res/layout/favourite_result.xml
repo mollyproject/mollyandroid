@@ -3,6 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:clickable="true"
+  android:padding="5dp"
   android:background="@drawable/bg_white"
   android:layout_height="wrap_content">
   
@@ -11,24 +12,15 @@
 	    android:textColor="@color/blue"
 	    android:textSize="18dp"
 	    android:paddingLeft="10dp"
+	    android:paddingRight="10dp"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
 	    android:layout_gravity="center_vertical" 
-	    android:layout_marginTop="15dp" 
-	    android:layout_marginBottom="15dp" 
 	    android:layout_weight="1">
     </TextView>
-    
-    <TextView  
-    	android:text="X"
-    	android:textSize="20dp"
-    	android:textColor="@color/white"
-	    android:layout_height="fill_parent" 
-	    android:id="@+id/removeFav"
-	    android:background="@drawable/shape_red"
-	    android:gravity="center"
-	    android:layout_width="fill_parent" 
-	    android:layout_weight="8" 
-	    android:layout_gravity="center_vertical" 
-	    android:layout_margin="5dp"></TextView>
+    <ImageButton android:src="@drawable/ic_menu_delete" 
+    android:layout_height="wrap_content" 
+    android:id="@+id/imageButton1" 
+    android:layout_width="wrap_content" 
+    android:layout_gravity="center_vertical"/>
 </LinearLayout>
