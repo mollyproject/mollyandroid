@@ -15,7 +15,7 @@ public class IndividualPodcastPage extends ContentPage {
 	
 	@Override
 	public void refresh() {
-		new IndividualPodcastTask(this, true, true).execute();
+		new IndividualPodcastTask(this, false, true).execute();
 	}
 	
 	@Override

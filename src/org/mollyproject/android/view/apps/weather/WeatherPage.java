@@ -17,7 +17,7 @@ public class WeatherPage extends ContentPage {
 	
 	@Override
 	public void refresh() {
-		new WeatherForecastTask(this, true, true).execute();
+		new WeatherForecastTask(this, false, true).execute();
 	}
 	
 	@Override

@@ -30,6 +30,12 @@ public class FavouritesTask extends BackgroundTask<JSONObject, Void, JSONObject>
 	public void updateView(JSONObject jsonContent) {
 		try {
 			JSONArray favourites = jsonContent.getJSONArray("favourites");
+			
+			if (favourites.length() == 0)
+			{
+				
+			}
+			
 			for (int i = 0; i < favourites.length(); i ++)
 			{
 				JSONObject favourite = favourites.getJSONObject(i);

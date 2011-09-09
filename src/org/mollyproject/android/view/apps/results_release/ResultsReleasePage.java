@@ -16,7 +16,7 @@ public class ResultsReleasePage extends ContentPage {
 	
 	@Override
 	public void refresh() {
-		new ResultReleaseTask(this, true, true).execute();
+		new ResultReleaseTask(this, false, true).execute();
 	}
 	
 	public Page getInstance()

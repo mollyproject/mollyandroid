@@ -73,49 +73,49 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 			jsonException = false;
 			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "There might be a problem with JSON output " +
-					"from server. Please try again later.", Toast.LENGTH_SHORT).show();
+					"from server. Please try reloading the page later.", Toast.LENGTH_SHORT).show();
 		}
 		else if (nullPointerException)
 		{
 			nullPointerException = false;
 			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "Null Pointer Exception. Cannot connect to server. " + 
-							"Please try again later.", Toast.LENGTH_SHORT).show();
+							"Please try reloading the page later.", Toast.LENGTH_SHORT).show();
 		}
 		else if (malformedURLException)
 		{
 			malformedURLException = false;
 			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "Null Pointer Exception. Cannot connect to server. " + 
-					"Please try again later.", Toast.LENGTH_SHORT).show();
+					"Please try reloading the page later.", Toast.LENGTH_SHORT).show();
 		}
 		else if (unknownHostException)
 		{
 			unknownHostException = false;
 			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "Unknown host Exception. Cannot connect to server. " + 
-					"Please try again later.", Toast.LENGTH_SHORT).show();
+					"Please try reloading the page later.", Toast.LENGTH_SHORT).show();
 		} 
 		else if (ioException)
 		{
 			ioException = false;
 			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "I/O Exception. Cannot connect to server. " +
-					"Please try again later.", Toast.LENGTH_SHORT).show();
+					"Please try reloading the page later.", Toast.LENGTH_SHORT).show();
 		} 
 		else if (parseException)
 		{
 			parseException = false;
 			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "Parse Exception. Bad input from server. " + 
-					"Please try again later.", Toast.LENGTH_SHORT).show();
+					"Please try reloading the page later.", Toast.LENGTH_SHORT).show();
 		} 
 		else if (otherException)
 		{
 			otherException = false;
 			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "Error loading page. " +
-					"Please try again later.", Toast.LENGTH_SHORT).show();
+					"Please try reloading the page later.", Toast.LENGTH_SHORT).show();
 		}
 		if (dialogEnabled)
 		{

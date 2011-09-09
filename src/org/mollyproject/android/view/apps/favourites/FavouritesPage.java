@@ -7,7 +7,7 @@ import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 public class FavouritesPage extends ContentPage {
-
+	
 	@Override
 	public Page getInstance() {
 		return this;
@@ -33,7 +33,7 @@ public class FavouritesPage extends ContentPage {
 
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
+		new FavouritesTask(this, true, true).execute();
 	}
 
 }

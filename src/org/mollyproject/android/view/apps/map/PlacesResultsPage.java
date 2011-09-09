@@ -45,7 +45,7 @@ public class PlacesResultsPage extends PageWithMap {
 				mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
 		        		getWindowManager().getDefaultDisplay().getHeight()/3));
 			}
-			new PlacesResultsTask(this, true, true).execute();
+			new PlacesResultsTask(this, false, true).execute();
 		}
 		else if (args[0].equals(TRANSPORT))
 		{
@@ -66,7 +66,7 @@ public class PlacesResultsPage extends PageWithMap {
 			mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
 	        		getWindowManager().getDefaultDisplay().getHeight()/3));
 			
-			transportMapPageRefreshTask = new TransportMapPageRefreshTask(this, true, false);
+			transportMapPageRefreshTask = new TransportMapPageRefreshTask(this, false, false);
 			transportMapPageRefreshTask.execute();
 		}
 	}
