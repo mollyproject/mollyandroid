@@ -23,14 +23,13 @@ public class LocationListTask extends BackgroundTask<View, Void, View[]>{
 	@Override
 	public void updateView(View[] views) {
 		//views[0] should be the historyLayout and view[1] should be the currentLocation TextView
-		
 		final LinearLayout historyLayout = (LinearLayout) views[0];
 		final TextView currentLocation = (TextView) views[1];
 		try {
 			updateLocationLayout(historyLayout, currentLocation);
 		} catch (Exception e) {
 			e.printStackTrace();
-			otherException = true;
+			//otherException = true;
 		}
 	}
 	
@@ -61,7 +60,7 @@ public class LocationListTask extends BackgroundTask<View, Void, View[]>{
 							//get new location and update the current location text and the history list
 							new LocationListTask(location.getString("name"), page, false, true).execute(historyLayout,currentLocation);
 						} catch (Exception e) {
-							Toast.makeText(page, "Your new location cannot be updated. Pleas try " +
+							Toast.makeText(page, "Your new location cannot be updated. Please try " +
 									"again later", Toast.LENGTH_SHORT).show();
 						}
 					}
