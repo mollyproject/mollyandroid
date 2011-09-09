@@ -56,5 +56,7 @@
 		<activity android:name=".view.apps.podcasts.IndividualPodcastPage"></activity>
 		
 		<activity android:name=".view.apps.status.ServiceStatusPage"></activity>
+		
+		<activity android:name=".view.apps.favourites.FavouritesPage"></activity>
     </application>
 </manifest>

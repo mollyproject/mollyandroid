@@ -5,6 +5,7 @@ import org.mollyproject.android.Splash;
 import org.mollyproject.android.view.apps.*;
 import org.mollyproject.android.view.apps.contact.ContactPage;
 import org.mollyproject.android.view.apps.contact.ContactResultsPage;
+import org.mollyproject.android.view.apps.favourites.FavouritesPage;
 import org.mollyproject.android.view.apps.home.HomePage;
 import org.mollyproject.android.view.apps.library.LibraryBookResultPage;
 import org.mollyproject.android.view.apps.library.LibraryPage;
@@ -116,6 +117,9 @@ public class MollyModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named("partial")).toInstance(R.drawable.service_partial);
 		bind(Integer.class).annotatedWith(Names.named("unknown")).toInstance(R.drawable.service_unknown);
 		bind(Integer.class).annotatedWith(Names.named("down")).toInstance(R.drawable.service_down);
+		
+		//favourites management
+		bind(Page.class).annotatedWith(Names.named(FAVOURITES)).to(FavouritesPage.class);
 		
 		//Other non-content pages
 		bind(Page.class).annotatedWith(Names.named("splash")).to(Splash.class);

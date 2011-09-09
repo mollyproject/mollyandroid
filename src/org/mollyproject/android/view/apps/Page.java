@@ -124,41 +124,12 @@ public abstract class Page extends RoboActivity {
 	        	showDialog(DIALOG_LOCATION);
 	        	break;
 	        case R.id.favourite:
-	        	try {
-		        	if(MyApplication.csrfToken != null)
-		        	{
-		        		
-	        			System.out.println("Fav pressed");
-			        	//post the favourite on to the web server
-			        	List<NameValuePair> params = new ArrayList<NameValuePair>();
-			             
-			            params.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
-			            params.add(new BasicNameValuePair("format", "json"));
-			            params.add(new BasicNameValuePair("language_code", "en"));
-			            System.out.println("fav link " + MyApplication.favouriteURL);
-			            params.add(new BasicNameValuePair("URL", MyApplication.favouriteURL));
-			            if (!isFavourite)
-			        	{
-			            	params.add(new BasicNameValuePair("favourite", ""));
-			        	}
-			            else
-			        	{
-			            	params.add(new BasicNameValuePair("unfavourite", "Unfavourite"));
-			        	}
-			             
-						List<String> output = MyApplication.router.post(params,
-								MyApplication.router.reverse(MollyModule.FAVOURITES, null));
-						isFavourite = new JSONObject(output.get(0)).getBoolean("is_favourite");
-					} 
-	        	}
-	        	catch (Exception e) {
-					e.printStackTrace();
-					Toast.makeText(getApplicationContext(), 
-							"This operation cannot be complete, please check your connection and try again.", 
-								Toast.LENGTH_SHORT).show();
-				}
+	        	new FavouriteOptionsTask(this, false, true).execute();
 	        	break;
-	        	
+        	
+	        case R.id.manage_favourites:
+	        	Intent myIntent = new Intent(getApplicationContext(), MyApplication.getPageClass(MollyModule.FAVOURITES));
+	        	startActivityForResult(myIntent, 0);
 	    }
 	    return true;
 	}
@@ -167,8 +138,8 @@ public abstract class Page extends RoboActivity {
 	{
 		if (searchField.getText().length() > 0)
     	{
-    		if (searchField.getText().toString().toLowerCase().trim().equals("nyan cat")
-    				|| searchField.getText().toString().trim().toLowerCase().equals("nyan"))
+    		if (searchField.getText().toString().trim().equalsIgnoreCase("nyan cat")
+    				|| searchField.getText().toString().trim().equalsIgnoreCase("nyan"))
     		{
     			//Easter Egg 1
     			String url = "http://www.youtube.com/watch?v=QH2-TGUlwu4";
@@ -318,7 +289,6 @@ public abstract class Page extends RoboActivity {
 				
 				final RelativeLayout showHistoryLayout = (RelativeLayout) locationLayout.findViewById(R.id.showHistoryLayout);
 				showHistoryLayout.setOnClickListener(new OnClickListener() {
-					
 					@Override
 					public void onClick(View v) {
 						showDialog(Page.DIALOG_LOCATION_HISTORY);
@@ -329,7 +299,6 @@ public abstract class Page extends RoboActivity {
 				
 				RelativeLayout autoLocLayout = (RelativeLayout) locationLayout.findViewById(R.id.autoLocLayout);
 				autoLocLayout.setOnClickListener(new OnClickListener() {
-					
 					@Override
 					public void onClick(View v) {
 						try {
@@ -353,14 +322,8 @@ public abstract class Page extends RoboActivity {
 							case KeyEvent.KEYCODE_ENTER:
 							case KeyEvent.KEYCODE_DPAD_CENTER:
 								LocationTracker.autoLoc = false;
-								try {
-									new LocationListTask(manualLocationField.getText().toString(), Page.this, 
+								new LocationListTask(manualLocationField.getText().toString(), Page.this, 
 											false, true).execute(historyLayout,currentLocation);
-								} catch (Exception e) {
-									e.printStackTrace();
-									Toast.makeText(Page.this, "Your new location cannot be updated. Please try " +
-											"again later", Toast.LENGTH_SHORT).show();
-								}
 								return true;
 							default:
 								break;
@@ -372,7 +335,6 @@ public abstract class Page extends RoboActivity {
 				
 				Button setLocation = (Button) locationLayout.findViewById(R.id.setLocationButton);
 				setLocation.setOnClickListener(new OnClickListener() {
-					
 					@Override
 					public void onClick(View v) {
 						LocationTracker.autoLoc = false;
