@@ -147,23 +147,27 @@ public abstract class Page extends RoboActivity {
     			page.startActivity(Intent.createChooser(procrastinateIntent, "U r not advized 2 " +
     					"proc33d unless u haz good connection"));
     		}
-    		else if (application == null)
-    		{
-    			String[] argsToPass = new String[1];
-    			argsToPass[0] = searchField.getText().toString();
-    			MyApplication.generalQuery = argsToPass;
-    		}
     		else
     		{
-    			String[] argsToPass = new String[2];
-    			argsToPass[0] = searchField.getText()
-    						.toString();
-    			argsToPass[1] = application;
-    			MyApplication.generalQuery = argsToPass;
-    		}
-    		Intent myIntent = new Intent(page.getApplicationContext(),
+	    		if (application == null)
+	    		{
+	    			String[] argsToPass = new String[1];
+	    			argsToPass[0] = searchField.getText().toString();
+	    			MyApplication.generalQuery = argsToPass;
+	    		}
+	    		else
+	    		{
+	    			String[] argsToPass = new String[2];
+	    			argsToPass[0] = searchField.getText()
+	    						.toString();
+	    			argsToPass[1] = application;
+	    			MyApplication.generalQuery = argsToPass;
+	    		}
+	    		Intent myIntent = new Intent(page.getApplicationContext(),
     					MyApplication.getPageClass(MollyModule.SEARCH_PAGE));
-    		page.startActivityForResult(myIntent, 0);
+	    		page.startActivityForResult(myIntent, 0);
+    		}
+    		
     	}
     	else
     	{
