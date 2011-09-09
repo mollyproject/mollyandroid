@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 public class PlacesNearbyTask extends JSONProcessingTask {
 
-	public PlacesNearbyTask(Page page, boolean toDestroyPageAfterFailure,
+	public PlacesNearbyTask(ContentPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
 		// TODO Auto-generated constructor stub

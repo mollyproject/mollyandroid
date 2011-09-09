@@ -77,6 +77,11 @@ public abstract class ContentPage extends Page {
 		}
 	}
 	
+	public void setJSONContent(JSONObject jsonContent)
+	{
+		this.jsonContent = jsonContent;
+	}
+	
 	public JSONObject getJSONContent()
 	{
 		return jsonContent;

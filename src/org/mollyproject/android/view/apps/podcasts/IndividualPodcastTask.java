@@ -21,7 +21,7 @@ import android.widget.TextView;
 public class IndividualPodcastTask extends JSONProcessingTask
 {
 
-	public IndividualPodcastTask(Page page,
+	public IndividualPodcastTask(ContentPage page,
 			boolean toDestroyPageAfterFailure, boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
 		// TODO Auto-generated constructor stub

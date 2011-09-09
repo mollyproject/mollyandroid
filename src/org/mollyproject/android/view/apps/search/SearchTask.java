@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 public class SearchTask extends JSONProcessingTask {
 
-	public SearchTask(Page page, boolean toDestroy, boolean dialog)
+	public SearchTask(ContentPage page, boolean toDestroy, boolean dialog)
 	{
 		super(page, toDestroy, dialog);
 	}

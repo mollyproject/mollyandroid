@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class WeatherForecastTask extends JSONProcessingTask {
-	public WeatherForecastTask(WeatherPage weatherPage, boolean toDestroy, boolean dialog)
+	public WeatherForecastTask(ContentPage weatherPage, boolean toDestroy, boolean dialog)
 	{
 		super(weatherPage,toDestroy, dialog);
 	}

@@ -1,22 +1,15 @@
 package org.mollyproject.android.view.apps.status;
 
-import java.io.IOException;
-import java.math.RoundingMode;
-import java.net.UnknownHostException;
 import java.text.ParseException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
-import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MyApplication;
-import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.transport.TransportPage;
-
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,7 +20,7 @@ public class ServiceStatusTask extends JSONProcessingTask {
 	public final static String DOWN = "down";
 	public final static String UNKNOWN = "unknown";
 	public final static String PARTIAL = "partial";
-	public ServiceStatusTask(ServiceStatusPage page, boolean toDestroyPageAfterFailure,
+	public ServiceStatusTask(ContentPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
 	}

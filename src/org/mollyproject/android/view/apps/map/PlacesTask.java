@@ -13,7 +13,7 @@ import android.view.View.OnClickListener;
 
 public class PlacesTask extends JSONProcessingTask {
 
-	public PlacesTask(Page page, boolean toDestroyPageAfterFailure,
+	public PlacesTask(ContentPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
 		// TODO Auto-generated constructor stub

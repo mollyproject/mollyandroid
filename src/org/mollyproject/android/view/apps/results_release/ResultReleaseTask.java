@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 public class ResultReleaseTask extends JSONProcessingTask{
 
-	public ResultReleaseTask(ResultsReleasePage page, boolean toDestroyPageAfterFailure,
+	public ResultReleaseTask(ContentPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
 	}
