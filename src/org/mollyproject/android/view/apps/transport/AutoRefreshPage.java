@@ -21,12 +21,6 @@ public abstract class AutoRefreshPage extends Page {
 		setContentView(R.layout.transport_layout);
 	}
 	
-	@Override
-	public void onResume() {
-		super.onResume();
-		refresh();
-	}
-	
 	public LinearLayout getContentLayout()
 	{
 		return transportLayout;

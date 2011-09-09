@@ -41,7 +41,7 @@ public class NewSearchPage extends ContentPage {
 		super.onResume();
 		if (jsonProcessed)
 		{
-			searchTabHost.setCurrentTab(currentTabId);
+			searchTabHost.setCurrentTab(currentTabId); //if the json has been successfully downloaded then just jump to the last tab
 		}
 	}
 	

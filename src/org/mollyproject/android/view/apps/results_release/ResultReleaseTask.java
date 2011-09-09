@@ -65,7 +65,6 @@ public class ResultReleaseTask extends JSONProcessingTask{
 				String myDate = newDates.next();
 				allText = "<b>"+ myDate + "</b>";
 				
-				//List<String> results = (List<String>) examsByDate.getString(myDate);
 				JSONArray results = examsByDate.getJSONArray(myDate);
 				for (int i = 0; i < results.length(); i++)
 				{

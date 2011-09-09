@@ -57,10 +57,10 @@ public abstract class ContentPage extends Page {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!loaded || MyApplication.destroyed || manualRefresh)
+		if (!loaded || MyApplication.destroyed)// || manualRefresh)
 		{
 			//The page is either not loaded or all its data has been erased 
-			//after sleeping for a while and its cache is claimed or manual refresh in effect
+			//after sleeping for a while and its cache is claimed
 			loaded = true;
 			jsonDownloaded = false;
 			jsonProcessed = false;
@@ -70,7 +70,7 @@ public abstract class ContentPage extends Page {
 			}
 			new PageSetupTask(this).execute();
 		}
-		if (!jsonProcessed || manualRefresh)
+		if (!jsonProcessed)// || manualRefresh)
 		{
 			//if manual refresh is true it should always be set back to false upon termination of a task
 			refresh();

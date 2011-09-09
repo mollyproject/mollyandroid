@@ -1,17 +1,10 @@
 package org.mollyproject.android.view.apps.map;
 
-import org.json.JSONException;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
-import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.PageWithMap;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,9 +18,12 @@ public class PlacesPage extends ContentPage {
 	public static RelativeLayout nearby;
 	protected EditText searchField;
 	protected Button searchButton;
+	public static boolean firstLoad; 
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		firstLoad = true;
 		
 		placesLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.places, null);
 		contentLayout.addView(placesLayout);
@@ -47,7 +43,12 @@ public class PlacesPage extends ContentPage {
 	
 	@Override
 	public void onResume() {
-		manualRefresh = true; //always reload this page for the newest location 
+		//always reload this page for the newest location
+		if (!firstLoad)
+		{
+			jsonProcessed = false; // to activate the refresh method
+			manualRefresh = true;  // to force download of new data
+		}
 		super.onResume();
 	}
 	
@@ -72,5 +73,4 @@ public class PlacesPage extends ContentPage {
 	public String getQuery() {
 		return null;
 	}
-	
 }

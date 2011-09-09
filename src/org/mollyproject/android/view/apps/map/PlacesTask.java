@@ -1,7 +1,6 @@
 package org.mollyproject.android.view.apps.map;
 
 import org.json.JSONObject;
-import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
@@ -35,12 +34,15 @@ public class PlacesTask extends JSONProcessingTask {
 					page.startActivityForResult(myIntent, 0);
 				}
 			});
+			((ContentPage) page).doneProcessingJSON();
 		} catch (Exception e) {
 			e.printStackTrace();
 			PlacesPage.currentLocation.setText("Cannot get a fix on your location");
 			PlacesPage.nearby.setClickable(false);
+		} finally {
+			PlacesPage.firstLoad = false; //finish the first run
 		}
-		((ContentPage) page).doneProcessingJSON();
+		
 	}
 
 	@Override

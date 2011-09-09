@@ -18,11 +18,7 @@ public class LibraryResultsPage extends AbstractLibraryPage {
 	
 	@Override
 	public void refresh() {
-		if (!jsonProcessed|| manualRefresh)
-		{
-			manualRefresh = false;
-			new LibraryFirstResultTask(this,false, true).execute();
-		}
+		new LibraryFirstResultTask(this,false, true).execute();
 	}
 	
 	public void increaseCurPageNum()

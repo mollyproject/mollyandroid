@@ -27,7 +27,12 @@ public class PlacesResultsPage extends PageWithMap {
 	
 	@Override
 	public void onResume() {
-		manualRefresh = true; //always reload this page for the newest location 
+		//always reload this page for the newest location
+		if (!firstLoad) // firstLoad is public static and will be changed in TransportMapTask once the task finishes
+		{
+			jsonProcessed = false; // to activate the refresh method
+			manualRefresh = true;  // to force download of new data
+		}
 		super.onResume();
 	}
 
