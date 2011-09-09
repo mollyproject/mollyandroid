@@ -11,16 +11,13 @@
 	    android:id="@+id/favouriteText"
 	    android:textColor="@color/blue"
 	    android:textSize="18dp"
+	    android:clickable="false"
+	    android:paddingTop="10dp"
+	    android:paddingBottom="10dp"
 	    android:paddingLeft="10dp"
 	    android:paddingRight="10dp"
-	    android:layout_width="fill_parent" 
+	    android:layout_width="wrap_content" 
 	    android:layout_height="wrap_content" 
-	    android:layout_gravity="center_vertical" 
-	    android:layout_weight="1">
+	    android:layout_gravity="center_vertical"> 
     </TextView>
-    <ImageButton android:src="@drawable/ic_menu_delete" 
-    android:layout_height="wrap_content" 
-    android:id="@+id/imageButton1" 
-    android:layout_width="wrap_content" 
-    android:layout_gravity="center_vertical"/>
 </LinearLayout>

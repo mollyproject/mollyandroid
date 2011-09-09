@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,33 +44,34 @@ public class FavouritesTask extends JSONProcessingTask {
 				LinearLayout favouriteLayout = (LinearLayout) page.getLayoutInflater().inflate
 						(R.layout.favourite_result, null);
 				page.getContentLayout().addView(favouriteLayout);
+				page.registerForContextMenu(favouriteLayout);
+				
 				JSONObject metadata = favourite.getJSONObject("metadata");
 				final JSONObject entity = metadata.getJSONObject("entity");
 				//Assumption: this is a place
 				
-				TextView favouriteText = (TextView) favouriteLayout.findViewById(R.id.favouriteText);
-				favouriteText.setText(Html.fromHtml(metadata.getString("title") + "<br/>" 
-							+ metadata.getString("additional")));
-				
-				favouriteText.setOnClickListener(new OnClickListener() {
-					
+				favouriteLayout.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						try
 						{
-							MyApplication.placesArgs[0] = entity.getString("identity_scheme");
-							MyApplication.placesArgs[1] = entity.getString("identity_value");
+							MyApplication.placesArgs[0] = entity.getString("identifier_scheme");
+							MyApplication.placesArgs[1] = entity.getString("identifier_value");
 							Intent myIntent = new Intent(page.getApplicationContext(), 
-									MyApplication.getPageClass(MollyModule.PLACES_PAGE));
+									MyApplication.getPageClass(MollyModule.PLACES_ENTITY));
 							page.startActivityForResult(myIntent, 0);
 						} catch (Exception e) {
-							Toast.makeText(page.getApplicationContext(), 
+							Toast.makeText(page, 
 									"Sorry this page is not currently available", Toast.LENGTH_SHORT);
 						}
 					}
 				});
 				
-				TextView removeFav = (TextView) favouriteLayout.findViewById(R.id.removeFav);
+				TextView favouriteText = (TextView) favouriteLayout.findViewById(R.id.favouriteText);
+				favouriteText.setText(Html.fromHtml((i + 1) + ". " + metadata.getString("title") + "<br/>" 
+							+ metadata.getString("additional")));
+				
+				ImageButton removeFav = (ImageButton) favouriteLayout.findViewById(R.id.removeFav);
 				
 			}
 			

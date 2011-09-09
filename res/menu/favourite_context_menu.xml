@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Go to this favourite" android:id="@+id/linkToFav"></item>
+    <item android:id="@+id/setLocation" android:title="Set as current location"></item>
+    <item android:title="Remove from Favourites" android:id="@+id/removeFav"></item>
+    
+</menu>
