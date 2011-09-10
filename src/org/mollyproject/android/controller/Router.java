@@ -264,7 +264,7 @@ public class Router {
         MyApplication.currentLocation = new JSONObject(output.get(0));
 	}
 	
-	public void updateLocationManually(String locationName, double lon, double lat, double accuracy) 
+	public void updateLocationManually(String locationName, Double lat, Double lon, Double accuracy) 
 			throws JSONException, ClientProtocolException, SocketException, MalformedURLException, 
 				UnknownHostException, IOException, ParseException
 	{
@@ -274,9 +274,9 @@ public class Router {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         
 		params.add(new BasicNameValuePair("csrfmiddlewaretoken", cookieMgr.getCSRFToken()));
-        params.add(new BasicNameValuePair("longitude", new Double(loc.getLongitude()).toString()));
-        params.add(new BasicNameValuePair("latitude", new Double(loc.getLatitude()).toString()));
-        params.add(new BasicNameValuePair("accuracy", new Double(loc.getAccuracy()).toString()));
+        params.add(new BasicNameValuePair("longitude", lon.toString()));
+        params.add(new BasicNameValuePair("latitude", lat.toString()));
+        params.add(new BasicNameValuePair("accuracy", accuracy.toString()));
         params.add(new BasicNameValuePair("name", locationName));
         params.add(new BasicNameValuePair("method", "manual"));
         params.add(new BasicNameValuePair("format", "json"));

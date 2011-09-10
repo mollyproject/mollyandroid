@@ -14,10 +14,16 @@ import android.widget.Toast;
 
 public class LocationListTask extends BackgroundTask<View, Void, View[]>{
 	protected String requestedLocation;
-	public LocationListTask(String requestedLocation, Page page, boolean toDestroyPageAfterFailure,
+	protected Double lat;
+	protected Double lon;
+	protected Double accuracy;
+	public LocationListTask(String requestedLocation, Double lat, Double lon, Double accuracy, Page page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
 		this.requestedLocation = requestedLocation;
+		this.lat = lat;
+		this.lon = lon;
+		this.accuracy = accuracy;
 	}
 
 	@Override
@@ -58,7 +64,9 @@ public class LocationListTask extends BackgroundTask<View, Void, View[]>{
 					public void onClick(View v) {
 						try {
 							//get new location and update the current location text and the history list
-							new LocationListTask(location.getString("name"), page, false, true).execute(historyLayout,currentLocation);
+							new LocationListTask(location.getString("name"), location.getJSONArray("location").getDouble(0), 
+									location.getJSONArray("location").getDouble(0), location.getDouble("accuracy"), page, false, true)
+										.execute(historyLayout,currentLocation);
 						} catch (Exception e) {
 							Toast.makeText(page, "Your new location cannot be updated. Please try " +
 									"again later", Toast.LENGTH_SHORT).show();
@@ -78,15 +86,17 @@ public class LocationListTask extends BackgroundTask<View, Void, View[]>{
 			{
 				MyApplication.router.updateCurrentLocation();
 			}
-			else 
+			else if (lon == null || lat == null)
 			{
 				MyApplication.router.updateLocationGeocoded(requestedLocation);
+			}
+			else
+			{
+				MyApplication.router.updateLocationManually(requestedLocation, lat, lon, accuracy);
 			}
 			return params;
 		} catch (Exception e) {
 			e.printStackTrace();
-			Toast.makeText(page, "Your location cannot be updated. Pleas try " +
-					"again later", Toast.LENGTH_SHORT).show();
 		}
 		return null;
 	}

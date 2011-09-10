@@ -289,7 +289,16 @@ public abstract class Page extends RoboActivity {
 						e.printStackTrace();
 						currentLocation.setText("Cannot get your current location.");
 					}
+				} 
+				else
+				{
+					currentLocation.setText("Cannot get your current location.");
 				}
+				
+				//if (LocationTracker.autoLoc)
+				//{
+				//	new LocationListTask(null,null, null, null, Page.this, false, true).execute(historyLayout,currentLocation);
+				//}
 				
 				final RelativeLayout showHistoryLayout = (RelativeLayout) locationLayout.findViewById(R.id.showHistoryLayout);
 				showHistoryLayout.setOnClickListener(new OnClickListener() {
@@ -299,15 +308,13 @@ public abstract class Page extends RoboActivity {
 					}
 				});
 				
-				new LocationListTask(null,Page.this, false, true).execute(historyLayout,currentLocation);
-				
 				RelativeLayout autoLocLayout = (RelativeLayout) locationLayout.findViewById(R.id.autoLocLayout);
 				autoLocLayout.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						try {
 							LocationTracker.autoLoc = true;
-							new LocationListTask(null,Page.this, false, true).execute(historyLayout,currentLocation);
+							new LocationListTask(null,null, null, null, Page.this, false, true).execute(historyLayout,currentLocation); // Get location automatically
 						} catch (Exception e) {
 							e.printStackTrace();
 							Toast.makeText(Page.this, "Your new location cannot be updated. Please try again later", 
@@ -326,8 +333,8 @@ public abstract class Page extends RoboActivity {
 							case KeyEvent.KEYCODE_ENTER:
 							case KeyEvent.KEYCODE_DPAD_CENTER:
 								LocationTracker.autoLoc = false;
-								new LocationListTask(manualLocationField.getText().toString(), Page.this, 
-											false, true).execute(historyLayout,currentLocation);
+								new LocationListTask(manualLocationField.getText().toString(), null, null, null, Page.this, 
+											false, true).execute(historyLayout,currentLocation); //Get location by geocoded method
 								return true;
 							default:
 								break;
@@ -343,8 +350,8 @@ public abstract class Page extends RoboActivity {
 					public void onClick(View v) {
 						LocationTracker.autoLoc = false;
 						try {
-							new LocationListTask(manualLocationField.getText().toString(), Page.this, 
-									false, true).execute(historyLayout,currentLocation);
+							new LocationListTask(manualLocationField.getText().toString(), null, null, null, Page.this, 
+									false, true).execute(historyLayout,currentLocation); //Get location by geocoded method
 						} catch (Exception e) {
 							Toast.makeText(Page.this, "Your new location cannot be updated. Please try " +
 									"again later", Toast.LENGTH_SHORT).show();

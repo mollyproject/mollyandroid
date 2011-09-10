@@ -22,7 +22,7 @@ public class PlacesResultsPage extends PageWithMap {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		firstLoad = true;
-		args = MyApplication.placesArgs;
+		args = MyApplication.placesArgs.clone(); //avoid the null pointer exception in refresh
 	}
 	
 	@Override
