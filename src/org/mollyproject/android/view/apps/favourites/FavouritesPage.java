@@ -63,34 +63,37 @@ public class FavouritesPage extends ContentPage {
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		
-		switch (item.getItemId())
+		try
 		{
-			case R.id.linkToFav:
-				//Go to the favourite
-				try
-				{
-					JSONArray favourites = jsonContent.getJSONArray("favourites");
-					JSONObject metadata = favourites.getJSONObject(lastTouchedFav).getJSONObject("metadata");
-					final JSONObject entity = metadata.getJSONObject("entity");
-					
+			//it is safe to use jsonContent because favourites cannot be added in this page, they can only be removed
+			//also, the jsonContent will be re-updated every time a change is made to the favrouites list
+			JSONArray favourites = jsonContent.getJSONArray("favourites");
+			JSONObject metadata = favourites.getJSONObject(lastTouchedFav).getJSONObject("metadata");
+			final JSONObject entity = metadata.getJSONObject("entity");
+			switch (item.getItemId())
+			{
+				case R.id.linkToFav:
+					//Go to the favourite
 					MyApplication.placesArgs[0] = entity.getString("identifier_scheme");
 					MyApplication.placesArgs[1] = entity.getString("identifier_value");
 					Intent myIntent = new Intent(getApplicationContext(), 
 							MyApplication.getPageClass(MollyModule.PLACES_ENTITY));
 					startActivityForResult(myIntent, 0);
-				} catch (Exception e) {
-					Toast.makeText(getApplicationContext(), 
-							"Sorry this page is not currently available", Toast.LENGTH_SHORT);
-				}
-				break;
-			case R.id.setLocation:
-				//Set the favourite as current location
-				break;
-			case R.id.removeFav:
-				//Remove the selected favourite
-				break;
-			
+					break;
+				case R.id.setLocation:
+					//Set the favourite as current location
+					new FavouriteLocationTask(this, false, true).execute(entity);
+					//MyApplication.router.updateLocationManually(entity.getString("title"), entity.getJSONArray("location").getDouble(0), 
+					//		entity.getJSONArray("location").getDouble(1), entity.getDouble("accuracy"));
+					break;
+				case R.id.removeFav:
+					//Remove the selected favourite
+					break;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Toast.makeText(getApplicationContext(), 
+					"Sorry this operation is not currently available", Toast.LENGTH_SHORT);
 		}
 		
 		return super.onContextItemSelected(item);
