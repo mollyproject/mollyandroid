@@ -13,6 +13,7 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 	protected boolean jsonException = false;
 	protected boolean unknownHostException = false;
 	protected boolean ioException = false;
+	protected boolean operationException = false;
 	protected boolean otherException = false;
 	protected boolean malformedURLException = false;
 	protected boolean nullPointerException = false;
@@ -109,8 +110,13 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 			destroyPlease = true;
 			Toast.makeText(page.getApplicationContext(), "Parse Exception. Bad input from server. " + 
 					"Please try reloading the page later.", Toast.LENGTH_SHORT).show();
-		} 
-		else if (otherException)
+		} else if (operationException)
+		{
+			operationException = false;
+			destroyPlease = true;
+			Toast.makeText(page.getApplicationContext(), "Operation cannot be complete. " +
+					"Please check your connection and try again later.", Toast.LENGTH_SHORT).show();
+		} else if (otherException)
 		{
 			otherException = false;
 			destroyPlease = true;
