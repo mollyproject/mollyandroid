@@ -1,10 +1,17 @@
 package org.mollyproject.android.view.apps;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.JSONProcessingTask;
@@ -34,34 +41,52 @@ public class FavouriteOptionsTask extends BackgroundTask<Void, Void, Void> {
         	{
         		
     			System.out.println("Fav pressed");
+    			List<String> output;
 	        	//post the favourite on to the web server
-	        	List<NameValuePair> argsPairs = new ArrayList<NameValuePair>();
-	             
-	        	argsPairs.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
-	        	argsPairs.add(new BasicNameValuePair("format", "json"));
-	        	argsPairs.add(new BasicNameValuePair("language_code", "en"));
-	            System.out.println("fav link " + MyApplication.favouriteURL);
-	            argsPairs.add(new BasicNameValuePair("URL", MyApplication.favouriteURL));
-	            if (!page.isFavourite)
-	        	{
-	            	argsPairs.add(new BasicNameValuePair("favourite", ""));
-	        	}
-	            else
-	        	{
-	            	argsPairs.add(new BasicNameValuePair("unfavourite", "Unfavourite"));
-	        	}
-	             
-				List<String> output = MyApplication.router.post(argsPairs,
-						MyApplication.router.reverse(MollyModule.FAVOURITES, null));
+    			if (!page.isFavourite)
+    	    	{
+    				output = favourite(MyApplication.favouriteURL);
+    	    	}
+    	        else
+    	    	{
+    	        	output = unfavourite(MyApplication.favouriteURL);
+    	    	}
 				page.setFav(new JSONObject(output.get(0)).getBoolean("is_favourite"));
 			} 
     	}
     	catch (Exception e) {
 			e.printStackTrace();
-			otherException = true;
+			operationException = true;
 		}
 		
 		return null;
 	}
 	
+	public static List<String> unfavourite(String url) throws Exception
+	{
+		List<NameValuePair> argsPairs = new ArrayList<NameValuePair>();
+        
+    	argsPairs.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
+    	argsPairs.add(new BasicNameValuePair("format", "json"));
+    	argsPairs.add(new BasicNameValuePair("language_code", "en"));
+        argsPairs.add(new BasicNameValuePair("URL", url));//MyApplication.favouriteURL));
+        argsPairs.add(new BasicNameValuePair("unfavourite", ""));
+         
+		return MyApplication.router.post(argsPairs,
+				MyApplication.router.reverse(MollyModule.FAVOURITES, null));
+	}
+	
+	public static List<String> favourite(String url) throws Exception
+	{
+		List<NameValuePair> argsPairs = new ArrayList<NameValuePair>();
+        
+    	argsPairs.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
+    	argsPairs.add(new BasicNameValuePair("format", "json"));
+    	argsPairs.add(new BasicNameValuePair("language_code", "en"));
+        argsPairs.add(new BasicNameValuePair("URL", url));//MyApplication.favouriteURL));
+        argsPairs.add(new BasicNameValuePair("favourite", ""));
+         
+		return MyApplication.router.post(argsPairs,
+				MyApplication.router.reverse(MollyModule.FAVOURITES, null));
+	}
 }
