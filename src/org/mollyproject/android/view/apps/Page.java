@@ -44,10 +44,13 @@ public abstract class Page extends RoboActivity {
 	public static boolean manualRefresh;
 	protected boolean favouritable;
 	protected boolean isFavourite;
+	//The next 3 LinearLayouts are for use in the Location menu
+	protected LinearLayout detachedSuggestionsLayout;
 	protected LinearLayout detachedHistoryLayout;
 	protected LinearLayout locationLayout;
 	public static final int DIALOG_LOCATION = 0;
 	public static final int DIALOG_LOCATION_HISTORY = 1;
+	public static final int DIALOG_LOCATION_SUGGESTIONS = 2; 
 	
 	
 	//use someLayout.setLayoutParams() with this paramsWithLine as a parameter makes
@@ -262,6 +265,14 @@ public abstract class Page extends RoboActivity {
 		// TODO Auto-generated method stub
 		Dialog dialog;
  		switch (id) {
+ 			//logically, this cannot appear before the location layout is updated, so there is no 
+ 			//chance suggestionsLayout can be null, except you are doing something wrong
+ 			case DIALOG_LOCATION_SUGGESTIONS:
+ 				dialog = new Dialog(this);
+				dialog.setTitle("Did you mean...");
+				dialog.setContentView(detachedSuggestionsLayout);
+				return dialog;
+				
 			case DIALOG_LOCATION_HISTORY:
 				//logically, this cannot appear before the location layout is updated, so there is no 
 				//chance historyLayout can be null, except you are doing something wrong
@@ -273,11 +284,20 @@ public abstract class Page extends RoboActivity {
 			case DIALOG_LOCATION:
 				locationLayout = (LinearLayout) getLayoutInflater().inflate
 							(R.layout.manual_location_dialog, null);
+				
+				//the 2 layouts suggestionsLayout and historyLayout are used for bringing up the suggestions and the history
+				//and doesn't directly belong to locationLayout but still need to be included to be updated in LocationListTask
 				detachedHistoryLayout = (LinearLayout) getLayoutInflater().inflate
-						(R.layout.manual_location_history_dialog, null);
+						(R.layout.manual_location_subdialog, null);
 				
-				final LinearLayout historyLayout = (LinearLayout) detachedHistoryLayout.findViewById(R.id.historyLayout); 
+				final LinearLayout historyLayout = (LinearLayout) detachedHistoryLayout.findViewById(R.id.subLocationLayout);
 				
+				detachedSuggestionsLayout = (LinearLayout) getLayoutInflater().inflate
+						(R.layout.manual_location_subdialog, null);
+				
+				final LinearLayout suggestionsLayout = (LinearLayout) detachedSuggestionsLayout.findViewById(R.id.subLocationLayout); 
+				
+				//The order in the next part of this code is the same as the order on the layout file
 				final TextView currentLocation = (TextView) locationLayout.findViewById(R.id.locationText);
 				if (MyApplication.currentLocation != null)
 				{
@@ -295,33 +315,45 @@ public abstract class Page extends RoboActivity {
 					currentLocation.setText("Cannot get your current location.");
 				}
 				
-				//if (LocationTracker.autoLoc)
-				//{
-				//	new LocationListTask(null,null, null, null, Page.this, false, true).execute(historyLayout,currentLocation);
-				//}
+				final RelativeLayout showSuggestionsLayout = (RelativeLayout) locationLayout.findViewById(R.id.showSuggestionLayout);
+				
+				//Enable the button if there is some info available
+				try {
+					if (MyApplication.currentLocation.getJSONArray("alternatives").length() > 0)
+					{
+						showSuggestionsLayout.setBackgroundResource(R.drawable.bg_blue);
+						showSuggestionsLayout.setClickable(true);
+						showSuggestionsLayout.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								showDialog(DIALOG_LOCATION_SUGGESTIONS);
+							}
+						});
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					//Do nothing
+				}
 				
 				final RelativeLayout showHistoryLayout = (RelativeLayout) locationLayout.findViewById(R.id.showHistoryLayout);
-				showHistoryLayout.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						showDialog(Page.DIALOG_LOCATION_HISTORY);
-					}
-				});
 				
-				RelativeLayout autoLocLayout = (RelativeLayout) locationLayout.findViewById(R.id.autoLocLayout);
-				autoLocLayout.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						try {
-							LocationTracker.autoLoc = true;
-							new LocationListTask(null,null, null, null, Page.this, false, true).execute(historyLayout,currentLocation); // Get location automatically
-						} catch (Exception e) {
-							e.printStackTrace();
-							Toast.makeText(Page.this, "Your new location cannot be updated. Please try again later", 
-									Toast.LENGTH_SHORT).show();
-						} 
+				//Enable the button if there is some info available
+				try {
+					if (MyApplication.currentLocation.getJSONArray("history").length() > 0)
+					{
+						showHistoryLayout.setBackgroundResource(R.drawable.bg_blue);
+						showHistoryLayout.setClickable(true);
+						showHistoryLayout.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								showDialog(Page.DIALOG_LOCATION_HISTORY);
+							}
+						});
 					}
-				});
+				} catch (Exception e) {
+					e.printStackTrace();
+					//Do nothing
+				}
 				
 				final EditText manualLocationField = (EditText) locationLayout.findViewById(R.id.manualLocationField);
 				manualLocationField.setOnKeyListener(new OnKeyListener() {
@@ -334,7 +366,8 @@ public abstract class Page extends RoboActivity {
 							case KeyEvent.KEYCODE_DPAD_CENTER:
 								LocationTracker.autoLoc = false;
 								new LocationListTask(manualLocationField.getText().toString(), null, null, null, Page.this, 
-											false, true).execute(historyLayout,currentLocation); //Get location by geocoded method
+											false, true).execute(historyLayout,suggestionsLayout, 
+												showHistoryLayout, showSuggestionsLayout, currentLocation); //Get location by geocoded method
 								return true;
 							default:
 								break;
@@ -351,11 +384,28 @@ public abstract class Page extends RoboActivity {
 						LocationTracker.autoLoc = false;
 						try {
 							new LocationListTask(manualLocationField.getText().toString(), null, null, null, Page.this, 
-									false, true).execute(historyLayout,currentLocation); //Get location by geocoded method
+									false, true).execute(historyLayout, suggestionsLayout, 
+											showHistoryLayout, showSuggestionsLayout, currentLocation); //Get location by geocoded method
 						} catch (Exception e) {
 							Toast.makeText(Page.this, "Your new location cannot be updated. Please try " +
 									"again later", Toast.LENGTH_SHORT).show();
 						}
+					}
+				});
+				
+				RelativeLayout autoLocLayout = (RelativeLayout) locationLayout.findViewById(R.id.autoLocLayout);
+				autoLocLayout.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						try {
+							LocationTracker.autoLoc = true;
+							new LocationListTask(null,null, null, null, Page.this, false, true).execute
+												(historyLayout, suggestionsLayout, showHistoryLayout, showSuggestionsLayout, currentLocation); // Get location automatically
+						} catch (Exception e) {
+							e.printStackTrace();
+							Toast.makeText(Page.this, "Your new location cannot be updated. Please try again later", 
+									Toast.LENGTH_SHORT).show();
+						} 
 					}
 				});
 				
