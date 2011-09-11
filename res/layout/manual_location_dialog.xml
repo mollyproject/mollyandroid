@@ -18,6 +18,34 @@
 	    android:layout_margin="5dp">
     </TextView>
     
+    <RelativeLayout android:layout_width="fill_parent" 
+    android:id="@+id/showSuggestionLayout"
+    android:background="@drawable/shape_gray"
+    android:clickable="false"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_height="wrap_content" 
+    android:layout_margin="5dp">
+        <ImageView android:src="@drawable/location_white" 
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content" 
+	        android:id="@+id/crosshair" 
+	        android:layout_alignParentTop="true" 
+	        android:layout_alignParentLeft="true">
+        </ImageView>
+        <TextView android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content" 
+	        android:text="Other suggestions" 
+	        android:textColor="@color/white"
+	        android:textSize="18dp"
+	        android:id="@+id/suggestionsText" 
+	        android:layout_margin="5dp" 
+	        android:layout_centerVertical="true" 
+	        android:layout_toRightOf="@+id/crosshair"></TextView>
+    </RelativeLayout>
+    
     <TextView android:text="Set your new location manually:" 
 	    android:id="@+id/locationText" 
 	    android:layout_width="fill_parent" 
@@ -78,8 +106,8 @@
     
     <RelativeLayout android:layout_width="fill_parent" 
     android:id="@+id/showHistoryLayout"
-    android:background="@drawable/bg_blue"
-    android:clickable="true"
+    android:background="@drawable/shape_gray"
+    android:clickable="false"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
     android:paddingTop="10dp"
