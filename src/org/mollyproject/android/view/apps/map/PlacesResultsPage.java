@@ -30,8 +30,10 @@ public class PlacesResultsPage extends PageWithMap {
 		//always reload this page for the newest location
 		if (!firstLoad) // firstLoad is public static and will be changed in TransportMapTask once the task finishes
 		{
-			jsonProcessed = false; // to activate the refresh method
-			manualRefresh = true;  // to force download of new data
+			//force reset of the whole page (not simply manual refresh)
+			loaded = false;
+			jsonProcessed = false;
+			//manualRefresh = true;  // to force download of new data
 		}
 		super.onResume();
 	}
@@ -45,6 +47,7 @@ public class PlacesResultsPage extends PageWithMap {
 				mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
 		        		getWindowManager().getDefaultDisplay().getHeight()/3));
 			}
+			System.out.println("HERE");
 			new PlacesResultsTask(this, false, true).execute();
 		}
 		else if (args[0].equals(TRANSPORT))
