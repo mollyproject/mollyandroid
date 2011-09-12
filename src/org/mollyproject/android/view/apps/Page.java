@@ -3,6 +3,7 @@ package org.mollyproject.android.view.apps;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -14,6 +15,7 @@ import org.mollyproject.android.controller.LocationTracker;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.library.AbstractLibraryPage;
 import org.mollyproject.android.view.apps.search.NewSearchPage;
 import roboguice.activity.RoboActivity;
 import android.app.Dialog;
@@ -113,7 +115,11 @@ public abstract class Page extends RoboActivity {
 			outState.putString("generalQuery", MyApplication.generalQuery[0]);
 			if (MyApplication.generalQuery.length > 1)
 			{
-				outState.putString("generalQuery", MyApplication.generalQuery[1]);
+				outState.putString("generalApplication", MyApplication.generalQuery[1]);
+			}
+			else
+			{
+				outState.remove("generalApplication");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -124,6 +130,85 @@ public abstract class Page extends RoboActivity {
 			outState.putString("unimplementedLocator", MyApplication.locator);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		//restore instance state
+		super.onRestoreInstanceState(savedInstanceState);
+		//load state: last contactquery & medium
+		try {
+			MyApplication.contactQuery = new String[2];
+			MyApplication.contactQuery[0] = savedInstanceState.getString("contactQuery");
+			MyApplication.contactQuery[1] = savedInstanceState.getString("contactMedium");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
+		//load state: library query
+		try {
+			MyApplication.libraryQuery = new HashMap<String,String>();
+			MyApplication.libraryQuery.put(AbstractLibraryPage.TITLE, savedInstanceState.getString(AbstractLibraryPage.TITLE));
+			MyApplication.libraryQuery.put(AbstractLibraryPage.ISBN, savedInstanceState.getString(AbstractLibraryPage.ISBN));
+			MyApplication.libraryQuery.put(AbstractLibraryPage.AUTHOR, savedInstanceState.getString(AbstractLibraryPage.AUTHOR));
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
+		//load state: last known location
+		try {
+			MyApplication.currentLocation = new JSONObject(savedInstanceState.getString("currentLocation"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
+		//load state: last placesArgs
+		try {
+			MyApplication.placesArgs = new String[2];
+			MyApplication.placesArgs[0] = savedInstanceState.getString("identifier_scheme");
+			MyApplication.placesArgs[1] = savedInstanceState.getString("identifier_value");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
+		//load state: podcast slugs
+		try {
+			MyApplication.podcastsSlug = savedInstanceState.getString("podcastsSlug");
+			MyApplication.indPodcastSlug = savedInstanceState.getString("indPodcastSlug");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
+		//load state: general query
+		try {
+			if (!savedInstanceState.containsKey("generalApplication"))//MyApplication.generalQuery.length > 1)
+			{
+				MyApplication.generalQuery = new String[1];
+				MyApplication.generalQuery[0] = savedInstanceState.getString("generalQuery");
+			}
+			else
+			{
+				MyApplication.generalQuery = new String[2];
+				MyApplication.generalQuery[0] = savedInstanceState.getString("generalQuery");
+				MyApplication.generalQuery[1] = savedInstanceState.getString("generalApplication");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
+		//save state: locator (unimplemented page)
+		try {
+			MyApplication.locator = savedInstanceState.getString("unimplementedLocator");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
 		}
 	}
 	
