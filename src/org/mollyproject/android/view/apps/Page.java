@@ -1,6 +1,7 @@
 package org.mollyproject.android.view.apps;
 
 import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +60,72 @@ public abstract class Page extends RoboActivity {
 			(LinearLayout.LayoutParams.FILL_PARENT, 
 			LinearLayout.LayoutParams.FILL_PARENT);
 	static { paramsWithLine.setMargins(0, 0, 0, 2); }
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		//save state: last contactquery & medium
+		try {
+			outState.putString("contactQuery", MyApplication.contactQuery[0]);
+			outState.putString("contactMedium", MyApplication.contactQuery[1]);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
+		//save state: library queries (book, title, author)
+		try {
+			for (String key : MyApplication.libraryQuery.keySet())
+			{
+				outState.putString(key, MyApplication.libraryQuery.get(key));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
+		//save state: last known location
+		try {
+			outState.putString("currentLocation", MyApplication.currentLocation.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//save state: last placesArgs
+		try {
+			outState.putString("identifier_scheme", MyApplication.placesArgs[0]);
+			outState.putString("identifier_value", MyApplication.placesArgs[1]);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+	
+		//save state: podcast slugs
+		try {
+			outState.putString("podcastsSlug", MyApplication.podcastsSlug);
+			outState.putString("indPodcastSlug", MyApplication.indPodcastSlug);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//save state: general query
+		try {
+			outState.putString("generalQuery", MyApplication.generalQuery[0]);
+			if (MyApplication.generalQuery.length > 1)
+			{
+				outState.putString("generalQuery", MyApplication.generalQuery[1]);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//save state: locator (unimplemented page)
+		try {
+			outState.putString("unimplementedLocator", MyApplication.locator);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState)
