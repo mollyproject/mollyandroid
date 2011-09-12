@@ -12,6 +12,7 @@ import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,13 +34,18 @@ public class FavouritesTask extends JSONProcessingTask {
 	@Override
 	public void updateView(JSONObject jsonContent) {
 		try {
-			JSONArray favourites = jsonContent.getJSONArray("favourites");
+			page.getContentLayout().removeAllViews(); //clear the layout
 			
+			JSONArray favourites = jsonContent.getJSONArray("favourites");
 			if (favourites.length() == 0)
 			{
-				
+				//there is no favourite
+				LinearLayout favouriteLayout = (LinearLayout) page.getLayoutInflater().inflate
+						(R.layout.favourite_result, null);
+				page.getContentLayout().addView(favouriteLayout);
+				TextView favouriteText = (TextView) favouriteLayout.findViewById(R.id.favouriteText);
+				favouriteText.setText("You haven't favourited anything yet!");
 			}
-			page.getContentLayout().removeAllViews(); //clear the layout
 			for (int i = 0; i < favourites.length(); i ++)
 			{
 				JSONObject favourite = favourites.getJSONObject(i);

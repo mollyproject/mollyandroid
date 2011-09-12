@@ -3,6 +3,7 @@ package org.mollyproject.android.view.apps.favourites;
 import java.io.UnsupportedEncodingException;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
@@ -22,7 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class FavouritesPage extends ContentPage {
-	protected LinearLayout selectedFav;
+	protected JSONObject metadata;
 	public static int lastTouchedFav;
 	@Override
 	public Page getInstance() {
@@ -49,16 +50,25 @@ public class FavouritesPage extends ContentPage {
 
 	@Override
 	public void refresh() {
-		new FavouritesTask(this, true, true).execute();
+		new FavouritesTask(this, false, true).execute();
 	}
 	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.favourite_context_menu, menu);
-		selectedFav = (LinearLayout) v;
+		try {
+			super.onCreateContextMenu(menu, v, menuInfo);
+			MenuInflater menuInflater = getMenuInflater();
+			menuInflater.inflate(R.menu.favourite_context_menu, menu);
+			//try loading the metadata again every time the context menu is called
+			metadata = jsonContent.getJSONArray("favourites").getJSONObject(lastTouchedFav).getJSONObject("metadata");
+			menu.setHeaderTitle(metadata.getString("title"));
+			//selectedFav = (LinearLayout) v;
+		} catch (Exception e) {
+			e.printStackTrace();
+			Toast.makeText(getApplicationContext(), 
+					"Sorry this operation is not currently available", Toast.LENGTH_SHORT);
+		};
 	}
 	
 	@Override
@@ -67,8 +77,9 @@ public class FavouritesPage extends ContentPage {
 		{
 			//it is safe to use jsonContent because favourites cannot be added in this page, they can only be removed
 			//also, the jsonContent will be re-updated every time a change is made to the favrouites list
-			JSONArray favourites = jsonContent.getJSONArray("favourites");
-			JSONObject metadata = favourites.getJSONObject(lastTouchedFav).getJSONObject("metadata");
+			
+			//this method will only be called once the context menu has been brought up, i.e if the metadata fails it fails
+			//in the last step
 			final JSONObject entity = metadata.getJSONObject("entity");
 			switch (item.getItemId())
 			{
@@ -87,7 +98,8 @@ public class FavouritesPage extends ContentPage {
 					//		entity.getJSONArray("location").getDouble(1), entity.getDouble("accuracy"));
 					break;
 				case R.id.removeFav:
-					//Remove the selected favourite
+					//Remove the selected favourite, it should receive the entity to be unfavourited
+					new UnFavTask(this, false, true).execute(entity);
 					break;
 			}
 		} catch (Exception e) {

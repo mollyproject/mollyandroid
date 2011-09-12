@@ -1,16 +1,14 @@
 package org.mollyproject.android.view.apps.favourites;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 import org.mollyproject.android.controller.BackgroundTask;
-import org.mollyproject.android.controller.MollyModule;
-import org.mollyproject.android.controller.MyApplication;
+import org.mollyproject.android.view.apps.ContentPage;
+import org.mollyproject.android.view.apps.FavouriteOptionsTask;
 import org.mollyproject.android.view.apps.Page;
 
-public class UnFavTask extends BackgroundTask<Void, Void, Void>{
+public class UnFavTask extends BackgroundTask<JSONObject, Void, JSONObject>{
 
 	public UnFavTask(Page page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
@@ -19,28 +17,23 @@ public class UnFavTask extends BackgroundTask<Void, Void, Void>{
 	}
 
 	@Override
-	public void updateView(Void outputs) {
-		// TODO Auto-generated method stub
-		
+	public void updateView(JSONObject outputs) {
+		//assuming page is FavouritesPage, manually refresh it
+		//((ContentPage) page).setJSONContent(outputs);
+		Page.manualRefresh = true;
+		page.refresh();
 	}
 
 	@Override
-	protected Void doInBackground(Void... params) {
+	protected JSONObject doInBackground(JSONObject... entities) {
 		//post the favourite on to the web server
 		try
 		{
-	    	List<NameValuePair> argsPairs = new ArrayList<NameValuePair>();
-	         
-	    	argsPairs.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
-	    	argsPairs.add(new BasicNameValuePair("format", "json"));
-	    	argsPairs.add(new BasicNameValuePair("language_code", "en"));
-	        System.out.println("fav link " + MyApplication.favouriteURL);
-	        argsPairs.add(new BasicNameValuePair("URL", MyApplication.favouriteURL));
-	        argsPairs.add(new BasicNameValuePair("unfavourite", ""));
-	         
-			List<String> output = MyApplication.router.post(argsPairs,
-					MyApplication.router.reverse(MollyModule.FAVOURITES, null));
+			JSONObject entity = entities[0];
+			List<String> output = FavouriteOptionsTask.unfavourite(entity.getString("_url"));
+			return new JSONObject(output.get(0));
 		} catch (Exception e) {
+			e.printStackTrace();
 			operationException = true;
 		}
 		return null;
