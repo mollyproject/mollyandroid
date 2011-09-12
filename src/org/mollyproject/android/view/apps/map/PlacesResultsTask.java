@@ -7,7 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
-import org.mollyproject.android.controller.BackgroundTask;
+import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
@@ -26,7 +26,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class PlacesResultsTask extends BackgroundTask<Void,Void,JSONObject>
+public class PlacesResultsTask extends JSONProcessingTask
 {
 	protected boolean locationNotFound = false;
 	public PlacesResultsTask(PlacesResultsPage page, boolean toDestroyPageAfterFailure,
@@ -122,7 +122,7 @@ public class PlacesResultsTask extends BackgroundTask<Void,Void,JSONObject>
 	        overlayItems.add(markerOverlay);
 	        
 	        populateMarkers((PageWithMap) page, overlayItems);
-	        
+	        PlacesResultsPage.firstLoad = false;
 	        ((ContentPage) page).doneProcessingJSON();
         } catch (Exception e)
 		{
@@ -155,7 +155,11 @@ public class PlacesResultsTask extends BackgroundTask<Void,Void,JSONObject>
 	}
 	
 	@Override
-	protected JSONObject doInBackground(Void... params) {
+	protected JSONObject doInBackground(JSONObject... params) {
+		if (Page.manualRefresh)
+		{
+			return super.doInBackground();
+		}
 		while (!((ContentPage) page).downloadedJSON())
 		{
 			try {
