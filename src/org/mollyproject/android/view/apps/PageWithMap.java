@@ -1,11 +1,15 @@
 package org.mollyproject.android.view.apps;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.LocationTracker;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.PathOverlay;
 
 import android.os.Bundle;
 import android.view.View;
@@ -66,6 +70,22 @@ public abstract class PageWithMap extends ContentPage {
 		        }
 		    }
 		});
+	}
+	
+	public void drawPath(JSONArray points) throws JSONException
+	{
+		PathOverlay pathOverlay = new PathOverlay(getResources().getColor(R.color.gray), getApplicationContext());
+		
+		GeoPoint geoPoint;
+		for (int i = 0; i < points.length(); i++)
+		{
+			//GeoPoint
+			JSONArray point = points.getJSONArray(i);
+			geoPoint = new GeoPoint(point.getDouble(0), point.getDouble(1));
+			pathOverlay.addPoint(geoPoint);
+		}
+		
+		mapView.getOverlays().add(pathOverlay);
 	}
 	
 	public boolean hideMap()
