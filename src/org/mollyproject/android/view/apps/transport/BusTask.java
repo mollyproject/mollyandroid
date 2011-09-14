@@ -41,13 +41,15 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			//Update the page title every time the page is refreshed
 			TextView pageTitle = (TextView) transportLayout.findViewById(R.id.transportTitle);
 			String pageTitleText = new String();
-			pageTitleText = MyApplication.hourFormat.format(new Date()) 
-						+ " - Nearby bus stops from your current location";
-			
 			if (MyApplication.currentLocation != null & MyApplication.currentLocation.has("name"))
 			{
-				pageTitleText = pageTitleText + " (" + MyApplication.currentLocation.getString("name")
+				pageTitleText = MyApplication.hourFormat.format(new Date()) 
+							+ " - Nearby bus stops from your current location" + " (" + MyApplication.currentLocation.getString("name")
 						+ " within approx. " + MyApplication.currentLocation.getString("accuracy") + ")";
+			}
+			else
+			{
+				pageTitleText = "Cannot get info about your current location, you might want to check the Your Location option again.";
 			}
 			pageTitleText = pageTitleText + ":";
 			
