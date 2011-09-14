@@ -11,6 +11,7 @@ import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.ComplexMapResultTask;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
@@ -23,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PlacesNearbyTask extends JSONProcessingTask {
+public class PlacesNearbyTask extends ComplexMapResultTask {
 
 	public PlacesNearbyTask(ContentPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
@@ -76,6 +77,7 @@ public class PlacesNearbyTask extends JSONProcessingTask {
 
 	@Override
 	public void updateView(JSONObject jsonContent) {
+		super.updateView(jsonContent);
 		try {
 			page.getContentLayout().removeAllViews();
 			
