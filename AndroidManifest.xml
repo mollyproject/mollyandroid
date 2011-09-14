@@ -38,6 +38,7 @@
 		<activity android:name=".view.apps.map.PlacesNearbyPage"></activity>
 		<activity android:name=".view.apps.map.PlacesNearbyDetailPage"></activity>
 		<activity android:name=".view.apps.map.PlacesResultsPage"></activity>
+		<activity android:name=".view.apps.map.PlacesEntityNearbyList"></activity>
 		
 		<activity android:name=".view.apps.contact.ContactPage"></activity>
 		<activity android:name=".view.apps.contact.ContactResultsPage"></activity>

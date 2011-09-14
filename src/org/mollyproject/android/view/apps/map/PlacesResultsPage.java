@@ -1,10 +1,15 @@
 package org.mollyproject.android.view.apps.map;
 
+import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.PageWithMap;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -14,26 +19,30 @@ public class PlacesResultsPage extends PageWithMap {
 	
 	public static TransportMapPageRefreshTask transportMapPageRefreshTask;
 	public static boolean firstLoad;
-	protected String[] args; //identifiers
+	protected String[] args = new String[2]; //identifiers
 	public static final String OXPOINTS = "oxpoints";
 	public static final String OSM = "osm";
 	public static final String TRANSPORT = "atco";
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		firstLoad = true;
-		args = MyApplication.placesArgs.clone(); //avoid the null pointer exception in refresh
+		args[0] = MyApplication.placesArgs[0];
+		args[1] = MyApplication.placesArgs[1];
 	}
 	
 	@Override
 	public void onResume() {
 		//always reload this page for the newest location
-		if (!firstLoad) // firstLoad is public static and will be changed in TransportMapTask once the task finishes
+		//firstLoad is public static and will be changed in TransportMapTask once the task finishes
+		//this means the reset only actually runs every time the page is reloaded by user input when using
+		//PlacesResultTask, no need to do this in TransportMapTask because it reloads the page automatically
+		if (!firstLoad) 
 		{
 			//force reset of the whole page (not simply manual refresh)
 			loaded = false;
 			jsonProcessed = false;
-			//manualRefresh = true;  // to force download of new data
 		}
 		super.onResume();
 	}
@@ -82,7 +91,30 @@ public class PlacesResultsPage extends PageWithMap {
 			transportMapPageRefreshTask.cancel(true);
 		}
 	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.nearbyPlaces).setVisible(true);
+		menu.findItem(R.id.directions).setVisible(true);
+		return super.onPrepareOptionsMenu(menu);
+	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId())
+		{
+			case R.id.nearbyPlaces:
+				MyApplication.placesArgs[0] = args[0];
+				MyApplication.placesArgs[1] = args[1];
+				Intent myIntent =  new Intent(getApplicationContext(), MyApplication.getPageClass(MollyModule.PLACES_ENTITY_NEARBY_LIST));
+				startActivityForResult(myIntent, 0);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+		
+	}
+	
 	@Override
 	public String getAdditionalParams() {
 		//to distinguish between different identifiers (osm, oxpoints, atco)
@@ -103,6 +135,7 @@ public class PlacesResultsPage extends PageWithMap {
 
 	@Override
 	public String getName() {
+		
 		return MollyModule.PLACES_ENTITY;
 	}
 

@@ -11,15 +11,15 @@
     </item>
     
     <item android:enabled="true" 
+	    android:id="@+id/manage_favourites" 
+	    android:visible="true" android:title="Manage Favourites">
+    </item>
+    
+    <item android:enabled="true" 
 	    android:id="@+id/favourite" 
 	    android:visible="true" 
 	    android:title="Favourite" 
 	    android:checkable="true">
-    </item>
-    
-    <item android:enabled="true" 
-	    android:id="@+id/manage_favourites" 
-	    android:visible="true" android:title="Manage Favourites">
     </item>
     
     <item android:id="@+id/departures"
@@ -28,5 +28,7 @@
     <item android:id="@+id/arrivals"
 	    android:title="View Arrivals Board"
 	    android:icon="@drawable/icon" android:visible="false"/>
+    <item android:title="Things near here" android:visible="false" android:enabled="true" android:id="@+id/nearbyPlaces"></item>
+    <item android:title="Directions to here" android:id="@+id/directions" android:visible="false" android:enabled="true"></item>
 	    
 </menu>

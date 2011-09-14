@@ -10,6 +10,7 @@ import org.mollyproject.android.view.apps.home.HomePage;
 import org.mollyproject.android.view.apps.library.LibraryBookResultPage;
 import org.mollyproject.android.view.apps.library.LibraryPage;
 import org.mollyproject.android.view.apps.library.LibraryResultsPage;
+import org.mollyproject.android.view.apps.map.PlacesEntityNearbyList;
 import org.mollyproject.android.view.apps.map.PlacesNearbyPage;
 import org.mollyproject.android.view.apps.map.PlacesNearbyDetailPage;
 import org.mollyproject.android.view.apps.map.PlacesPage;
@@ -35,6 +36,7 @@ public class MollyModule extends AbstractModule {
 	public static String PLACES_NEARBY = "places:nearby-list";
 	public static String PLACES_NEARBY_DETAIL = "places:nearby-detail";
 	public static String PLACES_ENTITY = "places:entity";
+	public static String PLACES_ENTITY_NEARBY_LIST = "places:entity-nearby-list";
 	public static String CONTACT_PAGE = "contact:index";
 	public static String FEATURE_VOTE = "feature_vote:index";
 	public static String FEEDBACK_PAGE = "feedback:index";
@@ -71,12 +73,10 @@ public class MollyModule extends AbstractModule {
 		bind(Page.class).annotatedWith(Names.named(PLACES_PAGE)).to(PlacesPage.class);
 		bind(Integer.class).annotatedWith(Names.named(PLACES_PAGE+"_img")).toInstance(R.drawable.places);
 		bind(Integer.class).annotatedWith(Names.named(PLACES_PAGE+"_bc")).toInstance(R.drawable.places_bc);
-
 		bind(Page.class).annotatedWith(Names.named(PLACES_ENTITY)).to(PlacesResultsPage.class);
-		
 		bind(Page.class).annotatedWith(Names.named(PLACES_NEARBY)).to(PlacesNearbyPage.class);
-		
 		bind(Page.class).annotatedWith(Names.named(PLACES_NEARBY_DETAIL)).to(PlacesNearbyDetailPage.class);
+		bind(Page.class).annotatedWith(Names.named(PLACES_ENTITY_NEARBY_LIST)).to(PlacesEntityNearbyList.class);
 		
 		//views and drawables for weather page
 		bind(Page.class).annotatedWith(Names.named(WEATHER_PAGE)).to(WeatherPage.class);
