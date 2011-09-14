@@ -38,6 +38,8 @@ public class PlacesResultsPage extends PageWithMap {
 		args[0] = MyApplication.placesArgs[0];
 		args[1] = MyApplication.placesArgs[1];
 		additionalArgs = "&arg=" + args[0] + "&arg=" + args[1];
+		mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+        		getWindowManager().getDefaultDisplay().getHeight()/3));
 	}
 	
 	@Override
@@ -54,11 +56,11 @@ public class PlacesResultsPage extends PageWithMap {
 			{
 				case PLACES_DAFAULT:
 					name = MollyModule.PLACES_ENTITY;
-					additionalArgs = null;
+					toggleMapButton.setEnabled(false);
 					break;
 				case PLACES_NEARBY:
 					name = MollyModule.PLACES_ENTITY_NEARBY_LIST;
-					additionalArgs = "&arg=" + args[0] + "&arg=" + args[1];
+					toggleMapButton.setEnabled(true);
 					break;
 			}
 			
@@ -73,12 +75,7 @@ public class PlacesResultsPage extends PageWithMap {
 			case PLACES_DAFAULT:
 				if (!args[0].equals(TRANSPORT))
 				{
-					if (args[0].equals(OXPOINTS))
-					{
-						mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
-				        		getWindowManager().getDefaultDisplay().getHeight()/3));
-					}
-					System.out.println("HERE");
+					toggleMapButton.setEnabled(false);
 					new PlacesResultsTask(this, false, true).execute();
 				}
 				else if (args[0].equals(TRANSPORT))
@@ -96,9 +93,6 @@ public class PlacesResultsPage extends PageWithMap {
 						mapLayout.removeView(mapView);
 						toggleMapButton.setChecked(false);
 					}
-					
-					mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
-			        		getWindowManager().getDefaultDisplay().getHeight()/3));
 					
 					transportMapPageRefreshTask = new TransportMapPageRefreshTask(this, false, false);
 					transportMapPageRefreshTask.execute();
@@ -122,17 +116,27 @@ public class PlacesResultsPage extends PageWithMap {
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		menu.setGroupEnabled(R.id.placesGroup, true);
-		menu.findItem(R.id.nearbyPlaces).setVisible(true);
-		menu.findItem(R.id.directions).setVisible(true);
+		menu.setGroupVisible(R.id.placesGroup, true);
+		switch(currentPlacesFunction)
+		{
+			case PLACES_DAFAULT:
+				menu.findItem(R.id.plainMap).setVisible(false);
+				return true;
+			case PLACES_NEARBY:
+				menu.findItem(R.id.nearbyPlaces).setVisible(false);
+				return true;
+		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		item.setEnabled(false);
 		switch (item.getItemId())
 		{
+			case R.id.plainMap:
+				currentPlacesFunction = PLACES_DAFAULT;
+				onResume();
+				return true;
 			case R.id.nearbyPlaces:
 				currentPlacesFunction = PLACES_NEARBY;
 				onResume();

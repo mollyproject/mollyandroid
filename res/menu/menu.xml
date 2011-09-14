@@ -22,8 +22,7 @@
 	    android:checkable="true">
     </item>
     
-    <group android:id="@+id/placesGroup">
-    	<item android:id="@+id/departures"
+    <item android:id="@+id/departures"
         android:title="View Departures Board"
         android:icon="@drawable/icon" 
         android:visible="false"/>
@@ -32,16 +31,23 @@
 	    android:title="View Arrivals Board"
 	    android:icon="@drawable/icon" 
 	    android:visible="false"/>
-	    
-    <item android:title="Things near here" 
-	    android:visible="false" 
-	    android:enabled="true" 
-	    android:id="@+id/nearbyPlaces"/>
     
-    <item android:title="Directions to here" 
-	    android:id="@+id/directions" 
-	    android:visible="false" 
-	    android:enabled="true"/>
+    <group android:id="@+id/placesGroup">
+		    
+	    <item android:title="Things near here" 
+		    android:visible="false" 
+		    android:enabled="true" 
+		    android:id="@+id/nearbyPlaces"/>
+	    
+	    <item android:title="Directions to here" 
+		    android:id="@+id/directions" 
+		    android:visible="false" 
+		    android:enabled="true"/>
+		    
+	    <item android:title="View Map" 
+		    android:id="@+id/plainMap" 
+		    android:visible="false" 
+		    android:enabled="true"/>
     </group>
 	    
 </menu>
