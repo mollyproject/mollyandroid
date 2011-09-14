@@ -202,6 +202,7 @@ public abstract class ContentPage extends Page {
 					{
 						page.setFavable(jsonContent.getBoolean("is_favouritable"));
 						page.setFav(jsonContent.getBoolean("is_favourite"));
+						System.out.println(isFavourite);
 						MyApplication.favouriteURL = jsonContent.getString("favourite_url");
 					}
 				}

@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.apps.map;
+package org.mollyproject.android.view.apps.places;
 
 import org.json.JSONObject;
 import org.mollyproject.android.controller.JSONProcessingTask;

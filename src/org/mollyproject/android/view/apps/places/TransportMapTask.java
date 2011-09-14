@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.apps.map;
+package org.mollyproject.android.view.apps.places;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

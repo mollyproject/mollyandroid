@@ -34,11 +34,11 @@
 		<activity android:name=".view.apps.library.LibraryResultsPage"></activity>
 		<activity android:name=".view.apps.library.LibraryBookResultPage"></activity>
 		
-		<activity android:name=".view.apps.map.PlacesPage"></activity>
-		<activity android:name=".view.apps.map.PlacesNearbyPage"></activity>
-		<activity android:name=".view.apps.map.PlacesNearbyDetailPage"></activity>
-		<activity android:name=".view.apps.map.PlacesResultsPage"></activity>
-		<activity android:name=".view.apps.map.PlacesEntityNearbyList"></activity>
+		<activity android:name=".view.apps.places.PlacesPage"></activity>
+		<activity android:name=".view.apps.places.PlacesNearbyPage"></activity>
+		<activity android:name=".view.apps.places.PlacesNearbyDetailPage"></activity>
+		<activity android:name=".view.apps.places.PlacesResultsPage"></activity>
+		<activity android:name=".view.apps.places.PlacesEntityNearbyList"></activity>
 		
 		<activity android:name=".view.apps.contact.ContactPage"></activity>
 		<activity android:name=".view.apps.contact.ContactResultsPage"></activity>

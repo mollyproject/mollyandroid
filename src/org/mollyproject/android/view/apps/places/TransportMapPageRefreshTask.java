@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.apps.map;
+package org.mollyproject.android.view.apps.places;
 
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.view.apps.ContentPage;

@@ -16,7 +16,7 @@ import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.map.PlacesResultsPage;
+import org.mollyproject.android.view.apps.places.PlacesResultsPage;
 
 import android.content.Intent;
 import android.graphics.Color;
