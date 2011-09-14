@@ -24,7 +24,7 @@ import android.graphics.drawable.Drawable;
 
 public class ComplexMapResultTask extends JSONProcessingTask {
 	protected boolean exceptionCaught = false;
-	public ComplexMapResultTask(PageWithMap page, boolean toDestroyPageAfterFailure,
+	public ComplexMapResultTask(ContentPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
 		// TODO Auto-generated constructor stub
@@ -84,10 +84,10 @@ public class ComplexMapResultTask extends JSONProcessingTask {
 	        				= new ItemizedIconOverlay<OverlayItem>(page,overlayItems, null);
 	        mapView.getOverlays().add(overlay);
 	        ((ContentPage) page).doneProcessingJSON();
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			exceptionCaught = true;
-			jsonException = true;
+			//otherException = true;
 		}
 	}
 
