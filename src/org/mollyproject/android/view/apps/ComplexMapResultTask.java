@@ -21,6 +21,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.widget.LinearLayout;
 
 public class ComplexMapResultTask extends JSONProcessingTask {
 	protected boolean exceptionCaught = false;
@@ -34,6 +35,10 @@ public class ComplexMapResultTask extends JSONProcessingTask {
 	public void updateView(JSONObject jsonContent) {
 		try {
 			MapView mapView = ((PageWithMap) page).getMapView();
+			//reduce the size of the map view
+			mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+	        		page.getWindowManager().getDefaultDisplay().getHeight()/3));
+			
 			JSONObject jsonMap = jsonContent.getJSONObject("map");
 			List<OverlayItem> overlayItems= new ArrayList<OverlayItem>();
 			MapController mapController = mapView.getController();

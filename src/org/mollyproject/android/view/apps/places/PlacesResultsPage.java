@@ -24,6 +24,12 @@ public class PlacesResultsPage extends PageWithMap {
 	public static final String OSM = "osm";
 	public static final String TRANSPORT = "atco";
 	
+	public static final int PLACES_DAFAULT = 0;
+	public static final int PLACES_NEARBY = 1;
+	public static final int PLACES_DIRECTIONS = 2;
+	
+	protected int currentPlacesFunction = PLACES_DAFAULT;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,47 +48,67 @@ public class PlacesResultsPage extends PageWithMap {
 		//PlacesResultTask, no need to do this in TransportMapTask because it reloads the page automatically
 		if (!firstLoad) 
 		{
-			//force reset of the whole page (not simply manual refresh)
+			//force reset of the whole page (not simply manual refresh) because the breadcrumbs need to change too
 			loaded = false;
-			jsonProcessed = false;
+			switch (currentPlacesFunction)
+			{
+				case PLACES_DAFAULT:
+					name = MollyModule.PLACES_ENTITY;
+					additionalArgs = null;
+					break;
+				case PLACES_NEARBY:
+					name = MollyModule.PLACES_ENTITY_NEARBY_LIST;
+					additionalArgs = "&arg=" + args[0] + "&arg=" + args[1];
+					break;
+			}
+			
 		}
-		super.onResume();
+		super.onResume(); //set up the page again
 	}
 
 	@Override
 	public void refresh() {
-		if (!args[0].equals(TRANSPORT))
+		switch (currentPlacesFunction)
 		{
-			if (args[0].equals(OXPOINTS))
-			{
-				mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
-		        		getWindowManager().getDefaultDisplay().getHeight()/3));
-			}
-			System.out.println("HERE");
-			new PlacesResultsTask(this, false, true).execute();
+			case PLACES_DAFAULT:
+				if (!args[0].equals(TRANSPORT))
+				{
+					if (args[0].equals(OXPOINTS))
+					{
+						mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+				        		getWindowManager().getDefaultDisplay().getHeight()/3));
+					}
+					System.out.println("HERE");
+					new PlacesResultsTask(this, false, true).execute();
+				}
+				else if (args[0].equals(TRANSPORT))
+				{
+					Toast.makeText(this, "Please wait. This page might take a moment or two to refresh...", 
+							Toast.LENGTH_SHORT).show();
+					
+					if (transportMapPageRefreshTask != null) 
+					{
+						transportMapPageRefreshTask.cancel(true);
+					}
+					
+					if (firstLoad)
+					{
+						mapLayout.removeView(mapView);
+						toggleMapButton.setChecked(false);
+					}
+					
+					mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+			        		getWindowManager().getDefaultDisplay().getHeight()/3));
+					
+					transportMapPageRefreshTask = new TransportMapPageRefreshTask(this, false, false);
+					transportMapPageRefreshTask.execute();
+				}
+				break;
+			case PLACES_NEARBY:
+				new PlacesNearbyTask(this, false, true).execute();
+				break;
 		}
-		else if (args[0].equals(TRANSPORT))
-		{
-			Toast.makeText(this, "Please wait. This page might take a moment or two to refresh...", 
-					Toast.LENGTH_SHORT).show();
-			
-			if (transportMapPageRefreshTask != null) 
-			{
-				transportMapPageRefreshTask.cancel(true);
-			}
-			
-			if (firstLoad)
-			{
-				mapLayout.removeView(mapView);
-				toggleMapButton.setChecked(false);
-			}
-			
-			mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
-	        		getWindowManager().getDefaultDisplay().getHeight()/3));
-			
-			transportMapPageRefreshTask = new TransportMapPageRefreshTask(this, false, false);
-			transportMapPageRefreshTask.execute();
-		}
+		
 	}
 	
 	@Override
@@ -96,6 +122,7 @@ public class PlacesResultsPage extends PageWithMap {
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.setGroupEnabled(R.id.placesGroup, true);
 		menu.findItem(R.id.nearbyPlaces).setVisible(true);
 		menu.findItem(R.id.directions).setVisible(true);
 		return super.onPrepareOptionsMenu(menu);
@@ -103,13 +130,12 @@ public class PlacesResultsPage extends PageWithMap {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		item.setEnabled(false);
 		switch (item.getItemId())
 		{
 			case R.id.nearbyPlaces:
-				MyApplication.placesArgs[0] = args[0];
-				MyApplication.placesArgs[1] = args[1];
-				Intent myIntent =  new Intent(getApplicationContext(), MyApplication.getPageClass(MollyModule.PLACES_ENTITY_NEARBY_LIST));
-				startActivityForResult(myIntent, 0);
+				currentPlacesFunction = PLACES_NEARBY;
+				onResume();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

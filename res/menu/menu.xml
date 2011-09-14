@@ -22,13 +22,26 @@
 	    android:checkable="true">
     </item>
     
-    <item android:id="@+id/departures"
+    <group android:id="@+id/placesGroup">
+    	<item android:id="@+id/departures"
         android:title="View Departures Board"
-        android:icon="@drawable/icon" android:visible="false"/>
+        android:icon="@drawable/icon" 
+        android:visible="false"/>
+        
     <item android:id="@+id/arrivals"
 	    android:title="View Arrivals Board"
-	    android:icon="@drawable/icon" android:visible="false"/>
-    <item android:title="Things near here" android:visible="false" android:enabled="true" android:id="@+id/nearbyPlaces"></item>
-    <item android:title="Directions to here" android:id="@+id/directions" android:visible="false" android:enabled="true"></item>
+	    android:icon="@drawable/icon" 
+	    android:visible="false"/>
+	    
+    <item android:title="Things near here" 
+	    android:visible="false" 
+	    android:enabled="true" 
+	    android:id="@+id/nearbyPlaces"/>
+    
+    <item android:title="Directions to here" 
+	    android:id="@+id/directions" 
+	    android:visible="false" 
+	    android:enabled="true"/>
+    </group>
 	    
 </menu>
