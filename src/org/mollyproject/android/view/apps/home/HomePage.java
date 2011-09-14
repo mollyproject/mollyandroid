@@ -58,7 +58,7 @@ public class HomePage extends Page {
     	super.onResume();
     	if (firstHomeLoad || MyApplication.destroyed)
     	{
-    		new NetworkPollingTask(this, false, true).execute();
+    		refresh();
     	}
     }
     
@@ -100,7 +100,7 @@ public class HomePage extends Page {
 	}
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
+		new NetworkPollingTask(this, false, true).execute();
 	}
 }
 
