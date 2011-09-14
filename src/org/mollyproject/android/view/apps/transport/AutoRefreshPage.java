@@ -18,6 +18,7 @@ public abstract class AutoRefreshPage extends Page {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		name = MollyModule.PUBLIC_TRANSPORT;
 		setContentView(R.layout.transport_layout);
 	}
 	
@@ -32,8 +33,4 @@ public abstract class AutoRefreshPage extends Page {
 		return transportLayout;
 	}
 	
-	@Override
-	public String getName() {
-		return MollyModule.PUBLIC_TRANSPORT;
-	}
 }

@@ -13,6 +13,7 @@ public class WeatherPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		name = MollyModule.WEATHER_PAGE;
 	}
 	
 	@Override
@@ -23,16 +24,6 @@ public class WeatherPage extends ContentPage {
 	@Override
 	public Page getInstance() {
 		return this;
-	}
-
-	@Override
-	public String getAdditionalParams() {
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		return MollyModule.WEATHER_PAGE;
 	}
 
 	@Override

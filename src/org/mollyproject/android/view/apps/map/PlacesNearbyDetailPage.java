@@ -16,8 +16,10 @@ public class PlacesNearbyDetailPage extends PageWithMap{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		contentLayout.setBackgroundResource(R.drawable.shape_white);
+		name = MollyModule.PLACES_NEARBY_DETAIL;
 		slug = MyApplication.placesNearbySlug;
+		additionalArgs = "&arg=" + slug;
+		contentLayout.setBackgroundResource(R.drawable.shape_white);
 		mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
         		getWindowManager().getDefaultDisplay().getHeight()/3));
 	}
@@ -36,17 +38,6 @@ public class PlacesNearbyDetailPage extends PageWithMap{
 	public String getQuery() throws UnsupportedEncodingException {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public String getAdditionalParams() {
-		//assume that page is only called after the slug is present 
-		return "&arg=" + slug;
-	}
-
-	@Override
-	public String getName() {
-		return MollyModule.PLACES_NEARBY_DETAIL;
 	}
 
 }

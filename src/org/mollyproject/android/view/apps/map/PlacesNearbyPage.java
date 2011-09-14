@@ -18,6 +18,7 @@ public class PlacesNearbyPage extends ContentPage {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		name = MollyModule.PLACES_NEARBY;
 		currentLocation = new TextView(getApplicationContext());
 		contentLayout.addView(currentLocation);
 	}
@@ -42,18 +43,7 @@ public class PlacesNearbyPage extends ContentPage {
 	}
 
 	@Override
-	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Page getInstance() {
 		return this;
-	}
-
-	@Override
-	public String getName() {
-		return MollyModule.PLACES_NEARBY;
 	}
 }

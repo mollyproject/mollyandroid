@@ -10,6 +10,7 @@ public class LibraryPage extends AbstractLibraryPage {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		name =  MollyModule.LIBRARY_PAGE;
 		dialogOnSetup = true;
 	}
 	
@@ -23,16 +24,6 @@ public class LibraryPage extends AbstractLibraryPage {
 	@Override
 	public Page getInstance() {
 		return this;
-	}
-
-	@Override
-	public String getAdditionalParams() {
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		return MollyModule.LIBRARY_PAGE;
 	}
 
 	@Override

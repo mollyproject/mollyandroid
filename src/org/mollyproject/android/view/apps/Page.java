@@ -55,6 +55,10 @@ public abstract class Page extends RoboActivity {
 	public static final int DIALOG_LOCATION_HISTORY = 1;
 	public static final int DIALOG_LOCATION_SUGGESTIONS = 2; 
 	
+	protected String name;
+	protected String additionalArgs;
+	protected String query;
+	//protected String query
 	
 	//use someLayout.setLayoutParams() with this paramsWithLine as a parameter makes
 	//a gap of 5px below the LinearLayout, this is used here to make gaps between views
@@ -224,6 +228,8 @@ public abstract class Page extends RoboActivity {
 		settings = getSharedPreferences(MyApplication.PREFS_NAME, 0);
 		editor = settings.edit();
 		manualRefresh = false;
+		name = null;
+		additionalArgs = null;
 	}
 	
 	public void setFavable(boolean b)
@@ -615,11 +621,17 @@ public abstract class Page extends RoboActivity {
         return super.onKeyDown(keyCode, event);
     }
 	
-	public abstract String getQuery() throws UnsupportedEncodingException;
+	public abstract String getQuery() throws UnsupportedEncodingException; //to be customised because of the UTF-8 Encoding
 	
-	public abstract String getAdditionalParams();
+	public String getAdditionalParams()
+	{
+		return additionalArgs;
+	}
     
-    public abstract String getName();
+    public String getName()
+    {
+    	return name;
+    }
     
     public abstract LinearLayout getContentLayout();
     

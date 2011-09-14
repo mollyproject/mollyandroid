@@ -16,6 +16,8 @@ public class LibraryBookResultPage extends PageWithMap{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		controlNumber = MyApplication.bookControlNumber;
+		name = MollyModule.LIBRARY_BOOK_RESULT_PAGE;
+		additionalArgs = "&arg="+controlNumber;
 	}
 	
 	@Override
@@ -30,18 +32,8 @@ public class LibraryBookResultPage extends PageWithMap{
 	}
 
 	@Override
-	public String getAdditionalParams() {
-		return "&arg="+controlNumber;
-	}
-
-	@Override
 	public Page getInstance() {
 		return this;
-	}
-
-	@Override
-	public String getName() {
-		return MollyModule.LIBRARY_BOOK_RESULT_PAGE;
 	}
 
 }

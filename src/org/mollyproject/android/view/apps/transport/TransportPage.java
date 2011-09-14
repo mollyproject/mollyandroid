@@ -34,7 +34,8 @@ public class TransportPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState) 
 	{
         super.onCreate(savedInstanceState);
-        
+        name = MollyModule.PUBLIC_TRANSPORT; 
+        additionalArgs = "&arg=" + settings.getString("lastTab",defaultTransport);
         transportPageTitle = parentBreadcrumb;
         
         mlam = new LocalActivityManager(this, false);
@@ -111,18 +112,8 @@ public class TransportPage extends ContentPage {
 	}
 
 	@Override
-	public String getAdditionalParams() {
-		return "&arg=" + settings.getString("lastTab",defaultTransport);
-	}
-
-	@Override
 	public Page getInstance() {
 		return this;
-	}
-
-	@Override
-	public String getName() {
-		return MollyModule.PUBLIC_TRANSPORT;
 	}
 
 }

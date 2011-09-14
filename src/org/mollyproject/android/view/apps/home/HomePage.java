@@ -30,6 +30,7 @@ public class HomePage extends Page {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
+    	name = MollyModule.HOME_PAGE;
     	setContentView(R.layout.home_page_layout);
     	RelativeLayout searchBar = (RelativeLayout) getLayoutInflater().inflate
     			(R.layout.search_bar_without_margin,null);
@@ -84,18 +85,7 @@ public class HomePage extends Page {
     }
 
 	@Override
-	public String getName() {
-		return MollyModule.HOME_PAGE;
-	}
-
-	@Override
 	public String getQuery() throws UnsupportedEncodingException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getAdditionalParams() {
 		// TODO Auto-generated method stub
 		return null;
 	}

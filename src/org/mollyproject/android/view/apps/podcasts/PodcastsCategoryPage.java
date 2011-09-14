@@ -35,7 +35,9 @@ public class PodcastsCategoryPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		name = MollyModule.PODCAST_CATEGORY_PAGE;
 		slug = MyApplication.podcastsSlug;
+		additionalArgs = "&arg=" + slug;
 		firstLoad = true;
 		currentlyShowing = ALL;
 		all = new JSONArray();
@@ -95,11 +97,6 @@ public class PodcastsCategoryPage extends ContentPage {
 	@Override
 	public Page getInstance() {
 		return this;
-	}
-	
-	@Override
-	public String getAdditionalParams() {
-		return ("&arg=" + slug);
 	}
 	
 	public void populateArrays(JSONObject result, String medium)
@@ -170,11 +167,6 @@ public class PodcastsCategoryPage extends ContentPage {
 		menu.setGroupEnabled(R.id.podcastItemsGroup, true); // Enable everything
 	    menu.findItem(currentlyShowing).setEnabled(false); // but cannot select the option currently showing
 		return super.onPrepareOptionsMenu(menu);
-	}
-	
-	@Override
-	public String getName() {
-		return MollyModule.PODCAST_CATEGORY_PAGE;
 	}
 
 	@Override

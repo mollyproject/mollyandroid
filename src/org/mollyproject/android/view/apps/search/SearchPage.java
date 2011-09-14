@@ -21,6 +21,7 @@ public class SearchPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		name = MollyModule.SEARCH_PAGE;
 		this.generalQuery = MyApplication.generalQuery;
 		RelativeLayout searchBar = (RelativeLayout) 
 				getLayoutInflater().inflate(R.layout.search_bar,null);
@@ -42,14 +43,6 @@ public class SearchPage extends ContentPage {
 	@Override
 	public Page getInstance() {
 		return this;
-	}
-	@Override
-	public String getAdditionalParams() {
-		return null;
-	}
-	@Override
-	public String getName() {
-		return MollyModule.SEARCH_PAGE;
 	}
 
 	@Override

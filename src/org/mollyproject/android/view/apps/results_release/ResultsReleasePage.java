@@ -12,6 +12,7 @@ public class ResultsReleasePage extends ContentPage {
 	public void onCreate (Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		name = MollyModule.RESULTS_PAGE;
 	}
 	
 	@Override
@@ -23,16 +24,6 @@ public class ResultsReleasePage extends ContentPage {
 	{
 		System.out.println("Called "+this);
 		return this;
-	}
-
-	@Override
-	public String getAdditionalParams() {
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		return MollyModule.RESULTS_PAGE;
 	}
 
 	@Override

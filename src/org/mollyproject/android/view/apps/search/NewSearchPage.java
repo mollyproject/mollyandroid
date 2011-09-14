@@ -20,6 +20,7 @@ public class NewSearchPage extends ContentPage {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		name = MollyModule.SEARCH_PAGE;
 		this.generalQuery = MyApplication.generalQuery;
 		
 		LinearLayout tabHostLayout = (LinearLayout) getLayoutInflater().inflate
@@ -59,18 +60,6 @@ public class NewSearchPage extends ContentPage {
 	public String getQuery() throws UnsupportedEncodingException {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return MollyModule.SEARCH_PAGE;
 	}
 
 }

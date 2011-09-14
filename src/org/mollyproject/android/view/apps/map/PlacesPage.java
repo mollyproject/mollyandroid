@@ -23,6 +23,8 @@ public class PlacesPage extends ContentPage {
 	{
 		super.onCreate(savedInstanceState);
 		
+		name = MollyModule.PLACES_PAGE;
+		
 		firstLoad = true;
 		
 		placesLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.places, null);
@@ -61,14 +63,7 @@ public class PlacesPage extends ContentPage {
 	public Page getInstance() {
 		return this;
 	}
-	@Override
-	public String getAdditionalParams() {
-		return null;
-	}
-	@Override
-	public String getName() {
-		return MollyModule.PLACES_PAGE;
-	}
+	
 	@Override
 	public String getQuery() {
 		return null;

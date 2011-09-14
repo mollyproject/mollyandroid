@@ -16,6 +16,8 @@ public class PlacesEntityNearbyList extends PageWithMap {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		name = MollyModule.PLACES_ENTITY_NEARBY_LIST;
+		additionalArgs = "&arg=" + args[0] + "&arg=" + args[1];
 		args[0] = MyApplication.placesArgs[0];
 		args[1] = MyApplication.placesArgs[1];
 		mapView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
@@ -32,16 +34,6 @@ public class PlacesEntityNearbyList extends PageWithMap {
 	public String getQuery() throws UnsupportedEncodingException {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public String getAdditionalParams() {
-		return "&arg=" + args[0] + "&arg=" + args[1];
-	}
-
-	@Override
-	public String getName() {
-		return MollyModule.PLACES_ENTITY_NEARBY_LIST;
 	}
 
 	@Override

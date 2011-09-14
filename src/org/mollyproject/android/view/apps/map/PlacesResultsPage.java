@@ -28,8 +28,10 @@ public class PlacesResultsPage extends PageWithMap {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		firstLoad = true;
+		name = MollyModule.PLACES_ENTITY;
 		args[0] = MyApplication.placesArgs[0];
 		args[1] = MyApplication.placesArgs[1];
+		additionalArgs = "&arg=" + args[0] + "&arg=" + args[1];
 	}
 	
 	@Override
@@ -116,27 +118,8 @@ public class PlacesResultsPage extends PageWithMap {
 	}
 	
 	@Override
-	public String getAdditionalParams() {
-		//to distinguish between different identifiers (osm, oxpoints, atco)
-		//placesArgs[0] = entity.getString("identifier_scheme");
-		//placesArgs[1] = entity.getString("identifier_value");
-		String argsText = new String();
-		for (String arg : args)
-		{
-			argsText = argsText + "&arg=" + arg;
-		}
-		return argsText;
-	}
-
-	@Override
 	public Page getInstance() {
 		return this;
-	}
-
-	@Override
-	public String getName() {
-		
-		return MollyModule.PLACES_ENTITY;
 	}
 
 	@Override

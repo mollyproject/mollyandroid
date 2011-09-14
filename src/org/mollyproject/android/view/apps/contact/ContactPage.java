@@ -10,21 +10,12 @@ public class ContactPage extends AbstractContactPage {
 	{
 		super.onCreate(savedInstanceState);
 		dialogOnSetup = true;
+		name = MollyModule.CONTACT_PAGE;
 	}
 	
 	@Override
-	public String getAdditionalParams() {
-		return null;
-	}
-
-	@Override
 	public Page getInstance() {
 		return this;
-	}
-
-	@Override
-	public String getName() {
-		return MollyModule.CONTACT_PAGE;
 	}
 
 	@Override

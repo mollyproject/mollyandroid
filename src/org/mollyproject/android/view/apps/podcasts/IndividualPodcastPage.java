@@ -10,27 +10,22 @@ public class IndividualPodcastPage extends ContentPage {
 	@Override
 	public void onCreate(android.os.Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		name =  MollyModule.INDIVIDUAL_PODCAST_PAGE;
 		slug = MyApplication.indPodcastSlug;
+		additionalArgs = "&arg="+slug;
+		System.out.println("TEST: " + additionalArgs);
 	};
 	
 	@Override
 	public void refresh() {
+		slug = "TEST";
+		System.out.println(additionalArgs);
 		new IndividualPodcastTask(this, false, true).execute();
 	}
 	
 	@Override
-	public String getAdditionalParams() {
-		return ("&arg="+slug);
-	}
-
-	@Override
 	public Page getInstance() {
 		return this;
-	}
-
-	@Override
-	public String getName() {
-		return MollyModule.INDIVIDUAL_PODCAST_PAGE;
 	}
 
 	@Override

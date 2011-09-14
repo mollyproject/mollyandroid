@@ -7,7 +7,15 @@ import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
+import android.os.Bundle;
+
 public class ServiceStatusPage extends ContentPage {
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		name = MollyModule.STATUS_PAGE;
+	}
 	
 	@Override
 	public void refresh() {
@@ -24,17 +32,4 @@ public class ServiceStatusPage extends ContentPage {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return MollyModule.STATUS_PAGE;
-	}
-	
 }

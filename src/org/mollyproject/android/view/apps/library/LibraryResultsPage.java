@@ -14,6 +14,7 @@ public class LibraryResultsPage extends AbstractLibraryPage {
 		super.onCreate(savedInstanceState);
 		bookArgs = MyApplication.libraryQuery;
 		curPageNum = 1;
+		name = MollyModule.LIBRARY_RESULTS_PAGE;
 	}
 	
 	@Override
@@ -39,16 +40,6 @@ public class LibraryResultsPage extends AbstractLibraryPage {
 	@Override
 	public Page getInstance() {
 		return this;
-	}
-
-	@Override
-	public String getAdditionalParams() {
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		return MollyModule.LIBRARY_RESULTS_PAGE;
 	}
 
 	@Override

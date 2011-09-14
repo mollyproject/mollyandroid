@@ -19,6 +19,7 @@ public class FeedbackPage extends ContentPage {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		name = MollyModule.FEEDBACK_PAGE;
 		LinearLayout feedbackLayout = (LinearLayout) getLayoutInflater().inflate
 				(R.layout.feedback, contentLayout, false);
 		contentLayout.addView(feedbackLayout);
@@ -47,17 +48,6 @@ public class FeedbackPage extends ContentPage {
 		return null;
 	}
 
-	@Override
-	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return MollyModule.FEEDBACK_PAGE;
-	}
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub

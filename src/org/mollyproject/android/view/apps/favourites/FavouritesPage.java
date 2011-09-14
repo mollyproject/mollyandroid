@@ -13,6 +13,7 @@ import org.mollyproject.android.view.apps.Page;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +26,13 @@ import android.widget.Toast;
 public class FavouritesPage extends ContentPage {
 	protected JSONObject metadata;
 	public static int lastTouchedFav;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		name = MollyModule.FAVOURITES;
+	}
+	
 	@Override
 	public Page getInstance() {
 		return this;
@@ -34,18 +42,6 @@ public class FavouritesPage extends ContentPage {
 	public String getQuery() throws UnsupportedEncodingException {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return MollyModule.FAVOURITES;
 	}
 
 	@Override
