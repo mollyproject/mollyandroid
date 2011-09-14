@@ -44,7 +44,7 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			pageTitleText = MyApplication.hourFormat.format(new Date()) 
 						+ " - Nearby bus stops from your current location";
 			
-			if (MyApplication.currentLocation != null)
+			if (MyApplication.currentLocation != null & MyApplication.currentLocation.has("name"))
 			{
 				pageTitleText = pageTitleText + " (" + MyApplication.currentLocation.getString("name")
 						+ " within approx. " + MyApplication.currentLocation.getString("accuracy") + ")";
