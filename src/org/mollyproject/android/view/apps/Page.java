@@ -70,6 +70,15 @@ public abstract class Page extends RoboActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		
+		//save state: auto location settings
+		try {
+			outState.putBoolean("autoLoc", LocationTracker.autoLoc);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
 		//save state: last contactquery & medium
 		try {
 			outState.putString("contactQuery", MyApplication.contactQuery[0]);
@@ -141,6 +150,15 @@ public abstract class Page extends RoboActivity {
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		//restore instance state
 		super.onRestoreInstanceState(savedInstanceState);
+		
+		//load state: auto location settings
+		try {
+			LocationTracker.autoLoc = savedInstanceState.getBoolean("autoLoc");
+		} catch (Exception e) {
+			//Do nothing
+			e.printStackTrace();
+		}
+		
 		//load state: last contactquery & medium
 		try {
 			MyApplication.contactQuery = new String[2];
