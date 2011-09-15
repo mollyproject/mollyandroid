@@ -42,12 +42,7 @@
 	    <item android:title="Directions to here" 
 		    android:id="@+id/directions" 
 		    android:visible="false" 
-		    android:enabled="true"/>
-		    
-	    <item android:title="View Map" 
-		    android:id="@+id/plainMap" 
-		    android:visible="false" 
-		    android:enabled="true"/>
+		    android:enabled="false"/>
     </group>
 	    
 </menu>

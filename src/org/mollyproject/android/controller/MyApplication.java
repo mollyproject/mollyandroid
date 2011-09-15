@@ -38,6 +38,7 @@ public class MyApplication extends RoboApplication {
 	public static String[] contactQuery = new String[2]; //arbitrary array of contact query, should expect the actual query and the required medium
 	public static String[] generalQuery = new String[2];
 	public static String[] placesArgs = new String[2];
+	public static boolean isNearbyEntity = false;
 	public static String placesNearbySlug = new String();
 	public static String bookControlNumber;
 	public static List<Map<String,String>> podcastsOutput;
@@ -57,6 +58,7 @@ public class MyApplication extends RoboApplication {
 	public static final String PREFS_NAME = "MyPrefsFile";
 	public static String currentApp;
 	public static String favouriteURL;
+	public static String mapData;
 	
 	public static DateFormat defaultDateFormat = new SimpleDateFormat
 			("EEE, d MMM yyyy HH:mm:ss Z");

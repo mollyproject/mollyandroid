@@ -3,6 +3,7 @@ package org.mollyproject.android.view.apps.places;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
+import org.mollyproject.android.view.apps.places.entity.PlacesResultsPage;
 import org.mollyproject.android.view.apps.transport.BusPageRefreshTask;
 import org.mollyproject.android.view.apps.transport.TrainPageRefreshTask;
 import org.mollyproject.android.view.apps.transport.TransportPage;

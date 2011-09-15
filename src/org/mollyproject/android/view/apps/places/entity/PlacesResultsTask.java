@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.apps.places;
+package org.mollyproject.android.view.apps.places.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +122,7 @@ public class PlacesResultsTask extends JSONProcessingTask
 	        OverlayItem markerOverlay = new OverlayItem(title, "", point);
 	        overlayItems.add(markerOverlay);
 	        
-	        populateMarkers((PageWithMap) page, overlayItems);
+	        ((PageWithMap) page).populateMarkers(overlayItems);
 	        PlacesResultsPage.firstLoad = false;
 	        ((ContentPage) page).doneProcessingJSON();
         } catch (Exception e)
@@ -145,14 +145,6 @@ public class PlacesResultsTask extends JSONProcessingTask
 				page.getContentLayout().addView(sorryText);
 			}
 		}
-	}
-	
-	public static void populateMarkers(PageWithMap page, List<OverlayItem> overlayItems)
-	{
-		page.getMapView().getOverlays().clear();
-		//populate the markers on the map's overlay
-		ItemizedIconOverlay<OverlayItem> overlay = new ItemizedIconOverlay<OverlayItem>(page,overlayItems, null);
-        page.getMapView().getOverlays().add(overlay);
 	}
 	
 	@Override

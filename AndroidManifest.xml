@@ -37,8 +37,10 @@
 		<activity android:name=".view.apps.places.PlacesPage"></activity>
 		<activity android:name=".view.apps.places.PlacesNearbyPage"></activity>
 		<activity android:name=".view.apps.places.PlacesNearbyDetailPage"></activity>
-		<activity android:name=".view.apps.places.PlacesResultsPage"></activity>
-		<activity android:name=".view.apps.places.PlacesEntityNearbyList"></activity>
+		<activity android:name=".view.apps.places.entity.PlacesResultsPage"></activity>
+		<activity android:name=".view.apps.places.entity.PlacesEntityNearbyList"></activity>
+		<activity android:name=".view.apps.places.entity.PlacesEntityNearbyDetailPage"></activity>
+		<activity android:name=".view.apps.places.entity.PlacesEntityDirectionsPage"></activity>
 		
 		<activity android:name=".view.apps.contact.ContactPage"></activity>
 		<activity android:name=".view.apps.contact.ContactResultsPage"></activity>

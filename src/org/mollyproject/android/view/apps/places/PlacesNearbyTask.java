@@ -1,6 +1,8 @@
 package org.mollyproject.android.view.apps.places;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +16,12 @@ import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ComplexMapResultTask;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
+import org.mollyproject.android.view.apps.PageWithMap;
+import org.mollyproject.android.view.apps.places.entity.PlacesResultsTask;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapController;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.OverlayItem;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,7 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class PlacesNearbyTask extends ComplexMapResultTask {
-
+	protected boolean isEntity; //to distinguish the case when the nearby places of an entity other than the current location are parsed
 	public PlacesNearbyTask(ContentPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
@@ -54,22 +62,30 @@ public class PlacesNearbyTask extends ComplexMapResultTask {
 		verbose = verbose + " (" + entity.getString("entities_found") + " within " 
 						+ entity.getString("max_distance") + ")";
 		result.setText(verbose);
+		
 		resultLayout.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
-				try {
+				try 
+				{
 					MyApplication.placesNearbySlug = entity.getString("slug");
-					Intent myIntent = new Intent(page.getApplicationContext(), 
-							MyApplication.getPageClass(MollyModule.PLACES_NEARBY_DETAIL));
+					Intent myIntent;
+					if (!MyApplication.isNearbyEntity)
+					{
+						 myIntent = new Intent(page.getApplicationContext(), 
+								MyApplication.getPageClass(MollyModule.PLACES_NEARBY_DETAIL));
+					}
+					else
+					{
+						myIntent = new Intent(page.getApplicationContext(), 
+								MyApplication.getPageClass(MollyModule.PLACES_ENTITY_NEARBY_DETAIL));
+					}
 					page.startActivityForResult(myIntent, 0);
-				} catch (JSONException e) {
+				} catch (Exception e){
 					e.printStackTrace();
-					Toast.makeText(page.getApplicationContext(), "This page is currently unavailable", 
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(page, "This page is unavailable. Please try again later.", Toast.LENGTH_SHORT).show();
 				}
-				
-			}
+			}		
 		});
 		resultLayout.setLayoutParams(Page.paramsWithLine);
 		return resultLayout;
@@ -77,7 +93,30 @@ public class PlacesNearbyTask extends ComplexMapResultTask {
 
 	@Override
 	public void updateView(JSONObject jsonContent) {
-		super.updateView(jsonContent);
+		MyApplication.isNearbyEntity = false;
+		
+		if (jsonContent.has("entity"))
+		{
+			MyApplication.isNearbyEntity = true;
+			try {
+				JSONObject nearbyEntity = jsonContent.getJSONObject("entity");
+				//Notice: lon and lat are in the wrong order again
+				GeoPoint centre = new GeoPoint(nearbyEntity.getJSONArray("location").getDouble(1), 
+						nearbyEntity.getJSONArray("location").getDouble(0));
+				
+				//Set map centre
+				MapController mapController = ((PageWithMap) page).getMapView().getController();
+		        mapController.setCenter(centre);
+		        
+				List<OverlayItem> overlayItems= new ArrayList<OverlayItem>();
+				overlayItems.add(new OverlayItem(nearbyEntity.getString("title"), "", centre));
+				((PageWithMap) page).populateMarkers(overlayItems);
+			} catch (Exception e) {
+				// Do nothing
+				e.printStackTrace();
+			}
+		}
+		
 		try {
 			page.getContentLayout().removeAllViews();
 			
@@ -104,30 +143,33 @@ public class PlacesNearbyTask extends ComplexMapResultTask {
 				entityTypeHeader.setTextColor(page.getResources().getColor(R.color.blue));
 				
 				nearbyPlacesLayout.addView(entityTypeHeader);
-			}
-			
-			while (entityTypeKeys.hasNext())
+			} 
+			else 
 			{
-				String key = entityTypeKeys.next();
-				JSONArray entityType = entityTypes.getJSONArray(key);
-				if (entityType.length() > 0)
+				
+				while (entityTypeKeys.hasNext())
 				{
-					TextView entityTypeHeader = new TextView(page.getApplicationContext());
-					entityTypeHeader.setText(key);
-					entityTypeHeader.setTypeface(Typeface.DEFAULT_BOLD);
-					entityTypeHeader.setTextSize(22);
-					entityTypeHeader.setBackgroundResource(R.drawable.shape_white);
-					entityTypeHeader.setPadding(5, 10, 5, 10);
-					entityTypeHeader.setTextColor(page.getResources().getColor(R.color.blue));
-					
-					nearbyPlacesLayout.addView(entityTypeHeader);
-					
-					//start parsing each entities
-					for (int i = 0; i < entityType.length(); i++)
+					String key = entityTypeKeys.next();
+					JSONArray entityType = entityTypes.getJSONArray(key);
+					if (entityType.length() > 0)
 					{
-						JSONObject entity = entityType.getJSONObject(i);
-						LinearLayout entityLayout = parsePlaceEntity(entity, page);
-						nearbyPlacesLayout.addView(entityLayout);
+						TextView entityTypeHeader = new TextView(page.getApplicationContext());
+						entityTypeHeader.setText(key);
+						entityTypeHeader.setTypeface(Typeface.DEFAULT_BOLD);
+						entityTypeHeader.setTextSize(22);
+						entityTypeHeader.setBackgroundResource(R.drawable.shape_white);
+						entityTypeHeader.setPadding(5, 10, 5, 10);
+						entityTypeHeader.setTextColor(page.getResources().getColor(R.color.blue));
+						
+						nearbyPlacesLayout.addView(entityTypeHeader);
+						
+						//start parsing each entities
+						for (int i = 0; i < entityType.length(); i++)
+						{
+							JSONObject entity = entityType.getJSONObject(i);
+							LinearLayout entityLayout = parsePlaceEntity(entity, page);
+							nearbyPlacesLayout.addView(entityLayout);
+						}
 					}
 				}
 			}

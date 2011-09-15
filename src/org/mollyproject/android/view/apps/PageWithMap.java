@@ -1,5 +1,7 @@
 package org.mollyproject.android.view.apps;
 
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +11,8 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.PathOverlay;
 
 import android.os.Bundle;
@@ -79,13 +83,20 @@ public abstract class PageWithMap extends ContentPage {
 		GeoPoint geoPoint;
 		for (int i = 0; i < points.length(); i++)
 		{
-			//GeoPoint
 			JSONArray point = points.getJSONArray(i);
-			geoPoint = new GeoPoint(point.getDouble(0), point.getDouble(1));
+			geoPoint = new GeoPoint(point.getDouble(1), point.getDouble(0));
 			pathOverlay.addPoint(geoPoint);
 		}
-		
-		mapView.getOverlays().add(pathOverlay);
+		System.out.println("Points on path: " + pathOverlay.getNumberOfPoints());
+		mapView.getOverlays().add(0, pathOverlay);
+	}
+	
+	public void populateMarkers(List<OverlayItem> overlayItems)
+	{
+		mapView.getOverlays().clear();
+		//populate the markers on the map's overlay
+		ItemizedIconOverlay<OverlayItem> overlay = new ItemizedIconOverlay<OverlayItem>(this,overlayItems, null);
+        mapView.getOverlays().add(overlay);
 	}
 	
 	public boolean hideMap()

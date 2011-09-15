@@ -19,6 +19,7 @@ import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.PageWithMap;
+import org.mollyproject.android.view.apps.places.entity.PlacesResultsPage;
 import org.mollyproject.android.view.apps.transport.BusPageRefreshTask;
 import org.mollyproject.android.view.apps.transport.BusTask;
 import org.mollyproject.android.view.apps.transport.TrainPageRefreshTask;

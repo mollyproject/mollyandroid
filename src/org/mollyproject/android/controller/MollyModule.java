@@ -13,7 +13,10 @@ import org.mollyproject.android.view.apps.library.LibraryResultsPage;
 import org.mollyproject.android.view.apps.places.PlacesNearbyDetailPage;
 import org.mollyproject.android.view.apps.places.PlacesNearbyPage;
 import org.mollyproject.android.view.apps.places.PlacesPage;
-import org.mollyproject.android.view.apps.places.PlacesResultsPage;
+import org.mollyproject.android.view.apps.places.entity.PlacesEntityDirectionsPage;
+import org.mollyproject.android.view.apps.places.entity.PlacesEntityNearbyDetailPage;
+import org.mollyproject.android.view.apps.places.entity.PlacesEntityNearbyList;
+import org.mollyproject.android.view.apps.places.entity.PlacesResultsPage;
 import org.mollyproject.android.view.apps.podcasts.IndividualPodcastPage;
 import org.mollyproject.android.view.apps.podcasts.PodcastsCategoryPage;
 import org.mollyproject.android.view.apps.podcasts.PodcastsPage;
@@ -36,6 +39,8 @@ public class MollyModule extends AbstractModule {
 	public static String PLACES_NEARBY_DETAIL = "places:nearby-detail";
 	public static String PLACES_ENTITY = "places:entity";
 	public static String PLACES_ENTITY_NEARBY_LIST = "places:entity-nearby-list";
+	public static String PLACES_ENTITY_NEARBY_DETAIL = "places:entity-nearby-detail";
+	public static String PLACES_ENTITY_DIRECTIONS = "places:entity-directions";
 	public static String CONTACT_PAGE = "contact:index";
 	public static String FEATURE_VOTE = "feature_vote:index";
 	public static String FEEDBACK_PAGE = "feedback:index";
@@ -72,9 +77,12 @@ public class MollyModule extends AbstractModule {
 		bind(Page.class).annotatedWith(Names.named(PLACES_PAGE)).to(PlacesPage.class);
 		bind(Integer.class).annotatedWith(Names.named(PLACES_PAGE+"_img")).toInstance(R.drawable.places);
 		bind(Integer.class).annotatedWith(Names.named(PLACES_PAGE+"_bc")).toInstance(R.drawable.places_bc);
-		bind(Page.class).annotatedWith(Names.named(PLACES_ENTITY)).to(PlacesResultsPage.class);
 		bind(Page.class).annotatedWith(Names.named(PLACES_NEARBY)).to(PlacesNearbyPage.class);
 		bind(Page.class).annotatedWith(Names.named(PLACES_NEARBY_DETAIL)).to(PlacesNearbyDetailPage.class);
+		bind(Page.class).annotatedWith(Names.named(PLACES_ENTITY)).to(PlacesResultsPage.class);
+		bind(Page.class).annotatedWith(Names.named(PLACES_ENTITY_NEARBY_LIST)).to(PlacesEntityNearbyList.class);
+		bind(Page.class).annotatedWith(Names.named(PLACES_ENTITY_NEARBY_DETAIL)).to(PlacesEntityNearbyDetailPage.class);
+		bind(Page.class).annotatedWith(Names.named(PLACES_ENTITY_DIRECTIONS)).to(PlacesEntityDirectionsPage.class);
 		
 		//views and drawables for weather page
 		bind(Page.class).annotatedWith(Names.named(WEATHER_PAGE)).to(WeatherPage.class);

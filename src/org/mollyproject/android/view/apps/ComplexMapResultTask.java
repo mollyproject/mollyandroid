@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.JSONProcessingTask;
+import org.mollyproject.android.controller.MyApplication;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
@@ -40,6 +41,8 @@ public class ComplexMapResultTask extends JSONProcessingTask {
 	        		page.getWindowManager().getDefaultDisplay().getHeight()/3));
 			
 			JSONObject jsonMap = jsonContent.getJSONObject("map");
+			System.out.println(jsonMap.toString());
+			MyApplication.mapData = jsonMap.toString();
 			List<OverlayItem> overlayItems= new ArrayList<OverlayItem>();
 			MapController mapController = mapView.getController();
 			
@@ -67,7 +70,6 @@ public class ComplexMapResultTask extends JSONProcessingTask {
 			mapView.getOverlays().clear();
 	        for (int i = 0; i < jsonMarkers.length(); i++)
 	        {
-	        	System.out.println(jsonMarkers.toString(1));
 	        	JSONArray marker = jsonMarkers.getJSONArray(i);
 	        	//0: lat
 	        	//1: lon
@@ -92,7 +94,6 @@ public class ComplexMapResultTask extends JSONProcessingTask {
 		} catch (Exception e) {
 			e.printStackTrace();
 			exceptionCaught = true;
-			//otherException = true;
 		}
 	}
 
