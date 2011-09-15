@@ -51,6 +51,7 @@ public class FavouritesTask extends JSONProcessingTask {
 				JSONObject favourite = favourites.getJSONObject(i);
 				LinearLayout favouriteLayout = (LinearLayout) page.getLayoutInflater().inflate
 						(R.layout.favourite_result, null);
+				favouriteLayout.setLayoutParams(Page.paramsWithLine);
 				page.getContentLayout().addView(favouriteLayout);
 				page.registerForContextMenu(favouriteLayout);
 				
@@ -59,10 +60,9 @@ public class FavouritesTask extends JSONProcessingTask {
 				//Assumption: this is a place
 				final int id = i;
 				favouriteLayout.setOnTouchListener(new OnTouchListener() {
-					
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
-						// TODO Auto-generated method stub
+						//record the view last touched for checking for the right context menu content
 						FavouritesPage.lastTouchedFav = id;
 						return false;
 					}
