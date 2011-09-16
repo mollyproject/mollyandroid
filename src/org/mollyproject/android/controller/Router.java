@@ -182,11 +182,17 @@ public class Router {
 		*/
 		if (!firstReq)
 		{
-			//client = new DefaultHttpClient();
-			//client.getParams().setParameter("http.connection-manager.timeout", 20000);
 			((DefaultHttpClient)client).setCookieStore(cookieMgr.getCookieStore());
 			System.out.println("Cookie set");
-			if (LocationTracker.autoLoc) { updateCurrentLocation(); }
+			if (LocationTracker.autoLoc) 
+			{ 
+				updateCurrentLocation(); 
+			}
+			else if (MyApplication.currentLocation != null) 
+			{ 
+				updateLocationManually(MyApplication.currentLocation.getString("name"), MyApplication.currentLocation.getDouble("latitude"), 
+						MyApplication.currentLocation.getDouble("longitude"), 10.0); 
+			}
 		}
 		
 		System.out.println("GET Request");
