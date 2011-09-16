@@ -135,6 +135,9 @@ public abstract class ContentPage extends Page {
 			} catch (ParseException e) {
 				e.printStackTrace();
 				parseException = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				otherException = true;
 			}
 		
 			return null;
@@ -207,7 +210,8 @@ public abstract class ContentPage extends Page {
 					}
 				}
 				
-			} catch (JSONException e) {
+			} catch (Exception e) {
+				otherException = true;
 				e.printStackTrace();
 			} 
 		}
