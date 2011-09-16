@@ -63,5 +63,7 @@
 		<activity android:name=".view.apps.status.ServiceStatusPage"></activity>
 		
 		<activity android:name=".view.apps.favourites.FavouritesPage"></activity>
+		
+		<activity android:name=".view.apps.news.NewsPage"></activity>
     </application>
 </manifest>

@@ -11,6 +11,7 @@ import org.mollyproject.android.view.apps.home.HomePage;
 import org.mollyproject.android.view.apps.library.LibraryBookResultPage;
 import org.mollyproject.android.view.apps.library.LibraryPage;
 import org.mollyproject.android.view.apps.library.LibraryResultsPage;
+import org.mollyproject.android.view.apps.news.NewsPage;
 import org.mollyproject.android.view.apps.places.PlacesNearbyDetailPage;
 import org.mollyproject.android.view.apps.places.PlacesNearbyPage;
 import org.mollyproject.android.view.apps.places.PlacesPage;
@@ -58,6 +59,7 @@ public class MollyModule extends AbstractModule {
 	public static String STATUS_PAGE = "service-status:index";
 	public static String PUBLIC_TRANSPORT = "transport:public-transport";
 	public static String FAVOURITES = "favourites:index";
+	public static String NEWS = "news:index";
 	public static String SPLASH = "splash";
 	
 	@Override
@@ -120,6 +122,11 @@ public class MollyModule extends AbstractModule {
 		
 		//feedback
 		bind(Page.class).annotatedWith(Names.named(FEEDBACK_PAGE)).to(FeedbackPage.class);
+		
+		//news
+		bind(Integer.class).annotatedWith(Names.named(NEWS)).toInstance(R.drawable.news);
+		bind(Integer.class).annotatedWith(Names.named(NEWS + "_bc")).toInstance(R.drawable.news_bc);
+		bind(Page.class).annotatedWith(Names.named(NEWS)).to(NewsPage.class);
 		
 		//temporary patch to display breadcrumbs:
 		bind(Integer.class).annotatedWith(Names.named("service_status:index"+"_bc")).toInstance(R.drawable.service_status_bc);
