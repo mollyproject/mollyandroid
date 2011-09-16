@@ -70,8 +70,9 @@ public class PodcastsPageTask extends JSONProcessingTask
 				});
 			}
 			((ContentPage) page).doneProcessingJSON();
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			otherException = true;
 		}
 	}
 
