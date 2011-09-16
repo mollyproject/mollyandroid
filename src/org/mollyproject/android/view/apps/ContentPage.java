@@ -116,25 +116,7 @@ public abstract class ContentPage extends Page {
 				jsonContent = MyApplication.router.onRequestSent(getName(), 
 						getAdditionalParams(), Router.OutputFormat.JSON, getQuery());
 				jsonDownloaded = true;
-				JSONObject breadcrumbs = jsonContent.getJSONObject("breadcrumbs");
-				return breadcrumbs;
-			} catch (JSONException e) {
-				e.printStackTrace();
-				jsonException = true;
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-				nullPointerException = true;
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-				unknownHostException = true;
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-				ioException = true;
-			} catch (ParseException e) {
-				e.printStackTrace();
-				parseException = true;
+				return jsonContent;
 			} catch (Exception e) {
 				e.printStackTrace();
 				otherException = true;
@@ -143,8 +125,9 @@ public abstract class ContentPage extends Page {
 			return null;
 		}
 		@Override
-		public void updateView(JSONObject breadcrumbs) {
+		public void updateView(JSONObject jsonContent) {
 			try {
+				JSONObject breadcrumbs = jsonContent.getJSONObject("breadcrumbs");
 				//app/index breadcrumb
 				final String app = breadcrumbs.getString("application");
 				JSONObject index = breadcrumbs.getJSONObject("index");
@@ -211,7 +194,7 @@ public abstract class ContentPage extends Page {
 				}
 				
 			} catch (Exception e) {
-				otherException = true;
+				//otherException = true;
 				e.printStackTrace();
 			} 
 		}
