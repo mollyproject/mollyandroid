@@ -15,6 +15,7 @@ public class UnimplementedPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		dialogOnSetup = true;
 		locator = MyApplication.locator; //myApp.getLocator();
 		webView = new WebView(this);
 		refresh();
