@@ -19,6 +19,10 @@ public class FeedbackPage extends ContentPage {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		loaded = true;
+		jsonProcessed = true;
+		
 		name = MollyModule.FEEDBACK_PAGE;
 		LinearLayout feedbackLayout = (LinearLayout) getLayoutInflater().inflate
 				(R.layout.feedback, contentLayout, false);
@@ -26,6 +30,8 @@ public class FeedbackPage extends ContentPage {
 		
 		final EditText feedbackEmail = (EditText) feedbackLayout.findViewById(R.id.feedbackEmail);
 		final EditText feedbackBody = (EditText) feedbackLayout.findViewById(R.id.feedbackBody);
+		
+		feedbackBody.setHeight(getWindowManager().getDefaultDisplay().getHeight()/3);
 		
 		Button submitButton = (Button) feedbackLayout.findViewById(R.id.submitButton);
 		submitButton.setOnClickListener(new OnClickListener() {
@@ -37,6 +43,14 @@ public class FeedbackPage extends ContentPage {
 			}
 		});
 	}
+	
+	@Override
+	public void onResume() {
+		extraTextView.setText("Feedback");
+		//Don't really need to do anything else (jsonProcessed and loaded are both true)
+		super.onResume();
+	}
+	
 	@Override
 	public Page getInstance() {
 		return this;
@@ -50,6 +64,6 @@ public class FeedbackPage extends ContentPage {
 
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
+		
 	}
 }

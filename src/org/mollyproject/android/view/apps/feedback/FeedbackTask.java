@@ -1,20 +1,15 @@
 package org.mollyproject.android.view.apps.feedback;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
+
+import android.widget.Toast;
 
 public class FeedbackTask extends BackgroundTask<String, Void, List<String>>{
 
@@ -26,8 +21,8 @@ public class FeedbackTask extends BackgroundTask<String, Void, List<String>>{
 
 	@Override
 	public void updateView(List<String> outputs) {
-		// TODO Auto-generated method stub
 		System.out.println(outputs.get(0));
+		Toast.makeText(page.getApplicationContext(), "Your feedback has been sent", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -44,7 +39,8 @@ public class FeedbackTask extends BackgroundTask<String, Void, List<String>>{
 	        if (MyApplication.csrfToken != null)
 	        {
 		        pairsList.add(new BasicNameValuePair("csrfmiddlewaretoken", MyApplication.csrfToken));
-		        pairsList.add(new BasicNameValuePair("body", params[0]));
+		        String body = "[Android App] " + params[0];
+		        pairsList.add(new BasicNameValuePair("body", body));
 		        pairsList.add(new BasicNameValuePair("format", "json"));
 		        pairsList.add(new BasicNameValuePair("language_code", "en"));
 		        if (params[1].length() > 0)
@@ -59,32 +55,10 @@ public class FeedbackTask extends BackgroundTask<String, Void, List<String>>{
         
 			return MyApplication.router.post(pairsList, 
 					MyApplication.router.reverse(MollyModule.FEEDBACK_PAGE,null));
-		} catch (SocketException e) {
-			e.printStackTrace();
-			otherException = true;
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			otherException = true;
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			malformedURLException = true;
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			unknownHostException = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			ioException = true;
-		} catch (JSONException e) {
-			e.printStackTrace();
-			jsonException = true;
-		} catch (ParseException e) {
-			e.printStackTrace();
-			parseException = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			otherException = true;
 		}
-		
 		return null;
 	}
 

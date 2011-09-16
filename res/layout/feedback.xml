@@ -8,7 +8,11 @@
 	    android:textColor="@color/white"
 	    android:gravity="center"
 	    android:textSize="18dp"
-	    android:layout_height="wrap_content" android:id="@+id/emailLabel" android:layout_width="fill_parent" android:text="Your e-mail address (optional)" android:layout_marginTop="5dp" android:layout_marginBottom="5dp">
+	    android:layout_height="wrap_content" 
+	    android:id="@+id/emailLabel" 
+	    android:layout_width="fill_parent" 
+	    android:text="Your e-mail address (optional)" 
+	    android:layout_marginTop="5dp">
     </TextView>
     
     <EditText android:layout_height="wrap_content" 
@@ -27,9 +31,19 @@
 	    android:gravity="center"
 	    android:textSize="18dp"
 	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content" android:layout_marginTop="5dp" android:layout_marginBottom="5dp">
+	    android:layout_height="wrap_content" 
+	    android:layout_marginTop="5dp">
     </TextView>
-     <EditText android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:id="@+id/feedbackBody" android:textSize="16dp" android:layout_width="fill_parent" android:layout_weight="0.57" android:inputType="textMultiLine" android:layout_marginRight="5dp"></EditText>
+     <EditText android:layout_height="wrap_content"  
+	     android:layout_marginLeft="5dp" 
+	     android:id="@+id/feedbackBody" 
+	     android:textSize="16dp" 
+	     android:gravity="top"
+	     android:layout_width="fill_parent" 
+	     android:layout_weight="0.6" 
+	     android:inputType="textMultiLine" 
+	     android:layout_marginRight="5dp"></EditText>
+	     
     <Button android:layout_gravity="center_horizontal" 
 	    android:layout_height="wrap_content" 
 	    android:textSize="18dp"

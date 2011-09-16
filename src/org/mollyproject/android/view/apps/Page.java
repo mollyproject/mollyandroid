@@ -15,6 +15,7 @@ import org.mollyproject.android.controller.LocationTracker;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.feedback.FeedbackPage;
 import org.mollyproject.android.view.apps.library.AbstractLibraryPage;
 import org.mollyproject.android.view.apps.search.NewSearchPage;
 import roboguice.activity.RoboActivity;
@@ -51,6 +52,7 @@ public abstract class Page extends RoboActivity {
 	protected LinearLayout detachedSuggestionsLayout;
 	protected LinearLayout detachedHistoryLayout;
 	protected LinearLayout locationLayout;
+	
 	public static final int DIALOG_LOCATION = 0;
 	public static final int DIALOG_LOCATION_HISTORY = 1;
 	public static final int DIALOG_LOCATION_SUGGESTIONS = 2; 
@@ -294,6 +296,7 @@ public abstract class Page extends RoboActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent myIntent;
 	    switch (item.getItemId()) {
 	        case R.id.reload:
 	        	manualRefresh = true;
@@ -305,10 +308,16 @@ public abstract class Page extends RoboActivity {
 	        case R.id.favourite:
 	        	new FavouriteOptionsTask(this, false, true).execute();
 	        	break;
+	        	
+	        case R.id.feedback:
+	        	myIntent = new Intent(getApplicationContext(), MyApplication.getPageClass(MollyModule.FEEDBACK_PAGE));
+	        	startActivityForResult(myIntent, 0);
+	        	break;
         	
 	        case R.id.manage_favourites:
-	        	Intent myIntent = new Intent(getApplicationContext(), MyApplication.getPageClass(MollyModule.FAVOURITES));
+	        	myIntent = new Intent(getApplicationContext(), MyApplication.getPageClass(MollyModule.FAVOURITES));
 	        	startActivityForResult(myIntent, 0);
+	        	break;
 	    }
 	    return true;
 	}

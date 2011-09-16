@@ -30,6 +30,8 @@
 		
 		<activity android:name=".view.apps.features.FeatureVotePage"></activity>
 		
+		<activity android:name=".view.apps.feedback.FeedbackPage"></activity>
+		
 		<activity android:name=".view.apps.library.LibraryPage"></activity>
 		<activity android:name=".view.apps.library.LibraryResultsPage"></activity>
 		<activity android:name=".view.apps.library.LibraryBookResultPage"></activity>

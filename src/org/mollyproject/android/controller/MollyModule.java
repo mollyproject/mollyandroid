@@ -6,6 +6,7 @@ import org.mollyproject.android.view.apps.*;
 import org.mollyproject.android.view.apps.contact.ContactPage;
 import org.mollyproject.android.view.apps.contact.ContactResultsPage;
 import org.mollyproject.android.view.apps.favourites.FavouritesPage;
+import org.mollyproject.android.view.apps.feedback.FeedbackPage;
 import org.mollyproject.android.view.apps.home.HomePage;
 import org.mollyproject.android.view.apps.library.LibraryBookResultPage;
 import org.mollyproject.android.view.apps.library.LibraryPage;
@@ -116,6 +117,10 @@ public class MollyModule extends AbstractModule {
 		bind(Page.class).annotatedWith(Names.named(STATUS_PAGE)).to(ServiceStatusPage.class);
 		bind(Integer.class).annotatedWith(Names.named(STATUS_PAGE+"_img")).toInstance(R.drawable.service_status);
 		bind(Integer.class).annotatedWith(Names.named(STATUS_PAGE+"_bc")).toInstance(R.drawable.service_status_bc);
+		
+		//feedback
+		bind(Page.class).annotatedWith(Names.named(FEEDBACK_PAGE)).to(FeedbackPage.class);
+		
 		//temporary patch to display breadcrumbs:
 		bind(Integer.class).annotatedWith(Names.named("service_status:index"+"_bc")).toInstance(R.drawable.service_status_bc);
 		
