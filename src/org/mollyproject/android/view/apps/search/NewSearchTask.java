@@ -81,9 +81,9 @@ public class NewSearchTask extends BackgroundTask<Void, Void, String>{
 			}
 			
 			((ContentPage) page).doneProcessingJSON();
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			jsonException = true;
+			otherException = true;
 		}
 	}
 	
@@ -187,14 +187,14 @@ public class NewSearchTask extends BackgroundTask<Void, Void, String>{
 	
 	@Override
 	protected String doInBackground(Void... params) {
-		while (!((ContentPage) page).downloadedJSON())
+		/*while (!((ContentPage) page).downloadedJSON())
 		{
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 		return "Do not return null here";
 	}
 

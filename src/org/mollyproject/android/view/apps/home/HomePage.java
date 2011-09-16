@@ -5,10 +5,8 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.search.NewSearchPage;
 import roboguice.inject.InjectView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Button;
@@ -56,7 +54,7 @@ public class HomePage extends Page {
     public void onResume()
     {
     	super.onResume();
-    	if (firstHomeLoad || MyApplication.destroyed)
+    	if (firstHomeLoad || MyApplication.destroyed || MyApplication.availableApps == null)
     	{
     		refresh();
     	}
@@ -69,14 +67,10 @@ public class HomePage extends Page {
             moveTaskToBack(true);
             return true;
         }
-        else if (keyCode == KeyEvent.KEYCODE_SEARCH)
+        else
         {
-        	MyApplication.currentApp = this.getName();
-        	Intent myIntent = new Intent (getApplicationContext(), NewSearchPage.class);
-        	startActivityForResult(myIntent, 0);
-        	return true;
+        	return super.onKeyDown(keyCode, event);
         }
-        return super.onKeyDown(keyCode, event);
     }
     
     public void updateList(ImageAdapter newListAdapter)
