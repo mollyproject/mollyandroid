@@ -16,7 +16,6 @@ import android.widget.TabHost;
 public class NewSearchPage extends ContentPage {
 	protected String[] generalQuery;
 	public static TabHost searchTabHost;
-	protected int currentTabId;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,7 +26,6 @@ public class NewSearchPage extends ContentPage {
 				(R.layout.app_browser_tab, contentLayout, false);
 		contentLayout.addView(tabHostLayout);
 		
-		System.out.println(tabHostLayout.getChildAt(0));
 		searchTabHost = (TabHost) tabHostLayout.getChildAt(0);
 		
 		extraTextView.setText("Search");
@@ -36,7 +34,7 @@ public class NewSearchPage extends ContentPage {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		currentTabId = searchTabHost.getCurrentTab();
+		MyApplication.lastSearchApp = searchTabHost.getCurrentTab(); //to be set in the NewSearchTask in refresh() every time the page is reloaded
 	}
 	
 	@Override
@@ -45,7 +43,6 @@ public class NewSearchPage extends ContentPage {
 		loaded = true;
 		jsonProcessed = false;
 		super.onResume();
-		searchTabHost.setCurrentTab(currentTabId); // jump to the last tab
 	}
 	
 	@Override

@@ -49,8 +49,6 @@ public class NewSearchTask extends BackgroundTask<Void, Void, String>{
 				JSONObject app = availableApps.getJSONObject(i);
 				if (app.getBoolean("display_to_user"))
 				{
-					//tabTag = app.getString("title");
-					//myIntent = new Intent().setClass(page.getApplicationContext(), SearchPage.class);
 				    spec = NewSearchPage.searchTabHost.newTabSpec(app.getString("local_name") + ":index")
 				    	.setIndicator(null, res.getDrawable(MyApplication.getImgResourceId
 				    			(app.getString("local_name") + ":index_img"))).setContent(R.id.searchTabLayout);
@@ -71,13 +69,18 @@ public class NewSearchTask extends BackgroundTask<Void, Void, String>{
 			
 			//A small bug: onTabChanged not triggered
 			NewSearchPage.searchTabHost.setCurrentTab(1);
-			if (!MyApplication.currentApp.equals(MollyModule.HOME_PAGE))
+			if (MyApplication.currentApp.equals(MollyModule.SEARCH_PAGE))
 			{
-				NewSearchPage.searchTabHost.setCurrentTabByTag(MyApplication.currentApp);
+				//go back to the last tab (this runs when the app resumes to the SearchPage)
+				NewSearchPage.searchTabHost.setCurrentTab(MyApplication.lastSearchApp);
+			}
+			else if (MyApplication.currentApp.equals(MollyModule.HOME_PAGE))
+			{
+				NewSearchPage.searchTabHost.setCurrentTab(0);
 			}
 			else
 			{
-				NewSearchPage.searchTabHost.setCurrentTab(0);
+				NewSearchPage.searchTabHost.setCurrentTabByTag(MyApplication.currentApp);
 			}
 			
 			((ContentPage) page).doneProcessingJSON();

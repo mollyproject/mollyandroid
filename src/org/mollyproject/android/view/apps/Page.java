@@ -73,6 +73,14 @@ public abstract class Page extends RoboActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
+		//save state: last search app
+		try {
+			outState.putInt("lastSearchApp", MyApplication.lastSearchApp);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
 		//save state: locator for UnimplementedPage
 		try {
 			outState.putString("locator", MyApplication.locator);
@@ -80,7 +88,6 @@ public abstract class Page extends RoboActivity {
 			e.printStackTrace();
 			//Do nothing
 		}
-		
 		
 		//save state: auto location settings
 		try {
@@ -161,6 +168,14 @@ public abstract class Page extends RoboActivity {
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		//restore instance state
 		super.onRestoreInstanceState(savedInstanceState);
+		
+		//load state: last search app
+		try {
+			MyApplication.lastSearchApp = savedInstanceState.getInt("lastSearchApp");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
 		
 		//load state: locator for UnimplementedPage
 		try {

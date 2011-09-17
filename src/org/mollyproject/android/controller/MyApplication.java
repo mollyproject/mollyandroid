@@ -60,6 +60,7 @@ public class MyApplication extends RoboApplication {
 	public static String favouriteURL;
 	public static String mapData;
 	public static String feedSlug = new String();
+	public static int lastSearchApp;
 	
 	public static DateFormat defaultDateFormat = new SimpleDateFormat
 			("EEE, d MMM yyyy HH:mm:ss Z");
