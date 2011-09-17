@@ -34,32 +34,32 @@ import com.google.inject.name.Names;
 public class MollyModule extends AbstractModule {
 	//Config class, holds constant strings and bindings, etc for use in MyApplication and various other places
 	
-	public static String HOME_PAGE = "home:index";
-	public static String RESULTS_PAGE = "results:index";
-	public static String PLACES_PAGE = "places:index";
-	public static String PLACES_NEARBY = "places:nearby-list";
-	public static String PLACES_NEARBY_DETAIL = "places:nearby-detail";
-	public static String PLACES_ENTITY = "places:entity";
-	public static String PLACES_ENTITY_NEARBY_LIST = "places:entity-nearby-list";
-	public static String PLACES_ENTITY_NEARBY_DETAIL = "places:entity-nearby-detail";
-	public static String PLACES_ENTITY_DIRECTIONS = "places:entity-directions";
-	public static String CONTACT_PAGE = "contact:index";
-	public static String FEATURE_VOTE = "feature_vote:index";
-	public static String FEEDBACK_PAGE = "feedback:index";
-	public static String LIBRARY_PAGE = "library:index";
-	public static String LIBRARY_RESULTS_PAGE = "library:search";
-	public static String LIBRARY_BOOK_RESULT_PAGE = "library:item-detail";
-	public static String CONTACT_RESULTS_PAGE = "contact:result_list";
-	public static String SEARCH_PAGE = "search:index";
-	public static String WEATHER_PAGE = "weather:index";
-	public static String PODCAST_PAGE = "podcasts:index";
-	public static String PODCAST_CATEGORY_PAGE = "podcasts:category";
-	public static String INDIVIDUAL_PODCAST_PAGE = "podcasts:podcast";
-	public static String TRANSPORT_PAGE = "transport:index";
-	public static String STATUS_PAGE = "service-status:index";
-	public static String PUBLIC_TRANSPORT = "transport:public-transport";
-	public static String FAVOURITES = "favourites:index";
-	public static String NEWS = "news:index";
+	public static final String HOME_PAGE = "home:index";
+	public static final String RESULTS_PAGE = "results:index";
+	public static final String PLACES_PAGE = "places:index";
+	public static final String PLACES_NEARBY = "places:nearby-list";
+	public static final String PLACES_NEARBY_DETAIL = "places:nearby-detail";
+	public static final String PLACES_ENTITY = "places:entity";
+	public static final String PLACES_ENTITY_NEARBY_LIST = "places:entity-nearby-list";
+	public static final String PLACES_ENTITY_NEARBY_DETAIL = "places:entity-nearby-detail";
+	public static final String PLACES_ENTITY_DIRECTIONS = "places:entity-directions";
+	public static final String CONTACT_PAGE = "contact:index";
+	public static final String FEATURE_VOTE = "feature_vote:index";
+	public static final String FEEDBACK_PAGE = "feedback:index";
+	public static final String LIBRARY_PAGE = "library:index";
+	public static final String LIBRARY_RESULTS_PAGE = "library:search";
+	public static final String LIBRARY_BOOK_RESULT_PAGE = "library:item-detail";
+	public static final String CONTACT_RESULTS_PAGE = "contact:result_list";
+	public static final String SEARCH_PAGE = "search:index";
+	public static final String WEATHER_PAGE = "weather:index";
+	public static final String PODCAST_PAGE = "podcasts:index";
+	public static final String PODCAST_CATEGORY_PAGE = "podcasts:category";
+	public static final String INDIVIDUAL_PODCAST_PAGE = "podcasts:podcast";
+	public static final String TRANSPORT_PAGE = "transport:index";
+	public static final String STATUS_PAGE = "service-status:index";
+	public static final String PUBLIC_TRANSPORT = "transport:public-transport";
+	public static final String FAVOURITES = "favourites:index";
+	public static final String NEWS = "news:index";
 	public static String SPLASH = "splash";
 	
 	@Override
