@@ -124,7 +124,7 @@ public class MollyModule extends AbstractModule {
 		bind(Page.class).annotatedWith(Names.named(FEEDBACK_PAGE)).to(FeedbackPage.class);
 		
 		//news
-		bind(Integer.class).annotatedWith(Names.named(NEWS)).toInstance(R.drawable.news);
+		bind(Integer.class).annotatedWith(Names.named(NEWS + "_img")).toInstance(R.drawable.news);
 		bind(Integer.class).annotatedWith(Names.named(NEWS + "_bc")).toInstance(R.drawable.news_bc);
 		bind(Page.class).annotatedWith(Names.named(NEWS)).to(NewsPage.class);
 		
