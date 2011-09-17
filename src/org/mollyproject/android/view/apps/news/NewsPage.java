@@ -12,6 +12,7 @@ public class NewsPage extends ContentPage {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		extraTextView.setText("News");
 		name = MollyModule.NEWS;
 	}
 	@Override
@@ -27,7 +28,6 @@ public class NewsPage extends ContentPage {
 
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
 		new NewsFeedsTask(this,false,true).execute();
 	}
 
