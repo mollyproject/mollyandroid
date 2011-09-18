@@ -1,10 +1,5 @@
 package org.mollyproject.android.view.apps.transport;
 
-import java.io.IOException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-import java.text.ParseException;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -19,7 +14,6 @@ import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.places.entity.PlacesResultsPage;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,9 +62,9 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 				LinearLayout stopLayout = parseBusEntity(stops.getJSONObject(i), page, busLayout, layoutInflater);
 				busLayout.addView(stopLayout);
 			}
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			jsonException = true;
+			otherException = true;
 		} finally {
 			BusPageRefreshTask.busNeedsRefresh = true;
 		}
@@ -193,22 +187,9 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 				MyApplication.transportCache = jsonContent;
 				return jsonContent;
 			}
-		} catch (SocketException e){
+		} catch (Exception e) {
 			e.printStackTrace();
-			cancel(true);
-			new BusTask(page,toDestroyPageAfterFailure,dialogEnabled).execute();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			unknownHostException = true;
-		} catch (JSONException e) {
-			e.printStackTrace();
-			jsonException = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			ioException = true;
-		} catch (ParseException e) {
-			e.printStackTrace();
-			parseException = true;
+			otherException = true;
 		}
 		
 		return null;
