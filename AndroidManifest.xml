@@ -65,5 +65,8 @@
 		<activity android:name=".view.apps.favourites.FavouritesPage"></activity>
 		
 		<activity android:name=".view.apps.news.NewsPage"></activity>
+		
+		<activity android:name=".view.apps.webcam.WebcamsPage"></activity>
+		<activity android:name=".view.apps.webcam.IndividualWebcamPage"></activity>
     </application>
 </manifest>

@@ -27,6 +27,8 @@ import org.mollyproject.android.view.apps.search.SearchPage;
 import org.mollyproject.android.view.apps.status.ServiceStatusPage;
 import org.mollyproject.android.view.apps.transport.TransportPage;
 import org.mollyproject.android.view.apps.weather.WeatherPage;
+import org.mollyproject.android.view.apps.webcam.IndividualWebcamPage;
+import org.mollyproject.android.view.apps.webcam.WebcamsPage;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Named;
@@ -60,6 +62,8 @@ public class MollyModule extends AbstractModule {
 	public static final String PUBLIC_TRANSPORT = "transport:public-transport";
 	public static final String FAVOURITES = "favourites:index";
 	public static final String NEWS = "news:index";
+	public static final String WEBCAMS = "webcams:index";
+	public static final String WEBCAM = "webcams:webcam";
 	public static String SPLASH = "splash";
 	
 	@Override
@@ -127,6 +131,13 @@ public class MollyModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named(NEWS + "_img")).toInstance(R.drawable.news);
 		bind(Integer.class).annotatedWith(Names.named(NEWS + "_bc")).toInstance(R.drawable.news_bc);
 		bind(Page.class).annotatedWith(Names.named(NEWS)).to(NewsPage.class);
+		
+		//webcam
+		bind(Integer.class).annotatedWith(Names.named(WEBCAMS + "_img")).toInstance(R.drawable.webcams);
+		bind(Integer.class).annotatedWith(Names.named(WEBCAMS + "_bc")).toInstance(R.drawable.webcams_bc);
+		bind(Page.class).annotatedWith(Names.named(WEBCAMS)).to(WebcamsPage.class);
+		bind(Page.class).annotatedWith(Names.named(WEBCAM)).to(IndividualWebcamPage.class);
+				
 		
 		//temporary patch to display breadcrumbs:
 		bind(Integer.class).annotatedWith(Names.named("service_status:index"+"_bc")).toInstance(R.drawable.service_status_bc);

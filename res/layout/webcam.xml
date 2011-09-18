@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    <TextView android:textColor="@color/blue"
+	    android:background="@drawable/shape_white"
+	    android:padding="5dp" 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="fill_parent" 
+	    android:text="Webcam" 
+	    android:textSize="20dp"
+	    android:id="@+id/webcamName" 
+	    android:layout_marginBottom="2dp">
+    </TextView>
+    <LinearLayout android:layout_height="wrap_content" 
+	    android:id="@+id/webcamImageLayout" 
+	    android:layout_width="fill_parent"
+	    android:padding="5dp" 
+	    android:background="@drawable/shape_white"
+	    android:orientation="vertical"
+	    android:layout_marginBottom="2dp">
+	    
+        <ImageView android:id="@+id/webcamImage" 
+	        android:layout_height="wrap_content" 
+	        android:src="@drawable/unavail_b_7" 
+	        android:layout_width="wrap_content" 
+	        android:layout_gravity="center">
+        </ImageView>
+    </LinearLayout>
+    
+    <TextView android:textColor="@color/blue"
+	    android:background="@drawable/shape_white"
+	    android:padding="5dp"
+	    android:gravity="center"
+	    android:textSize="18dp" 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="fill_parent" 
+	    android:text="Webcam Details" 
+	    android:id="@+id/webcamDetails">
+    </TextView>
+    
+</LinearLayout>

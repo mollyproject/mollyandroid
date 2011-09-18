@@ -60,6 +60,8 @@ public class MyApplication extends RoboApplication {
 	public static String favouriteURL;
 	public static String mapData;
 	public static String feedSlug = new String();
+	public static String webcamSlug = new String();
+	public static JSONObject webcamCache = null;
 	public static int lastSearchApp;
 	
 	public static DateFormat defaultDateFormat = new SimpleDateFormat
