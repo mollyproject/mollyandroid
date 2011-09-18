@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -31,6 +33,10 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.location.Location;
 
 
@@ -51,7 +57,7 @@ public class Router {
 	protected HttpClient client;
 	protected HttpGet get;
 	protected HttpPost post;
-	public final static String mOX =  "http://dev.m.ox.ac.uk/";
+	public final static String mOX =  "http://m.ox.ac.uk/";
 
 	public static enum OutputFormat { JSON, FRAGMENT, JS, YAML, XML, HTML };
 
@@ -306,6 +312,30 @@ public class Router {
         List<String> output = post(params,reverse("geolocation:index", null));
         //in this case the result is only one line of text, i.e just the first element of the list is fine
         MyApplication.currentLocation = new JSONObject(output.get(0));
+	}
+	
+	public void downloadImage(URL url, Bitmap bitmap, int newWidth, int newHeight) throws IOException
+	{
+		HttpURLConnection conn= (HttpURLConnection)url.openConnection();
+		conn.setDoInput(true);
+		conn.connect();
+		InputStream is = conn.getInputStream();
+		bitmap = BitmapFactory.decodeStream(is);
+		
+		//matrix used to resize image:
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        //int newWidth = page.getWindow().getWindowManager().getDefaultDisplay().getWidth();
+        //int newHeight = page.getWindow().getWindowManager().getDefaultDisplay().getWidth()*3/4;
+       
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+       
+        Matrix matrix = new Matrix();
+        //resize the bitmap
+        matrix.postScale(scaleWidth, scaleHeight);
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0,
+                  width, height, matrix, true);
 	}
 	
 	public void releaseConnection()
