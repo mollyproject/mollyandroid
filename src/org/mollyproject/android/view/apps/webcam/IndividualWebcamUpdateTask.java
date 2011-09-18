@@ -125,7 +125,7 @@ public class IndividualWebcamUpdateTask extends JSONProcessingTask {
 		        int width = bitmap.getWidth();
 		        int height = bitmap.getHeight();
 		        int newWidth = page.getWindow().getWindowManager().getDefaultDisplay().getWidth();
-		        int newHeight = page.getWindow().getWindowManager().getDefaultDisplay().getWidth()*3/4;
+		        int newHeight = page.getWindow().getWindowManager().getDefaultDisplay().getWidth()*width/height; //get the correct ratio
 		       
 		        float scaleWidth = ((float) newWidth) / width;
 		        float scaleHeight = ((float) newHeight) / height;
