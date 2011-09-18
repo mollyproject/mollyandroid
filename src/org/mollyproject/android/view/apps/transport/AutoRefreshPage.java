@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 
 public abstract class AutoRefreshPage extends Page {
 	//protected boolean needsRefreshing = true;
-	public boolean firstReq = true;
+	public static boolean firstReq = true;
 	@InjectView (R.id.transportLayout) LinearLayout transportLayout;
 	protected JSONObject jsonContent;
 	
