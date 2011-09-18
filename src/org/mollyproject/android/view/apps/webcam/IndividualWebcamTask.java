@@ -45,7 +45,7 @@ public class IndividualWebcamTask extends BackgroundTask<Void, Void, Void> {
 			//dialog enabled
 			new IndividualWebcamUpdateTask((ContentPage) page,false,false).execute();
 		}
-		while (!isCancelled())
+		while (!isCancelled() & !page.isFinishing())
 		{
 			while (!IndividualWebcamPage.webcamNeedsRefresh)
 			{

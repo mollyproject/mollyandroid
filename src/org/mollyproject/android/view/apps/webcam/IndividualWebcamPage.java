@@ -24,6 +24,12 @@ public class IndividualWebcamPage extends ContentPage {
 		slug = MyApplication.webcamSlug;
 		additionalArgs = "&arg=" + slug;
 		extraTextView.setText("Webcam");
+		dialogOnSetup = true;
+		
+		LinearLayout webcamLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.webcam, null);
+		contentLayout.addView(webcamLayout);
+		
+		contentLayout = webcamLayout;
 	}
 	
 	@Override

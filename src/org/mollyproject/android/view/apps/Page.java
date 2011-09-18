@@ -73,6 +73,14 @@ public abstract class Page extends RoboActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
+		//save state: webcam slug
+		try {
+			outState.putString("webcamSlug", MyApplication.webcamSlug);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
 		//save state: last search app
 		try {
 			outState.putInt("lastSearchApp", MyApplication.lastSearchApp);
@@ -168,6 +176,14 @@ public abstract class Page extends RoboActivity {
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		//restore instance state
 		super.onRestoreInstanceState(savedInstanceState);
+		
+		//load state: last search app
+		try {
+			MyApplication.webcamSlug = savedInstanceState.getString("webcamSlug");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
 		
 		//load state: last search app
 		try {

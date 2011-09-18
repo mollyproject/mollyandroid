@@ -11,8 +11,6 @@ import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
-import org.mollyproject.android.view.apps.transport.BusPageRefreshTask;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -31,8 +29,9 @@ public class IndividualWebcamUpdateTask extends JSONProcessingTask {
 	@Override
 	public void updateView(JSONObject jsonContent) {
 		try {
+			//remember: the webcamLayout is now contentLayout
 			JSONObject webcam = jsonContent.getJSONObject("webcam");
-			LinearLayout webcamLayout = (LinearLayout) page.getLayoutInflater().inflate(R.layout.webcam, null);
+			LinearLayout webcamLayout = page.getContentLayout();//(LinearLayout) page.getLayoutInflater().inflate(R.layout.webcam, null);
 			
 			TextView webcamName = (TextView) webcamLayout.findViewById(R.id.webcamName);
 			webcamName.setText(webcam.getString("title") + '\n' + MyApplication.hourFormat.format(new Date()));
@@ -51,10 +50,6 @@ public class IndividualWebcamUpdateTask extends JSONProcessingTask {
 			
 			ImageView webcamImage = (ImageView) webcamLayout.findViewById(R.id.webcamImage);
 			webcamImage.setImageBitmap(bitmap);
-			
-			page.getContentLayout().removeAllViews();
-			page.getContentLayout().addView(webcamLayout);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			otherException = true;
