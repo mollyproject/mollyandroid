@@ -47,7 +47,7 @@ public class WebLearnPage extends ContentPage {
 
 	@Override
 	public void refresh() {
-		new WeblearnPageTask(this, false, true).execute();
+		new WebLearnPageTask(this, false, true).execute();
 	}
 	
 }

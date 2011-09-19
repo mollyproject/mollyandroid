@@ -9,11 +9,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.JSONProcessingTask;
+import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
+import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -47,7 +49,7 @@ public class WebLearnPageTask extends JSONProcessingTask {
 				loginButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						//Intent
+						new LoginInfoTask((ContentPage) page, false, true).execute();
 					}
 				});
 				
@@ -91,7 +93,8 @@ public class WebLearnPageTask extends JSONProcessingTask {
 		public void updateView(JSONObject output) {
 			try {
 				MyApplication.locator = output.getString("authorize_url");
-				Intent myIntent = new Intent(page.getApplicationContext(), My)
+				Intent myIntent = new Intent(page.getApplicationContext(), MyApplication.getPageClass(MollyModule.WEBLEARN_LOGIN));
+				page.startActivityForResult(myIntent, 0);
 			} catch (Exception e) {
 				e.printStackTrace();
 				operationException = true;

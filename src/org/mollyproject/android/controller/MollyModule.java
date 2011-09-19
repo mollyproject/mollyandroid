@@ -142,10 +142,6 @@ public class MollyModule extends AbstractModule {
 		bind(Page.class).annotatedWith(Names.named(WEBCAMS)).to(WebcamsPage.class);
 		bind(Page.class).annotatedWith(Names.named(WEBCAM)).to(IndividualWebcamPage.class);
 				
-		//weblearn
-		bind(Page.class).annotatedWith(Names.named(WEBLEARN)).to(WebLearnPage.class);
-		bind(Page.class).annotatedWith(Names.named(WEBLEARN_LOGIN)).to(WebLearnLoginPage.class);
-		
 		//temporary patch to display breadcrumbs:
 		bind(Integer.class).annotatedWith(Names.named("service_status:index"+"_bc")).toInstance(R.drawable.service_status_bc);
 		
@@ -161,6 +157,7 @@ public class MollyModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named(WEBLEARN + "_img")).toInstance(R.drawable.weblearn);
 		bind(Integer.class).annotatedWith(Names.named(WEBLEARN + "_bc")).toInstance(R.drawable.weblearn_bc);
 		bind(Page.class).annotatedWith(Names.named(WEBLEARN)).to(WebLearnPage.class);
+		bind(Page.class).annotatedWith(Names.named(WEBLEARN_LOGIN)).to(WebLearnLoginPage.class);
 		
 		//Other non-content pages
 		bind(Page.class).annotatedWith(Names.named("splash")).to(Splash.class);
