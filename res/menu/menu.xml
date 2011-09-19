@@ -46,8 +46,7 @@
     </group>
     
     <item android:id="@+id/feedback" 
-	    android:title="Feedback" 
-	    android:visible="true">
+	    android:title="Feedback" android:visible="true">
     </item>
     
     <item android:checkable="true" 

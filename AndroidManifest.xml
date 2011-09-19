@@ -68,5 +68,8 @@
 		
 		<activity android:name=".view.apps.webcam.WebcamsPage"></activity>
 		<activity android:name=".view.apps.webcam.IndividualWebcamPage"></activity>
+		
+		<activity android:name=".view.apps.weblearn.WebLearnPage"></activity>
+		<activity android:name=".view.apps.weblearn.WebLearnLoginPage"></activity>
     </application>
 </manifest>

@@ -62,6 +62,8 @@ public class MyApplication extends RoboApplication {
 	public static String feedSlug = new String();
 	public static String webcamSlug = new String();
 	public static JSONObject webcamCache = null;
+	public static String oauthToken = new String();
+	public static int weblearnState;
 	public static int lastSearchApp;
 	
 	public static DateFormat defaultDateFormat = new SimpleDateFormat

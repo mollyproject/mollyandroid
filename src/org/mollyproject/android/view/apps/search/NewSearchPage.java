@@ -40,7 +40,7 @@ public class NewSearchPage extends ContentPage {
 	@Override
 	public void onResume() {
 		//No need to download any json, but still process the json given by MyApplication.availableApps
-		loaded = true;
+		loaded = true; // skip the PageSetupTask
 		jsonProcessed = false;
 		super.onResume();
 	}

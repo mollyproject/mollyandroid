@@ -71,7 +71,16 @@ public abstract class Page extends RoboActivity {
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
+		//save state for next session
 		super.onSaveInstanceState(outState);
+		
+		//save state: oauth
+		try {
+			outState.putString("oauthToken", MyApplication.oauthToken);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
 		
 		//save state: webcam slug
 		try {
@@ -177,7 +186,15 @@ public abstract class Page extends RoboActivity {
 		//restore instance state
 		super.onRestoreInstanceState(savedInstanceState);
 		
-		//load state: last search app
+		//load state: oauth token
+		try {
+			MyApplication.oauthToken = savedInstanceState.getString("oauthToken");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
+		//load state: webcam slug
 		try {
 			MyApplication.webcamSlug = savedInstanceState.getString("webcamSlug");
 		} catch (Exception e) {

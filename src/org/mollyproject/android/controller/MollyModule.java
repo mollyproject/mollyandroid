@@ -29,6 +29,8 @@ import org.mollyproject.android.view.apps.transport.TransportPage;
 import org.mollyproject.android.view.apps.weather.WeatherPage;
 import org.mollyproject.android.view.apps.webcam.IndividualWebcamPage;
 import org.mollyproject.android.view.apps.webcam.WebcamsPage;
+import org.mollyproject.android.view.apps.weblearn.WebLearnLoginPage;
+import org.mollyproject.android.view.apps.weblearn.WebLearnPage;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Named;
@@ -64,6 +66,8 @@ public class MollyModule extends AbstractModule {
 	public static final String NEWS = "news:index";
 	public static final String WEBCAMS = "webcams:index";
 	public static final String WEBCAM = "webcams:webcam";
+	public static final String WEBLEARN = "weblearn:index";
+	public static final String WEBLEARN_LOGIN = "weblearn:login";
 	public static String SPLASH = "splash";
 	
 	@Override
@@ -138,6 +142,9 @@ public class MollyModule extends AbstractModule {
 		bind(Page.class).annotatedWith(Names.named(WEBCAMS)).to(WebcamsPage.class);
 		bind(Page.class).annotatedWith(Names.named(WEBCAM)).to(IndividualWebcamPage.class);
 				
+		//weblearn
+		bind(Page.class).annotatedWith(Names.named(WEBLEARN)).to(WebLearnPage.class);
+		bind(Page.class).annotatedWith(Names.named(WEBLEARN_LOGIN)).to(WebLearnLoginPage.class);
 		
 		//temporary patch to display breadcrumbs:
 		bind(Integer.class).annotatedWith(Names.named("service_status:index"+"_bc")).toInstance(R.drawable.service_status_bc);
@@ -149,6 +156,11 @@ public class MollyModule extends AbstractModule {
 		
 		//favourites management
 		bind(Page.class).annotatedWith(Names.named(FAVOURITES)).to(FavouritesPage.class);
+		
+		//WebLearn
+		bind(Integer.class).annotatedWith(Names.named(WEBLEARN + "_img")).toInstance(R.drawable.weblearn);
+		bind(Integer.class).annotatedWith(Names.named(WEBLEARN + "_bc")).toInstance(R.drawable.weblearn_bc);
+		bind(Page.class).annotatedWith(Names.named(WEBLEARN)).to(WebLearnPage.class);
 		
 		//Other non-content pages
 		bind(Page.class).annotatedWith(Names.named("splash")).to(Splash.class);
