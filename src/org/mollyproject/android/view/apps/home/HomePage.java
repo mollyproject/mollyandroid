@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
+import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
 import roboguice.inject.InjectView;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class HomePage extends Page {
 	
@@ -71,6 +75,42 @@ public class HomePage extends Page {
         {
         	return super.onKeyDown(keyCode, event);
         }
+    }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	MenuItem switchDomain = menu.findItem(R.id.switchDomain);
+    	switchDomain.setVisible(true);
+    	if (Router.mOX.equals("http://m.ox.ac.uk/"))
+    	{
+    		switchDomain.setTitle("Switch to dev.m");
+    	}
+    	else
+    	{
+    		switchDomain.setTitle("Switch to m.ox");
+    	}
+    	return super.onPrepareOptionsMenu(menu);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId())
+    	{
+    		case R.id.switchDomain:
+    			if (Router.mOX.equals("http://m.ox.ac.uk/"))
+    	    	{
+    				Router.mOX = "http://dev.m.ox.ac.uk/";
+    	    	}
+    	    	else
+    	    	{
+    	    		Router.mOX = "http://m.ox.ac.uk/";
+    	    	}
+    			Toast.makeText(getApplicationContext(), "Now using " + Router.mOX, Toast.LENGTH_SHORT).show();
+    			return true;
+    		default:
+    			return super.onOptionsItemSelected(item);
+    	}
+    	
     }
     
     public void updateList(ImageAdapter newListAdapter)

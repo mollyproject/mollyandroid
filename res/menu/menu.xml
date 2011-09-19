@@ -44,6 +44,16 @@
 		    android:visible="false" 
 		    android:enabled="false"/>
     </group>
-    <item android:id="@+id/feedback" android:title="Feedback" android:visible="true"></item>
+    
+    <item android:id="@+id/feedback" 
+	    android:title="Feedback" 
+	    android:visible="true">
+    </item>
+    
+    <item android:checkable="true" 
+	    android:id="@+id/switchDomain" 
+	    android:visible="false"
+	    android:enabled="true">
+    </item>
 	    
 </menu>
