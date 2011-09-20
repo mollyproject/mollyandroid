@@ -1,7 +1,9 @@
-package org.mollyproject.android.view.apps;
+package org.mollyproject.android.view.apps.unimplemented;
 
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.ContentPage;
+import org.mollyproject.android.view.apps.Page;
 
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -18,6 +20,7 @@ public class UnimplementedPage extends ContentPage {
 		dialogOnSetup = true;
 		locator = MyApplication.locator; //myApp.getLocator();
 		webView = new WebView(this);
+		webView.setWebViewClient(new MollyWebClient());
 		refresh();
 		contentLayout.addView(webView);
 	}
