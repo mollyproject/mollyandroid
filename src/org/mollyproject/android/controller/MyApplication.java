@@ -63,6 +63,7 @@ public class MyApplication extends RoboApplication {
 	public static String webcamSlug = new String();
 	public static JSONObject webcamCache = null;
 	public static String oauthToken = new String();
+	public static String oauthVerifier = null;
 	public static int weblearnState;
 	public static int lastSearchApp;
 	

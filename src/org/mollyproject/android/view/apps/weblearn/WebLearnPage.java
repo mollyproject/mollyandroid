@@ -10,7 +10,7 @@ import org.mollyproject.android.view.apps.Page;
 import android.os.Bundle;
 
 public class WebLearnPage extends ContentPage {
-	protected String oauthToken;
+	//protected String oauthToken;
 	public static boolean weblearnPageNeedsRefresh;
 	public static final int STATE_DEFAULT = 0;
 	public static final int STATE_AUTHORISED = 1;
@@ -19,13 +19,13 @@ public class WebLearnPage extends ContentPage {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		name = MollyModule.WEBLEARN;
-		oauthToken = MyApplication.oauthToken;
+		//oauthToken = MyApplication.oauthToken;
 		weblearnPageNeedsRefresh = false;
 	}
 	
 	@Override
 	public void onResume() {
-		if (weblearnPageNeedsRefresh)
+		//if (weblearnPageNeedsRefresh)
 		{
 			//Trigger a manual refresh if needed
 			manualRefresh = true;
@@ -41,8 +41,15 @@ public class WebLearnPage extends ContentPage {
 
 	@Override
 	public String getQuery() throws UnsupportedEncodingException {
-		// TODO Auto-generated method stub
-		return null;
+		String oauth = "&oauth_token=" + MyApplication.oauthToken; 
+		if (MyApplication.oauthVerifier != null)
+		{
+			return oauth + "&oauth_verifier" + MyApplication.oauthVerifier;
+		}
+		else 
+		{
+			return oauth;
+		}
 	}
 
 	@Override

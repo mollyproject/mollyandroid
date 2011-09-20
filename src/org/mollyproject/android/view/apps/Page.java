@@ -74,9 +74,23 @@ public abstract class Page extends RoboActivity {
 		//save state for next session
 		super.onSaveInstanceState(outState);
 		
-		//save state: oauth
+		//save state: oauth token and verifier
 		try {
 			outState.putString("oauthToken", MyApplication.oauthToken);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
+		try {
+			if (MyApplication.oauthVerifier != null)
+			{
+				outState.putString("oauthVerifier", MyApplication.oauthVerifier);
+			}
+			else
+			{
+				outState.remove("oauthVerifier");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			//Do nothing
@@ -186,13 +200,24 @@ public abstract class Page extends RoboActivity {
 		//restore instance state
 		super.onRestoreInstanceState(savedInstanceState);
 		
-		//load state: oauth token
+		//load state: oauth token and verifier
 		try {
 			MyApplication.oauthToken = savedInstanceState.getString("oauthToken");
 		} catch (Exception e) {
 			e.printStackTrace();
 			//Do nothing
 		}
+		
+		try {
+			if (savedInstanceState.containsKey("oauthVerifier"))
+			{
+				MyApplication.oauthVerifier = savedInstanceState.getString("oauthVerifier");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
 		
 		//load state: webcam slug
 		try {

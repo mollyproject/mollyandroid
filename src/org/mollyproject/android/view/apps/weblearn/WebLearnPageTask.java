@@ -1,11 +1,5 @@
 package org.mollyproject.android.view.apps.weblearn;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.SocketException;
-import java.text.ParseException;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.JSONProcessingTask;
@@ -18,8 +12,10 @@ import org.mollyproject.android.view.apps.Page;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class WebLearnPageTask extends JSONProcessingTask {
 
@@ -33,31 +29,39 @@ public class WebLearnPageTask extends JSONProcessingTask {
 	public void updateView(JSONObject jsonContent) {
 		try {
 			JSONObject userDetails = jsonContent.getJSONObject("user_details");
-			if (!userDetails.isNull("displayId")) //& MyApplication.weblearnState == WebLearnPage.STATE_AUTHORISED)
+			LinearLayout weblearnLayout = (LinearLayout) page.getLayoutInflater().inflate(R.layout.weblearn, null);
+			Button loginButton = (Button) weblearnLayout.findViewById(R.id.loginButton);
+			
+			if (!userDetails.isNull("displayId"))
 			{
 				//Populate the authorised state
 				MyApplication.weblearnState = WebLearnPage.STATE_AUTHORISED;
+				((ViewGroup) loginButton.getParent()).removeView(loginButton);
+				TextView welcomeText = (TextView) weblearnLayout.findViewById(R.id.weblearnWelcomeText);
+				welcomeText.setText("Hello " + userDetails.getString("firstName") + ", welcome to mobile WebLearn preview!");
 			}
 			else
 			{
 				//Populate the default state
 				MyApplication.weblearnState = WebLearnPage.STATE_DEFAULT;
 				
-				LinearLayout weblearnLayout = (LinearLayout) page.getLayoutInflater().inflate(R.layout.weblearn, null);
+				MyApplication.oauthToken = new String();
+				MyApplication.oauthVerifier = null;
 				
-				Button loginButton = (Button) weblearnLayout.findViewById(R.id.loginButton);
 				loginButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						new LoginInfoTask((ContentPage) page, false, true).execute();
 					}
 				});
-				
-				page.getContentLayout().removeAllViews();
-				page.getContentLayout().addView(weblearnLayout);
 			}
+			
+			page.getContentLayout().removeAllViews();
+			page.getContentLayout().addView(weblearnLayout);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
+			otherException = true;
 		}
 		
 	}
