@@ -24,7 +24,7 @@
         </activity>
         <activity android:name=".view.apps.home.HomePage"></activity>
         
-        <activity android:name=".view.apps.UnimplementedPage"></activity>
+        <activity android:name=".view.apps.unimplemented.UnimplementedPage"></activity>
         
 		<activity android:name=".view.apps.results_release.ResultsReleasePage"></activity>
 		

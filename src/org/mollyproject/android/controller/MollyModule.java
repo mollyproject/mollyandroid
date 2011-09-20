@@ -26,6 +26,7 @@ import org.mollyproject.android.view.apps.results_release.ResultsReleasePage;
 import org.mollyproject.android.view.apps.search.SearchPage;
 import org.mollyproject.android.view.apps.status.ServiceStatusPage;
 import org.mollyproject.android.view.apps.transport.TransportPage;
+import org.mollyproject.android.view.apps.unimplemented.UnimplementedPage;
 import org.mollyproject.android.view.apps.weather.WeatherPage;
 import org.mollyproject.android.view.apps.webcam.IndividualWebcamPage;
 import org.mollyproject.android.view.apps.webcam.WebcamsPage;

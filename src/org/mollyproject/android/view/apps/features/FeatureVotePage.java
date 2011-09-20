@@ -1,7 +1,7 @@
 package org.mollyproject.android.view.apps.features;
 
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.UnimplementedPage;
+import org.mollyproject.android.view.apps.unimplemented.UnimplementedPage;
 
 public class FeatureVotePage extends UnimplementedPage {
 

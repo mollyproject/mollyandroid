@@ -8,7 +8,7 @@ import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.UnimplementedPage;
+import org.mollyproject.android.view.apps.unimplemented.UnimplementedPage;
 
 import android.content.Intent;
 import android.view.LayoutInflater;

@@ -1,7 +1,7 @@
 package org.mollyproject.android.view.apps.weblearn;
 
 import org.mollyproject.android.R;
-import org.mollyproject.android.view.apps.UnimplementedPage;
+import org.mollyproject.android.view.apps.unimplemented.UnimplementedPage;
 
 import android.os.Bundle;
 

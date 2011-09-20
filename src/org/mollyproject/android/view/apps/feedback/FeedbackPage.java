@@ -6,8 +6,6 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.UnimplementedPage;
-
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
