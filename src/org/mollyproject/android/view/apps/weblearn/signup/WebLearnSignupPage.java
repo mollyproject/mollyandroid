@@ -27,8 +27,7 @@ public class WebLearnSignupPage extends ContentPage {
 
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-		
+		new WebLearnSignupPageTask(this, false, true).execute();
 	}
 
 }
