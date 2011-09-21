@@ -1,0 +1,20 @@
+= Molly Android =
+
+Molly Android is a front-end Android client for the Molly Project. The current
+implementation of Molly running on Molly Android is Mobile Oxford
+
+== .APK file ==
+
+Download the .apk straight to your Android device and try out Molly Android from:
+https://github.com/mollyproject/mollyandroid/blob/master/bin/mollyandroid.apk
+
+== Get in Touch ==
+
+At the time of writing there are a few primary  methods of getting (free, best
+effort) support for Molly Android (and the Molly Project):
+
+ * Issue Tracker: http://issues.mollyproject.org/
+ * Mailing lists: https://sourceforge.net/mail/?group_id=309230
+ * IRC: irc://irc.freenode.net/#molly
+ * Email the main contributing team (Mobile Oxford at Oxford University
+   Computing Services): mobileoxford@oucs.ox.ac.uk
