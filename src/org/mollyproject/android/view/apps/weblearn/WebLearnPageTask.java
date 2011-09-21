@@ -59,7 +59,14 @@ public class WebLearnPageTask extends JSONProcessingTask {
 				});
 			}
 			
-			JSONArray announcementsCollection = jsonContent.getJSONObject("announcements").getJSONArray("announcements_collection");
+			JSONObject announcements = jsonContent.getJSONObject("announcements");
+			
+			JSONArray announcementsCollection = new JSONArray();
+			if (announcements.has("announcements_collection")) 
+			{
+				announcementsCollection = jsonContent.getJSONObject("announcements").getJSONArray("announcements_collection");
+			}
+			
 			LinearLayout announcementsLayout = (LinearLayout) weblearnLayout.findViewById(R.id.announcementsLayout);
 			if (announcementsCollection.length() == 0)
 			{
