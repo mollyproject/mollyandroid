@@ -51,6 +51,7 @@ public class WebLearnPageTask extends JSONProcessingTask {
 				MyApplication.oauthToken = new String();
 				MyApplication.oauthVerifier = null;
 				
+				loginButton.setMinWidth(page.getWindowManager().getDefaultDisplay().getWidth()/3);
 				loginButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {

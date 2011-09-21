@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+	    	 <TextView android:padding="5dp" 
+		    android:text="Title" 
+		    android:layout_width="fill_parent" 
+		    android:id="@+id/announcementTitle" 
+		    android:textColor="@color/black"
+		    android:background="@drawable/shape_white"
+		    android:layout_height="wrap_content" 
+		    android:textSize="18dp"
+		    android:layout_marginBottom="2dp">
+   		</TextView>
+	    
+	    <LinearLayout android:layout_height="wrap_content" 
+		    android:id="@+id/loginLayout"
+		    android:background="@drawable/shape_white" 
+		    android:layout_width="fill_parent" 
+		    android:orientation="vertical">
+		    <TextView android:text="Announcement" 
+		    	android:padding="5dp"
+			    android:id="@+id/announcementText" 
+			    android:textColor="@color/blue"
+			    android:layout_width="fill_parent" 
+			    android:layout_height="wrap_content" 
+			    android:layout_marginBottom="5dp">
+		    </TextView>
+		    
+		    <LinearLayout android:layout_height="wrap_content" 
+			    android:id="@+id/attachmentsLayout" 
+			    android:layout_width="fill_parent" 
+			    android:orientation="vertical">
+		    </LinearLayout>
+	    </LinearLayout>
+	    
+</LinearLayout>
