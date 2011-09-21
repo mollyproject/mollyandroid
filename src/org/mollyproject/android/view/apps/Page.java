@@ -74,6 +74,14 @@ public abstract class Page extends RoboActivity {
 		//save state for next session
 		super.onSaveInstanceState(outState);
 		
+		//save state: weblearn announcement id
+		try {
+			outState.putString("weblearnAnnouncementSlug", MyApplication.weblearnAnnouncementSlug);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
 		//save state: oauth token and verifier
 		try {
 			outState.putString("oauthToken", MyApplication.oauthToken);
@@ -199,6 +207,14 @@ public abstract class Page extends RoboActivity {
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		//restore instance state
 		super.onRestoreInstanceState(savedInstanceState);
+		
+		//load state: weblearn announcement id
+		try {
+			MyApplication.weblearnAnnouncementSlug = savedInstanceState.getString("weblearnAnnouncementSlug");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
 		
 		//load state: oauth token and verifier
 		try {

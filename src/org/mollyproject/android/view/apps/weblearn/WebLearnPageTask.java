@@ -1,5 +1,7 @@
 package org.mollyproject.android.view.apps.weblearn;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.JSONProcessingTask;
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class WebLearnPageTask extends JSONProcessingTask {
 
@@ -54,6 +57,41 @@ public class WebLearnPageTask extends JSONProcessingTask {
 						new LoginInfoTask((ContentPage) page, false, true).execute();
 					}
 				});
+			}
+			
+			JSONArray announcementsCollection = jsonContent.getJSONObject("announcements").getJSONArray("announcements_collection");
+			LinearLayout announcementsLayout = (LinearLayout) weblearnLayout.findViewById(R.id.announcementsLayout);
+			if (announcementsCollection.length() == 0)
+			{
+				LinearLayout noAnnouncementLayout = (LinearLayout) page.getLayoutInflater().inflate(R.layout.plain_text_search_result, null);
+				((TextView) noAnnouncementLayout.findViewById(R.id.plainTextResultText)).setText("No announcements right now.");
+				announcementsLayout.addView(noAnnouncementLayout);
+			}
+			else
+			{
+				//there are some announcements
+				for (int i = 0; i < announcementsCollection.length(); i++)
+				{
+					final JSONObject announcement = announcementsCollection.getJSONObject(i);
+					LinearLayout announcementLayout = (LinearLayout) page.getLayoutInflater().inflate(R.layout.clickable_search_result, null);
+					((TextView) announcementLayout.findViewById(R.id.clickableResultText)).setText(announcement.getString("title"));
+					
+					announcementLayout.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							try {
+								MyApplication.weblearnAnnouncementSlug = announcement.getString("id");
+								Intent myIntent = new Intent(page.getApplicationContext(), MyApplication.getPageClass(MollyModule.WEBLEARN_ANNOUNCEMENT));
+								page.startActivityForResult(myIntent, 0);
+							} catch (Exception e) {
+								e.printStackTrace();
+								Toast.makeText(page.getApplicationContext(), "This announcement is not available. Please try again later.", Toast.LENGTH_SHORT).show();
+							}
+						}
+					});
+					
+					announcementsLayout.addView(announcementLayout);
+				}
 			}
 			
 			page.getContentLayout().removeAllViews();
