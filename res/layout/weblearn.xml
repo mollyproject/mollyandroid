@@ -24,11 +24,11 @@
    		</TextView>
    		
     	<LinearLayout android:layout_height="wrap_content" 
-	    android:id="@+id/loginLayout"
-	    android:background="@drawable/shape_white" 
-	    android:layout_width="fill_parent" 
-	    android:padding="5dp"
-	    android:orientation="vertical">
+		    android:id="@+id/loginLayout"
+		    android:background="@drawable/shape_white" 
+		    android:layout_width="fill_parent" 
+		    android:padding="5dp"
+		    android:orientation="vertical">
 		    <TextView android:text="Hello, welcome to mobile WebLearn preview! You are not logged in, please log in for more info." 
 			    android:id="@+id/weblearnWelcomeText" 
 			    android:textColor="@color/blue"
@@ -37,28 +37,67 @@
 		    </TextView>
 		    <Button android:text="Log in" 
 			    android:id="@+id/loginButton" 
-			    android:layout_width="wrap_content" 
+			    android:layout_width="fill_parent" 
 			    android:layout_height="wrap_content" 
 			    android:layout_gravity="center_horizontal">
 		    </Button>
 	    </LinearLayout>
     </LinearLayout>
-	    
-    <TextView android:padding="5dp" 
-	    android:text="Announcements" 
-	    android:layout_width="fill_parent" 
-	    android:id="@+id/announcementsText" 
-	    android:textColor="@color/blue"
-	    android:background="@drawable/shape_white"
-	    android:layout_height="wrap_content" 
-	    android:textSize="18dp">
-    </TextView>
-    <LinearLayout android:layout_height="wrap_content" 
-	    android:id="@+id/announcementsLayout"
-	    android:layout_width="fill_parent"
-	    android:orientation="vertical">
+	
+	<LinearLayout android:layout_height="wrap_content" 
+		    android:id="@+id/announcements"
+		    android:background="@drawable/shape_white" 
+		    android:layout_width="fill_parent" 
+		    android:orientation="vertical" android:layout_marginBottom="5dp">
+		    
+		    <TextView android:padding="5dp" 
+			    android:text="Announcements" 
+			    android:layout_width="fill_parent" 
+			    android:id="@+id/announcementsText" 
+			    android:textColor="@color/blue"
+			    android:layout_height="wrap_content" 
+			    android:textSize="18dp">
+		    </TextView>
+		    
+		    <LinearLayout android:layout_height="wrap_content" 
+			    android:id="@+id/announcementsLayout"
+			    android:layout_width="fill_parent"
+			    android:orientation="vertical">
+		    </LinearLayout>
     </LinearLayout>
     
-    
+	<LinearLayout android:layout_height="wrap_content" 
+		    android:id="@+id/tools"
+		    android:background="@drawable/shape_white" 
+		    android:layout_width="fill_parent" 
+		    android:padding="5dp" 
+		    android:orientation="vertical" >
+		    
+		    <TextView 
+			    android:text="Tools" 
+			    android:layout_width="fill_parent" 
+			    android:id="@+id/toolsText" 
+			    android:textColor="@color/blue"
+			    android:layout_height="wrap_content" 
+			    android:layout_marginBottom="5dp"
+			    android:textSize="18dp">
+		    </TextView>
+		    
+		    <Button android:text="Sign-ups" 
+			    android:id="@+id/signupButton" 
+			    android:layout_width="fill_parent" 
+			    android:layout_height="wrap_content" 
+			    android:layout_gravity="center_horizontal"
+			    android:layout_marginBottom="5dp">
+		    </Button>
+		    
+		    <Button android:text="Polls" 
+			    android:id="@+id/pollsButton" 
+			    android:layout_width="fill_parent" 
+			    android:layout_height="wrap_content" 
+			    android:layout_gravity="center_horizontal"
+			    android:layout_marginBottom="5dp">
+		    </Button>
+	</LinearLayout> 
   
 </LinearLayout>
