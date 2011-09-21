@@ -17,7 +17,7 @@
 	            android:layout_width="wrap_content" 
 	            android:id="@+id/searchResultsHeader" 
 	            android:text="Results" 
-	            android:textColor="@color/blue" 
+	            android:textColor="@color/black" 
 	            android:layout_gravity="center_vertical" 
 	            android:textStyle="bold" 
 	            android:layout_height="wrap_content"
