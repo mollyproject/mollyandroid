@@ -62,6 +62,8 @@ public class WebLearnAnnouncementTask extends JSONProcessingTask {
 								page.startActivityForResult(myIntent, 0);
 							}
 						});
+						
+						attachmentLayout.setLayoutParams(Page.paramsWithLine);
 						attachmentsLayout.addView(attachmentLayout);
 					}
 				}
@@ -70,6 +72,7 @@ public class WebLearnAnnouncementTask extends JSONProcessingTask {
 			page.getContentLayout().removeAllViews();
 			page.getContentLayout().addView(announcementLayout);
 			
+			((ContentPage) page).doneProcessingJSON();
 		} catch (Exception e) {
 			e.printStackTrace();
 			otherException = true;
