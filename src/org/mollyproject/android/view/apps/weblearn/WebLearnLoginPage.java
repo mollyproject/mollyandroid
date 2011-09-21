@@ -4,12 +4,13 @@ import org.mollyproject.android.R;
 import org.mollyproject.android.view.apps.unimplemented.UnimplementedPage;
 
 import android.os.Bundle;
+import android.view.View;
 
 public class WebLearnLoginPage extends UnimplementedPage{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getContentLayout().setBackgroundResource(R.drawable.shape_white);
+		((View) contentScroll.getParent()).setBackgroundResource(R.drawable.shape_white);
 	}
 	@Override
 	public void onResume() {
