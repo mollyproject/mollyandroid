@@ -84,13 +84,9 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 	
 	public void updatePage(JSONArray podcasts)
 	{
-		LinearLayout contentLayout = ((ContentPage) page).getContentLayout();
-		contentLayout.removeAllViews();
-		
 		LayoutInflater layoutInflater = page.getLayoutInflater();
 		
 		LinearLayout podcastsLayout = (LinearLayout) layoutInflater.inflate(R.layout.general_search_results_page,null);
-		contentLayout.addView(podcastsLayout);
 		
 		LinearLayout resultsLayout = (LinearLayout) podcastsLayout.findViewById(R.id.generalResultsList);
 		try
@@ -146,10 +142,12 @@ public class PodcastsCategoryTask extends BackgroundTask<JSONArray, Void, JSONAr
 				imagesCache.put(podcastIcon,urlStr);
 				downloadQueue.add(imagesCache);
 			}
-			//new ImageBatchesTask(page, false, false).execute(downloadQueue);
 			((PodcastsCategoryPage) page).setDownloadQueue(downloadQueue);
-			((ContentPage) page).doneProcessingJSON();
 			
+			page.getContentLayout().removeAllViews();
+			page.getContentLayout().addView(podcastsLayout);
+			
+			((ContentPage) page).doneProcessingJSON();
 			
 			PodcastsCategoryPage.imageTask = new ImageBatchesTask(page, false, false);
 			PodcastsCategoryPage.imageTask.execute();

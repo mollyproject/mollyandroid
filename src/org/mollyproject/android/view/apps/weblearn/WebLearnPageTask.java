@@ -1,7 +1,6 @@
 package org.mollyproject.android.view.apps.weblearn;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.JSONProcessingTask;
@@ -91,13 +90,23 @@ public class WebLearnPageTask extends JSONProcessingTask {
 						}
 					});
 					
+					announcementLayout.setLayoutParams(Page.paramsWithLine);
 					announcementsLayout.addView(announcementLayout);
 				}
 			}
 			
+			weblearnLayout.findViewById(R.id.signupButton).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent myIntent = new Intent(page.getApplicationContext(), MyApplication.getPageClass(MollyModule.WEBLEARN_SIGNUP_INDEX));
+					page.startActivityForResult(myIntent, 0);
+				}
+			});
+			
 			page.getContentLayout().removeAllViews();
 			page.getContentLayout().addView(weblearnLayout);
 			
+			((ContentPage) page).doneProcessingJSON();
 		} catch (Exception e) {
 			e.printStackTrace();
 			otherException = true;

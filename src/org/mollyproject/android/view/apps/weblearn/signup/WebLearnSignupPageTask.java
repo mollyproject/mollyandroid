@@ -34,6 +34,7 @@ public class WebLearnSignupPageTask extends JSONProcessingTask {
 				JSONArray site = sites.getJSONArray(i);
 				MyApplication.weblearnSignupSlug = site.getString(0);
 				LinearLayout signupLayout = (LinearLayout) page.getLayoutInflater().inflate(R.layout.clickable_search_result, null);
+				signupLayout.setLayoutParams(Page.paramsWithLine);
 				((TextView) signupLayout.findViewById(R.id.clickableResultText)).setText(site.getString(1));
 				sitesList.addView(signupLayout);
 			}

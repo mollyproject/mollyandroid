@@ -57,6 +57,7 @@ public class IndividualWebcamUpdateTask extends JSONProcessingTask {
 			}
 			webcamDetails.setText(description);
 			
+			((ContentPage) page).doneProcessingJSON();
 		} catch (Exception e) {
 			e.printStackTrace();
 			otherException = true;
