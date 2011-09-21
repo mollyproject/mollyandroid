@@ -4,7 +4,7 @@
   android:orientation="vertical"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
-  android:background = "@drawable/bg_blue">
+  android:background = "@drawable/shape_blue">
     <LinearLayout android:id="@+id/breadcrumbs"
 		    android:layout_width="fill_parent" 
 		    android:layout_gravity="center_vertical"
