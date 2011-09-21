@@ -23,16 +23,16 @@ public class WebLearnPage extends ContentPage {
 		weblearnPageNeedsRefresh = false;
 	}
 	
-	@Override
+	/*@Override
 	public void onResume() {
-		//if (weblearnPageNeedsRefresh)
+		if (weblearnPageNeedsRefresh)
 		{
 			//Trigger a manual refresh if needed
 			manualRefresh = true;
 			jsonProcessed = false;
 		}
 		super.onResume();
-	}
+	}*/
 	
 	@Override
 	public Page getInstance() {
