@@ -72,5 +72,6 @@
 		<activity android:name=".view.apps.weblearn.WebLearnPage"></activity>
 		<activity android:name=".view.apps.weblearn.WebLearnLoginPage"></activity>
 		<activity android:name=".view.apps.weblearn.announcement.WebLearnAnnouncementPage"></activity>
+		<activity android:name=".view.apps.weblearn.signup.WebLearnSignupPage"></activity>
     </application>
 </manifest>
