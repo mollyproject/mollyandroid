@@ -66,6 +66,7 @@ public class MyApplication extends RoboApplication {
 	public static String oauthVerifier = null;
 	public static int weblearnState;
 	public static String weblearnAnnouncementSlug;
+	public static String weblearnSignupSlug;
 	public static int lastSearchApp;
 	
 	public static DateFormat defaultDateFormat = new SimpleDateFormat

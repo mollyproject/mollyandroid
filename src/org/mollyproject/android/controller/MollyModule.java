@@ -33,6 +33,9 @@ import org.mollyproject.android.view.apps.webcam.WebcamsPage;
 import org.mollyproject.android.view.apps.weblearn.WebLearnLoginPage;
 import org.mollyproject.android.view.apps.weblearn.WebLearnPage;
 import org.mollyproject.android.view.apps.weblearn.announcement.WebLearnAnnouncementPage;
+import org.mollyproject.android.view.apps.weblearn.signup.WebLearnSignupEventPage;
+import org.mollyproject.android.view.apps.weblearn.signup.WebLearnSignupPage;
+import org.mollyproject.android.view.apps.weblearn.signup.WebLearnSignupSitePage;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Named;
@@ -74,6 +77,9 @@ public class MollyModule extends AbstractModule {
 	public static final String WEBLEARN_SURVEYS = "weblearn:evaluation-index";
 	public static final String WEBLEARN_SURVEY_DETAIL = "weblearn:evaluation-detail";
 	public static final String WEBLEARN_ANNOUNCEMENT = "weblearn:announcement";
+	public static final String WEBLEARN_SIGNUP_INDEX = "weblearn:signup-index";
+	public static final String WEBLEARN_SIGNUP_SITE = "weblearn:signup-site";
+	public static final String WEBLEARN_SIGNUP_EVENT = "weblearn:signup-event";
 	public static String SPLASH = "splash";
 	
 	@Override
@@ -165,6 +171,9 @@ public class MollyModule extends AbstractModule {
 		bind(Page.class).annotatedWith(Names.named(WEBLEARN)).to(WebLearnPage.class);
 		bind(Page.class).annotatedWith(Names.named(WEBLEARN_LOGIN)).to(WebLearnLoginPage.class);
 		bind(Page.class).annotatedWith(Names.named(WEBLEARN_ANNOUNCEMENT)).to(WebLearnAnnouncementPage.class);
+		bind(Page.class).annotatedWith(Names.named(WEBLEARN_SIGNUP_INDEX)).to(WebLearnSignupPage.class);
+		bind(Page.class).annotatedWith(Names.named(WEBLEARN_SIGNUP_EVENT)).to(WebLearnSignupEventPage.class);
+		bind(Page.class).annotatedWith(Names.named(WEBLEARN_SIGNUP_SITE)).to(WebLearnSignupSitePage.class);
 		
 		//Other non-content pages
 		bind(Page.class).annotatedWith(Names.named("splash")).to(Splash.class);
