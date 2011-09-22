@@ -1,5 +1,7 @@
 package org.mollyproject.android.view.apps.weblearn.signup;
 
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
@@ -17,7 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class WebLearneventEventTask extends JSONProcessingTask {
-
+	String monthNames[] = new DateFormatSymbols().getMonths();
+	String dayNames[] = new DateFormatSymbols().getWeekdays();
 	public WebLearneventEventTask(ContentPage page,
 			boolean toDestroyPageAfterFailure, boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
@@ -58,8 +61,56 @@ public class WebLearneventEventTask extends JSONProcessingTask {
 					((TextView) eventLayout.findViewById(R.id.eventTitle)).setText(event.getString("title"));
 					
 					//start/end dates
-					Date start = MyApplication.defaultDateFormat.parse(event.getString("start"));
-					Date end = MyApplication.defaultDateFormat.parse(event.getString("end"));
+					Calendar start = Calendar.getInstance(); 
+					start.setTime(MyApplication.defaultDateFormat.parse(event.getString("start")));
+					Calendar end = Calendar.getInstance(); 
+					end.setTime(MyApplication.defaultDateFormat.parse(event.getString("end")));
+					
+					TextView dateText = (TextView) eventLayout.findViewById(R.id.eventDate);
+					if (start.get(Calendar.YEAR) == end.get(Calendar.YEAR))
+					{
+						//same-year event
+						if (start.get(Calendar.MONTH) == end.get(Calendar.MONTH))
+						{
+							//same month
+							if (start.get(Calendar.DATE) == end.get(Calendar.DATE))
+							{
+								//same-day
+								//Date: startHour/Minute - endHour/Minute : WeekDay Date Month   
+								dateText.setText(start.get(Calendar.HOUR) +":" + start.get(Calendar.MINUTE) + start.get(Calendar.AM_PM) +
+										" - " + end.get(Calendar.HOUR) +":" + end.get(Calendar.MINUTE) + end.get(Calendar.AM_PM) + ": " +
+										dayNames[start.get(Calendar.DAY_OF_WEEK)] + " " + start.get(Calendar.DAY_OF_MONTH) + monthNames[start.get(Calendar.MONTH)]);
+							}
+							else
+							{
+								//different day
+								//Date: startHour/Minute startWeekDay startDate - endHour/Minute endWeekDay endDate Month
+								dateText.setText(start.get(Calendar.HOUR) +":" + start.get(Calendar.MINUTE) + start.get(Calendar.AM_PM) +
+										dayNames[start.get(Calendar.DAY_OF_WEEK)] + " " + start.get(Calendar.DAY_OF_MONTH) + " - " +
+										end.get(Calendar.HOUR) +":" + end.get(Calendar.MINUTE) + end.get(Calendar.AM_PM) + " " +
+										dayNames[end.get(Calendar.DAY_OF_WEEK)] + " " + end.get(Calendar.DAY_OF_MONTH) + ", " + 
+										start.get(Calendar.MONTH));
+							}
+						}
+						else
+						{
+							//different month
+							//Date: startHour/Minute startWeekDay startDate startMonth - endHour/Minute endWeekDay endDate endMonth 
+							dateText.setText(start.get(Calendar.HOUR) +":" + start.get(Calendar.MINUTE) + start.get(Calendar.AM_PM) +
+									dayNames[start.get(Calendar.DAY_OF_WEEK)] + " " + start.get(Calendar.DAY_OF_MONTH) + monthNames[start.get(Calendar.MONTH)] + " - " +
+									end.get(Calendar.HOUR) +":" + end.get(Calendar.MINUTE) + end.get(Calendar.AM_PM) + " " +
+									dayNames[end.get(Calendar.DAY_OF_WEEK)] + " " + end.get(Calendar.DAY_OF_MONTH) + monthNames[end.get(Calendar.MONTH)]);
+						}
+					}
+					else
+					{
+						//event in different years
+						//Date: startHour/Minute startWeekDay startDate startMonth startYear - endHour/Minute endWeekDay endDate endMonth endYear 
+						dateText.setText(start.get(Calendar.HOUR) +":" + start.get(Calendar.MINUTE) + start.get(Calendar.AM_PM) +
+								dayNames[start.get(Calendar.DAY_OF_WEEK)] + " " + start.get(Calendar.DAY_OF_MONTH) + monthNames[start.get(Calendar.MONTH)] + " " + start.get(Calendar.YEAR) + " - " +
+								end.get(Calendar.HOUR) +":" + end.get(Calendar.MINUTE) + end.get(Calendar.AM_PM) + " " +
+								dayNames[end.get(Calendar.DAY_OF_WEEK)] + " " + end.get(Calendar.DAY_OF_MONTH) + monthNames[end.get(Calendar.MONTH)] + " " + end.get(Calendar.YEAR));
+					}
 					
 					eventsList.addView(eventLayout);
 				}
