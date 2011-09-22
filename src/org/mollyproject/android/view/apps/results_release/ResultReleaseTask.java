@@ -19,8 +19,13 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,12 +39,24 @@ public class ResultReleaseTask extends JSONProcessingTask{
 	@Override
 	public void updateView(JSONObject examsByDate) {
 		try {
-			LinearLayout releasesLayout = (LinearLayout) page.getLayoutInflater().inflate(R.layout.general_search_results_page, null);
+			LinearLayout releasesLayout = (LinearLayout) page.getLayoutInflater().inflate(R.layout.results_release_page, null);
 			
-			TextView headerText = (TextView) releasesLayout.findViewById(R.id.searchResultsHeader);
-			headerText.setText("Sorted by Latest first");
+			TextView headerText = (TextView) releasesLayout.findViewById(R.id.releasesHeader);
+			String header = "<b> Recent releases </b> <br/> <br/>" + "<small> This page lists the most recent schools to have had results released. " +
+					"You can check your results by logging in to the Student Self-Service website: </small>";
+			headerText.setText(Html.fromHtml(header));
 			
-			LinearLayout resultsLayout = (LinearLayout) releasesLayout.findViewById(R.id.generalResultsList);
+			Button selfServiceButton = (Button) releasesLayout.findViewById(R.id.selfServiceButton);
+			selfServiceButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent myIntent = new Intent(Intent.ACTION_VIEW);
+					myIntent.setData(Uri.parse("http://www.studentsystem.ox.ac.uk/"));
+					page.startActivityForResult(myIntent, 0);
+				}
+			});
+			
+			LinearLayout resultsLayout = (LinearLayout) releasesLayout.findViewById(R.id.releasesList);
 			
 			//sort the keys first
 			Iterator<String> dates = examsByDate.keys();
@@ -125,7 +142,7 @@ public class ResultReleaseTask extends JSONProcessingTask{
 										(entry.getString("updated"));
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(updatedDate);
-					String myDate = calendar.get(Calendar.DATE) + " " + monthNames[calendar.get(Calendar.MONTH)] + " " + calendar.get(Calendar.YEAR);//MyApplication.myDateFormat.format(updatedDate); // time in hourless format
+					String myDate = calendar.get(Calendar.DATE) + " " + monthNames[calendar.get(Calendar.MONTH)] + " " + calendar.get(Calendar.YEAR);
 					if (!examsByDate.has(myDate))
 					{
 						examsByDate.put(myDate, new JSONArray());
