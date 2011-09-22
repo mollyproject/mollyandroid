@@ -22,7 +22,6 @@ public class ResultsReleasePage extends ContentPage {
 	
 	public Page getInstance()
 	{
-		System.out.println("Called "+this);
 		return this;
 	}
 

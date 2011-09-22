@@ -34,13 +34,7 @@ public class ResultReleaseTask extends JSONProcessingTask{
 	@Override
 	public void updateView(JSONObject examsByDate) {
 		try {
-			
-			LayoutInflater inflater = page.getLayoutInflater();
-			((ResultsReleasePage) page).getContentLayout().removeAllViews();
-			
-			LinearLayout releasesLayout = (LinearLayout) inflater.inflate(R.layout.general_search_results_page, 
-					null);
-			page.getContentLayout().addView(releasesLayout);
+			LinearLayout releasesLayout = (LinearLayout) page.getLayoutInflater().inflate(R.layout.general_search_results_page, null);
 			
 			TextView headerText = (TextView) releasesLayout.findViewById(R.id.searchResultsHeader);
 			headerText.setText("Sorted by Latest first");
@@ -59,8 +53,7 @@ public class ResultReleaseTask extends JSONProcessingTask{
 			Iterator<String> newDates = sortedDates.iterator();
 			while(newDates.hasNext())
 			{
-				LinearLayout thisResult = (LinearLayout) inflater.inflate
-						(R.layout.plain_text_search_result, ((ResultsReleasePage) page).getContentLayout(),false);
+				LinearLayout thisResult = (LinearLayout) page.getLayoutInflater().inflate(R.layout.plain_text_search_result,null);
 				thisResult.setLayoutParams(Page.paramsWithLine);
 				String allText = new String();
 				
@@ -77,6 +70,11 @@ public class ResultReleaseTask extends JSONProcessingTask{
 				resultsText.setText(Html.fromHtml(allText));
 				resultsLayout.addView(thisResult);
 			}
+			
+			((ContentPage) page).doneProcessingJSON();
+			
+			((ContentPage) page).getContentLayout().removeAllViews();
+			page.getContentLayout().addView(releasesLayout);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;
@@ -86,11 +84,13 @@ public class ResultReleaseTask extends JSONProcessingTask{
 
 	@Override
 	protected  JSONObject doInBackground(JSONObject... params) {
+		JSONObject jsonContent;
 		if (Page.manualRefresh)
 		{
-			return super.doInBackground();
+			jsonContent = super.doInBackground();
 		}
-		try {
+		else
+		{
 			while (!((ContentPage) page).downloadedJSON())
 			{
 				try {
@@ -99,8 +99,11 @@ public class ResultReleaseTask extends JSONProcessingTask{
 					e.printStackTrace();
 				}
 			}
+			jsonContent = ((ContentPage) page).getJSONContent();
+		}
 		
-			JSONObject jsonContent = ((ContentPage) page).getJSONContent();
+		try {
+			
 			//Process the json text received
 			//What this part of the code does is that it groups the titles of the exams into groups by date 
 			//in another JSONObject and passes it to the updateView for later ease 
@@ -131,15 +134,9 @@ public class ResultReleaseTask extends JSONProcessingTask{
 				}
 			}
 			return examsByDate;
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			jsonException = true;
-		} catch (ParseException e) {
-			e.printStackTrace();
-			parseException = true;
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			nullPointerException = true;
+			otherException = true;
 		}
 		return null;
 	}
