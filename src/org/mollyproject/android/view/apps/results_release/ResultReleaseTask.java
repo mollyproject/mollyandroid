@@ -50,9 +50,8 @@ public class ResultReleaseTask extends JSONProcessingTask{
 			selfServiceButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent myIntent = new Intent(Intent.ACTION_VIEW);
-					myIntent.setData(Uri.parse("http://www.studentsystem.ox.ac.uk/"));
-					page.startActivityForResult(myIntent, 0);
+					Intent myIntent = new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.studentsystem.ox.ac.uk/"));
+					page.startActivity(Intent.createChooser(myIntent, "Going to http://www.studentsystem.ox.ac.uk/..."));
 				}
 			});
 			
