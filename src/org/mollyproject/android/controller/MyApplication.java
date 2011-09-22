@@ -65,8 +65,9 @@ public class MyApplication extends RoboApplication {
 	public static String oauthToken = new String();
 	public static String oauthVerifier = null;
 	public static int weblearnState;
-	public static String weblearnAnnouncementSlug;
-	public static String weblearnSignupSlug;
+	public static String weblearnAnnouncementSlug = new String();
+	public static String weblearnSignupSlug = new String();
+	public static String weblearnEventId = new String();
 	public static int lastSearchApp;
 	
 	public static DateFormat defaultDateFormat = new SimpleDateFormat
@@ -83,6 +84,11 @@ public class MyApplication extends RoboApplication {
 			("yyyy-MM-d HH:mm:ss Z");
 	
 	public final static DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+	
+	public final static DateFormat hourMinuteFormat = new SimpleDateFormat("HH:mm");
+	
+	public static DateFormat dateMonthFormat = new SimpleDateFormat
+			("d MMM");
 	
 	public boolean isOnline() {
 		 return ((ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE))

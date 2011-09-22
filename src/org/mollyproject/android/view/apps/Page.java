@@ -74,6 +74,22 @@ public abstract class Page extends RoboActivity {
 		//save state for next session
 		super.onSaveInstanceState(outState);
 		
+		//save state: weblearn signup site
+		try {
+			outState.putString("weblearnEventId", MyApplication.weblearnEventId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
+		//save state: weblearn signup site
+		try {
+			outState.putString("weblearnSignupSlug", MyApplication.weblearnSignupSlug);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
 		//save state: weblearn announcement id
 		try {
 			outState.putString("weblearnAnnouncementSlug", MyApplication.weblearnAnnouncementSlug);
@@ -207,6 +223,22 @@ public abstract class Page extends RoboActivity {
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		//restore instance state
 		super.onRestoreInstanceState(savedInstanceState);
+		
+		//load state: weblearn signup site
+		try {
+			MyApplication.weblearnEventId = savedInstanceState.getString("weblearnEventId");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
+		//load state: weblearn signup site
+		try {
+			MyApplication.weblearnSignupSlug = savedInstanceState.getString("weblearnSignupSlug");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
 		
 		//load state: weblearn announcement id
 		try {
