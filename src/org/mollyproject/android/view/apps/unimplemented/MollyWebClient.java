@@ -17,16 +17,21 @@ import android.webkit.WebViewClient;
 
 public class MollyWebClient extends WebViewClient {
 	protected ProgressDialog pDialog;
-		
+	protected boolean pDialogLoaded = false;	
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon) {
 		super.onPageStarted(view, url, favicon);
-		pDialog = ProgressDialog.show(view.getContext(), null, "Loading");
+		if (!pDialogLoaded)
+		{
+			pDialogLoaded = true;
+			pDialog = ProgressDialog.show(view.getContext(), null, "Loading");
+		}
 	}
 	
 	@Override
 	public void onPageFinished(WebView view, String url) {
 		super.onPageFinished(view, url);
+		pDialogLoaded = false;
 		pDialog.dismiss();
 	}	
 	@Override
