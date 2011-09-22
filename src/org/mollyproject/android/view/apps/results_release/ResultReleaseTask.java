@@ -1,6 +1,8 @@
 package org.mollyproject.android.view.apps.results_release;
 
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -23,7 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ResultReleaseTask extends JSONProcessingTask{
-
+	String monthNames[] = new DateFormatSymbols().getMonths();
 	public ResultReleaseTask(ContentPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {
 		super(page, toDestroyPageAfterFailure, dialogEnabled);
@@ -118,7 +120,9 @@ public class ResultReleaseTask extends JSONProcessingTask{
 					
 					Date updatedDate = MyApplication.defaultDateFormat.parse
 										(entry.getString("updated"));
-					String myDate = MyApplication.myDateFormat.format(updatedDate); // time in hourless format
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(updatedDate);
+					String myDate = calendar.get(Calendar.DATE) + " " + monthNames[calendar.get(Calendar.MONTH)] + " " + calendar.get(Calendar.YEAR);//MyApplication.myDateFormat.format(updatedDate); // time in hourless format
 					if (!examsByDate.has(myDate))
 					{
 						examsByDate.put(myDate, new JSONArray());
