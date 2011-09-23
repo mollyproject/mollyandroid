@@ -69,6 +69,14 @@ public abstract class Page extends RoboActivity {
 		//save state for next session
 		super.onSaveInstanceState(outState);
 		
+		//save state: last transport tag
+		try {
+			outState.putString("lastTransportTag", MyApplication.lastTransportTag);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
 		//save state: weblearn signup site
 		try {
 			outState.putString("weblearnEventId", MyApplication.weblearnEventId);
@@ -218,6 +226,15 @@ public abstract class Page extends RoboActivity {
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		//restore instance state
 		super.onRestoreInstanceState(savedInstanceState);
+		
+		//load state: last transport tag
+		try {
+			MyApplication.lastTransportTag = savedInstanceState.getString("lastTransportTag");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+
 		
 		//load state: weblearn signup site
 		try {

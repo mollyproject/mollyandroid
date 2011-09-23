@@ -3,6 +3,7 @@ package org.mollyproject.android.view.apps.transport;
 import java.io.UnsupportedEncodingException;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
+import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.transport.train.TrainPage;
@@ -81,7 +82,6 @@ public class TransportPage extends ContentPage {
         //create sub pages in the tab
         mlam.dispatchCreate(savedInstanceState);
 	}
-	
 	@Override
 	public void onResume() {
 		name = settings.getString("name", MollyModule.PUBLIC_TRANSPORT);
@@ -107,6 +107,7 @@ public class TransportPage extends ContentPage {
 	protected void onPause() {
 		super.onPause();
 		//once the page is paused, remember the last tab left open
+		MyApplication.lastTransportTag = transportTabHost.getCurrentTabTag();
 	    editor.putString("lastTab", transportTabHost.getCurrentTabTag());
 	    editor.putString("name", name);
 	    editor.commit();

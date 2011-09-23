@@ -29,7 +29,6 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 		System.out.println(outputs);
 		JSONObject jsonContent = ((ContentPage) page).getJSONContent();
 		MyApplication.transportCache = jsonContent;
-		((ContentPage) page).doneProcessingJSON();
         try {
         	Intent myIntent;
     		TabHost.TabSpec spec;
@@ -64,10 +63,13 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 			SharedPreferences settings = page.getSharedPreferences(MyApplication.PREFS_NAME, 0);
 			if (settings.contains("lastTab"))
 			{
-				System.out.println("Transport task " + settings.getString("lastTab",tabTag));
+				//somehow settings doesn't work in this task for the first run of the app so I use public static
+				System.out.println("Transport task " + settings.getString("lastTab",MyApplication.lastTransportTag));
 				TransportPage.transportTabHost.setCurrentTabByTag
-								(settings.getString("lastTab",TransportPage.defaultTransport));
+								(settings.getString("lastTab", MyApplication.lastTransportTag));
 			}
+			
+			((ContentPage) page).doneProcessingJSON();
         } catch (JSONException e) {
 			e.printStackTrace();
 			jsonException = true;

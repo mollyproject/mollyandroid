@@ -1,5 +1,10 @@
 package org.mollyproject.android.controller;
 
+import java.io.IOException;
+import java.net.SocketException;
+import java.text.ParseException;
+
+import org.json.JSONException;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.ProgressDialog;
@@ -56,6 +61,11 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 			page.finish();
 		}
 		MyApplication.router.releaseConnection();
+		try {
+			MyApplication.router = new Router((MyApplication) page.getApplication());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Page.manualRefresh = false;
 		page = null;
 	}
