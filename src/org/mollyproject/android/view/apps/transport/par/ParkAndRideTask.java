@@ -34,14 +34,14 @@ public class ParkAndRideTask extends BackgroundTask<JSONObject,Void,JSONObject> 
 			page.getContentLayout().removeAllViews();
 			for (int i = 0; i < pars.length(); i++)
 			{
-				JSONObject par = pars.getJSONObject(i);
+				final JSONObject par = pars.getJSONObject(i);
 				
 				RelativeLayout parLayout = (RelativeLayout) page.getLayoutInflater().inflate(R.layout.park_and_ride, null);
 				parLayout.setLayoutParams(Page.paramsWithLine);
 				
 				((TextView) parLayout.findViewById(R.id.parName)).setText(par.getString("title").replace(" Park and Ride", ""));
 				
-				final JSONObject metadata = par.getJSONObject("metadata");
+				JSONObject metadata = par.getJSONObject("metadata");
 				
 				JSONObject spacesDetails = metadata.getJSONObject("park_and_ride");
 				TextView parSpaces = (TextView) parLayout.findViewById(R.id.parSpaces);
@@ -63,8 +63,8 @@ public class ParkAndRideTask extends BackgroundTask<JSONObject,Void,JSONObject> 
 					public void onClick(View v) {
 						try {
 							//Go to the place entity page of the park and ride
-							MyApplication.placesArgs[0] = metadata.getString("identifier_scheme");
-							MyApplication.placesArgs[1] = metadata.getString("identifier_value");
+							MyApplication.placesArgs[0] = par.getString("identifier_scheme");
+							MyApplication.placesArgs[1] = par.getString("identifier_value");
 							Intent myIntent = new Intent(page.getApplicationContext(), MyApplication.getPageClass(MollyModule.PLACES_ENTITY));
 							page.startActivityForResult(myIntent, 0);
 						} catch (Exception e) {
