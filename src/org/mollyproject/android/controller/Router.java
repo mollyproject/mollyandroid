@@ -68,8 +68,8 @@ public class Router {
 		locTracker.startLocUpdate();
 		client = new DefaultHttpClient();
 		HttpParams httpParams = client.getParams();
-		HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
-		HttpConnectionParams.setSoTimeout(httpParams, 10000);
+		HttpConnectionParams.setConnectionTimeout(httpParams, 20000);
+		HttpConnectionParams.setSoTimeout(httpParams, 20000);
 		
 		((DefaultHttpClient) client).addRequestInterceptor(new HttpRequestInterceptor() {
 
