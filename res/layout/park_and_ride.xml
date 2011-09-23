@@ -30,7 +30,7 @@
 	    android:layout_width="wrap_content"
 	    android:maxHeight="20dp"
 	    android:minHeight="20dp"
-	    android:src="@drawable/shape_gray" 
+	    android:src="@drawable/shape_green" 
 	    android:id="@+id/spacesBar" 
 	    android:padding="5dp"
 	    android:layout_below="@+id/parName" 
