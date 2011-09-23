@@ -127,11 +127,6 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 			pDialog.dismiss();
 		}
 		
-		if (destroyPlease)
-		{
-			MyApplication.router.releaseConnection();
-		}
-		
 		if (toDestroyPageAfterFailure & destroyPlease)
 		{
 			page.finish();
