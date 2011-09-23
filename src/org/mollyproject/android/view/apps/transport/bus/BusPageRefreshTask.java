@@ -1,8 +1,9 @@
-package org.mollyproject.android.view.apps.transport;
+package org.mollyproject.android.view.apps.transport.bus;
 
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
+import org.mollyproject.android.view.apps.transport.TransportPage;
 
 public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 	public static boolean busNeedsRefresh;

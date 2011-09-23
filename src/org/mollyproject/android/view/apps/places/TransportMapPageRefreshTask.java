@@ -4,9 +4,9 @@ import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.places.entity.PlacesResultsPage;
-import org.mollyproject.android.view.apps.transport.BusPageRefreshTask;
-import org.mollyproject.android.view.apps.transport.TrainPageRefreshTask;
 import org.mollyproject.android.view.apps.transport.TransportPage;
+import org.mollyproject.android.view.apps.transport.bus.BusPageRefreshTask;
+import org.mollyproject.android.view.apps.transport.train.TrainPageRefreshTask;
 
 public class TransportMapPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 	public static boolean transportMapNeedsRefresh; 

@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.apps.transport;
+package org.mollyproject.android.view.apps.transport.bus;
 
 import java.util.Date;
 
@@ -39,13 +39,13 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			{
 				pageTitleText = MyApplication.hourFormat.format(new Date()) 
 							+ " - Nearby bus stops from your current location" + " (" + MyApplication.currentLocation.getString("name")
-						+ " within approx. " + MyApplication.currentLocation.getString("accuracy") + ")";
+						+ " within approx. " + MyApplication.currentLocation.getString("accuracy") + "):";
 			}
 			else
 			{
 				pageTitleText = "Cannot get info about your current location, you might want to check the Your Location option again.";
 			}
-			pageTitleText = pageTitleText + ":";
+			pageTitleText = pageTitleText;
 			
 			pageTitle.setText(pageTitleText);
 			LinearLayout busLayout = (LinearLayout) transportLayout.findViewById(R.id.transportDetailsLayout);

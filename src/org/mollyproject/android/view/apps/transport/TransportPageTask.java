@@ -7,6 +7,9 @@ import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
+import org.mollyproject.android.view.apps.transport.bus.BusPage;
+import org.mollyproject.android.view.apps.transport.par.ParkAndRidePage;
+import org.mollyproject.android.view.apps.transport.train.TrainPage;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,6 +37,7 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
     		String tabTag = new String();
 			if (jsonContent.getJSONObject("public_transport").getBoolean("bus") == true & TransportPage.firstLoad == true)
 			{
+				//Bus tab
 				tabTag = TransportPage.BUS;
 				myIntent = new Intent().setClass(page.getApplicationContext(), BusPage.class);
 			    spec = TransportPage.transportTabHost.newTabSpec(tabTag)
@@ -42,12 +46,19 @@ public class TransportPageTask extends BackgroundTask<Void, Void, String>{
 			}
 			if (jsonContent.getBoolean("train_station") == true & TransportPage.firstLoad == true)
 			{
+				//Train tab
 				tabTag = TransportPage.RAIL;
 			    myIntent = new Intent().setClass(page.getApplicationContext(), TrainPage.class);
 			    spec = TransportPage.transportTabHost.newTabSpec(tabTag)
 			    	.setIndicator("", res.getDrawable(R.drawable.train_blue)).setContent(myIntent);
 			    TransportPage.transportTabHost.addTab(spec);
-			}
+			} 
+			//Park and rides tab
+			tabTag = TransportPage.PAR;
+		    myIntent = new Intent().setClass(page.getApplicationContext(), ParkAndRidePage.class);
+		    spec = TransportPage.transportTabHost.newTabSpec(tabTag)
+		    	.setIndicator("", res.getDrawable(R.drawable.pride_blue)).setContent(myIntent);
+		    TransportPage.transportTabHost.addTab(spec);
 			
 			((ContentPage) page).doneProcessingJSON();
 			SharedPreferences settings = page.getSharedPreferences(MyApplication.PREFS_NAME, 0);

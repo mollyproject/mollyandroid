@@ -67,6 +67,7 @@ public class MollyModule extends AbstractModule {
 	public static final String TRANSPORT_PAGE = "transport:index";
 	public static final String STATUS_PAGE = "service-status:index";
 	public static final String PUBLIC_TRANSPORT = "transport:public-transport";
+	public static final String PARK_AND_RIDE = "transport:park-and-ride";
 	public static final String FAVOURITES = "favourites:index";
 	public static final String NEWS = "news:index";
 	public static final String WEBCAMS = "webcams:index";

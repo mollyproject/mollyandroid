@@ -1,4 +1,4 @@
-package org.mollyproject.android.view.apps.transport;
+package org.mollyproject.android.view.apps.transport.train;
 
 import java.io.IOException;
 import java.net.SocketException;
@@ -12,6 +12,7 @@ import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.Page;
+import org.mollyproject.android.view.apps.transport.TransportPage;
 
 import android.graphics.Color;
 import android.graphics.Typeface;

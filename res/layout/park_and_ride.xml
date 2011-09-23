@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:background="@drawable/shape_white"
+  android:layout_width="fill_parent"
+  android:paddingTop="10dp"
+  android:paddingBottom="10dp"
+  android:layout_height="wrap_content">
+    <TextView android:text="Park And Ride" 
+	    android:id="@+id/parName"
+	    android:padding="5dp"
+	    android:textSize="18dp"
+	    android:textColor="@color/black"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content">
+    </TextView>
+    <TextView android:layout_width="wrap_content" 
+	    android:padding="5dp" 
+	    android:textColor="@color/black" 
+	    android:layout_height="wrap_content" 
+	    android:text="Spaces" 
+	    android:textSize="18dp"
+	    android:id="@+id/parSpaces" 
+	    android:layout_alignParentTop="true" 
+	    android:layout_alignParentRight="true">
+	</TextView>
+    <ImageView android:layout_height="wrap_content" 
+	    android:layout_width="wrap_content"
+	    android:maxHeight="20dp"
+	    android:minHeight="20dp"
+	    android:src="@drawable/shape_gray" 
+	    android:id="@+id/spacesBar" 
+	    android:padding="5dp"
+	    android:layout_below="@+id/parName" 
+	    android:layout_alignParentLeft="true" 
+	    android:layout_alignParentRight="true">
+	</ImageView>
+	
+	<ImageView android:layout_height="wrap_content" 
+	    android:layout_width="wrap_content"
+	    android:maxWidth="100dp"
+	    android:minWidth="100dp"
+	    android:maxHeight="20dp"
+	    android:minHeight="20dp"
+	    android:src="@drawable/shape_red" 
+	    android:id="@+id/unavailBar" 
+	    android:padding="5dp"
+	    android:layout_below="@+id/parName" 
+	    android:layout_alignParentLeft="true">
+	</ImageView>
+    
+</RelativeLayout>

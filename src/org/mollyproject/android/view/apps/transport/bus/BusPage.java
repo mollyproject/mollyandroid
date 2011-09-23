@@ -1,7 +1,9 @@
-package org.mollyproject.android.view.apps.transport;
+package org.mollyproject.android.view.apps.transport.bus;
 
 import java.io.UnsupportedEncodingException;
 import org.mollyproject.android.view.apps.Page;
+import org.mollyproject.android.view.apps.transport.AutoRefreshPage;
+import org.mollyproject.android.view.apps.transport.TransportPage;
 
 import android.widget.LinearLayout;
 import android.widget.Toast;

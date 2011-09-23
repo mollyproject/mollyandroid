@@ -1,9 +1,11 @@
-package org.mollyproject.android.view.apps.transport;
+package org.mollyproject.android.view.apps.transport.train;
 
 import java.io.UnsupportedEncodingException;
 
 import org.mollyproject.android.R;
 import org.mollyproject.android.view.apps.Page;
+import org.mollyproject.android.view.apps.transport.AutoRefreshPage;
+import org.mollyproject.android.view.apps.transport.TransportPage;
 
 import android.os.Bundle;
 import android.view.Menu;

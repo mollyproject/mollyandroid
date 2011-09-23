@@ -53,8 +53,9 @@
 		<activity android:name=".view.apps.search.NewSearchPage"></activity>
 		
 		<activity android:name=".view.apps.transport.TransportPage"></activity>
-		<activity android:name=".view.apps.transport.BusPage"></activity>
-		<activity android:name=".view.apps.transport.TrainPage"></activity>
+		<activity android:name=".view.apps.transport.bus.BusPage"></activity>
+		<activity android:name=".view.apps.transport.par.ParkAndRidePage"></activity>
+		<activity android:name=".view.apps.transport.train.TrainPage"></activity>
 		
 		<activity android:name=".view.apps.podcasts.PodcastsPage"></activity>
 		<activity android:name=".view.apps.podcasts.PodcastsCategoryPage"></activity>
