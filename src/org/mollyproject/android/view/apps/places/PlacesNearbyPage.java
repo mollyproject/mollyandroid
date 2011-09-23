@@ -2,8 +2,6 @@ package org.mollyproject.android.view.apps.places;
 
 import java.io.UnsupportedEncodingException;
 
-import org.json.JSONException;
-import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
@@ -11,7 +9,6 @@ import org.mollyproject.android.view.apps.Page;
 
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PlacesNearbyPage extends ContentPage {
 	protected TextView currentLocation;

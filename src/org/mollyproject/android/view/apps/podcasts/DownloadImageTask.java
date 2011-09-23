@@ -1,7 +1,5 @@
 package org.mollyproject.android.view.apps.podcasts;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -14,7 +12,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.widget.ImageView;
 
 public class DownloadImageTask extends AsyncTask<Void, Void, Void>

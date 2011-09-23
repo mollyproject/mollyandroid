@@ -1,13 +1,9 @@
 package org.mollyproject.android.view.apps;
 
 import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
@@ -15,7 +11,6 @@ import org.mollyproject.android.controller.LocationTracker;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
-import org.mollyproject.android.view.apps.feedback.FeedbackPage;
 import org.mollyproject.android.view.apps.library.AbstractLibraryPage;
 import org.mollyproject.android.view.apps.search.NewSearchPage;
 import roboguice.activity.RoboActivity;

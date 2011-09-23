@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
-import android.view.LayoutInflater;
 import android.widget.Toast;
 
 public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {

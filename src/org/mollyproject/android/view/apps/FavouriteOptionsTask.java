@@ -1,24 +1,14 @@
 package org.mollyproject.android.view.apps;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.controller.BackgroundTask;
-import org.mollyproject.android.controller.JSONProcessingTask;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
-
-import android.widget.Toast;
 
 public class FavouriteOptionsTask extends BackgroundTask<Void, Void, Void> {
 

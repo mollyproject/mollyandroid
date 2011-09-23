@@ -1,17 +1,12 @@
 package org.mollyproject.android.view.apps.transport;
 
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
-import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.LocalActivityManager;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.LinearLayout;

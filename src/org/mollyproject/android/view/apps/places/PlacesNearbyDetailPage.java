@@ -9,7 +9,6 @@ import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.PageWithMap;
 
 import android.os.Bundle;
-import android.widget.LinearLayout;
 
 public class PlacesNearbyDetailPage extends PageWithMap{
 	protected String slug;

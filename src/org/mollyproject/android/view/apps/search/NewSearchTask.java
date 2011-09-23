@@ -3,7 +3,6 @@ package org.mollyproject.android.view.apps.search;
 import java.util.HashMap;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.BackgroundTask;
@@ -14,12 +13,7 @@ import org.mollyproject.android.view.apps.Page;
 import org.mollyproject.android.view.apps.contact.AbstractContactPage;
 import org.mollyproject.android.view.apps.library.AbstractLibraryPage;
 
-import android.content.Intent;
 import android.content.res.Resources;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.json.JSONObject;
 import org.mollyproject.android.controller.BackgroundTask;
-import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.FavouriteOptionsTask;
 import org.mollyproject.android.view.apps.Page;
 

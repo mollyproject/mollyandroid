@@ -3,7 +3,6 @@ package org.mollyproject.android.view.apps.transport;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.places.entity.PlacesResultsPage;
 
 public class BusPageRefreshTask extends BackgroundTask<Void,Void,Void>{
 	public static boolean busNeedsRefresh;

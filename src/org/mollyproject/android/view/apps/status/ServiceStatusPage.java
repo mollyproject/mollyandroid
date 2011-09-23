@@ -2,7 +2,6 @@ package org.mollyproject.android.view.apps.status;
 
 import java.io.UnsupportedEncodingException;
 
-import org.json.JSONException;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;

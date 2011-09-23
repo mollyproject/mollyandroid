@@ -2,7 +2,6 @@ package org.mollyproject.android.controller;
 
 import org.json.JSONObject;
 import org.mollyproject.android.view.apps.ContentPage;
-import org.mollyproject.android.view.apps.Page;
 
 public abstract class JSONProcessingTask extends BackgroundTask<JSONObject, Void, JSONObject>{
 	//This class can only be used for ContentPages

@@ -2,8 +2,6 @@ package org.mollyproject.android.view.apps.favourites;
 
 import java.io.UnsupportedEncodingException;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
@@ -11,7 +9,6 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -20,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class FavouritesPage extends ContentPage {

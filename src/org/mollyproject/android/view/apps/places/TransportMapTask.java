@@ -18,7 +18,6 @@ import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
 import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.PageWithMap;
 import org.mollyproject.android.view.apps.places.entity.PlacesResultsPage;
 import org.mollyproject.android.view.apps.transport.BusPageRefreshTask;
 import org.mollyproject.android.view.apps.transport.BusTask;
@@ -33,10 +32,7 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class TransportMapTask extends BackgroundTask<JSONObject,Void,JSONObject>{

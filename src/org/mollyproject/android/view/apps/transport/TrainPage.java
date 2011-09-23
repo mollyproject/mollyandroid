@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 
 import org.mollyproject.android.R;
 import org.mollyproject.android.view.apps.Page;
-import org.mollyproject.android.view.apps.podcasts.PodcastsCategoryTask;
 
 import android.os.Bundle;
 import android.view.Menu;
