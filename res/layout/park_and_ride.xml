@@ -2,7 +2,8 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
-  android:background="@drawable/shape_white"
+  android:background="@drawable/bg_white"
+  android:clickable="true"
   android:layout_width="fill_parent"
   android:paddingTop="10dp"
   android:paddingBottom="10dp"
