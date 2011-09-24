@@ -78,13 +78,13 @@ public class TransportPage extends ContentPage {
 		});
         transportPaused = false;
         firstLoad = true;
-        
         //create sub pages in the tab
         mlam.dispatchCreate(savedInstanceState);
 	}
 	@Override
 	public void onResume() {
 		name = settings.getString("name", MollyModule.PUBLIC_TRANSPORT);
+		System.out.println("Name " + name);
 		//only public transport requires the additional arguments
 		if (name.equals(MollyModule.PUBLIC_TRANSPORT))
 		{

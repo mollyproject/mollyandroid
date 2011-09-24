@@ -34,7 +34,7 @@ public class PlacesNearbyTask extends ComplexMapResultTask {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static LinearLayout parsePlaceEntity(final JSONObject entity, final Page page) throws JSONException
+	public static LinearLayout parsePlaceEntity(final JSONObject entity, final Page page, final boolean isNearbyEntity) throws JSONException
 	{
 		LinearLayout resultLayout = (LinearLayout) page.getLayoutInflater().inflate
 				(R.layout.clickable_search_result, null);
@@ -64,7 +64,7 @@ public class PlacesNearbyTask extends ComplexMapResultTask {
 				{
 					MyApplication.placesNearbySlug = entity.getString("slug");
 					Intent myIntent;
-					if (!MyApplication.isNearbyEntity)
+					if (!isNearbyEntity)
 					{
 						 myIntent = new Intent(page.getApplicationContext(), 
 								MyApplication.getPageClass(MollyModule.PLACES_NEARBY_DETAIL));
@@ -87,11 +87,11 @@ public class PlacesNearbyTask extends ComplexMapResultTask {
 
 	@Override
 	public void updateView(JSONObject jsonContent) {
-		MyApplication.isNearbyEntity = false;
+		boolean isNearbyEntity = false;
 		
-		if (jsonContent.has("entity"))
+		if (jsonContent.has("entity") & !jsonContent.isNull("entity"))
 		{
-			MyApplication.isNearbyEntity = true;
+			isNearbyEntity = true;
 			try {
 				JSONObject nearbyEntity = jsonContent.getJSONObject("entity");
 				//Notice: lon and lat are in the wrong order again
@@ -161,7 +161,8 @@ public class PlacesNearbyTask extends ComplexMapResultTask {
 						for (int i = 0; i < entityType.length(); i++)
 						{
 							JSONObject entity = entityType.getJSONObject(i);
-							LinearLayout entityLayout = parsePlaceEntity(entity, page);
+							System.out.println(isNearbyEntity);
+							LinearLayout entityLayout = parsePlaceEntity(entity, page, isNearbyEntity);
 							nearbyPlacesLayout.addView(entityLayout);
 						}
 					}
