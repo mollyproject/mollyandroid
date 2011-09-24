@@ -18,7 +18,7 @@ Functions that only works in m.ox:
 
 +/ WebLearn
 
-I recommend using dev.m for the rest of the apps
+I recommend using dev.m for mostly everything, please do not switch to m.ox if you don't use the WebLearn app.
 
 == .APK file ==
 
@@ -44,6 +44,8 @@ This .apk should be generated every time I compile the project and push, so keep
 6 - My favourite pages are: Contact Search, Results Release, Transport.
 
 7 - Pressing the Search button on your Android device brings up a new cool Search function that Tim has wanted to do on the actual site.
+
+8 - If you have waited for 20 seconds and the page is not loaded, the app might have timed out and closed the socket. Don't hesitate to do a manual refresh
 
 == Get in Touch ==
 
