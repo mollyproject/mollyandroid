@@ -3,6 +3,22 @@
 Molly Android is a front-end Android client for the Molly Project. The current
 implementation of Molly running on Molly Android is Mobile Oxford
 
+== Special Developer's features ==
+**Important**
+Molly Android now has an option in the options menu that allows the user to choose which server to use: either dev.m.ox.ac.uk or m.ox.ac.uk. This is very critical because dev.m is the developers' space, and new features are pushed here before going to staging.m and eventually m.ox, which is the popular widely used Mobile Oxford.
+
+Functions that only works in dev.m:
+
++/ Breadcrumbs bar
+
++/ The (new) TransportPage
+
+Functions that only works in m.ox:
+
++/ WebLearn
+
+I recommend using dev.m for the rest of the apps
+
 == .APK file ==
 
 Download the .apk straight to your Android device and try out Molly Android from:
