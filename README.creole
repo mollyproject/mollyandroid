@@ -29,6 +29,8 @@ This .apk should be generated every time I compile the project and push, so keep
 
 == Notice: Before using Molly Android ==
 
+0 - The application is not yet optimised for use on tablets yet.
+
 1 - I recommended using dev.m for a good reason: I based most of development on dev.m and this is the site where all the new features of Mobile Oxford goes to first
 
 2 - If the home page of the app goes all blank, please do not panic. You should check your Internet connection and do a manual refresh (as an option)
