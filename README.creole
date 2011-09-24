@@ -25,6 +25,8 @@ I recommend using dev.m for the rest of the apps
 Download the .apk straight to your Android device and try out Molly Android from:
 https://github.com/mollyproject/mollyandroid/blob/master/bin/mollyandroid.apk
 
+This .apk should be generated every time I compile the project and push, so keep an eye on this page every now and then if you want to get the newest version
+
 == Notice: Before using Molly Android ==
 
 1 - I recommended using dev.m for a good reason: I based most of development on dev.m and this is the site where all the new features of Mobile Oxford goes to first
