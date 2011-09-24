@@ -25,8 +25,6 @@ public class WeatherForecastTask extends JSONProcessingTask {
 	public void updateView(JSONObject jsonContent) {
 		try {
 			//There are 2 sections in the weather page, an observation bar and a 3-day forecast layout
-			page.getContentLayout().removeAllViews();
-			
 			//get the observation bar first:
 			JSONObject observation = jsonContent.getJSONObject("observation");
 			
@@ -97,7 +95,6 @@ public class WeatherForecastTask extends JSONProcessingTask {
 			
 			LinearLayout observationBar = (LinearLayout) page.getLayoutInflater()
 					.inflate(R.layout.weather_observation, null);
-			page.getContentLayout().addView(observationBar);
 			
 			//Forecast information
 			TextView temperatureText = (TextView) observationBar.findViewById(R.id.temperatureText);
@@ -116,7 +113,7 @@ public class WeatherForecastTask extends JSONProcessingTask {
 			JSONArray forecasts = jsonContent.getJSONArray("forecasts"); 
 			LinearLayout forecastLayout = (LinearLayout) page.getLayoutInflater().inflate(R.layout.weather_forecast, 
 					null);
-			((WeatherPage) page).getContentLayout().addView(forecastLayout);
+			
 			String dayNames[] = new DateFormatSymbols().getWeekdays();
 			Calendar cal = Calendar.getInstance();
 			
@@ -148,6 +145,9 @@ public class WeatherForecastTask extends JSONProcessingTask {
 				ImageView weatherForecastIcon = (ImageView) forecastDayLayout.findViewById(R.id.weatherForecastIcon);
 				weatherForecastIcon.setImageResource(MyApplication.getImgResourceId(forecast.getString("icon")+"_small"));
 			}
+			page.getContentLayout().removeAllViews();
+			page.getContentLayout().addView(observationBar);
+			page.getContentLayout().addView(forecastLayout);
 			((ContentPage) page).doneProcessingJSON();
 			
 		} catch (JSONException e) {

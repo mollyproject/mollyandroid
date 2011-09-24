@@ -32,9 +32,9 @@ public class FavouritesTask extends JSONProcessingTask {
 	@Override
 	public void updateView(JSONObject jsonContent) {
 		try {
-			page.getContentLayout().removeAllViews(); //clear the layout
-			
 			JSONArray favourites = jsonContent.getJSONArray("favourites");
+			
+			page.getContentLayout().removeAllViews(); //clear the layout
 			if (favourites.length() == 0)
 			{
 				//there is no favourite

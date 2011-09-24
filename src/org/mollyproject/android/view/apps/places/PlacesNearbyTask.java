@@ -112,6 +112,8 @@ public class PlacesNearbyTask extends ComplexMapResultTask {
 		}
 		
 		try {
+			JSONObject entityTypes = jsonContent.getJSONObject("entity_types");
+			
 			page.getContentLayout().removeAllViews();
 			
 			//set up an underlying white background to show the lines
@@ -121,9 +123,7 @@ public class PlacesNearbyTask extends ComplexMapResultTask {
 			nearbyPlacesLayout.setBackgroundResource(R.drawable.shape_white);
 			page.getContentLayout().addView(nearbyPlacesLayout);
 			
-			JSONObject entityTypes = jsonContent.getJSONObject("entity_types");
 			Iterator<String> entityTypeKeys = entityTypes.keys();
-			
 			//Check for empty case
 			if (!entityTypeKeys.hasNext())
 			{

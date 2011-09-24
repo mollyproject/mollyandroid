@@ -34,7 +34,6 @@ public class SearchTask extends JSONProcessingTask {
 			LayoutInflater inflater = page.getLayoutInflater();
 			LinearLayout generalResultsLayout = (LinearLayout) inflater.inflate(R.layout.general_search_results_page, 
 					null);
-			((SearchPage) page).getContentLayout().addView(generalResultsLayout);
 			
 			LinearLayout resultsLayout = (LinearLayout) generalResultsLayout.findViewById(R.id.generalResultsList);
 			
@@ -113,6 +112,8 @@ public class SearchTask extends JSONProcessingTask {
 					});
 				}
 			}
+			page.getContentLayout().removeAllViews();
+			page.getContentLayout().addView(generalResultsLayout);
 			((ContentPage) page).doneProcessingJSON();
 		} catch (JSONException e)
 		{

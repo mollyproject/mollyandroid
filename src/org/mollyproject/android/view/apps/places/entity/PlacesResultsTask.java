@@ -64,9 +64,9 @@ public class PlacesResultsTask extends JSONProcessingTask
 	@Override
 	public void updateView(JSONObject jsonContent) {
 		try {
+			JSONObject entity = jsonContent.getJSONObject("entity");
 			page.getContentLayout().removeAllViews();
 			List<OverlayItem> overlayItems= new ArrayList<OverlayItem>();
-			JSONObject entity = jsonContent.getJSONObject("entity");
 			locationNotFound = entity.isNull("location");
 			if (locationNotFound)
 			{
