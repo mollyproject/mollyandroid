@@ -25,6 +25,22 @@ I recommend using dev.m for the rest of the apps
 Download the .apk straight to your Android device and try out Molly Android from:
 https://github.com/mollyproject/mollyandroid/blob/master/bin/mollyandroid.apk
 
+== Notice: Before using Molly Android ==
+
+1 - I recommended using dev.m for a good reason: I based most of development on dev.m and this is the site where all the new features of Mobile Oxford goes to first
+
+2 - If the home page of the app goes all blank, please do not panic. You should check your Internet connection and do a manual refresh (as an option)
+
+3 - Most of the pages need a big clean (in terms of graphical interface) but about 90% of the app should be functional.
+
+4 - The app may go black before resuming from the background, it shouldn't be doing that, I am not sure why.
+
+5 - Mobile Oxford needs Internet connection to work, as does Molly Android. Some pages need better connection than others (Podcasts, Bus and Train in Transport and Webcam)
+
+6 - My favourite pages are: Contact Search, Results Release, Transport.
+
+7 - Pressing the Search button on your Android device brings up a new cool Search function that Tim has wanted to do on the actual site.
+
 == Get in Touch ==
 
 At the time of writing there are a few primary  methods of getting (free, best
