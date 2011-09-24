@@ -55,7 +55,7 @@ public class Router {
 	protected HttpClient client;
 	protected HttpGet get;
 	protected HttpPost post;
-	public static String mOX =  "http://m.ox.ac.uk/";
+	public static String mOX =  "http://dev.m.ox.ac.uk/";
 
 	public static enum OutputFormat { JSON, FRAGMENT, JS, YAML, XML, HTML };
 
