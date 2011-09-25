@@ -29,7 +29,7 @@ This .apk should be generated every time I compile the project and push, so keep
 
 == Notice: Before using Molly Android ==
 
-0 - The application is not yet optimised for use on tablets yet.
+0 - The application is not yet optimised for use on tablets.
 
 1 - I recommended using dev.m for a good reason: I based most of development on dev.m and this is the site where all the new features of Mobile Oxford goes to first
 
@@ -39,13 +39,13 @@ This .apk should be generated every time I compile the project and push, so keep
 
 4 - The app may go black before resuming from the background, it shouldn't be doing that, I am not sure why.
 
-5 - Mobile Oxford needs Internet connection to work, as does Molly Android. Some pages need better connection than others (Podcasts, Bus and Train in Transport and Webcam)
+5 - Mobile Oxford needs Internet connection to work, so does Molly Android. Some pages need better connection than others (Podcasts, Bus and Train in Transport and Webcam.)
 
 6 - My favourite pages are: Contact Search, Results Release, Transport.
 
 7 - Pressing the Search button on your Android device brings up a new cool Search function that Tim has wanted to do on the actual site.
 
-8 - If you have waited for 20 seconds and the page is not loaded, the app might have timed out and closed the socket. Don't hesitate to do a manual refresh
+8 - If you have waited for 20 seconds and the page is not loaded, the app might have timed out and closed the socket. Don't hesitate to do a manual refresh.
 
 == Get in Touch ==
 
