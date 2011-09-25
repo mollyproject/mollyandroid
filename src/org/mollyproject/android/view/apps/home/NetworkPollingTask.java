@@ -1,14 +1,9 @@
 package org.mollyproject.android.view.apps.home;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.mollyproject.android.controller.BackgroundTask;
 import org.mollyproject.android.controller.MyApplication;
@@ -49,25 +44,9 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 				}
 				return new ImageAdapter(page, appsList);
 			}
-		} catch (MalformedURLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			malformedURLException = true;
-		} catch (JSONException e) {
-			e.printStackTrace();
-			jsonException = true;
-		} catch (NullPointerException e)
-		{
-			e.printStackTrace();
-			nullPointerException = true;
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			unknownHostException = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			ioException = true;
-		} catch (ParseException e) {
-			e.printStackTrace();
-			parseException = true;
+			otherException = true;
 		}
 		return null;
 	}
