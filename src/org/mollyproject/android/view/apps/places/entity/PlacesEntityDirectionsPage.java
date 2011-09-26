@@ -27,8 +27,7 @@ public class PlacesEntityDirectionsPage extends PageWithMap{
 
 	@Override
 	public String getQuery() throws UnsupportedEncodingException {
-		// TODO Auto-generated method stub
-		return null;
+		return "&type=" + MyApplication.transportation;
 	}
 
 	@Override

@@ -50,6 +50,7 @@ public class MyApplication extends RoboApplication {
 	public static Map<String,Bitmap> podcastIconsCache = new HashMap<String,Bitmap>();
 	public static JSONObject transportCache = null;
 	public static String lastTransportTag = new String();
+	public static String transportation = new String();
 	public static JSONObject currentLocation = null; //the fields of interest are: String name, String accuracy and JSONArray history 
 	public static String csrfToken = null; //should be set once per session in CookieManager.storeCookies()
 	public static JSONArray availableApps = null; //all available apps for the current session

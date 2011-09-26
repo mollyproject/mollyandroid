@@ -11,11 +11,6 @@
     </item>
     
     <item android:enabled="true" 
-	    android:id="@+id/manage_favourites" 
-	    android:visible="true" android:title="Manage Favourites">
-    </item>
-    
-    <item android:enabled="true" 
 	    android:id="@+id/favourite" 
 	    android:visible="true" 
 	    android:title="Favourite" 
@@ -44,6 +39,11 @@
 		    android:visible="false" 
 		    android:enabled="false"/>
     </group>
+    
+    <item android:enabled="true" 
+	    android:id="@+id/manage_favourites" 
+	    android:visible="true" android:title="Manage Favourites">
+    </item>
     
     <item android:id="@+id/feedback" 
 	    android:title="Feedback" android:visible="true">

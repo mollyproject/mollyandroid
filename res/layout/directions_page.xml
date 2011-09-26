@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:background="@drawable/bg_white"
+  android:layout_height="wrap_content">
+    <ScrollView android:layout_height="wrap_content" 
+     android:id="@+id/directionsScroll" 
+     android:layout_width="fill_parent">
+        <LinearLayout android:id="@+id/directionsList" 
+        android:layout_width="fill_parent" 
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+            <TextView android:textSize="18dp"
+	            android:layout_width="wrap_content" 
+	            android:id="@+id/directionsHeader" 
+	            android:text="Results" 
+	            android:textColor="@color/black" 
+	            android:layout_gravity="center_vertical" 
+	            android:textStyle="bold" 
+	            android:layout_height="wrap_content"
+	            android:padding="5dp"> 
+            </TextView>
+            
+            <LinearLayout 
+	            android:id="@+id/buttonsLayout" 
+	            android:layout_height="wrap_content"
+	            android:paddingLeft="5dp"
+	            android:paddingRight="5dp"
+	            android:paddingBottom="5dp"
+	            android:layout_width="fill_parent">
+	            <ToggleButton android:textOn="Foot" 
+	            	android:textOff="Foot"
+		            android:id="@+id/footButton" 
+		            android:layout_width="fill_parent"
+		            android:layout_weight="1" 
+		            android:checked="false"
+		            android:layout_height="wrap_content"/>
+		            
+	            <ToggleButton android:textOn="Bicycle"
+	            	android:textOff="Bicycle" 
+		            android:id="@+id/bicycleButton"
+		            android:layout_width="fill_parent"
+		            android:layout_weight="1" 
+		            android:checked="false"
+		            android:layout_height="wrap_content"/>
+		            
+	            <ToggleButton android:textOn="Car"
+	            	android:textOff="Car" 
+		            android:id="@+id/carButton"
+		            android:layout_width="fill_parent"
+		            android:layout_weight="1" 
+		            android:checked="false"
+		            android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

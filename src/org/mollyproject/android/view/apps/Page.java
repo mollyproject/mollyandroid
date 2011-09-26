@@ -69,6 +69,14 @@ public abstract class Page extends RoboActivity {
 		//save state for next session
 		super.onSaveInstanceState(outState);
 		
+		//save state: transportation mean (directions page)
+		try {
+			outState.putString("transportation", MyApplication.transportation);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
+		
 		//save state: last transport tag
 		try {
 			outState.putString("lastTransportTag", MyApplication.lastTransportTag);
@@ -226,6 +234,14 @@ public abstract class Page extends RoboActivity {
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		//restore instance state
 		super.onRestoreInstanceState(savedInstanceState);
+		
+		//load state: transportation mean (directions page)
+		try {
+			MyApplication.transportation = savedInstanceState.getString("transportation");
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Do nothing
+		}
 		
 		//load state: last transport tag
 		try {
