@@ -87,8 +87,6 @@ public class FavouritesTask extends JSONProcessingTask {
 				favouriteText.setText(Html.fromHtml((i + 1) + ". " + metadata.getString("title") + "<br/>" 
 							+ metadata.getString("additional")));
 				
-				ImageButton removeFav = (ImageButton) favouriteLayout.findViewById(R.id.removeFav);
-				
 			}
 			
 			

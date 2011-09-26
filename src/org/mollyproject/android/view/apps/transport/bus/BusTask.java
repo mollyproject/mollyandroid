@@ -45,7 +45,6 @@ public class BusTask extends BackgroundTask<JSONObject,Void,JSONObject>{
 			{
 				pageTitleText = "Cannot get info about your current location, you might want to check the Your Location option again.";
 			}
-			pageTitleText = pageTitleText;
 			
 			pageTitle.setText(pageTitleText);
 			LinearLayout busLayout = (LinearLayout) transportLayout.findViewById(R.id.transportDetailsLayout);

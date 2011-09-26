@@ -1,10 +1,5 @@
 package org.mollyproject.android.controller;
 
-import java.io.IOException;
-import java.net.SocketException;
-import java.text.ParseException;
-
-import org.json.JSONException;
 import org.mollyproject.android.view.apps.Page;
 
 import android.app.ProgressDialog;
