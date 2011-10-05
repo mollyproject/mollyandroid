@@ -22,7 +22,7 @@ I recommend using dev.m for mostly everything, please do not switch to m.ox if y
 
 == .APK file ==
 
-[Last updated on 26 Sep 2011]
+[Last updated on 5 Oct 2011]
 
 Download the .apk straight to your Android device and try out Molly Android from:
 https://github.com/mollyproject/mollyandroid/blob/master/bin/mollyandroid.apk
