@@ -19,11 +19,13 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PlacesResultsTask extends JSONProcessingTask
 {
@@ -57,7 +59,15 @@ public class PlacesResultsTask extends JSONProcessingTask
 			}
 		});
 		unitLayout.setLayoutParams(Page.paramsWithLine);
-		unitText.setText(oxpoint);
+		
+		if (jsonValue.has("title"))
+		{
+			unitText.setText("title");
+		}
+		else
+		{
+			unitText.setText(oxpoint);
+		}
 		return unitLayout;
 	}
 
@@ -84,6 +94,43 @@ public class PlacesResultsTask extends JSONProcessingTask
 		        		jsonOxpoints.getDouble("geo_long"));
 		        
 		        //extra information: parent unit
+		        if (entity.has("parent"))
+		        {
+		        	if (!entity.isNull("parent"))
+		        	{
+		        		LinearLayout parentLayout = (LinearLayout) page.getLayoutInflater().inflate
+		        				(R.layout.general_search_results_page, null);
+		        		parentLayout.setBackgroundResource(R.drawable.shape_white);
+		        		TextView headerText = (TextView) parentLayout.findViewById(R.id.searchResultsHeader);
+		        		headerText.setText("Parent unit:");
+		        		headerText.setTextColor(Color.BLACK);
+		        		page.getContentLayout().addView(parentLayout);
+		        		
+			        	final JSONObject parentUnit = entity.getJSONObject("parent");
+		        		//LinearLayout parent = parseOxpoint(parentUnit, page);
+			        	LinearLayout parent = (LinearLayout) page.getLayoutInflater().inflate(R.layout.clickable_search_result, null);
+			        	((TextView) parent.findViewById(R.id.clickableResultText)).setText(parentUnit.getString("title"));
+			        	
+			        	parent.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								try {
+									MyApplication.placesArgs[0] = parentUnit.getString("identifier_scheme");
+									MyApplication.placesArgs[1] = parentUnit.getString("identifier_value");
+									Intent myIntent = new Intent(page.getApplicationContext(), MyApplication.getPageClass(MollyModule.PLACES_ENTITY));
+									page.startActivityForResult(myIntent, 0);
+								} catch (Exception e) {
+									e.printStackTrace();
+									Toast.makeText(page.getApplicationContext(), "This operation is currently not available. Please try again later.", 
+											Toast.LENGTH_SHORT).show();
+								}
+							}
+						});
+			        	parent.setLayoutParams(Page.paramsWithLine);
+		        		parentLayout.addView(parent);
+		        	}
+		        }
+		        /*
 		        if (jsonOxpoints.has("dct_isPartOf"))
 		        {
 		        	if (!jsonOxpoints.isNull("dct_isPartOf"))
@@ -92,7 +139,8 @@ public class PlacesResultsTask extends JSONProcessingTask
 		        		LinearLayout parent = parseOxpoint(parentUnit, page);
 		        		page.getContentLayout().addView(parent);
 		        	}
-		        }
+		        }*/
+		        
 		        //extra info: children units
 		        if (jsonOxpoints.has("passiveProperties"))
 		        {
@@ -100,9 +148,20 @@ public class PlacesResultsTask extends JSONProcessingTask
 		        	if (passiveProperties.has("dct_isPartOf"))
 		        	{
 		        		JSONArray children = passiveProperties.getJSONArray("dct_isPartOf");
+		        		
+		        		LinearLayout childrenLayout = (LinearLayout) page.getLayoutInflater().inflate
+		        				(R.layout.general_search_results_page, null);
+		        		childrenLayout.setBackgroundResource(R.drawable.shape_white);
+		        		TextView headerText = (TextView) childrenLayout.findViewById(R.id.searchResultsHeader);
+		        		headerText.setText("Children unit(s):");
+		        		headerText.setTextColor(Color.BLACK);
+		        		page.getContentLayout().addView(childrenLayout);
+		        		
 			        	for (int i = 0; i < children.length(); i++)
 			        	{
-			        		page.getContentLayout().addView(parseOxpoint(children.getJSONObject(i), page));
+			        		LinearLayout child = parseOxpoint(children.getJSONObject(i), page);
+			        		child.setLayoutParams(Page.paramsWithLine);
+			        		childrenLayout.addView(child);
 			        	}
 		        	}
 		        }
