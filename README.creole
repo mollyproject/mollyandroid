@@ -29,6 +29,20 @@ https://github.com/mollyproject/mollyandroid/blob/master/bin/mollyandroid.apk
 
 This .apk should be generated every time I compile the project and push, so keep an eye on this page every now and then if you want to get the newest version
 
+== Javadoc Generation using Ant ==
+
+There is an Ant build file called "javadoc.xml" included in the project folder. When being run, this Ant build file will create a new folder called "doc" in the project folder, and generate the javadoc for the whole project in it.
+
+In order for this Ant build file to function properly, it has to be edited in the following way:
+
++/ First open the file with any text editor/IDE.
+
++/ Find the field "classpath".
+
++/ Point the first element in the path list to the path of the android.jar currently in use on your machine (in this case, I am currently using API level 7, and on a Linux SDK)
+
++/ Run the Ant build by either the Run settings in Eclipse or by the command line: "ant -buildfile javadoc.xml" (without quotes) in a command prompt if Ant has been correctly installed.
+
 == Notice: Before using Molly Android ==
 
 0 - The application is not yet optimised for use on tablets.
