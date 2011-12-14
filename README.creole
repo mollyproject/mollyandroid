@@ -31,7 +31,7 @@ This .apk should be generated every time I compile the project and push, so keep
 
 == Javadoc Generation using Ant ==
 
-There is an Ant build file called "javadoc.xml" included in the project folder. When being run, this Ant build file will create a new folder called "doc" in the project folder, and generate the javadoc for the whole project in it.
+I decided to create an entry here because it took me a long time to figure it out, and may future maintainers run into problems, there is always a point of reference. There is an Ant build file called "javadoc.xml" included in the project folder. When being run, this Ant build file will create a new folder called "doc" in the project folder, and generate the javadoc for the whole project in it.
 
 In order for this Ant build file to function properly, it has to be edited in the following way:
 
