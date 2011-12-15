@@ -7,23 +7,83 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
+/**
+ * the class that is behind the background tasks used in Molly Android,
+ * on this (abstract) level it handles all the exceptions and dialogs
+ * 
+ * @author famanson
+ *
+ * @param <A> the input for doInBackGround()
+ * @param <B> the input for onProgressUpdate()
+ * @param <C> the input for onPostExecute() and the output of doInBackground()
+ * 
+ * @see AsyncTask
+ */
 public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
+	/**
+	 * boolean flag set to true when a jsonException is found
+	 */
 	protected boolean jsonException = false;
+	/**
+	 * boolean flag set to true when a unknownHostException is found
+	 */
 	protected boolean unknownHostException = false;
+	/**
+	 * boolean flag set to true when a ioException is found
+	 */
 	protected boolean ioException = false;
+	/**
+	 * boolean flag set to true when a operationException is found
+	 */
 	protected boolean operationException = false;
+	/**
+	 * boolean flag set to true when a otherException (i.e. unexpected exception) is found
+	 */
 	protected boolean otherException = false;
+	/**
+	 * boolean flag set to true when a malformedURLException is found
+	 */
 	protected boolean malformedURLException = false;
+	/**
+	 * boolean flag set to true when a nullPointerException is found
+	 */
 	protected boolean nullPointerException = false;
-	protected boolean parseException = false; 
+	/**
+	 * boolean flag set to true when a parseException is found
+	 */
+	protected boolean parseException = false;
+	/**
+	 * boolean flag set to true when the Page given is to be destroyed after failure, must be initialised
+	 */
 	protected boolean toDestroyPageAfterFailure;
+	/**
+	 * boolean flag set to true when a Page needs to be destroyed at runtime 
+	 */
 	protected boolean destroyPlease;
+	/**
+	 * the Page that the task is executed on
+	 */
 	protected Page page;
+	/**
+	 * the progress dialog seen when the task is running
+	 */
 	protected ProgressDialog pDialog;
+	/**
+	 * boolean flag indicates whether the dialog should be visible or not
+	 */
 	protected boolean dialogEnabled;
+	/**
+	 * a reference to the global application state
+	 */
 	protected MyApplication myApp;
 	
+	/**
+	 * the constructor of a background task
+	 * 
+	 * @param page the Page that the task is executed on  
+	 * @param toDestroyPageAfterFailure whether the page should be destroyed in case of failure
+	 * @param dialogEnabled whether the dialog for the task is visible 
+	 */
 	public BackgroundTask(Page page, boolean toDestroyPageAfterFailure, boolean dialogEnabled)
 	{
 		super();
@@ -34,6 +94,9 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		myApp = (MyApplication) page.getApplication();
 	}
 	
+	/**
+	 * called before doInBackground(), spawns the dialog if needed 
+	 */
 	@Override
 	protected void onPreExecute()
 	{
@@ -48,6 +111,11 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 			});
 		}
 	}
+	
+	/**
+	 * called instead of onPostExecute() when the task is cancelled, in this case also when 
+	 * the user cancels the dialog (by pressing the Back key) 
+	 */
 	@Override
 	protected void onCancelled() {
 		super.onCancelled();
@@ -65,6 +133,10 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		page = null;
 	}
 	
+	/**
+	 * called after the execution is done, this is where all the exceptions are handled,
+	 * where the page is properly destroyed if needed and where the progress dialog is dismissed
+	 */
 	@Override
 	protected void onPostExecute(C outputs)
 	{
@@ -138,5 +210,10 @@ public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 		}
 		Page.manualRefresh = false;
 	}
+	/**
+	 * an abstract method for updating the layout of the page, for use in concrete subclasses,
+	 * it is called in the onPostExecute() method if the outputs of doInBackground is not null
+	 * @param outputs the outputs of doInBackground()
+	 */
 	public abstract void updateView(C outputs);
 }
