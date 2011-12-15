@@ -13,8 +13,23 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.widget.LinearLayout;
 
+/**
+ * the Splash screen that first appears when launching the app
+ */
 public class Splash extends Page {
-	protected boolean splashed = false; //this records whether the splash page has been shown in the session
+	/**
+	 * records whether the splash page has been shown in the session
+	 */
+	protected boolean splashed = false;
+	
+	/**
+	 * on creation, it spawns a thread in the background that
+	 * sleeps for 3 seconds before starting the next Activity (HomePage)
+	 *  
+	 * @param savedInstanceState carries the saved instance state of the activity
+	 * 
+	 * @see Activity
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -44,56 +59,80 @@ public class Splash extends Page {
 			};
 		}.start();
 	}
-	
+	/**
+	 * on resume, in case the splash page is navigated to from the home page, just skip it
+	 */
 	@Override 
 	public void onResume()
 	{
 		super.onResume();
 		if (splashed)
 		{
-			//in case the splash page is navigated to from the home page, just skip it
 			finish();
 		}
 		splashed = true;
 	}
 	
+	/**
+	 * @return an instance of itself
+	 * 
+	 * @see Page
+	 */
 	@Override
 	public Page getInstance() {
 		return this;
 	}
-
+	
+	/**
+	 * @return its assigned name
+	 * 
+	 * @see Page
+	 * 
+	 */
 	@Override
 	public String getName() {
 		return MollyModule.SPLASH;
 	}
-
+	
+	/**
+	 * no query to pass on
+	 * 
+	 * @return just the null object
+	 */
 	@Override
 	public String getQuery() throws UnsupportedEncodingException {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	/**
+	 * no additional params to pass on
+	 * 
+	 * @return just the null object
+	 */
 	@Override
 	public String getAdditionalParams() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
+	/**
+	 * no content layout available
+	 * 
+	 * @return just the null object
+	 */
 	@Override
 	public LinearLayout getContentLayout() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	/**
+	 * no content layout available so does nothing
+	 * 
+	 */
 	@Override
 	public void setContentLayout(LinearLayout contentLayout) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-		
 	}
 }
