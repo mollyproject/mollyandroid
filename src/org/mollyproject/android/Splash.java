@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 /**
  * the Splash screen that first appears when launching the app
+ * @author famanson
  */
 public class Splash extends Page {
 	/**
