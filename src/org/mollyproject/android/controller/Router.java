@@ -202,12 +202,29 @@ public class Router {
 		System.out.println("GET Request");
 		String urlStr = reverse(locator,arg);
 		String outputStr = new String();
+		String formatStr = "?format=";
 		switch(format){
 			//Depending on the format wanted, get the output
 			case JSON:
-				urlStr = urlStr+"?format=json";
+				formatStr+="json";
+				break;
+			case FRAGMENT:
+				formatStr+="fragment";
+				break;
+			case JS:
+				formatStr+="js";
+				break;
+			case HTML:
+				formatStr+="html";
+				break;
+			case XML:
+				formatStr+="xml";
+				break;
+			case YAML:
+				formatStr+="yaml";
 				break;
 		}
+		urlStr = urlStr+formatStr;
 		
 		if (query != null)
 		{
