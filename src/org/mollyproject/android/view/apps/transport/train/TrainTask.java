@@ -186,8 +186,8 @@ public class TrainTask extends BackgroundTask<JSONObject, Void, JSONObject> {
 			}
 			else 
 			{
-				JSONObject jsonContent = MyApplication.router.onRequestSent(page.getName(), 
-						page.getAdditionalParams(), Router.OutputFormat.JSON, page.getQuery());
+				JSONObject jsonContent = MyApplication.router.requestJSON(page.getName(), 
+						page.getAdditionalParams(), page.getQuery());
 				MyApplication.transportCache = jsonContent;
 				return jsonContent;
 			}

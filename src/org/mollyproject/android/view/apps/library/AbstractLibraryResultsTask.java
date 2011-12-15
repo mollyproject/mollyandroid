@@ -50,9 +50,8 @@ public abstract class AbstractLibraryResultsTask<A,B,C> extends BackgroundTask<A
 		if (!cache.containsKey(query) || 
 				(cache.containsKey(query) & cache.get(query).size()<=curPageNum))
 		{
-			JSONObject nextResults = MyApplication.router.onRequestSent(
-					page.getName(), null,
-					Router.OutputFormat.JSON, ((LibraryResultsPage) page).getQuery()+"&page="+curPageNum);
+			JSONObject nextResults = MyApplication.router.requestJSON(
+					page.getName(), null, ((LibraryResultsPage) page).getQuery()+"&page="+curPageNum);
 			nextJSONPage = nextResults.getJSONObject("page");
 			MyApplication.libraryCache.put(query, nextJSONPage);
 		}

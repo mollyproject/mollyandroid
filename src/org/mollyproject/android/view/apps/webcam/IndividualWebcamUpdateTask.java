@@ -78,8 +78,7 @@ public class IndividualWebcamUpdateTask extends JSONProcessingTask {
 			}
 			else 
 			{
-				jsonContent = MyApplication.router.onRequestSent(page.getName(), page.getAdditionalParams(), 
-						Router.OutputFormat.JSON, null);
+				jsonContent = MyApplication.router.requestJSON(page.getName(), page.getAdditionalParams(), null);
 				MyApplication.webcamCache = jsonContent;
 			}
 			//download the image, these images cannot be reused so no need to cache them

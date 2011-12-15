@@ -164,7 +164,7 @@ public class WebLearnPageTask extends JSONProcessingTask {
 		protected JSONObject doInBackground(JSONObject... params) {
 			//this task has its own download procedure because the query is a bit different than normal and it uses MollyModule.WEBLEARN anyway
 			try {
-				return MyApplication.router.onRequestSent(page.getName(), null, Router.OutputFormat.JSON, "&force_login");
+				return MyApplication.router.requestJSON(page.getName(), null, "&force_login");
 			} catch (Exception e) {
 				e.printStackTrace();
 				operationException = true;

@@ -14,7 +14,7 @@ public abstract class JSONProcessingTask extends BackgroundTask<JSONObject, Void
 	@Override
 	protected JSONObject doInBackground(JSONObject... params) {
 		try {
-			JSONObject newJSONContent = (MyApplication.router.onRequestSent(page.getName(), page.getAdditionalParams(), Router.OutputFormat.JSON, page.getQuery()));
+			JSONObject newJSONContent = (MyApplication.router.requestJSON(page.getName(), page.getAdditionalParams(), page.getQuery()));
 			((ContentPage) page).setJSONContent(newJSONContent);
 			return newJSONContent;
 		} catch (Exception e) {

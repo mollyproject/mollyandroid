@@ -27,9 +27,8 @@ public class NetworkPollingTask extends BackgroundTask<Void,Void,ImageAdapter>
 			if (!appsLoaded)
 			{
 				System.out.println("Router called");
-	    		JSONObject output = MyApplication.router.onRequestSent(
-						page.getName(), null,
-						Router.OutputFormat.JSON,null);
+	    		JSONObject output = MyApplication.router.requestJSON(
+						page.getName(), null, null);
 				
 				JSONArray availableApps = output.getJSONArray("applications");
 				MyApplication.availableApps = availableApps;

@@ -168,21 +168,21 @@ public class Router {
 		return getFrom(reverseReq);
 	}
 	
-	public synchronized JSONObject onRequestSent(String locator, String arg, OutputFormat format, String query) 
-				throws JSONException, ParseException, IllegalArgumentException, MalformedURLException, SocketException, IOException 
+	public synchronized JSONObject requestJSON(String locator, String arg, String query) 
+			throws JSONException, IOException, ParseException
 	{
-		/*basic method for all requests for json response, it sets up a url to be sent
+		return (new JSONObject(onRequestSent(locator, arg, OutputFormat.JSON, query)));
+	}
+	
+	public synchronized String onRequestSent(String locator, String arg, OutputFormat format, String query) 
+			throws JSONException, IOException, ParseException 
+	{
+		/*basic method for all GET requests to the Molly server, it sets up a url to be sent
 		  to the server as follow:
 		  1. it looks up the url to the required page using the reverse api with either the
 		  view_name only or both the view_name and the extra argument (arg)
 		  2. then it returns the url, and open a connection to that one itself
 		  3. get the response
-		  For now it seems quite pointless in including the switch statement and the 
-		  format parameters, but I will change this in the future if some other formats are needed,
-		  for now JSON is the sole choice and the method only needs to return JSON
-		  
-		  this method is also to be included in AsyncTask subclasses where no UI is allowed
-		  in the doInBackground method
 		*/
 		if (!firstReq)
 		{
@@ -203,10 +203,10 @@ public class Router {
 		String urlStr = reverse(locator,arg);
 		String outputStr = new String();
 		switch(format){
-		//Depending on the format wanted, get the output
-		case JSON:
-			urlStr = urlStr+"?format=json";
-			break;
+			//Depending on the format wanted, get the output
+			case JSON:
+				urlStr = urlStr+"?format=json";
+				break;
 		}
 		
 		if (query != null)
@@ -228,7 +228,7 @@ public class Router {
 			firstReq = false;
 		}
 		
-        return new JSONObject(outputStr);
+        return outputStr;
 	}
 	
 	public List<String> post(List<NameValuePair> arguments, String url) throws ClientProtocolException, IOException

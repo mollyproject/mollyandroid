@@ -107,8 +107,8 @@ public abstract class ContentPage extends Page {
 		protected JSONObject doInBackground(Void... arg0) {
 			//Download the breadcrumbs
 			try {
-				jsonContent = MyApplication.router.onRequestSent(getName(), 
-						getAdditionalParams(), Router.OutputFormat.JSON, getQuery());
+				jsonContent = MyApplication.router.requestJSON(getName(), 
+						getAdditionalParams(), getQuery());
 				jsonDownloaded = true;
 				return jsonContent;
 			} catch (Exception e) {
