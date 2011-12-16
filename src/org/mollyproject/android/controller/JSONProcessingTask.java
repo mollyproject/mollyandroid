@@ -16,7 +16,6 @@ public abstract class JSONProcessingTask extends BackgroundTask<JSONObject, Void
 	 * @param toDestroyPageAfterFailure whether the page should be destroyed in case of failure
 	 * @param dialogEnabled whether the dialog for the task is visible
 	 * 
-	 * @see BackgroundTask	 
 	 * */
 	public JSONProcessingTask(ContentPage page, boolean toDestroyPageAfterFailure,
 			boolean dialogEnabled) {

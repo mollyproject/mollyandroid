@@ -29,7 +29,6 @@ public class Splash extends Page {
 	 *  
 	 * @param savedInstanceState carries the saved instance state of the activity
 	 * 
-	 * @see Activity
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState)

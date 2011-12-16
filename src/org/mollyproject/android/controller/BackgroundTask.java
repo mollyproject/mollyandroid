@@ -17,7 +17,6 @@ import android.widget.Toast;
  * @param <B> the input for onProgressUpdate()
  * @param <C> the input for onPostExecute() and the output of doInBackground()
  * 
- * @see AsyncTask
  */
 public abstract class BackgroundTask<A, B, C> extends AsyncTask<A, B, C> {
 	/**
