@@ -95,7 +95,7 @@ public class Splash extends Page {
 	}
 	
 	/**
-	 * no query to pass on
+	 * no query to pass on, returns null
 	 * 
 	 * @return just the null object
 	 */
@@ -105,7 +105,7 @@ public class Splash extends Page {
 	}
 	
 	/**
-	 * no additional params to pass on
+	 * no additional params to pass on, returns null
 	 * 
 	 * @return just the null object
 	 */
@@ -114,7 +114,7 @@ public class Splash extends Page {
 		return null;
 	}
 	/**
-	 * no content layout available
+	 * no content layout available, returns null
 	 * 
 	 * @return just the null object
 	 */
@@ -131,7 +131,10 @@ public class Splash extends Page {
 	public void setContentLayout(LinearLayout contentLayout) {
 		
 	}
-
+	
+	/**
+	 * no need to refresh, does nothing
+	 */
 	@Override
 	public void refresh() {
 	}
