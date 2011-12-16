@@ -27,20 +27,33 @@ import android.content.Context;
      * with java.net.URL and java.net.URLConnection
      * objects.
      * 
+     * Original code by Ian Brown - I customised it so that everything
+     * is in JSON format and stored nicely in a text file
      * 
-     *     @author Ian Brown
+     * @author Ian Brown
      *     
-     *     Original code by Ian Brown - I customised it so that everything
-     *     is in JSON format and stored nicely in a text file
      **/
 
 public class CookieManager {
-    
+    /**
+     * the file where the cookies are stored under text format
+     */
 	private final static String COOKIESFILE = "cookiesFile.txt";
+	/**
+	 * the file object for the cookies file
+	 */
 	protected File cookiesFile;
-	//protected Context context;
+	/**
+	 * a reference to the application state
+	 */
 	protected MyApplication myApp;
-	protected JSONObject jsonCookies; //store the cookies in JSON format
+	/**
+	 * the cookies in JSON format
+	 */
+	protected JSONObject jsonCookies; 
+	/**
+	 * a cookies store
+	 */
 	protected BasicCookieStore basicCookies;
 	
     private static final String PATH = "Path";
@@ -50,8 +63,19 @@ public class CookieManager {
     private static final String NULL = "/";
     private static final String EXPIRES = "expires";
     private static final String DATE_FORMAT_WITHOUT_TIMEZONE = "EEE MMM dd hh:mm:ss yyyy";
+    /**
+     * the date format (with the time zone removed to match the cookies date format
+     */
     private DateFormat dateFormatWithoutTimeZone;
-
+    
+    /**
+     * initiates the cookies store if there isn't one, or look into the cookies file and pull the cookies from there
+     * 
+     * @param myApp the application state
+     * @throws IOException
+     * @throws JSONException
+     * @throws ParseException
+     */
     public CookieManager(MyApplication myApp) throws IOException, JSONException, ParseException {
     	this.myApp = myApp;
     	dateFormatWithoutTimeZone = new SimpleDateFormat(DATE_FORMAT_WITHOUT_TIMEZONE);
@@ -79,6 +103,13 @@ public class CookieManager {
     	
     }    
     
+    /**
+     * stores the cookies store into the cookies file while clearing all expired cookies
+     * 
+     * @param cookieStore the cookies store
+     * @throws JSONException
+     * @throws IOException
+     */
     public void storeCookies(CookieStore cookieStore) throws JSONException, IOException
     {   
     	//this should only be called when:
@@ -115,14 +146,23 @@ public class CookieManager {
     	MyApplication.csrfToken = getCSRFToken();
     }
     
+    /**
+     * getter for the cookies store
+     * @return the cookies store
+     */
     public BasicCookieStore getCookieStore()
     {
     	return basicCookies;
     }
     
+    /**
+     * reconstruct a totally new cookies store from the JSON data
+     * @return a new cookies store based on what is given in the JSON cookies
+     * @throws JSONException
+     * @throws ParseException
+     */
     public BasicCookieStore getNewCookieStore() throws JSONException, ParseException
     {
-    	//reconstruct a totally new basic cookie store from the json data
     	BasicCookieStore basicCookieStore = new BasicCookieStore();
     	
 		//append the cookies part with Set-cookies as the header
@@ -149,12 +189,23 @@ public class CookieManager {
 		return basicCookieStore;
     }
     
+    /**
+     * getter for the CSRF token stored in the cookies
+     * @return the CSRF Token
+     * @throws JSONException
+     */
     public String getCSRFToken() throws JSONException
     {
     	System.out.println((String) ((JSONObject) jsonCookies.get("csrftoken")).getString("value"));
     	return (String) ((JSONObject) jsonCookies.get("csrftoken")).getString("value");
     }
     
+    /**
+     * read the cookies from the cookies file to store
+     * @return the cookies in JSON format as a String
+     * @throws IOException
+     * @throws JSONException
+     */
     public String readCookiesFromFile() throws IOException, JSONException
     {
     	//Assuming the file exists
@@ -171,6 +222,10 @@ public class CookieManager {
     	return null;
     }
     
+    /**
+     * overwrite the current (JSON) cookies into the cookies file to store
+     * @throws IOException
+     */
     public void writeCookiesToFile() throws IOException
     {
     	File dir = myApp.getFilesDir();
