@@ -40,8 +40,12 @@ import org.mollyproject.android.view.apps.weblearn.signup.WebLearnSignupSitePage
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+/**
+ * config class, holds constant strings and bindings, etc for dependency injection and various other use
+ * @author famanson
+ *
+ */
 public class MollyModule extends AbstractModule {
-	//Config class, holds constant strings and bindings, etc for use in MyApplication and various other places
 	
 	public static final String HOME_PAGE = "home:index";
 	public static final String RESULTS_PAGE = "results:index";
@@ -83,6 +87,9 @@ public class MollyModule extends AbstractModule {
 	public static final String WEBLEARN_SIGNUP_EVENT = "weblearn:signup-event";
 	public static String SPLASH = "splash";
 	
+	/**
+	 * this method is part of the RoboGuice library setup and holds 2 types of bindings: constant values for identifying resources and annotated subclasses of Page for dependency injection
+	 */
 	@Override
 	protected void configure() {
 		//views and drawables for contact page 
