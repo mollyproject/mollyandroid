@@ -39,7 +39,9 @@ In order for this Ant build file to function properly, it has to be edited in th
 
 +/ Find the field "classpath".
 
-+/ Point the first element in the path list to the path of the android.jar currently in use on your machine (in this case, I am currently using API level 7, and on a Linux SDK)
++/ Point the first element in the path list to the path of the android.jar currently in use on your machine (in this case, I am currently using API level 7, and on a Linux SDK, so: "classpath="/usr/java/android-sdk-linux/platforms/android-7/android.jar:..."")
+
++/ Change the content of the "link href" field to wherever the location of the existing doc reference is (for local use, something like: "<link href="/usr/java/android-sdk-linux/docs/reference"/>" is sufficient) 
 
 +/ Run the Ant build by either the Run settings in Eclipse or by the command line: "ant -buildfile javadoc.xml" (without quotes) in a command prompt if Ant has been correctly installed.
 
