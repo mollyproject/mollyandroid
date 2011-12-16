@@ -69,7 +69,7 @@ public class CookieManager {
     private DateFormat dateFormatWithoutTimeZone;
     
     /**
-     * initiates the cookies store if there isn't one, or look into the cookies file and pull the cookies from there
+     * the class constructor initiates the cookies store if there isn't one, or look into the cookies file and pull the cookies from there
      * 
      * @param myApp the application state
      * @throws IOException
