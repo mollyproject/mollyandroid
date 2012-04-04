@@ -22,10 +22,10 @@ I recommend using dev.m for mostly everything, please do not switch to m.ox if y
 
 == .APK file ==
 
-[Last updated on 5 Oct 2011]
+[Last updated on 4 Apr 2012]
 
 Download the .apk straight to your Android device and try out Molly Android from:
-https://github.com/mollyproject/mollyandroid/blob/master/bin/mollyandroid.apk
+https://github.com/mollyproject/mollyandroid/blob/master/bin/
 
 This .apk should be generated every time I compile the project and push, so keep an eye on this page every now and then if you want to get the newest version
 
