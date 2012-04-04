@@ -1,8 +1,10 @@
 package org.mollyproject.android.view.apps;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +39,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public abstract class Page extends RoboActivity {
+	protected LinearLayout dateBar;
+	protected TextView dateText;
+	
 	protected MyApplication myApp;
 	protected SharedPreferences.Editor editor;
 	protected SharedPreferences settings;
@@ -416,6 +421,10 @@ public abstract class Page extends RoboActivity {
 		manualRefresh = false;
 		name = null;
 		additionalArgs = null;
+		// Oxford date bar:
+		dateBar = (LinearLayout) getLayoutInflater().inflate(R.layout.date_bar, null);
+		dateText = (TextView) dateBar.findViewById(R.id.dateText);
+		System.out.println("Date text: " + dateText);
 	}
 	
 	public void setFavable(boolean b)
@@ -800,6 +809,20 @@ public abstract class Page extends RoboActivity {
 			MyApplication.router.setApp(myApp);
 		}
 		
+		// Update the dates, always do this no matter what:
+		int[] today = null;
+		try {
+			// must make sure the user is within the right time zone to get the correct Oxford dates
+			OxfordDates.calendar.setTime(new Date());
+			OxfordDates.calendar.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+			today = OxfordDates.normalToOx(OxfordDates.calendar.getTime());
+			System.out.println("Today's Date: " + OxfordDates.calendar.getTime());
+			dateText.setText("Today is " + OxfordDates.printOxDate(today));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			dateText.setText("Today is " + MyApplication.myDateFormat.format(new Date()));
+		}
 	}
 	
 	@Override

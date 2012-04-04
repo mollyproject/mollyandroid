@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id ="@+id/dateBar"
+  	android:background="@drawable/shape_white"
+    android:orientation="horizontal" >
+    <TextView android:text="Today is: " 
+		    android:id="@+id/dateText" 
+		    android:layout_width="wrap_content"
+		    android:textSize="16dp"
+		    android:textColor="@color/blue"
+		    android:layout_height="wrap_content" 
+		    android:layout_margin="5dp">
+	    </TextView>
+
+</LinearLayout>

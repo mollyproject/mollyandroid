@@ -1,16 +1,10 @@
 package org.mollyproject.android.view.apps;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
-import com.google.common.collect.Table.Cell;
-import com.google.common.collect.TreeBasedTable;
+import org.mollyproject.android.controller.MyApplication;
 
 public class OxfordDates {
 	
@@ -25,9 +19,9 @@ public class OxfordDates {
 	public static Calendar calendar = Calendar.getInstance(); // our Swiss-Army knife of Java datetime
 	
 	public enum Term {
-		MICHAELMAS (0 , "michaelmas", new String[] {"10 OCT 2010", "09 OCT 2011"} ),
+		MICHAELMAS (0 , "Michaelmas", new String[] {"10 OCT 2010", "09 OCT 2011"} ),
 		HILARY (1 , "hilary", new String[] {"16 JAN 2011", "15 JAN 2012"}),
-		TRINITY (2 , "trinity", new String[] {"01 MAY 2011", "22 APR 2012"});
+		TRINITY (2 , "Trinity", new String[] {"01 MAY 2011", "22 APR 2012"});
 
 		public final int termInt;
 	    public final String termString;
@@ -58,7 +52,7 @@ public class OxfordDates {
 	    		{
 		    		for (String startDateStr : term.startDates)
 		    		{
-		    			startDate = normalDateFormat.parse(startDateStr);
+		    			startDate = MyApplication.myDateFormat.parse(startDateStr);
 		    			calendar.setTime(startDate);
 		    			if (calendar.get(Calendar.YEAR) == year)
 		    			{
@@ -81,13 +75,14 @@ public class OxfordDates {
 			// return the start of term for a given date and store the date difference
 			//Set<Cell<Integer,Integer,String>> termStartsSet = termStartDates.cellSet();
 			//for (Cell<Integer,Integer,String> dateCell : termStartsSet)
-			Date startDate = null;
+			Date startDate = null;Date temp = null;
+			boolean margin = false;
 			for (Term term : Term.values())
 			{
 				for (String startDateStr : term.startDates)
 				{
 					//String dateString = dateCell.getValue();
-					startDate = normalDateFormat.parse(startDateStr);
+					startDate = MyApplication.myDateFormat.parse(startDateStr);
 					dateDiff = dateDiff(startDate, date);
 					whichTerm = term.termInt;
 					/*System.out.println("start: " + startDate);
@@ -102,27 +97,34 @@ public class OxfordDates {
 					else if (dateDiff >= 0 & dateDiff <= 84)
 					{
 						//We've found a day in week 1-12
-						return startDate;
+						if (!margin)
+						{
+							temp = startDate;
+							margin = true;
+						}
+						else
+							return temp;
 					}
 					// else this start date is not the right one
 				}
 			}
-			// no need to re-init whichTerm and dateDiff at this point because 
-			return null;
+			// no need to re-init whichTerm and dateDiff at this point because
+			if (margin)
+				return temp;
+			else
+				return null;
 		}
 	    
 	}
 	
-	public static final DateFormat normalDateFormat = new SimpleDateFormat("d MMM yyyy");
-	
 	public enum Day {
-		SUNDAY (Calendar.SUNDAY, "SUNDAY"),
-		MONDAY (Calendar.MONDAY, "MONDAY"),
-		TUESDAY (Calendar.TUESDAY, "TUESDAY"),
-		WEDNESDAY (Calendar.WEDNESDAY, "WEDNESDAY"),
-		THURSDAY (Calendar.THURSDAY, "THURSDAY"),
-		FRIDAY (Calendar.FRIDAY, "FRIDAY"),
-		SATURDAY (Calendar.SATURDAY, "SATURDAY");
+		SUNDAY (Calendar.SUNDAY, "Sunday"),
+		MONDAY (Calendar.MONDAY, "Monday"),
+		TUESDAY (Calendar.TUESDAY, "Tuesday"),
+		WEDNESDAY (Calendar.WEDNESDAY, "Wednesday"),
+		THURSDAY (Calendar.THURSDAY, "Thursday"),
+		FRIDAY (Calendar.FRIDAY, "Friday"),
+		SATURDAY (Calendar.SATURDAY, "Saturday");
 		
 		public final int dayInt;
 		public final String dayString;
@@ -158,17 +160,17 @@ public class OxfordDates {
 	}
 	
 	public enum Month {
-		JANUARY (Calendar.JANUARY, "JAN"),
-		FEBRUARY (Calendar.FEBRUARY, "FEB"),
-		MARCH (Calendar.MARCH, "MAR"),
-		APRIL (Calendar.APRIL, "APR"),
-		MAY (Calendar.MAY, "MAY"),
-		JUNE (Calendar.JUNE, "JUN"),
-		AUGUST (Calendar.AUGUST, "AUG"),
-		SEPTEMBER (Calendar.SEPTEMBER, "SEP"),
-		OCTOBER (Calendar.OCTOBER, "OCT"),
-		NOVEMBER (Calendar.NOVEMBER, "NOV"),
-		DECEMBER (Calendar.DECEMBER, "DEC");
+		JANUARY (Calendar.JANUARY, "Jan"),
+		FEBRUARY (Calendar.FEBRUARY, "Feb"),
+		MARCH (Calendar.MARCH, "Mar"),
+		APRIL (Calendar.APRIL, "Apr"),
+		MAY (Calendar.MAY, "May"),
+		JUNE (Calendar.JUNE, "Jun"),
+		AUGUST (Calendar.AUGUST, "Aug"),
+		SEPTEMBER (Calendar.SEPTEMBER, "Sep"),
+		OCTOBER (Calendar.OCTOBER, "Oct"),
+		NOVEMBER (Calendar.NOVEMBER, "Nov"),
+		DECEMBER (Calendar.DECEMBER, "Dec");
 		
 		public final int monthInt;
 		public final String monthString;
@@ -252,7 +254,7 @@ public class OxfordDates {
 		// year, term, week, day 
 		oxDate[0] = calendar.get(Calendar.YEAR);
 		oxDate[1] = Term.whichTerm;
-		System.out.println("Date diff: " + Term.dateDiff);
+		//System.out.println("Date diff: " + Term.dateDiff);
 		if (Term.dateDiff < 0)
 		{
 			// < 0 and still valid
@@ -287,7 +289,7 @@ public class OxfordDates {
 		dateToPrint += ", Week " + oxDate[2];
 		
 		// Term:
-		dateToPrint += ", " + Term.termLookup(oxDate[1]);
+		dateToPrint += ", " + Term.termLookup(oxDate[1]).termString;
 		
 		// Year:
 		dateToPrint += ", " + oxDate[0];

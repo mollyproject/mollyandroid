@@ -10,12 +10,15 @@
 		    android:layout_height="wrap_content" 
 		    android:layout_centerVertical="true" 
 		    android:layout_alignParentRight="true"></Button>
-	    
-	    <EditText android:layout_width="fill_parent" 
-		    android:singleLine="True" 
-		    android:id="@+id/searchField" 
-		    android:layout_height="wrap_content" 
-		    android:layout_toLeftOf="@+id/searchButton"
-		    android:layout_alignTop="@+id/searchButton">
+	    
+	    <EditText
+	        android:id="@+id/searchField"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignTop="@+id/searchButton"
+	        android:layout_margin="2dp"
+	        android:layout_toLeftOf="@+id/searchButton"
+	        android:singleLine="True" >
+
 	    </EditText>
 </RelativeLayout>

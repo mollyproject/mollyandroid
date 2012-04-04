@@ -1,10 +1,13 @@
 package org.mollyproject.android.view.apps.home;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
+
 import org.mollyproject.android.R;
 import org.mollyproject.android.controller.MollyModule;
 import org.mollyproject.android.controller.MyApplication;
 import org.mollyproject.android.controller.Router;
+import org.mollyproject.android.view.apps.OxfordDates;
 import org.mollyproject.android.view.apps.Page;
 import roboguice.inject.InjectView;
 
@@ -17,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class HomePage extends Page {
@@ -34,6 +38,8 @@ public class HomePage extends Page {
     	super.onCreate(savedInstanceState);
     	name = MollyModule.HOME_PAGE;
     	setContentView(R.layout.home_page_layout);
+    	
+    	// Add the search text field on top of the page
     	RelativeLayout searchBar = (RelativeLayout) getLayoutInflater().inflate
     			(R.layout.search_bar_without_margin,null);
     	homeLayout.addView(searchBar,0);
@@ -44,6 +50,9 @@ public class HomePage extends Page {
     	
     	Button searchButton = (Button) findViewById(R.id.searchButton);
     	setClickSearch(searchButton, searchField, this, null);
+    	
+    	// Add the date field on top of the page
+    	homeLayout.addView(dateBar,0);
     }
     public LinearLayout getHomeLayout()
     {
