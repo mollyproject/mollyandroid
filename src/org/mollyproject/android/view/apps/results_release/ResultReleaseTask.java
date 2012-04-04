@@ -18,6 +18,7 @@ import org.mollyproject.android.view.apps.ContentPage;
 import org.mollyproject.android.view.apps.Page;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.text.Html;
 import android.view.View;
@@ -66,22 +67,24 @@ public class ResultReleaseTask extends JSONProcessingTask{
 			Iterator<String> newDates = sortedDates.iterator();
 			while(newDates.hasNext())
 			{
-				LinearLayout thisResult = (LinearLayout) page.getLayoutInflater().inflate(R.layout.plain_text_search_result,null);
-				thisResult.setLayoutParams(Page.paramsWithLine);
-				String allText = new String();
-				
 				String myDate = newDates.next();
-				allText = "<b>"+ myDate + "</b>";
-				
 				JSONArray results = examsByDate.getJSONArray(myDate);
+				LinearLayout thisDateResult = (LinearLayout) page.getLayoutInflater().inflate(R.layout.plain_text_search_result,null);
+				thisDateResult.setLayoutParams(Page.paramsWithLine);
+				TextView dateText = ((TextView) thisDateResult.findViewById(R.id.plainTextResultText));
+				dateText.setText(Html.fromHtml("<b>" + myDate + "</b>"));
+				resultsLayout.addView(thisDateResult);
 				for (int i = 0; i < results.length(); i++)
 				{
 					String title = results.getString(i);
-					allText = allText + "<br/>" + title;
+					LinearLayout thisResult = (LinearLayout) page.getLayoutInflater().inflate(R.layout.plain_text_search_result,null);
+					thisResult.setBackgroundResource(R.drawable.bg_white);
+					thisResult.setLayoutParams(Page.paramsWithLine);
+					TextView resultText = ((TextView) thisResult.findViewById(R.id.plainTextResultText));
+					resultText.setTextColor(page.getResources().getColor(R.color.blue));
+					resultText.setText(title);
+					resultsLayout.addView(thisResult);
 				}
-				TextView resultsText = ((TextView) thisResult.findViewById(R.id.plainTextResultText));
-				resultsText.setText(Html.fromHtml(allText));
-				resultsLayout.addView(thisResult);
 			}
 			
 			((ContentPage) page).doneProcessingJSON();
@@ -128,14 +131,13 @@ public class ResultReleaseTask extends JSONProcessingTask{
 				{
 					JSONObject entry = entries.getJSONObject(i);
 					//trim off result
-					String title = entry.getString("course_code") + ": " +
-							entry.getString("title")
+					String title = entry.getString("title")
 							.replace("OxfordExams: Results for ","")
 							.replace(" now available", "");
 					title = title.substring(0, title.length() - 7);
 					
 					Date updatedDate = MyApplication.defaultDateFormat.parse
-										(entry.getString("updated"));
+										(entry.getString("published"));
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(updatedDate);
 					String myDate = calendar.get(Calendar.DATE) + " " + monthNames[calendar.get(Calendar.MONTH)] + " " + calendar.get(Calendar.YEAR);

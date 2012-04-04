@@ -11,25 +11,31 @@
         <LinearLayout android:id="@+id/releasesList" 
         android:layout_width="fill_parent" 
         android:orientation="vertical"
+        android:background="@color/blue"
         android:layout_height="wrap_content">
-            <TextView android:textSize="18dp"
-	            android:layout_width="wrap_content" 
-	            android:id="@+id/releasesHeader" 
-	            android:text="Results" 
-	            android:textColor="@color/black" 
-	            android:layout_gravity="center_vertical" 
-	            android:layout_height="wrap_content"
-	            android:paddingLeft="10dp" android:layout_marginTop="10dp" android:layout_marginBottom="5dp">
-            </TextView>
-            <Button android:layout_gravity="center" 
-	            android:id="@+id/selfServiceButton" 
-	            android:text="Student Self-Service" 
-	            android:layout_width="wrap_content" 
-	            android:layout_height="wrap_content"
-	            android:textSize="18dp" 
-	            android:layout_marginBottom="10dp">
-            </Button>
-            
+	        <LinearLayout android:id="@+id/releasesHeaderLayout" 
+	        android:layout_width="fill_parent" 
+	        android:orientation="vertical"
+	        android:background="@color/white"
+	        android:layout_height="wrap_content">
+	            <TextView android:textSize="18dp"
+		            android:layout_width="wrap_content" 
+		            android:id="@+id/releasesHeader" 
+		            android:text="Results" 
+		            android:textColor="@color/black" 
+		            android:layout_gravity="center_vertical" 
+		            android:layout_height="wrap_content"
+		            android:paddingLeft="10dp" android:layout_marginTop="10dp" android:layout_marginBottom="5dp">
+	            </TextView>
+	            <Button android:layout_gravity="center" 
+		            android:id="@+id/selfServiceButton" 
+		            android:text="Student Self-Service" 
+		            android:layout_width="wrap_content" 
+		            android:layout_height="wrap_content"
+		            android:textSize="18dp" 
+		            android:layout_marginBottom="10dp">
+	            </Button>
+        	</LinearLayout>    
         </LinearLayout>
     </ScrollView>
     
